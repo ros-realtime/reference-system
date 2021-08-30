@@ -1,6 +1,7 @@
 #include <chrono>
 #include <vector>
 
+#include "reference_system_autoware/node/fusion.hpp"
 #include "reference_system_autoware/node/processing.hpp"
 #include "reference_system_autoware/node/sensor.hpp"
 
@@ -94,21 +95,60 @@ int main(int argc, char* argv[]) {
                                .number_crunch_time = PROCESSING_TIME}));
 
   nodes.emplace_back(std::make_shared<node::Processing>(
-      node::ProcessingSettings{.node_name = "Lanelet2MapLoader",
-                               .input_topic = "Lanelet2Map",
-                               .output_topic = "Lanelet2MapLoader",
-                               .number_crunch_time = PROCESSING_TIME}));
-
-  nodes.emplace_back(std::make_shared<node::Processing>(
       node::ProcessingSettings{.node_name = "LanePlanner",
                                .input_topic = "Lanelet2MapLoader",
                                .output_topic = "LanePlanner",
                                .number_crunch_time = PROCESSING_TIME}));
 
+  // fusion nodes
+  constexpr auto FUSION_TIME = 100ms;
+  nodes.emplace_back(std::make_shared<node::Fusion>(
+      node::FusionSettings{.node_name = "PointCloudFusion",
+                           .input_0 = "PointsTransformerFront",
+                           .input_1 = "PointsTransformerRear",
+                           .output_topic = "PointCloudFusion",
+                           .number_crunch_time = FUSION_TIME}));
+
+  nodes.emplace_back(std::make_shared<node::Fusion>(
+      node::FusionSettings{.node_name = "NDTLocalizer",
+                           .input_0 = "VoxelGridDownsampler",
+                           .input_1 = "PointCloudMapLoader",
+                           .output_topic = "NDTLocalizer",
+                           .number_crunch_time = FUSION_TIME}));
+
+  nodes.emplace_back(std::make_shared<node::Fusion>(
+      node::FusionSettings{.node_name = "NDTLocalizer",
+                           .input_0 = "VoxelGridDownsampler",
+                           .input_1 = "PointCloudMapLoader",
+                           .output_topic = "NDTLocalizer",
+                           .number_crunch_time = FUSION_TIME}));
+
+  nodes.emplace_back(std::make_shared<node::Fusion>(
+      node::FusionSettings{.node_name = "VehicleInterface",
+                           .input_0 = "MPCController",
+                           .input_1 = "BehaviorPlanner",
+                           .output_topic = "VehicleInterface",
+                           .number_crunch_time = FUSION_TIME}));
+
+  nodes.emplace_back(std::make_shared<node::Fusion>(
+      node::FusionSettings{.node_name = "Lanelet2GlobalPlanner",
+                           .input_0 = "rviz2",
+                           .input_1 = "NDTLocalizer",
+                           .output_topic = "Lanelet2GlobalPlanner",
+                           .number_crunch_time = FUSION_TIME}));
+
+  nodes.emplace_back(std::make_shared<node::Fusion>(
+      node::FusionSettings{.node_name = "Lanelet2MapLoader",
+                           .input_0 = "Lanelet2Map",
+                           .input_1 = "Lanelet2GlobalPlanner",
+                           .output_topic = "Lanelet2MapLoader",
+                           .number_crunch_time = PROCESSING_TIME}));
+
   rclcpp::executors::MultiThreadedExecutor executor;
   for (auto& node : nodes) executor.add_node(node);
   executor.spin();
 
+  nodes.clear();
   rclcpp::shutdown();
   return 0;
 }
