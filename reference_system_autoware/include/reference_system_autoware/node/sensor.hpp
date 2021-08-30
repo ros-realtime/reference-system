@@ -4,7 +4,7 @@
 #include <string>
 
 #include "rclcpp/rclcpp.hpp"
-#include "reference-system-autoware/types.hpp"
+#include "reference_system_autoware/types.hpp"
 
 namespace node {
 struct SensorSettings {
@@ -24,9 +24,9 @@ class Sensor : public rclcpp::Node {
  private:
   void timer_callback() {
     auto message = publisher_->borrow_loaned_message();
-    uint64_t timestamp =
+    int64_t timestamp =
         std::chrono::system_clock::now().time_since_epoch().count();
-    message.get().data = std::to_string(timestamp);
+    message.get().data[0] = timestamp;
     publisher_->publish(std::move(message));
   }
 
