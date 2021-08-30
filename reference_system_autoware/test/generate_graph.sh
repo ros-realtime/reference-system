@@ -1,0 +1,1 @@
+psrecord "ros2 run reference_system_autoware $1" --log $2 --plot $3 --duration $4
