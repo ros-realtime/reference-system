@@ -21,15 +21,17 @@ class Reactor : public rclcpp::Node {
     for (const auto& input_topic : settings.inputs) {
       subscriptions_.emplace_back(this->create_subscription<message_t>(
           input_topic, 10,
-          std::bind(&Reactor::input_callback, this, input_number++,
-                    std::placeholders::_1)));
+          [this, input_number](const message_t::SharedPtr msg) {
+            input_callback(input_number, msg);
+          }));
+      ++input_number;
     }
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
   }
 
  private:
   void input_callback(const uint64_t input_number,
-                      const message_t::SharedPtr input_message) {
+                      const message_t::SharedPtr input_message) const {
     auto output_message = publisher_->borrow_loaned_message();
     int64_t timestamp_in_ns =
         std::chrono::duration_cast<std::chrono::nanoseconds>(
