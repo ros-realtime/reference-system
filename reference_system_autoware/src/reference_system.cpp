@@ -3,6 +3,7 @@
 
 #include "reference_system_autoware/node/fusion.hpp"
 #include "reference_system_autoware/node/processing.hpp"
+#include "reference_system_autoware/node/reactor.hpp"
 #include "reference_system_autoware/node/sensor.hpp"
 
 using namespace std::chrono_literals;
@@ -143,6 +144,14 @@ int main(int argc, char* argv[]) {
                            .input_1 = "Lanelet2GlobalPlanner",
                            .output_topic = "Lanelet2MapLoader",
                            .number_crunch_time = PROCESSING_TIME}));
+
+  // reactor node
+  nodes.emplace_back(std::make_shared<node::Reactor>(node::ReactorSettings{
+      .node_name = "BehaviorPlanner",
+      .inputs{"ObjectCollisionEstimator", "NDTLocalizer",
+              "Lanelet2GlobalPlanner", "Lanelet2MapLoader", "ParkingPlanner",
+              "LanePlanner"},
+      .output_topic = "BehaviorPlanner"}));
 
   rclcpp::executors::MultiThreadedExecutor executor;
   for (auto& node : nodes) executor.add_node(node);
