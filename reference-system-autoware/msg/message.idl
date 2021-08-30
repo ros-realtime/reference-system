@@ -1,0 +1,7 @@
+#include "std_msgs/msg/Header.idl"
+
+module reference_system_autoware {
+struct Message {
+    int64 array[1024];
+};
+};
