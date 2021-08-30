@@ -16,9 +16,10 @@ rosidl_generate_interfaces(${PROJECT_NAME}
     "std_msgs"
 )
 
+include_directories(include)
 
 add_executable(reference_system src/reference_system.cpp)
-target_include_directories(reference_system PRIVATE include)
+target_include_directories(reference_system PUBLIC include)
 ament_target_dependencies(reference_system rclcpp std_msgs)
 rosidl_target_interfaces(reference_system ${PROJECT_NAME} "rosidl_typesupport_cpp")
 

@@ -6,3 +6,4 @@
 
 using message_t = reference_system_autoware::msg::Message1kb;
 using publisher_t = rclcpp::Publisher<message_t>::SharedPtr;
+using subscription_t = rclcpp::Subscription<message_t>::SharedPtr;
