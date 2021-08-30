@@ -31,13 +31,16 @@ class Processing : public rclcpp::Node {
     auto number_cruncher_result = number_cruncher(number_crunch_time_);
 
     auto output_message = publisher_->borrow_loaned_message();
-    int64_t timestamp_in_ns =
+    const int64_t timestamp_in_ns =
         std::chrono::duration_cast<std::chrono::nanoseconds>(
             std::chrono::system_clock::now().time_since_epoch())
             .count();
 
-    int64_t accumulated_latency_in_ns =
-        input_message->data[0] + timestamp_in_ns - input_message->data[1];
+    const int64_t input_accumulated_latency = input_message->data[0];
+    const int64_t input_timestamp = input_message->data[1];
+
+    const int64_t accumulated_latency_in_ns =
+        input_accumulated_latency + timestamp_in_ns - input_timestamp;
 
     output_message.get().data[0] = accumulated_latency_in_ns;
     output_message.get().data[1] = timestamp_in_ns;

@@ -29,7 +29,7 @@ class Sensor : public rclcpp::Node {
             std::chrono::system_clock::now().time_since_epoch())
             .count();
 
-    int64_t accumulated_latency_in_ns = 0;
+    const int64_t accumulated_latency_in_ns = 0;
 
     message.get().data[0] = accumulated_latency_in_ns;
     message.get().data[1] = timestamp_in_ns;
