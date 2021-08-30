@@ -28,7 +28,7 @@ class Processing : public rclcpp::Node {
 
  private:
   void input_callback(const message_t::SharedPtr input_message) const {
-    number_cruncher(number_crunch_time_);
+    auto number_cruncher_result = number_cruncher(number_crunch_time_);
 
     auto output_message = publisher_->borrow_loaned_message();
     int64_t timestamp_in_ns =
@@ -41,6 +41,8 @@ class Processing : public rclcpp::Node {
 
     output_message.get().data[0] = accumulated_latency_in_ns;
     output_message.get().data[1] = timestamp_in_ns;
+    // use result so that it is not optimizied away by some clever compiler
+    output_message.get().data[2] = number_cruncher_result.empty();
     publisher_->publish(std::move(output_message));
   }
 
