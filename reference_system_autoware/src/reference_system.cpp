@@ -1,6 +1,7 @@
 #include <chrono>
 #include <vector>
 
+#include "reference_system_autoware/node/command.hpp"
 #include "reference_system_autoware/node/fusion.hpp"
 #include "reference_system_autoware/node/processing.hpp"
 #include "reference_system_autoware/node/reactor.hpp"
@@ -40,7 +41,7 @@ int main(int argc, char* argv[]) {
                            .cycle_time = CYCLE_TIME}));
 
   // processing nodes
-  constexpr auto PROCESSING_TIME = 100ms;
+  constexpr auto PROCESSING_TIME = 1000ms;
   nodes.emplace_back(std::make_shared<node::Processing>(
       node::ProcessingSettings{.node_name = "PointsTransformerFront",
                                .input_topic = "FrontLidarDriver",
@@ -148,10 +149,14 @@ int main(int argc, char* argv[]) {
   // reactor node
   nodes.emplace_back(std::make_shared<node::Reactor>(node::ReactorSettings{
       .node_name = "BehaviorPlanner",
-      .inputs{"ObjectCollisionEstimator", "NDTLocalizer",
-              "Lanelet2GlobalPlanner", "Lanelet2MapLoader", "ParkingPlanner",
-              "LanePlanner"},
+      .inputs = {"ObjectCollisionEstimator", "NDTLocalizer",
+                 "Lanelet2GlobalPlanner", "Lanelet2MapLoader", "ParkingPlanner",
+                 "LanePlanner"},
       .output_topic = "BehaviorPlanner"}));
+
+  // command node
+  nodes.emplace_back(std::make_shared<node::Command>(node::CommandSettings{
+      .node_name = "VehicleDBWSystem", .input_topic = "VehicleInterface"}));
 
   rclcpp::executors::MultiThreadedExecutor executor;
   for (auto& node : nodes) executor.add_node(node);
