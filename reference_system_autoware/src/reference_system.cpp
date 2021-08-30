@@ -1,7 +1,7 @@
 #include <chrono>
 #include <vector>
 
-#include "reference-system-autoware/node/sensor.hpp"
+#include "reference_system_autoware/node/sensor.hpp"
 
 using namespace std::chrono_literals;
 
