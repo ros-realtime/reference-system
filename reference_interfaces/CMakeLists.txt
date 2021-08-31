@@ -19,9 +19,9 @@ set(msg_files
 )
 
 # add additional message dependencies here
-set(msg_dependencies
-  "std_msgs"
-)
+#set(msg_dependencies
+#  "std_msgs"
+#)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   ${msg_files}
