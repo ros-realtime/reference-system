@@ -18,7 +18,7 @@
 
 int main(int argc, char * argv[])
 {
-  create_and_start_reference_system<rclcpp::executors::MultiThreadedExecutor>(argc, argv);
+  create_and_start_reference_system<rclcpp::executors::StaticSingleThreadedExecutor>(argc, argv);
 
   return 0;
 }
