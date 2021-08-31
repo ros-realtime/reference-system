@@ -1,10 +1,7 @@
-#include <std_msgs/msg/Header.idl>
-
 module reference_interfaces {
   module msg {
     struct Message1kb {
-      std_msgs::msg::Header header;
-      int64 data[1024];
+      int64 data[128];  // total of 1kb length (1024 bytes)
     };
   };
 };
