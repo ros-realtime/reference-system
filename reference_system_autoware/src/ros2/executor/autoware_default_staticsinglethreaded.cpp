@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
-
 #include "rclcpp/rclcpp.hpp"
-#include "reference_interfaces/msg/message1kb.hpp"
-#include "std_msgs/msg/string.hpp"
 
-using message_t = reference_interfaces::msg::Message1kb;
-using publisher_t = rclcpp::Publisher<message_t>::SharedPtr;
-using subscription_t = rclcpp::Subscription<message_t>::SharedPtr;
+#include "reference_system_autoware/reference_system.hpp"
+
+int main(int argc, char * argv[])
+{
+  create_and_start_reference_system<rclcpp::executors::StaticSingleThreadedExecutor>(argc, argv);
+
+  return 0;
+}
