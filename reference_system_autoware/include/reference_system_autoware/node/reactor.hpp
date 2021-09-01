@@ -12,6 +12,7 @@ struct ReactorSettings {
   std::string node_name;
   std::vector<std::string> inputs;
   std::string output_topic;
+  std::chrono::nanoseconds number_crunch_time;
 };
 
 class Reactor : public rclcpp::Node {
@@ -32,6 +33,8 @@ class Reactor : public rclcpp::Node {
  private:
   void input_callback(const uint64_t input_number,
                       const message_t::SharedPtr input_message) const {
+    auto number_cruncher_result = number_cruncher(number_crunch_time_);
+
     auto output_message = publisher_->borrow_loaned_message();
     int64_t timestamp_in_ns =
         std::chrono::duration_cast<std::chrono::nanoseconds>(
@@ -47,11 +50,13 @@ class Reactor : public rclcpp::Node {
     output_message.get().data[0] = accumulated_latency_in_ns;
     output_message.get().data[1] = timestamp_in_ns;
     output_message.get().data[2] = input_number;
+    output_message.get().data[3] = number_cruncher_result.empty();
     publisher_->publish(std::move(output_message));
   }
 
  private:
   publisher_t publisher_;
   std::vector<subscription_t> subscriptions_;
+  std::chrono::nanoseconds number_crunch_time_;
 };
 }  // namespace node
