@@ -1,0 +1,7 @@
+module reference_interfaces {
+  module msg {
+    struct Message1kb {
+      int64 data[128];  // total of 1kb length (1024 bytes)
+    };
+  };
+};
