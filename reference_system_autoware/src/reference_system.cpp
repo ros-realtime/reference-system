@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
                            .cycle_time = CYCLE_TIME}));
 
   // processing nodes
-  constexpr auto PROCESSING_TIME = 1000ms;
+  constexpr auto PROCESSING_TIME = 100ms;
   nodes.emplace_back(std::make_shared<node::Processing>(
       node::ProcessingSettings{.node_name = "PointsTransformerFront",
                                .input_topic = "FrontLidarDriver",
@@ -147,12 +147,14 @@ int main(int argc, char* argv[]) {
                            .number_crunch_time = PROCESSING_TIME}));
 
   // reactor node
+  constexpr auto REACTOR_TIME = 100ms;
   nodes.emplace_back(std::make_shared<node::Reactor>(node::ReactorSettings{
       .node_name = "BehaviorPlanner",
       .inputs = {"ObjectCollisionEstimator", "NDTLocalizer",
                  "Lanelet2GlobalPlanner", "Lanelet2MapLoader", "ParkingPlanner",
                  "LanePlanner"},
-      .output_topic = "BehaviorPlanner"}));
+      .output_topic = "BehaviorPlanner",
+      .number_crunch_time = REACTOR_TIME}));
 
   // command node
   nodes.emplace_back(std::make_shared<node::Command>(node::CommandSettings{
