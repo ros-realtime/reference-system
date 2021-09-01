@@ -1,3 +1,17 @@
+// Copyright 2021 Apex.AI, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <chrono>
 #include <vector>
 
@@ -9,10 +23,16 @@
 
 using namespace std::chrono_literals;
 
-int main(int argc, char* argv[]) {
+template <typename ExecutorType>
+void create_and_start_reference_system(int argc, char* argv[]) {
   rclcpp::init(argc, argv);
 
   std::vector<std::shared_ptr<rclcpp::Node>> nodes;
+
+// ignore the warning about designated initializers - they make the code much
+// more readable
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
 
   // setup communication graph
   // sensor nodes
@@ -41,7 +61,7 @@ int main(int argc, char* argv[]) {
                            .cycle_time = CYCLE_TIME}));
 
   // processing nodes
-  constexpr auto PROCESSING_TIME = 100ms;
+  constexpr auto PROCESSING_TIME = 1000ms;
   nodes.emplace_back(std::make_shared<node::Processing>(
       node::ProcessingSettings{.node_name = "PointsTransformerFront",
                                .input_topic = "FrontLidarDriver",
@@ -159,12 +179,14 @@ int main(int argc, char* argv[]) {
   // command node
   nodes.emplace_back(std::make_shared<node::Command>(node::CommandSettings{
       .node_name = "VehicleDBWSystem", .input_topic = "VehicleInterface"}));
+#pragma GCC diagnostic pop
 
-  rclcpp::executors::MultiThreadedExecutor executor;
-  for (auto& node : nodes) executor.add_node(node);
+  ExecutorType executor;
+  for (auto& node : nodes) {
+    executor.add_node(node);
+  }
   executor.spin();
 
   nodes.clear();
   rclcpp::shutdown();
-  return 0;
 }
