@@ -31,7 +31,9 @@ struct ReactorSettings {
 
 class Reactor : public rclcpp::Node {
  public:
-  Reactor(const ReactorSettings& settings) : Node(settings.node_name) {
+  Reactor(const ReactorSettings& settings)
+      : Node(settings.node_name),
+        number_crunch_time_(settings.number_crunch_time) {
     uint64_t input_number = 0U;
     for (const auto& input_topic : settings.inputs) {
       subscriptions_.emplace_back(this->create_subscription<message_t>(
