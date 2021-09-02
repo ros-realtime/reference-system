@@ -53,11 +53,11 @@ private:
     const int64_t accumulated_latency_in_ns =
       input_accumulated_latency + timestamp_in_ns - input_timestamp;
 
-    std::cout << "\nreceived message stats:\n";
-    std::cout << "  current timestamp in ns: " << timestamp_in_ns << std::endl;
-    std::cout << "  message timestamp in ns: " << input_timestamp << std::endl;
-    std::cout << "  accumulated latency in ns: " << accumulated_latency_in_ns <<
-      std::endl;
+//    std::cout << "\nreceived message stats:\n";
+//    std::cout << "  current timestamp in ns: " << timestamp_in_ns << std::endl;
+//    std::cout << "  message timestamp in ns: " << input_timestamp << std::endl;
+//    std::cout << "  accumulated latency in ns: " << accumulated_latency_in_ns <<
+//      std::endl;
   }
 
 private:
