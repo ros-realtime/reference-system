@@ -67,6 +67,9 @@ class Reactor : public rclcpp::Node {
     output_message.get().data[1] = timestamp_in_ns;
     output_message.get().data[2] = input_number;
     output_message.get().data[3] = number_cruncher_result.empty();
+
+    RCLCPP_INFO_STREAM(this->get_logger(), "Reacting to input[" << input_number << "]");
+
     publisher_->publish(std::move(output_message));
   }
 
