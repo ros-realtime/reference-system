@@ -53,11 +53,14 @@ private:
     const int64_t accumulated_latency_in_ns =
       input_accumulated_latency + timestamp_in_ns - input_timestamp;
     
-    RCLCPP_WARN_STREAM(this->get_logger(), std::endl <<
-      "  Received message statistics:" << std::endl <<
-      "    current timestamp in ns:   " << timestamp_in_ns << std::endl << 
-      "    message timestamp in ns:   " << input_timestamp << std::endl <<
-      "    accumulated latency in ns: " << accumulated_latency_in_ns << std::endl);
+    RCLCPP_WARN_STREAM(this->get_logger(),
+      "Received message statistics:");
+    RCLCPP_WARN_STREAM(this->get_logger(),
+      "  current timestamp in ns:   " << timestamp_in_ns);
+    RCLCPP_WARN_STREAM(this->get_logger(),
+      "  message timestamp in ns:   " << input_timestamp);
+    RCLCPP_WARN_STREAM(this->get_logger(),
+      "  accumulated latency in ns: " << accumulated_latency_in_ns);
   }
 
 private:

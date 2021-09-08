@@ -2,11 +2,24 @@
 
 With the distributed development of ROS across many different organizations it is sometimes hard to benchmark and concretely show how a certain change to a certain system improves or reduces the performance of that system.  For example did a change from one executor to another actually reduce the CPU or was it something else entirely?
 
-In order to try and address this problem we at [Apex.AI](https://apex.ai) would like to propose a definition of a reference system that simulates a real world scenario - in this case Autoware.Auto and its lidar data pipeline - that can be repeated no matter the underlying change of any piece of the full stack (i.e. executor, DDS or even RMW).
+In order to try and address this problem we at [Apex.AI](https://apex.ai) would like to propose a definition of a [_reference system_](#reference-system) that simulates a real world scenario - in this case Autoware.Auto and its lidar data pipeline - that can be repeated no matter the underlying change of any piece of the full stack (i.e. executor, DDS or even RMW).
 
-![rosgraph of autoware.auto](content/img/rosgraph_autoware.auto.png)
+![Node graph of reference-system-autoware](content/img/dotgraph_autoware.svg)
 
 Future reference systems could be proposed that are more complex using the same basic node building blocks developed for this first scenario.
+
+## Reference System
+
+A _reference system_ is defined by:
+- a fixed number of nodes
+    - each node with:
+        - a fixed number of publishers and subscribers
+        - a fixed _processing time_ or a fixed _publishing rate_
+- a fixed _message type_ of fixed size to be used for every _node_.
+
+With these defined attributes the _reference system_ can be replicated across many different possible configurations to be used to benchmark each configuration against the other in a reliable and fair manner.
+
+With this approach [unit tests](#unit-testing) can also be defined to reliably confirm if a given _reference system_ meets the requirements.
 
 ## Supported Platforms
 
@@ -52,7 +65,7 @@ These basic building-block nodes can be mixed-and-matched to create quite comple
 
 The first reference system benchmark proposed is based on the *Autoware.Auto* lidar data pipeline as stated above and shown in the node graph image above as well.
 
-1. **Reference System Autoware.Auto**
+1. [**Reference System Autoware.Auto**](reference_system_autoware/reference_system_autoware.md)
     - ROS2:
         - Executors:
             - Default:
@@ -67,7 +80,10 @@ To add your own executor / middleware / configuration to the list above follow t
 
 Results are kept in the [results directory](results) and can be updated via a PR by anyone who has a supported platform listed above after following the steps below to generate them.
 
-### Generating Results
+## Unit Testing
+
+Unit tests can be written for the _reference system_ to check if all nodes, topics and other requirements are met before accepting test results.
+
 
 Tests are provided to automatically generate results for you by running `colcon test` on a supported platform above.
 
@@ -85,7 +101,6 @@ Alternatively if for some reason you do not or cannot use `colcon` the tests are
 If you see a missing configuration on the list above that you would like to see benchmarked against please follow the steps below to request it to be added.
 
 - look over the open / closed [issues](https://github.com/ros-realtime/reference-system-autoware/issues/) to make sure there isn't already an open ticket for the configuration you are looking for
-- 
 
 
 
