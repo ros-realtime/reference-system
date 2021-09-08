@@ -18,14 +18,36 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
+    runs-on: [ubuntu-latest]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Foxy Fitzroy (June 2020 - May 2023)
+          - docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-foxy-ros-base-latest
+            ros_distribution: foxy
+            ros_version: 2
+          # Galactic Geochelone (May 2021 - November 2022)
+          - docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
+            ros_distribution: galactic
+            ros_version: 2
+          # Rolling Ridley  (June 2020 - Present)
+          - docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-rolling-ros-base-latest
+            ros_distribution: rolling
+            ros_version: 2
+    container:
+      image: ${{ matrix.docker_image }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: ros-tooling/setup-ros@v0.2
+      - name: setup workspace
+        run: mkdir -p ros_ws/src
+      - name: checkout
+        uses: actions/checkout@v2
         with:
-          required-ros-distributions: galactic
-      - uses: ros-tooling/action-ros-ci@v0.2
+          path: ros_ws/src
+      - name: build and test
+        uses: ros-tooling/action-ros-ci@0.2
         with:
-          package-name: my_package
-          target-ros2-distro: galactic
+          package-name: reference_system_autoware
+          target-ros2-distro: ${{ matrix.ros_distribution }}
+          vcs-repo-file-url: ""
