@@ -22,6 +22,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        runner:
+          - foxy
+          - galactic
+          - rolling
         include:
           # Foxy Fitzroy (June 2020 - May 2023)
           - ros_distribution: foxy
