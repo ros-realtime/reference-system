@@ -52,8 +52,10 @@ void create_and_start_reference_system(int argc, char* argv[]) {
                            .topic_name = "PointCloudMap",
                            .cycle_time = CYCLE_TIME}));
 
-  nodes.emplace_back(std::make_shared<node::Sensor>(node::SensorSettings{
-      .node_name = "rviz2", .topic_name = "rviz2", .cycle_time = CYCLE_TIME}));
+  nodes.emplace_back(std::make_shared<node::Sensor>(
+      node::SensorSettings{.node_name = "rviz2",
+                           .topic_name = "rviz2",
+                           .cycle_time = CYCLE_TIME}));
 
   nodes.emplace_back(std::make_shared<node::Sensor>(
       node::SensorSettings{.node_name = "Lanelet2Map",
@@ -129,13 +131,6 @@ void create_and_start_reference_system(int argc, char* argv[]) {
                            .input_0 = "PointsTransformerFront",
                            .input_1 = "PointsTransformerRear",
                            .output_topic = "PointCloudFusion",
-                           .number_crunch_time = FUSION_TIME}));
-
-  nodes.emplace_back(std::make_shared<node::Fusion>(
-      node::FusionSettings{.node_name = "NDTLocalizer",
-                           .input_0 = "VoxelGridDownsampler",
-                           .input_1 = "PointCloudMapLoader",
-                           .output_topic = "NDTLocalizer",
                            .number_crunch_time = FUSION_TIME}));
 
   nodes.emplace_back(std::make_shared<node::Fusion>(
