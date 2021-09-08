@@ -43,7 +43,7 @@ jobs:
         with:
           path: ros_ws/src
       - name: build and test
-        uses: ros-tooling/action-ros-ci@0.2
+        uses: ros-tooling/action-ros-ci@v0.2
         with:
           package-name: reference_system_autoware
           target-ros2-distro: ${{ matrix.ros_distribution }}
