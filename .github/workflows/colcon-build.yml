@@ -41,11 +41,11 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: setup workspace
-        run: mkdir -p ros_ws/src
+        run: mkdir -p ros2_ws/src
       - name: checkout
         uses: actions/checkout@v2
         with:
-          path: ros_ws/src
+          path: ros2_ws/src
       - name: build and test
         uses: ros-tooling/action-ros-ci@v0.2
         with:
