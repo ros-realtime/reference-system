@@ -36,7 +36,7 @@ void create_and_start_reference_system(int argc, char* argv[]) {
 
   // setup communication graph
   // sensor nodes
-  constexpr auto CYCLE_TIME = 100ms;
+  constexpr auto CYCLE_TIME = 200ms;
   nodes.emplace_back(std::make_shared<node::Sensor>(
       node::SensorSettings{.node_name = "FrontLidarDriver",
                            .topic_name = "FrontLidarDriver",
@@ -61,7 +61,7 @@ void create_and_start_reference_system(int argc, char* argv[]) {
                            .cycle_time = CYCLE_TIME}));
 
   // processing nodes
-  constexpr auto PROCESSING_TIME = 1000ms;
+  constexpr auto PROCESSING_TIME = 719ms;
   nodes.emplace_back(std::make_shared<node::Processing>(
       node::ProcessingSettings{.node_name = "PointsTransformerFront",
                                .input_topic = "FrontLidarDriver",
@@ -123,7 +123,7 @@ void create_and_start_reference_system(int argc, char* argv[]) {
                                .number_crunch_time = PROCESSING_TIME}));
 
   // fusion nodes
-  constexpr auto FUSION_TIME = 100ms;
+  constexpr auto FUSION_TIME = 589ms;
   nodes.emplace_back(std::make_shared<node::Fusion>(
       node::FusionSettings{.node_name = "PointCloudFusion",
                            .input_0 = "PointsTransformerFront",
@@ -167,7 +167,7 @@ void create_and_start_reference_system(int argc, char* argv[]) {
                            .number_crunch_time = PROCESSING_TIME}));
 
   // reactor node
-  constexpr auto REACTOR_TIME = 100ms;
+  constexpr auto REACTOR_TIME = 0ms;
   nodes.emplace_back(std::make_shared<node::Reactor>(node::ReactorSettings{
       .node_name = "BehaviorPlanner",
       .inputs = {"ObjectCollisionEstimator", "NDTLocalizer",

@@ -15,7 +15,8 @@ ament_auto_find_build_dependencies()
 
 # add additional messages here
 set(msg_files
-  "msg/Message1kb.idl"
+  "msg/TransmissionStats.idl"
+  "msg/Message4kb.idl"
 )
 
 # add additional message dependencies here
