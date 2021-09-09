@@ -12,14 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "rclcpp/rclcpp.hpp"
+#include "gtest/gtest.h"
 
-#include "reference_system_autoware/reference_system.hpp"
-
-int main(int argc, char * argv[])
-{
-  create_and_start_reference_system<rclcpp::executors::MultiThreadedExecutor>(
-    argc, argv);
-
-  return 0;
+TEST(TestReferenceSystemAutoware, DummyTest) {
+  EXPECT_EQ(1, 1);
 }

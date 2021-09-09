@@ -30,23 +30,35 @@ ament_auto_add_executable(autoware_default_multithreaded
 )
 
 if(${BUILD_TESTING})
-  # run test psrecord to generate KPIs
-  # arguments for script are as follows:
-  # 1. executable name
-  # 2. path to save log data
-  # 3. path to save plot
-  # 4. duration to run test
-  #  add_custom_command(TARGET autoware_default_singlethreaded
-  #    POST_BUILD
-  #    COMMAND
-  #      ${CMAKE_CURRENT_SOURCE_DIR}/test/generate_graph.sh
-  #      autoware_default_singlethreaded
-  #      ${CMAKE_CURRENT_SOURCE_DIR}/results/cpu_mem_usage_results.txt
-  #      ${CMAKE_CURRENT_SOURCE_DIR}/results/plot.png
-  #      5
-  #    ARG
-  #    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  #    COMMENT "Run psrecord for specified target")
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+
+  # run target for 5 seconds
+  function(test_reference_system_autoware_5s target)
+    ament_add_gtest(test_${rmw_implementation}_${target}
+      test/test_reference_system_autoware.cpp
+      TIMEOUT 5
+      APPEND_LIBRARY_DIRS ${CMAKE_CURRENT_BINARY_DIR}
+      ENV
+      RCL_ASSERT_RMW_ID_MATCHES=${rmw_implementation}
+      RMW_IMPLEMENTATION=${rmw_implementation})
+    if(TARGET ${target})
+      ament_target_dependencies(${target}
+        "rclcpp" "reference_interfaces")
+    endif()
+  endfunction()
+
+  # get available rmw implementations
+  find_package(rmw_implementation_cmake REQUIRED)
+  get_available_rmw_implementations(rmws_available)
+
+  # loop over each rmw implmentation
+  foreach(rmw_implementation ${rmws_available})
+    find_package("${rmw_implementation}" REQUIRED)
+
+    # add each exe to test
+    test_reference_system_autoware_5s(autoware_default_multithreaded)
+  endforeach()
 endif()
 
 ament_auto_package(

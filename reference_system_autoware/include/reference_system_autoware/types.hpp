@@ -11,7 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+#ifndef REFERENCE_SYSTEM_AUTOWARE__TYPES_HPP_
+#define REFERENCE_SYSTEM_AUTOWARE__TYPES_HPP_
 #pragma once
 
 #include "rclcpp/rclcpp.hpp"
@@ -21,3 +22,5 @@
 using message_t = reference_interfaces::msg::Message4kb;
 using publisher_t = rclcpp::Publisher<message_t>::SharedPtr;
 using subscription_t = rclcpp::Subscription<message_t>::SharedPtr;
+
+#endif  // REFERENCE_SYSTEM_AUTOWARE__TYPES_HPP_

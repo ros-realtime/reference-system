@@ -4,16 +4,18 @@
   <name>reference_system_autoware</name>
   <version>0.0.0</version>
   <description>Reference system for the ROScon workshop</description>
-  <author email="christian.eltzschig@apex.ai">Christian Eltzschig</author>
   <maintainer email="evan.flynn@apex.ai">Evan Flynn</maintainer>
   <license>Apache License 2.0</license>
 
+  <author email="christian.eltzschig@apex.ai">Christian Eltzschig</author>
+  
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
   <depend>rclcpp</depend>
   
   <depend>reference_interfaces</depend>
 
+  <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 

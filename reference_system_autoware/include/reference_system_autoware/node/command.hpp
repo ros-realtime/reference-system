@@ -11,7 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+#ifndef REFERENCE_SYSTEM_AUTOWARE__NODE__COMMAND_HPP_
+#define REFERENCE_SYSTEM_AUTOWARE__NODE__COMMAND_HPP_
 #pragma once
 
 #include <chrono>
@@ -44,3 +45,5 @@ class Command : public rclcpp::Node {
   subscription_t subscription_;
 };
 }  // namespace node
+
+#endif  // REFERENCE_SYSTEM_AUTOWARE__NODE__COMMAND_HPP_

@@ -11,11 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+#ifndef REFERENCE_SYSTEM_AUTOWARE__NODE__SENSOR_HPP_
+#define REFERENCE_SYSTEM_AUTOWARE__NODE__SENSOR_HPP_
 #pragma once
 
 #include <chrono>
 #include <string>
+#include <utility>
 
 #include "rclcpp/rclcpp.hpp"
 #include "reference_system_autoware/sample_management.hpp"
@@ -51,3 +53,5 @@ class Sensor : public rclcpp::Node {
   rclcpp::TimerBase::SharedPtr timer_;
 };
 }  // namespace node
+
+#endif  // REFERENCE_SYSTEM_AUTOWARE__NODE__SENSOR_HPP_
