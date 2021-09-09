@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <map>
 #include <string>
 
 template <typename SampleType>
@@ -61,8 +62,22 @@ void print_sample_path(const std::string& node_name, const SampleType& sample) {
   std::cout << "----------------------------------------------------------"
             << std::endl;
   std::cout << "sample path: " << std::endl;
+  std::cout << "  timepoint             node name" << std::endl;
+
+  std::map<uint64_t, uint64_t> timestamp2Order;
   for (uint64_t i = 0; i < sample->size; ++i) {
-    std::cout << "  " << sample->stats[i].timestamp << " : "
+    timestamp2Order[sample->stats[i].timestamp] = 0;
+  }
+  uint64_t i = 0;
+  for (auto& e : timestamp2Order) {
+    e.second = i++;
+  }
+
+  for (uint64_t i = 0; i < sample->size; ++i) {
+    std::cout << "  [";
+    std::cout.width(2);
+    std::cout << timestamp2Order[sample->stats[i].timestamp];
+    std::cout << "] " << sample->stats[i].timestamp << " : "
               << sample->stats[i].node_name.data() << std::endl;
   }
 
