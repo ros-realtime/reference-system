@@ -51,7 +51,7 @@ private:
     fuse_samples(this->get_name(), output_message.get(), input_message);
 
     // use result so that it is not optimizied away by some clever compiler
-    output_message.get().data[2] = number_cruncher_result.empty();
+    output_message.get().data[0] = number_cruncher_result.empty();
     publisher_->publish(std::move(output_message));
   }
 
