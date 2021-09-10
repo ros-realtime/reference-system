@@ -20,11 +20,11 @@
 #include "reference_system/reference_nodes/reactor.hpp"
 #include "reference_system/reference_nodes/sensor.hpp"
 
-namespace node {
-using NodeBaseType = rclcpp::Node;
-using Sensor = reference_nodes::Sensor;
-using Command = reference_nodes::Command;
-using Fusion = reference_nodes::Fusion;
-using Reactor = reference_nodes::Reactor;
-using Processing = reference_nodes::Processing;
-}  // namespace node
+struct ReferenceSystem {
+  using NodeBaseType = rclcpp::Node;
+  using Sensor = reference_nodes::Sensor;
+  using Command = reference_nodes::Command;
+  using Fusion = reference_nodes::Fusion;
+  using Reactor = reference_nodes::Reactor;
+  using Processing = reference_nodes::Processing;
+};  // namespace node
