@@ -35,10 +35,10 @@ void set_sample(const std::string& node_name, SampleTypePointer& sample) {
       node_name.size(),
       reference_interfaces::msg::TransmissionStats::NODE_NAME_LENGTH));
 
-  sample.stats[idx].timestamp =
-    std::chrono::duration_cast<std::chrono::nanoseconds>(
-    std::chrono::system_clock::now().time_since_epoch())
-    .count();
+  sample.stats[idx].timestamp = static_cast<uint64_t>(
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::system_clock::now().time_since_epoch())
+          .count());
 }
 
 template <typename SampleTypePointer, typename SourceType>
@@ -70,10 +70,10 @@ void fuse_samples(const std::string& node_name, SampleTypePointer& destination,
 template <typename SampleTypePointer>
 void print_sample_path(const std::string& node_name,
                        const SampleTypePointer& sample) {
-  const int64_t timestamp_in_ns =
-    std::chrono::duration_cast<std::chrono::nanoseconds>(
-    std::chrono::system_clock::now().time_since_epoch())
-    .count();
+  const uint64_t timestamp_in_ns = static_cast<uint64_t>(
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+          std::chrono::system_clock::now().time_since_epoch())
+          .count());
 
   std::cout << "----------------------------------------------------------" <<
     std::endl;
