@@ -16,10 +16,19 @@
 
 #include "reference_system_autoware/reference_system.hpp"
 
-int main(int argc, char * argv[])
-{
-  create_and_start_reference_system<
-    rclcpp::executors::StaticSingleThreadedExecutor>(argc, argv);
+int main(int argc, char* argv[]) {
+  rclcpp::init(argc, argv);
+
+  auto nodes = create_reference_system_nodes();
+
+  rclcpp::executors::StaticSingleThreadedExecutor executor;
+  for (auto& node : nodes) {
+    executor.add_node(node);
+  }
+  executor.spin();
+
+  nodes.clear();
+  rclcpp::shutdown();
 
   return 0;
 }

@@ -19,16 +19,12 @@
 #include <string>
 
 #include "rclcpp/rclcpp.hpp"
+#include "reference_system_autoware/node_settings.hpp"
 #include "reference_system_autoware/sample_management.hpp"
 #include "reference_system_autoware/types.hpp"
 
 namespace node
 {
-struct CommandSettings
-{
-  std::string node_name;
-  std::string input_topic;
-};
 
 class Command : public rclcpp::Node
 {
