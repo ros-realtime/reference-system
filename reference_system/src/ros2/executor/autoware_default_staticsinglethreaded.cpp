@@ -14,14 +14,14 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-#include "reference_system_autoware/reference_system.hpp"
+#include "reference_system/reference_system.hpp"
 
 int main(int argc, char* argv[]) {
   rclcpp::init(argc, argv);
 
   auto nodes = create_reference_system_nodes();
 
-  rclcpp::executors::SingleThreadedExecutor executor;
+  rclcpp::executors::StaticSingleThreadedExecutor executor;
   for (auto& node : nodes) {
     executor.add_node(node);
   }

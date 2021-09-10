@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM_AUTOWARE__NUMBER_CRUNCHER_HPP_
-#define REFERENCE_SYSTEM_AUTOWARE__NUMBER_CRUNCHER_HPP_
+#ifndef REFERENCE_SYSTEM__NUMBER_CRUNCHER_HPP_
+#define REFERENCE_SYSTEM__NUMBER_CRUNCHER_HPP_
 #pragma once
 
 #include <chrono>
@@ -48,4 +48,4 @@ std::vector<uint64_t> number_cruncher(const std::chrono::nanoseconds & timeout)
   }
   return primes;
 }
-#endif  // REFERENCE_SYSTEM_AUTOWARE__NUMBER_CRUNCHER_HPP_
+#endif  // REFERENCE_SYSTEM__NUMBER_CRUNCHER_HPP_

@@ -102,7 +102,11 @@ If you see a missing configuration on the list above that you would like to see 
 
 - look over the open / closed [issues](https://github.com/ros-realtime/reference-system-autoware/issues/) to make sure there isn't already an open ticket for the configuration you are looking for
 
+## Howto Implement Your Custom Executor 
 
+1. Adjust `include/reference_system/config.hpp`
+2. create `include/reference_system/MY_EXECUTOR_NAME_nodes`
+3. Add new binary to `src/ros2/executor` 
 
 
 

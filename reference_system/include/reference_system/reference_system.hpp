@@ -11,13 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM_AUTOWARE__REFERENCE_SYSTEM_HPP_
-#define REFERENCE_SYSTEM_AUTOWARE__REFERENCE_SYSTEM_HPP_
+#ifndef REFERENCE_SYSTEM__REFERENCE_SYSTEM_HPP_
+#define REFERENCE_SYSTEM__REFERENCE_SYSTEM_HPP_
 #include <chrono>
 #include <vector>
 #include <memory>
 
-#include "reference_system_autoware/config.hpp"
+#include "reference_system/config.hpp"
 
 using namespace std::chrono_literals;  // NOLINT
 
@@ -172,4 +172,4 @@ create_reference_system_nodes() {
 
   return nodes;
 }
-#endif  // REFERENCE_SYSTEM_AUTOWARE__REFERENCE_SYSTEM_HPP_
+#endif  // REFERENCE_SYSTEM__REFERENCE_SYSTEM_HPP_

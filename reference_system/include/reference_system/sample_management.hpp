@@ -11,14 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM_AUTOWARE__SAMPLE_MANAGEMENT_HPP_
-#define REFERENCE_SYSTEM_AUTOWARE__SAMPLE_MANAGEMENT_HPP_
+#ifndef REFERENCE_SYSTEM__SAMPLE_MANAGEMENT_HPP_
+#define REFERENCE_SYSTEM__SAMPLE_MANAGEMENT_HPP_
+#include "reference_system/types.hpp"
+
 #include <algorithm>
 #include <chrono>
 #include <map>
 #include <string>
-
-#include "reference_system_autoware/types.hpp"
 
 
 template<typename SampleType>
@@ -117,4 +117,4 @@ void print_sample_path(const std::string & node_name, const SampleType & sample)
   std::cout << std::endl;
 }
 
-#endif  // REFERENCE_SYSTEM_AUTOWARE__SAMPLE_MANAGEMENT_HPP_
+#endif  // REFERENCE_SYSTEM__SAMPLE_MANAGEMENT_HPP_

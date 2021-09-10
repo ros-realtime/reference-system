@@ -12,23 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "rclcpp/rclcpp.hpp"
+#pragma once
 
-#include "reference_system_autoware/reference_system.hpp"
+#include "reference_system/reference_nodes/command.hpp"
+#include "reference_system/reference_nodes/fusion.hpp"
+#include "reference_system/reference_nodes/processing.hpp"
+#include "reference_system/reference_nodes/reactor.hpp"
+#include "reference_system/reference_nodes/sensor.hpp"
 
-int main(int argc, char* argv[]) {
-  rclcpp::init(argc, argv);
-
-  auto nodes = create_reference_system_nodes();
-
-  rclcpp::executors::StaticSingleThreadedExecutor executor;
-  for (auto& node : nodes) {
-    executor.add_node(node);
-  }
-  executor.spin();
-
-  nodes.clear();
-  rclcpp::shutdown();
-
-  return 0;
-}
+namespace node {
+using NodeBaseType = rclcpp::Node;
+using Sensor = reference_nodes::Sensor;
+using Command = reference_nodes::Command;
+using Fusion = reference_nodes::Fusion;
+using Reactor = reference_nodes::Reactor;
+using Processing = reference_nodes::Processing;
+}  // namespace node

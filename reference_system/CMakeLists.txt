@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(reference_system_autoware)
+project(reference_system)
 
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)

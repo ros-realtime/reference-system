@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM_AUTOWARE__NODE__FUSION_HPP_
-#define REFERENCE_SYSTEM_AUTOWARE__NODE__FUSION_HPP_
+#ifndef REFERENCE_SYSTEM__NODE__FUSION_HPP_
+#define REFERENCE_SYSTEM__NODE__FUSION_HPP_
 #pragma once
 
 #include <algorithm>
@@ -21,10 +21,10 @@
 #include <utility>
 
 #include "rclcpp/rclcpp.hpp"
-#include "reference_system_autoware/node_settings.hpp"
-#include "reference_system_autoware/number_cruncher.hpp"
-#include "reference_system_autoware/sample_management.hpp"
-#include "reference_system_autoware/types.hpp"
+#include "reference_system/node_settings.hpp"
+#include "reference_system/number_cruncher.hpp"
+#include "reference_system/sample_management.hpp"
+#include "reference_system/types.hpp"
 
 namespace node
 {
@@ -80,4 +80,4 @@ private:
   std::chrono::nanoseconds number_crunch_time_;
 };
 }  // namespace node
-#endif  // REFERENCE_SYSTEM_AUTOWARE__NODE__FUSION_HPP_
+#endif  // REFERENCE_SYSTEM__NODE__FUSION_HPP_
