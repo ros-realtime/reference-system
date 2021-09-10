@@ -21,7 +21,7 @@
 #include "reference_system_autoware/reference_nodes/sensor.hpp"
 
 namespace node {
-using NodeBaseType = std::shared_ptr<rclcpp::Node>;
+using NodeBaseType = rclcpp::Node;
 using Sensor = reference_nodes::Sensor;
 using Command = reference_nodes::Command;
 using Fusion = reference_nodes::Fusion;
