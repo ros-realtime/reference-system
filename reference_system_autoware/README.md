@@ -10,8 +10,8 @@ A **single message type** is used for the entire _reference system_ when generat
 
 This means **only one _message type_** from the list below is used during any given experimental run for every node in the reference system.
 
-1. [**Message1kB**](../reference_interfaces/msg/Message1kB.idl)
-    - reference message with a fixed size of 1 kilobyte (kB)
+1. [**Message4kB**](../reference_interfaces/msg/Message4kB.idl)
+    - reference message with a fixed size of 4 kilobytes (kB)
 
 Other messages with different fixed sizes could be added here in the future.
 
@@ -28,9 +28,9 @@ For simplicity's sake, every node except for the _command nodes_ only ever publi
 1. [**Message Type**](#message-types)
     - all nodes use the same message type during any single test run
     - default _message type_:
-        - [Message1kB](include/reference_system_autoware/types.hpp#L21)
+        - [Message4kB](include/reference_system_autoware/types.hpp#L21)
 2. [**Sensor Nodes**](reference_system_autoware/include/reference_system_autoware/node/sensor.hpp)
-    - all _sensor nodes_ have a publishing rate (cycle time) of [**100 milliseconds**](include/reference_system_autoware/reference_system.hpp#L39)
+    - all _sensor nodes_ have a publishing rate (cycle time) of [**200 milliseconds**](include/reference_system_autoware/reference_system.hpp#L39)
     - all _sensor_nodes_ publish the same _message type_
     - total of **5 _sensor nodes_**:
         - [**Front Lidar Driver**](include/reference_system_autoware/reference_system.hpp#L40)
@@ -40,7 +40,7 @@ For simplicity's sake, every node except for the _command nodes_ only ever publi
         - [**Lanelet2Map**](include/reference_system_autoware/reference_system.hpp#60)
 3. [**Processing Nodes**](include/reference_system_autoware/node/processing.hpp)
     - all _processing nodes_ have one subscriber and one publisher
-    - all _proccing nodes_ start processing for [**1000 milliseconds**](include/reference_system_autoware/reference_system.hpp#L66) after a message is received
+    - all _proccing nodes_ start processing for [**719 milliseconds**](include/reference_system_autoware/reference_system.hpp#L66) after a message is received
     - publishes message after processing is complete
     - total of **10 _processing nodes_:**
         - [Front Points Transformer](include/reference_system_autoware/reference_system.hpp#L67)
@@ -55,7 +55,7 @@ For simplicity's sake, every node except for the _command nodes_ only ever publi
         - [Lane Planner](include/reference_system_autoware/reference_system.hpp#L121)
 4. [**Fusion Nodes**](include/reference_system_autoware/node/fusion.hpp)
     - all _fusion nodes_ have **two subscribers** and one publisher for this _reference system_
-    - all _fusion nodes_ start processing for **100 milliseconds** after a message is received **from all** subscriptions
+    - all _fusion nodes_ start processing for [**589 milliseconds**](include/reference_system_autoware/reference_system.hpp#L128) after a message is received **from all** subscriptions
     - publishes message after processing is complete
     - total of **5 _fusion nodes_:**
         - [Point Cloud Fusion](include/reference_system_autoware/reference_system.hpp#L129)
@@ -66,7 +66,7 @@ For simplicity's sake, every node except for the _command nodes_ only ever publi
 5. [**Reactor Nodes**](include/reference_system_autoware/node/reactor.hpp)
     - for this _reference system_ there is onle [**1 _reactor node_**](include/reference_system_autoware/reference_system.hpp#L164)
     - this _reactor node_ has [**6 subscribers**](include/reference_system_autoware/reference_system.hpp#L168)and one publisher
-    - this _reactor node_ starts processing for [**100 milliseconds**](include/reference_system_autoware/reference_system.hpp#L165) after a message is received **from any** single subscription
+    - this _reactor node_ starts processing for [**0 milliseconds**](include/reference_system_autoware/reference_system.hpp#L165) after a message is received **from any** single subscription
     - publishes message after processing is complete
 6. [**Command Nodes**](include/reference_system_autoware/node/command.hpp)
     - for this _reference system_ there is onle [**1 _command node_**](include/reference_system_autoware/reference_system.hpp#L175)
