@@ -20,10 +20,8 @@
 #include <map>
 #include <string>
 
-
-template<typename SampleType>
-void set_sample(const std::string & node_name, SampleType & sample)
-{
+template <typename SampleTypePointer>
+void set_sample(const std::string& node_name, SampleTypePointer& sample) {
   if (sample.size >= message_t::STATS_CAPACITY) {
     return;
   }
@@ -43,22 +41,18 @@ void set_sample(const std::string & node_name, SampleType & sample)
     .count();
 }
 
-template<typename SampleType, typename SourceType>
-void fuse_samples(
-  const std::string & node_name, SampleType & destination,
-  const SourceType & source)
-{
+template <typename SampleTypePointer, typename SourceType>
+void fuse_samples(const std::string& node_name, SampleTypePointer& destination,
+                  const SourceType& source) {
   destination.size = source->size;
   destination.stats = source->stats;
 
   set_sample(node_name, destination);
 }
 
-template<typename SampleType, typename SourceType>
-void fuse_samples(
-  const std::string & node_name, SampleType & destination,
-  const SourceType & source1, const SourceType & source2)
-{
+template <typename SampleTypePointer, typename SourceType>
+void fuse_samples(const std::string& node_name, SampleTypePointer& destination,
+                  const SourceType& source1, const SourceType& source2) {
   uint64_t elements_to_copy =
     std::min(message_t::STATS_CAPACITY, source1->size + source2->size);
 
@@ -73,9 +67,9 @@ void fuse_samples(
   set_sample(node_name, destination);
 }
 
-template<typename SampleType>
-void print_sample_path(const std::string & node_name, const SampleType & sample)
-{
+template <typename SampleTypePointer>
+void print_sample_path(const std::string& node_name,
+                       const SampleTypePointer& sample) {
   const int64_t timestamp_in_ns =
     std::chrono::duration_cast<std::chrono::nanoseconds>(
     std::chrono::system_clock::now().time_since_epoch())
