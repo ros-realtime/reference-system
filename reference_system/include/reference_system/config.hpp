@@ -14,6 +14,19 @@
 
 #pragma once
 
+#include <chrono>
+
+struct SystemConfiguration {
+  static constexpr std::chrono::nanoseconds SENSOR_CYCLE_TIME =
+      std::chrono::milliseconds(200);
+  static constexpr std::chrono::nanoseconds PROCESSING_NODE_CRUNCH_TIME =
+      std::chrono::milliseconds(719);
+  static constexpr std::chrono::nanoseconds FUSION_NODE_CRUNCH_TIME =
+      std::chrono::milliseconds(589);
+  static constexpr std::chrono::nanoseconds REACTOR_NODE_CRUNCH_TIME =
+      std::chrono::milliseconds(0);
+};
+
 #include "reference_system/reference_nodes/command.hpp"
 #include "reference_system/reference_nodes/fusion.hpp"
 #include "reference_system/reference_nodes/processing.hpp"

@@ -107,6 +107,6 @@ If you see a missing configuration on the list above that you would like to see 
 1. Adjust `include/reference_system/config.hpp`
 2. create `include/reference_system/MY_EXECUTOR_NAME_nodes`
 3. Add new binary to `src/ros2/executor` 
-
+4. Add binary to CMakeLists.txt
 
 
