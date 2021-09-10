@@ -50,8 +50,8 @@ private:
     publisher_->publish(std::move(message));
   }
 
-private:
-  publisher_t publisher_;
+ private:
+  rclcpp::Publisher<message_t>::SharedPtr publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 };
 }  // namespace node

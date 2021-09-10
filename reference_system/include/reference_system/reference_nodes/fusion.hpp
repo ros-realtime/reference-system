@@ -74,8 +74,8 @@ private:
 
 private:
   message_t::SharedPtr message_cache_[2];
-  publisher_t publisher_;
-  subscription_t subscription_[2];
+  rclcpp::Publisher<message_t>::SharedPtr publisher_;
+  rclcpp::Subscription<message_t>::SharedPtr subscription_[2];
 
   std::chrono::nanoseconds number_crunch_time_;
 };

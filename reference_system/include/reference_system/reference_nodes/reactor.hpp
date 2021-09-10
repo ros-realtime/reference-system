@@ -65,9 +65,9 @@ private:
     publisher_->publish(std::move(output_message));
   }
 
-private:
-  publisher_t publisher_;
-  std::vector<subscription_t> subscriptions_;
+ private:
+  rclcpp::Publisher<message_t>::SharedPtr publisher_;
+  std::vector<rclcpp::Subscription<message_t>::SharedPtr> subscriptions_;
   std::chrono::nanoseconds number_crunch_time_;
 };
 }  // namespace node

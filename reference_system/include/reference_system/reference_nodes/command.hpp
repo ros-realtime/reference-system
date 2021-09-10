@@ -43,8 +43,13 @@ private:
     print_sample_path(this->get_name(), input_message);
   }
 
+<<<<<<< HEAD
 private:
   subscription_t subscription_;
+=======
+ private:
+  rclcpp::Subscription<message_t>::SharedPtr subscription_;
+>>>>>>> Remove pub/sub port alias
 };
 }  // namespace node
 
