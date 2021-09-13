@@ -40,7 +40,8 @@ void create_and_start_reference_system(int argc, char * argv[])
   // setup communication graph
   // sensor nodes
   constexpr auto CYCLE_TIME = 200ms;
-  nodes.emplace_back(std::make_shared<node::Sensor>(
+  nodes.emplace_back(
+    std::make_shared<node::Sensor>(
       node::SensorSettings{.node_name = "FrontLidarDriver",
         .topic_name = "FrontLidarDriver",
         .cycle_time = CYCLE_TIME}));
@@ -72,7 +73,8 @@ void create_and_start_reference_system(int argc, char * argv[])
 
   // processing nodes
   constexpr auto PROCESSING_TIME = 719ms;
-  nodes.emplace_back(std::make_shared<node::Processing>(
+  nodes.emplace_back(
+    std::make_shared<node::Processing>(
       node::ProcessingSettings{.node_name = "PointsTransformerFront",
         .input_topic = "FrontLidarDriver",
         .output_topic = "PointsTransformerFront",
@@ -143,7 +145,8 @@ void create_and_start_reference_system(int argc, char * argv[])
 
   // fusion nodes
   constexpr auto FUSION_TIME = 589ms;
-  nodes.emplace_back(std::make_shared<node::Fusion>(
+  nodes.emplace_back(
+    std::make_shared<node::Fusion>(
       node::FusionSettings{.node_name = "PointCloudFusion",
         .input_0 = "PointsTransformerFront",
         .input_1 = "PointsTransformerRear",
@@ -183,13 +186,15 @@ void create_and_start_reference_system(int argc, char * argv[])
 
   // reactor node
   constexpr auto REACTOR_TIME = 0ms;
-  nodes.emplace_back(std::make_shared<node::Reactor>(node::ReactorSettings{
-      .node_name = "BehaviorPlanner",
-      .inputs = {"ObjectCollisionEstimator", "NDTLocalizer",
-                 "Lanelet2GlobalPlanner", "Lanelet2MapLoader", "ParkingPlanner",
-                 "LanePlanner"},
-      .output_topic = "BehaviorPlanner",
-      .number_crunch_time = REACTOR_TIME}));
+  nodes.emplace_back(
+    std::make_shared<node::Reactor>(
+      node::ReactorSettings{
+    .node_name = "BehaviorPlanner",
+    .inputs = {"ObjectCollisionEstimator", "NDTLocalizer",
+      "Lanelet2GlobalPlanner", "Lanelet2MapLoader", "ParkingPlanner",
+      "LanePlanner"},
+    .output_topic = "BehaviorPlanner",
+    .number_crunch_time = REACTOR_TIME}));
 
   // command node
   nodes.emplace_back(

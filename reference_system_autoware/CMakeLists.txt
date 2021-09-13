@@ -33,15 +33,27 @@ if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
-  # run target for 5 seconds
+  find_package(ros_testing REQUIRED)
+
+  # run target for 10 seconds
   function(test_reference_system_autoware_5s target)
-    ament_add_gtest(test_${rmw_implementation}_${target}
-      test/test_reference_system_autoware.cpp
-      TIMEOUT 5
-      APPEND_LIBRARY_DIRS ${CMAKE_CURRENT_BINARY_DIR}
-      ENV
-      RCL_ASSERT_RMW_ID_MATCHES=${rmw_implementation}
-      RMW_IMPLEMENTATION=${rmw_implementation})
+    set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
+    set(TEST_EXECUTABLE_NAME ${target}_${rmw_implementation})
+    set(TIMEOUT 10)
+    set(RMW_IMPLEMENTATION ${rmw_implementation})
+
+    # replaces all @var@ and ${var} within input file
+    configure_file(
+      test/test_${PROJECT_NAME}.py
+      test_${PROJECT_NAME}_${rmw_implementation}.py
+      @ONLY
+    )
+
+    add_ros_test(
+      ${CMAKE_CURRENT_BINARY_DIR}/test_${PROJECT_NAME}_${rmw_implementation}.py
+      TIMEOUT 10 # seconds
+    )
+
     if(TARGET ${target})
       ament_target_dependencies(${target}
         "rclcpp" "reference_interfaces")

@@ -55,9 +55,11 @@ public:
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
   }
 
- private:
-  void input_callback(const uint64_t input_number,
-                      const message_t::SharedPtr input_message) const {
+private:
+  void input_callback(
+    const uint64_t input_number,
+    const message_t::SharedPtr input_message) const
+  {
     (void)input_number;
     auto number_cruncher_result = number_cruncher(number_crunch_time_);
 

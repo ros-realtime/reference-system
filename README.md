@@ -23,7 +23,7 @@ With this approach [unit tests](#unit-testing) can also be defined to reliably c
 
 ## Supported Platforms
 
-To enable as many people as possible to replicate this reference system, the platform(s) were chosen to be easily accessible (inexpensive, high volume), has lots of documentation / community use and will be supported well into the future.
+To enable as many people as possible to replicate this reference system, the platform(s) were chosen to be easily accessible (inexpensive, high volume), have lots of documentation, large community use and will be supported well into the future.
 
 Platforms were not chosen for performance of the reference system - we know we could run “faster” with a more powerful CPU or GPU but then it would be harder for others to validate findings and test their own configurations.  Accessibility is the key here and will be considered if more platforms want to be added to this benchmark list.
 
@@ -35,9 +35,9 @@ Platforms were not chosen for performance of the reference system - we know we c
 
 ## Concept Overview
 
-Rather than trying to write code to cover all potential variations of executors, APIs, and future features we cannot even imagine today, we have chosen instead to define what we call a “reference system” based on part of a real-world system, [Autoware.Auto](https://www.autoware.org/autoware-auto).
+Rather than trying to write code to cover all potential variations of executors, APIs, and future features we cannot even imagine today we have chosen instead to define what we call a “reference system” based on part of a real-world system, [Autoware.Auto](https://www.autoware.org/autoware-auto).
 
-The above node graph can be boiled down to only a handful of node "types" that are repicated to make this complex system:
+The above node graph can be boiled down to only a handful of node "types" that are replicated to make this complex system:
 
 **Node Types:**
 
