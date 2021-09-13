@@ -11,10 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__TYPES_HPP_
-#define REFERENCE_SYSTEM__TYPES_HPP_
-#pragma once
+#ifndef REFERENCE_SYSTEM__MSG_TYPES_HPP_
+#define REFERENCE_SYSTEM__MSG_TYPES_HPP_
 
 #include "reference_interfaces/msg/message4kb.hpp"
 
 using message_t = reference_interfaces::msg::Message4kb;
+
+#endif  // REFERENCE_SYSTEM__MSG_TYPES_HPP_

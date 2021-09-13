@@ -14,22 +14,25 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-#include "reference_system/config.hpp"
+#include "reference_system/system/type/autoware/rclcpp_system.hpp"
 #include "reference_system/system_builder.hpp"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char * argv[])
+{
   rclcpp::init(argc, argv);
 
-  auto nodes = create_system_nodes<ReferenceSystem>();
+  auto nodes = create_system_nodes<AutowareRclcppSystem>();
 
+#if 0
   rclcpp::executors::SingleThreadedExecutor executor;
-  for (auto& node : nodes) {
+  for (auto & node : nodes) {
     executor.add_node(node);
   }
   executor.spin();
 
   nodes.clear();
   rclcpp::shutdown();
+#endif
 
   return 0;
 }

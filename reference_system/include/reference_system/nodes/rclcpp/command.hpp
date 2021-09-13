@@ -11,19 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__NODE__COMMAND_HPP_
-#define REFERENCE_SYSTEM__NODE__COMMAND_HPP_
-#pragma once
+#ifndef REFERENCE_SYSTEM__NODES__RCLCPP__COMMAND_HPP_
+#define REFERENCE_SYSTEM__NODES__RCLCPP__COMMAND_HPP_
 
 #include <chrono>
 #include <string>
 
 #include "rclcpp/rclcpp.hpp"
-#include "reference_system/node_settings.hpp"
+#include "reference_system/nodes/settings.hpp"
 #include "reference_system/sample_management.hpp"
-#include "reference_system/types.hpp"
+#include "reference_system/msg_types.hpp"
 
-namespace node
+namespace nodes
+{
+namespace rclcpp_system
 {
 
 class Command : public rclcpp::Node
@@ -43,14 +44,9 @@ private:
     print_sample_path(this->get_name(), input_message);
   }
 
-<<<<<<< HEAD
 private:
-  subscription_t subscription_;
-=======
- private:
   rclcpp::Subscription<message_t>::SharedPtr subscription_;
->>>>>>> Remove pub/sub port alias
 };
-}  // namespace node
-
-#endif  // REFERENCE_SYSTEM__NODE__COMMAND_HPP_
+}  // namespace rclcpp_system
+}  // namespace nodes
+#endif  // REFERENCE_SYSTEM__NODES__RCLCPP__COMMAND_HPP_

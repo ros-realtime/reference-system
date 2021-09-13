@@ -13,15 +13,16 @@
 // limitations under the License.
 #ifndef REFERENCE_SYSTEM__SAMPLE_MANAGEMENT_HPP_
 #define REFERENCE_SYSTEM__SAMPLE_MANAGEMENT_HPP_
-#include "reference_system/types.hpp"
-
 #include <algorithm>
 #include <chrono>
 #include <map>
 #include <string>
 
-template <typename SampleTypePointer>
-void set_sample(const std::string& node_name, SampleTypePointer& sample) {
+#include "reference_system/msg_types.hpp"
+
+template<typename SampleTypePointer>
+void set_sample(const std::string & node_name, SampleTypePointer & sample)
+{
   if (sample.size >= message_t::STATS_CAPACITY) {
     return;
   }
@@ -36,23 +37,27 @@ void set_sample(const std::string& node_name, SampleTypePointer& sample) {
       reference_interfaces::msg::TransmissionStats::NODE_NAME_LENGTH));
 
   sample.stats[idx].timestamp = static_cast<uint64_t>(
-      std::chrono::duration_cast<std::chrono::nanoseconds>(
-          std::chrono::system_clock::now().time_since_epoch())
-          .count());
+    std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::system_clock::now().time_since_epoch())
+    .count());
 }
 
-template <typename SampleTypePointer, typename SourceType>
-void fuse_samples(const std::string& node_name, SampleTypePointer& destination,
-                  const SourceType& source) {
+template<typename SampleTypePointer, typename SourceType>
+void fuse_samples(
+  const std::string & node_name, SampleTypePointer & destination,
+  const SourceType & source)
+{
   destination.size = source->size;
   destination.stats = source->stats;
 
   set_sample(node_name, destination);
 }
 
-template <typename SampleTypePointer, typename SourceType>
-void fuse_samples(const std::string& node_name, SampleTypePointer& destination,
-                  const SourceType& source1, const SourceType& source2) {
+template<typename SampleTypePointer, typename SourceType>
+void fuse_samples(
+  const std::string & node_name, SampleTypePointer & destination,
+  const SourceType & source1, const SourceType & source2)
+{
   uint64_t elements_to_copy =
     std::min(message_t::STATS_CAPACITY, source1->size + source2->size);
 
@@ -67,13 +72,15 @@ void fuse_samples(const std::string& node_name, SampleTypePointer& destination,
   set_sample(node_name, destination);
 }
 
-template <typename SampleTypePointer>
-void print_sample_path(const std::string& node_name,
-                       const SampleTypePointer& sample) {
+template<typename SampleTypePointer>
+void print_sample_path(
+  const std::string & node_name,
+  const SampleTypePointer & sample)
+{
   const uint64_t timestamp_in_ns = static_cast<uint64_t>(
-      std::chrono::duration_cast<std::chrono::nanoseconds>(
-          std::chrono::system_clock::now().time_since_epoch())
-          .count());
+    std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::system_clock::now().time_since_epoch())
+    .count());
 
   std::cout << "----------------------------------------------------------" <<
     std::endl;

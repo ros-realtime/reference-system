@@ -11,19 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#pragma once
+#ifndef REFERENCE_SYSTEM__NODES__SETTINGS_HPP_
+#define REFERENCE_SYSTEM__NODES__SETTINGS_HPP_
 
 #include <chrono>
 #include <string>
 #include <vector>
 
-struct CommandSettings {
+namespace nodes
+{
+
+struct CommandSettings
+{
   std::string node_name;
   std::string input_topic;
 };
 
-struct FusionSettings {
+struct FusionSettings
+{
   std::string node_name;
   std::string input_0;
   std::string input_1;
@@ -31,23 +36,27 @@ struct FusionSettings {
   std::chrono::nanoseconds number_crunch_time;
 };
 
-struct ProcessingSettings {
+struct ProcessingSettings
+{
   std::string node_name;
   std::string input_topic;
   std::string output_topic;
   std::chrono::nanoseconds number_crunch_time;
 };
 
-struct ReactorSettings {
+struct ReactorSettings
+{
   std::string node_name;
   std::vector<std::string> inputs;
   std::string output_topic;
   std::chrono::nanoseconds number_crunch_time;
 };
 
-struct SensorSettings {
+struct SensorSettings
+{
   std::string node_name;
   std::string topic_name;
   std::chrono::nanoseconds cycle_time;
 };
-
+}  // namespace nodes
+#endif  // REFERENCE_SYSTEM__NODES__SETTINGS_HPP_

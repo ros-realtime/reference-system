@@ -11,28 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+#ifndef REFERENCE_SYSTEM__SYSTEM__SYSTEMS_HPP_
+#define REFERENCE_SYSTEM__SYSTEM__SYSTEMS_HPP_
 
-#include "rclcpp/rclcpp.hpp"
-
+// Add available systems here
 #include "reference_system/system/type/autoware/rclcpp_system.hpp"
-#include "reference_system/system_builder.hpp"
 
-int main(int argc, char * argv[])
-{
-  rclcpp::init(argc, argv);
+// Add available timing configurations here
+#include "reference_system/system/timing/default.hpp"
 
-  auto nodes = create_system_nodes<AutowareRclcppSystem>();
-
-#if 0
-  rclcpp::executors::StaticSingleThreadedExecutor executor;
-  for (auto & node : nodes) {
-    executor.add_node(node);
-  }
-  executor.spin();
-
-  nodes.clear();
-  rclcpp::shutdown();
-#endif
-
-  return 0;
-}
+#endif  // REFERENCE_SYSTEM__SYSTEM__SYSTEMS_HPP_

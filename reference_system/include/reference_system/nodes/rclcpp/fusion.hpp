@@ -11,22 +11,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__NODE__FUSION_HPP_
-#define REFERENCE_SYSTEM__NODE__FUSION_HPP_
-#pragma once
-
-#include <algorithm>
+#ifndef REFERENCE_SYSTEM__NODES__RCLCPP__FUSION_HPP_
+#define REFERENCE_SYSTEM__NODES__RCLCPP__FUSION_HPP_
 #include <chrono>
 #include <string>
 #include <utility>
 
 #include "rclcpp/rclcpp.hpp"
-#include "reference_system/node_settings.hpp"
+#include "reference_system/nodes/settings.hpp"
 #include "reference_system/number_cruncher.hpp"
 #include "reference_system/sample_management.hpp"
-#include "reference_system/types.hpp"
+#include "reference_system/msg_types.hpp"
 
-namespace node
+namespace nodes
+{
+namespace rclcpp_system
 {
 
 class Fusion : public rclcpp::Node
@@ -79,5 +78,6 @@ private:
 
   std::chrono::nanoseconds number_crunch_time_;
 };
-}  // namespace node
-#endif  // REFERENCE_SYSTEM__NODE__FUSION_HPP_
+}  // namespace rclcpp_system
+}  // namespace nodes
+#endif  // REFERENCE_SYSTEM__NODES__RCLCPP__FUSION_HPP_

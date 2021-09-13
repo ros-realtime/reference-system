@@ -11,20 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__NODE__SENSOR_HPP_
-#define REFERENCE_SYSTEM__NODE__SENSOR_HPP_
-#pragma once
-
+#ifndef REFERENCE_SYSTEM__NODES__RCLCPP__SENSOR_HPP_
+#define REFERENCE_SYSTEM__NODES__RCLCPP__SENSOR_HPP_
 #include <chrono>
 #include <string>
 #include <utility>
 
 #include "rclcpp/rclcpp.hpp"
-#include "reference_system/node_settings.hpp"
+#include "reference_system/nodes/settings.hpp"
 #include "reference_system/sample_management.hpp"
-#include "reference_system/types.hpp"
+#include "reference_system/msg_types.hpp"
 
-namespace node
+namespace nodes
+{
+namespace rclcpp_system
 {
 
 class Sensor : public rclcpp::Node
@@ -50,10 +50,10 @@ private:
     publisher_->publish(std::move(message));
   }
 
- private:
+private:
   rclcpp::Publisher<message_t>::SharedPtr publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 };
-}  // namespace node
-
-#endif  // REFERENCE_SYSTEM__NODE__SENSOR_HPP_
+}  // namespace rclcpp_system
+}  // namespace nodes
+#endif  // REFERENCE_SYSTEM__NODES__RCLCPP__SENSOR_HPP_

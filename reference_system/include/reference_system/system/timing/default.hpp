@@ -11,33 +11,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#pragma once
-
+#ifndef REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
+#define REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
 #include <chrono>
 
-struct SystemConfiguration {
+namespace nodes
+{
+namespace timing
+{
+
+struct Default
+{
   static constexpr std::chrono::nanoseconds SENSOR_CYCLE_TIME =
-      std::chrono::milliseconds(200);
+    std::chrono::milliseconds(200);
   static constexpr std::chrono::nanoseconds PROCESSING_NODE_CRUNCH_TIME =
-      std::chrono::milliseconds(719);
+    std::chrono::milliseconds(719);
   static constexpr std::chrono::nanoseconds FUSION_NODE_CRUNCH_TIME =
-      std::chrono::milliseconds(589);
+    std::chrono::milliseconds(589);
   static constexpr std::chrono::nanoseconds REACTOR_NODE_CRUNCH_TIME =
-      std::chrono::milliseconds(0);
+    std::chrono::milliseconds(0);
 };
-
-#include "reference_system/reference_nodes/command.hpp"
-#include "reference_system/reference_nodes/fusion.hpp"
-#include "reference_system/reference_nodes/processing.hpp"
-#include "reference_system/reference_nodes/reactor.hpp"
-#include "reference_system/reference_nodes/sensor.hpp"
-
-struct ReferenceSystem {
-  using NodeBaseType = rclcpp::Node;
-  using Sensor = reference_nodes::Sensor;
-  using Command = reference_nodes::Command;
-  using Fusion = reference_nodes::Fusion;
-  using Reactor = reference_nodes::Reactor;
-  using Processing = reference_nodes::Processing;
-};  // namespace node
+}  // namespace timing
+}  // namespace nodes
+#endif  // REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
