@@ -23,7 +23,7 @@
 using namespace std::chrono_literals;  // NOLINT
 
 template<typename SystemType>
-auto create_system_nodes()
+auto create_autoware_nodes()
 ->std::vector<std::shared_ptr<typename SystemType::NodeBaseType>>
 {
   std::vector<std::shared_ptr<typename SystemType::NodeBaseType>> nodes;

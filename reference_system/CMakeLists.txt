@@ -29,6 +29,11 @@ ament_auto_add_executable(autoware_default_multithreaded
   src/ros2/executor/autoware_default_multithreaded.cpp
 )
 
+# Add new executors to test here
+#ament_auto_add_executable(autoware_default_custom
+#  src/ros2/executor/autoware_default_custom.cpp
+#)
+
 if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
@@ -45,12 +50,12 @@ if(${BUILD_TESTING})
     # replaces all @var@ and ${var} within input file
     configure_file(
       test/test_${PROJECT_NAME}.py
-      test_${PROJECT_NAME}_${rmw_implementation}.py
+      test_${target}_${rmw_implementation}.py
       @ONLY
     )
 
     add_ros_test(
-      ${CMAKE_CURRENT_BINARY_DIR}/test_${PROJECT_NAME}_${rmw_implementation}.py
+      ${CMAKE_CURRENT_BINARY_DIR}/test_${target}_${rmw_implementation}.py
       TIMEOUT 10 # seconds
     )
 
@@ -69,7 +74,12 @@ if(${BUILD_TESTING})
     find_package("${rmw_implementation}" REQUIRED)
 
     # add each exe to test
+    test_reference_system_autoware_5s(autoware_default_singlethreaded)
+    test_reference_system_autoware_5s(autoware_default_staticsinglethreaded)
     test_reference_system_autoware_5s(autoware_default_multithreaded)
+    # Add new exe's here to test
+    #test_reference_system_autoware_5s(autoware_default_custom)
+
   endforeach()
 endif()
 

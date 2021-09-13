@@ -101,12 +101,16 @@ Alternatively if for some reason you do not or cannot use `colcon` the tests are
 If you see a missing configuration on the list above that you would like to see benchmarked against please follow the steps below to request it to be added.
 
 - look over the open / closed [issues](https://github.com/ros-realtime/reference-system-autoware/issues/) to make sure there isn't already an open ticket for the configuration you are looking for
-
+create `include/reference_system/MY_EXECUTOR_NAME_nodes`
 ## Howto Implement Your Custom Executor 
 
-1. Adjust `include/reference_system/config.hpp`
-2. create `include/reference_system/MY_EXECUTOR_NAME_nodes`
-3. Add new binary to `src/ros2/executor` 
-4. Add binary to CMakeLists.txt
+1. Read over [the above documentation](#concept-overview) on the base node types
+2. Review the base [`rclcpp nodes`](include/reference_system/nodes/rclcpp) that are provided and determine if your executor can use them
+3. If you cannot, implment your own version of each base node type and place the source in [`include/reference_system/nodes`](include/reference_system/nodes)
+4. Add your new nodes as a seperate `node system` in [`include/reference_system/system/systems.hpp`](include/reference_system/system/systems.hpp)
+5. Copy one of the provided example `.cpp` files from the [`src/ros2/executor`](src/ros2/executor) directory and replace the `create_autoware_nodes` template type with your new `node system` which should be in the `system/systems.hpp` file already included
+6. Add new `.cpp` source file as a new executable in the `CMakelist.txt`
+7. Add new executable to test wtihin the `CMakelist.txt`
+8. Build and run tests!
 
 

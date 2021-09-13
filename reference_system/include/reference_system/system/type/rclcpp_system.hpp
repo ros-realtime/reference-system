@@ -11,15 +11,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__SYSTEM__TYPE__AUTOWARE__RCLCPP_SYSTEM_HPP_
-#define REFERENCE_SYSTEM__SYSTEM__TYPE__AUTOWARE__RCLCPP_SYSTEM_HPP_
+#ifndef REFERENCE_SYSTEM__SYSTEM__TYPE__RCLCPP_SYSTEM_HPP_
+#define REFERENCE_SYSTEM__SYSTEM__TYPE__RCLCPP_SYSTEM_HPP_
 #include "reference_system/nodes/rclcpp/command.hpp"
 #include "reference_system/nodes/rclcpp/fusion.hpp"
 #include "reference_system/nodes/rclcpp/processing.hpp"
 #include "reference_system/nodes/rclcpp/reactor.hpp"
 #include "reference_system/nodes/rclcpp/sensor.hpp"
 
-struct AutowareRclcppSystem
+struct RclcppSystem
 {
   using NodeBaseType = rclcpp::Node;
   using Sensor = nodes::rclcpp_system::Sensor;
@@ -29,4 +29,4 @@ struct AutowareRclcppSystem
   using Processing = nodes::rclcpp_system::Processing;
 };
 
-#endif  // REFERENCE_SYSTEM__SYSTEM__TYPE__AUTOWARE__RCLCPP_SYSTEM_HPP_
+#endif  // REFERENCE_SYSTEM__SYSTEM__TYPE__RCLCPP_SYSTEM_HPP_
