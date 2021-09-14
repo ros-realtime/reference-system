@@ -23,7 +23,6 @@ int main(int argc, char * argv[])
 
   auto nodes = create_autoware_nodes<RclcppSystem>();
 
-#if 0
   rclcpp::executors::SingleThreadedExecutor executor;
   for (auto & node : nodes) {
     executor.add_node(node);
@@ -32,7 +31,6 @@ int main(int argc, char * argv[])
 
   nodes.clear();
   rclcpp::shutdown();
-#endif
 
   return 0;
 }
