@@ -16,12 +16,19 @@
 
 #include "reference_system/system/systems.hpp"
 #include "reference_system/system_builder.hpp"
+#include "reference_system/system/timing/default.hpp"
+#include "reference_system/system/timing/benchmark.hpp"
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  auto nodes = create_autoware_nodes<RclcppSystem>();
+  using TimeConfig = nodes::timing::Default;
+  // uncomment for benchmarking
+  //using TimeConfig = nodes::timing::BenchmarkCPUUsage;
+  //set_benchmark_mode(true);
+
+  auto nodes = create_autoware_nodes<RclcppSystem, TimeConfig>();
 
   rclcpp::executors::SingleThreadedExecutor executor;
   for (auto & node : nodes) {

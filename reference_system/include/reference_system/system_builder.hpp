@@ -22,7 +22,7 @@
 
 using namespace std::chrono_literals;  // NOLINT
 
-template<typename SystemType>
+template<typename SystemType, typename TimingConfig>
 auto create_autoware_nodes()
 ->std::vector<std::shared_ptr<typename SystemType::NodeBaseType>>
 {
@@ -39,31 +39,31 @@ auto create_autoware_nodes()
     std::make_shared<typename SystemType::Sensor>(
       nodes::SensorSettings{.node_name = "FrontLidarDriver",
         .topic_name = "FrontLidarDriver",
-        .cycle_time = nodes::timing::Default::SENSOR_CYCLE_TIME}));
+        .cycle_time = TimingConfig::SENSOR_CYCLE_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Sensor>(
       nodes::SensorSettings{.node_name = "RearLidarDriver",
         .topic_name = "RearLidarDriver",
-        .cycle_time = nodes::timing::Default::SENSOR_CYCLE_TIME}));
+        .cycle_time = TimingConfig::SENSOR_CYCLE_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Sensor>(
       nodes::SensorSettings{.node_name = "PointCloudMap",
         .topic_name = "PointCloudMap",
-        .cycle_time = nodes::timing::Default::SENSOR_CYCLE_TIME}));
+        .cycle_time = TimingConfig::SENSOR_CYCLE_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Sensor>(
       nodes::SensorSettings{.node_name = "rviz2",
         .topic_name = "rviz2",
-        .cycle_time = nodes::timing::Default::SENSOR_CYCLE_TIME}));
+        .cycle_time = TimingConfig::SENSOR_CYCLE_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Sensor>(
       nodes::SensorSettings{.node_name = "Lanelet2Map",
         .topic_name = "Lanelet2Map",
-        .cycle_time = nodes::timing::Default::SENSOR_CYCLE_TIME}));
+        .cycle_time = TimingConfig::SENSOR_CYCLE_TIME}));
 
   // processing nodes
   nodes.emplace_back(
@@ -73,7 +73,7 @@ auto create_autoware_nodes()
     .input_topic = "FrontLidarDriver",
     .output_topic = "PointsTransformerFront",
     .number_crunch_time =
-    nodes::timing::Default::PROCESSING_NODE_CRUNCH_TIME}));
+    TimingConfig::PROCESSING_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Processing>(
@@ -82,7 +82,7 @@ auto create_autoware_nodes()
     .input_topic = "RearLidarDriver",
     .output_topic = "PointsTransformerRear",
     .number_crunch_time =
-    nodes::timing::Default::PROCESSING_NODE_CRUNCH_TIME}));
+    TimingConfig::PROCESSING_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Processing>(
@@ -91,7 +91,7 @@ auto create_autoware_nodes()
     .input_topic = "PointCloudFusion",
     .output_topic = "VoxelGridDownsampler",
     .number_crunch_time =
-    nodes::timing::Default::PROCESSING_NODE_CRUNCH_TIME}));
+    TimingConfig::PROCESSING_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Processing>(
@@ -100,7 +100,7 @@ auto create_autoware_nodes()
     .input_topic = "PointCloudMap",
     .output_topic = "PointCloudMapLoader",
     .number_crunch_time =
-    nodes::timing::Default::PROCESSING_NODE_CRUNCH_TIME}));
+    TimingConfig::PROCESSING_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Processing>(
@@ -109,7 +109,7 @@ auto create_autoware_nodes()
     .input_topic = "PointCloudFusion",
     .output_topic = "RayGroundFilter",
     .number_crunch_time =
-    nodes::timing::Default::PROCESSING_NODE_CRUNCH_TIME}));
+    TimingConfig::PROCESSING_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Processing>(
@@ -118,7 +118,7 @@ auto create_autoware_nodes()
     .input_topic = "RayGroundFilter",
     .output_topic = "EuclideanClusterDetector",
     .number_crunch_time =
-    nodes::timing::Default::PROCESSING_NODE_CRUNCH_TIME}));
+    TimingConfig::PROCESSING_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Processing>(
@@ -127,7 +127,7 @@ auto create_autoware_nodes()
     .input_topic = "EuclideanClusterDetector",
     .output_topic = "ObjectCollisionEstimator",
     .number_crunch_time =
-    nodes::timing::Default::PROCESSING_NODE_CRUNCH_TIME}));
+    TimingConfig::PROCESSING_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Processing>(
@@ -136,7 +136,7 @@ auto create_autoware_nodes()
     .input_topic = "BehaviorPlanner",
     .output_topic = "MPCController",
     .number_crunch_time =
-    nodes::timing::Default::PROCESSING_NODE_CRUNCH_TIME}));
+    TimingConfig::PROCESSING_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Processing>(
@@ -145,7 +145,7 @@ auto create_autoware_nodes()
     .input_topic = "Lanelet2MapLoader",
     .output_topic = "ParkingPlanner",
     .number_crunch_time =
-    nodes::timing::Default::PROCESSING_NODE_CRUNCH_TIME}));
+    TimingConfig::PROCESSING_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Processing>(
@@ -154,7 +154,7 @@ auto create_autoware_nodes()
     .input_topic = "Lanelet2MapLoader",
     .output_topic = "LanePlanner",
     .number_crunch_time =
-    nodes::timing::Default::PROCESSING_NODE_CRUNCH_TIME}));
+    TimingConfig::PROCESSING_NODE_CRUNCH_TIME}));
 
   // fusion nodes
   nodes.emplace_back(
@@ -164,7 +164,7 @@ auto create_autoware_nodes()
     .input_0 = "PointsTransformerFront",
     .input_1 = "PointsTransformerRear",
     .output_topic = "PointCloudFusion",
-    .number_crunch_time = nodes::timing::Default::FUSION_NODE_CRUNCH_TIME}));
+    .number_crunch_time = TimingConfig::FUSION_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Fusion>(
@@ -173,7 +173,7 @@ auto create_autoware_nodes()
     .input_0 = "VoxelGridDownsampler",
     .input_1 = "PointCloudMapLoader",
     .output_topic = "NDTLocalizer",
-    .number_crunch_time = nodes::timing::Default::FUSION_NODE_CRUNCH_TIME}));
+    .number_crunch_time = TimingConfig::FUSION_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Fusion>(
@@ -182,7 +182,7 @@ auto create_autoware_nodes()
     .input_0 = "VoxelGridDownsampler",
     .input_1 = "PointCloudMapLoader",
     .output_topic = "NDTLocalizer",
-    .number_crunch_time = nodes::timing::Default::FUSION_NODE_CRUNCH_TIME}));
+    .number_crunch_time = TimingConfig::FUSION_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Fusion>(
@@ -191,7 +191,7 @@ auto create_autoware_nodes()
     .input_0 = "MPCController",
     .input_1 = "BehaviorPlanner",
     .output_topic = "VehicleInterface",
-    .number_crunch_time = nodes::timing::Default::FUSION_NODE_CRUNCH_TIME}));
+    .number_crunch_time = TimingConfig::FUSION_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Fusion>(
@@ -200,7 +200,7 @@ auto create_autoware_nodes()
     .input_0 = "rviz2",
     .input_1 = "NDTLocalizer",
     .output_topic = "Lanelet2GlobalPlanner",
-    .number_crunch_time = nodes::timing::Default::FUSION_NODE_CRUNCH_TIME}));
+    .number_crunch_time = TimingConfig::FUSION_NODE_CRUNCH_TIME}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Fusion>(
@@ -209,7 +209,7 @@ auto create_autoware_nodes()
     .input_0 = "Lanelet2Map",
     .input_1 = "Lanelet2GlobalPlanner",
     .output_topic = "Lanelet2MapLoader",
-    .number_crunch_time = nodes::timing::Default::FUSION_NODE_CRUNCH_TIME}));
+    .number_crunch_time = TimingConfig::FUSION_NODE_CRUNCH_TIME}));
 
   // reactor node
   nodes.emplace_back(
@@ -220,7 +220,7 @@ auto create_autoware_nodes()
           "ParkingPlanner", "LanePlanner"},
         .output_topic = "BehaviorPlanner",
         .number_crunch_time =
-        nodes::timing::Default::REACTOR_NODE_CRUNCH_TIME}));
+        TimingConfig::REACTOR_NODE_CRUNCH_TIME}));
 
   // command node
   nodes.emplace_back(
