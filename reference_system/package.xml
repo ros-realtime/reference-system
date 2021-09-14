@@ -11,23 +11,15 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
-  <buildtool_depend>apex_cmake</buildtool_depend>
 
-  <build_depend>interrupt</build_depend>
-  <build_depend>logging</build_depend>
-  <build_depend>apex_malloc</build_depend>
 
-  <depend>apexcpp</depend>
-  <depend>apex_init</depend>
   <depend>rclcpp</depend>
   <depend>reference_interfaces</depend>
-  <depend>executor</depend>
-  <depend>threading</depend>
-  <depend>cpputils</depend>
   <depend>rcl_interfaces</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
+  <test_depend>ros_testing</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
