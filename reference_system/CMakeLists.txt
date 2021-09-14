@@ -40,11 +40,11 @@ if(${BUILD_TESTING})
 
   find_package(ros_testing REQUIRED)
 
-  # run target for 10 seconds
-  function(test_reference_system_autoware_5s target)
+  # run target for n seconds
+  function(test_reference_system_autoware target timeout)
     set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
     set(TEST_EXECUTABLE_NAME ${target}_${rmw_implementation})
-    set(TIMEOUT 10)
+    set(TIMEOUT ${timeout})
     set(RMW_IMPLEMENTATION ${rmw_implementation})
 
     # replaces all @var@ and ${var} within input file
@@ -74,11 +74,11 @@ if(${BUILD_TESTING})
     find_package("${rmw_implementation}" REQUIRED)
 
     # add each exe to test
-    test_reference_system_autoware_5s(autoware_default_singlethreaded)
-    test_reference_system_autoware_5s(autoware_default_staticsinglethreaded)
-    test_reference_system_autoware_5s(autoware_default_multithreaded)
+    test_reference_system_autoware(autoware_default_singlethreaded 10)
+    test_reference_system_autoware(autoware_default_staticsinglethreaded 10)
+    test_reference_system_autoware(autoware_default_multithreaded 10)
     # Add new exe's here to test
-    #test_reference_system_autoware_5s(autoware_default_custom)
+    #test_reference_system_autoware(autoware_default_custom)
 
   endforeach()
 endif()

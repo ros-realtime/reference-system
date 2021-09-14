@@ -15,7 +15,7 @@
 #include "rclcpp/rclcpp.hpp"
 
 #include "reference_system/system/systems.hpp"
-#include "reference_system/system_builder.hpp"
+#include "reference_system/autoware_system_builder.hpp"
 #include "reference_system/system/timing/default.hpp"
 #include "reference_system/system/timing/benchmark.hpp"
 

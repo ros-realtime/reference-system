@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__SYSTEM_BUILDER_HPP_
-#define REFERENCE_SYSTEM__SYSTEM_BUILDER_HPP_
+#ifndef REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_
+#define REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_
 #include <chrono>
 #include <memory>
 #include <vector>
@@ -178,15 +178,6 @@ auto create_autoware_nodes()
   nodes.emplace_back(
     std::make_shared<typename SystemType::Fusion>(
       nodes::FusionSettings{
-    .node_name = "NDTLocalizer",
-    .input_0 = "VoxelGridDownsampler",
-    .input_1 = "PointCloudMapLoader",
-    .output_topic = "NDTLocalizer",
-    .number_crunch_time = TimingConfig::FUSION_NODE_CRUNCH_TIME}));
-
-  nodes.emplace_back(
-    std::make_shared<typename SystemType::Fusion>(
-      nodes::FusionSettings{
     .node_name = "VehicleInterface",
     .input_0 = "MPCController",
     .input_1 = "BehaviorPlanner",
@@ -232,4 +223,4 @@ auto create_autoware_nodes()
   return nodes;
 }
 
-#endif  // REFERENCE_SYSTEM__SYSTEM_BUILDER_HPP_
+#endif  // REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_

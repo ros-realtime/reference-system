@@ -23,13 +23,13 @@ namespace timing
 struct Default
 {
   static constexpr std::chrono::nanoseconds SENSOR_CYCLE_TIME =
-    std::chrono::milliseconds(200);
+    std::chrono::milliseconds(100);
   static constexpr std::chrono::nanoseconds PROCESSING_NODE_CRUNCH_TIME =
-    std::chrono::milliseconds(719);
+    std::chrono::milliseconds(50);
   static constexpr std::chrono::nanoseconds FUSION_NODE_CRUNCH_TIME =
-    std::chrono::milliseconds(589);
+    std::chrono::milliseconds(25);
   static constexpr std::chrono::nanoseconds REACTOR_NODE_CRUNCH_TIME =
-    std::chrono::milliseconds(0);
+    std::chrono::milliseconds(1);
 };
 
 constexpr std::chrono::nanoseconds Default::SENSOR_CYCLE_TIME;
