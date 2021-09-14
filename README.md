@@ -86,7 +86,7 @@ To add your own executor / middleware / configuration to the list above follow t
 
 ## Benchmark Results
 
-Results are kept in the [results directory](results) and can be updated via a PR by anyone who has a supported platform listed above after following the steps below to generate them.
+Results will be added to different tagged releases along with the specific configurations ran during the tests.
 
 ## Unit Testing
 
