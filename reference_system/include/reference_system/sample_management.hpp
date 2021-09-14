@@ -20,20 +20,22 @@
 
 #include "reference_system/msg_types.hpp"
 
-bool set_benchmark_mode(const bool has_benchmark_mode, const bool set_value = true) {
+bool set_benchmark_mode(const bool has_benchmark_mode, const bool set_value = true)
+{
   static bool value{false};
-  if ( set_value ) value = has_benchmark_mode;
+  if (set_value) {value = has_benchmark_mode;}
   return value;
 }
 
-bool is_in_benchmark_mode() {
+bool is_in_benchmark_mode()
+{
   return set_benchmark_mode(false, false);
 }
 
 template<typename SampleTypePointer>
 void set_sample(const std::string & node_name, SampleTypePointer & sample)
 {
-  if ( is_in_benchmark_mode() ) return;
+  if (is_in_benchmark_mode() ) {return;}
 
   if (sample.size >= message_t::STATS_CAPACITY) {
     return;
@@ -59,7 +61,7 @@ void fuse_samples(
   const std::string & node_name, SampleTypePointer & destination,
   const SourceType & source)
 {
-  if ( is_in_benchmark_mode() ) return;
+  if (is_in_benchmark_mode() ) {return;}
 
   destination.size = source->size;
   destination.stats = source->stats;
@@ -72,7 +74,7 @@ void fuse_samples(
   const std::string & node_name, SampleTypePointer & destination,
   const SourceType & source1, const SourceType & source2)
 {
-  if ( is_in_benchmark_mode() ) return;
+  if (is_in_benchmark_mode() ) {return;}
 
   uint64_t elements_to_copy =
     std::min(message_t::STATS_CAPACITY, source1->size + source2->size);
@@ -93,7 +95,7 @@ void print_sample_path(
   const std::string & node_name,
   const SampleTypePointer & sample)
 {
-  if ( is_in_benchmark_mode() ) return;
+  if (is_in_benchmark_mode() ) {return;}
 
   const uint64_t timestamp_in_ns = static_cast<uint64_t>(
     std::chrono::duration_cast<std::chrono::nanoseconds>(
