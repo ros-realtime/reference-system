@@ -31,6 +31,11 @@ struct Default
   static constexpr std::chrono::nanoseconds REACTOR_NODE_CRUNCH_TIME =
     std::chrono::milliseconds(0);
 };
+
+constexpr std::chrono::nanoseconds Default::SENSOR_CYCLE_TIME;
+constexpr std::chrono::nanoseconds Default::PROCESSING_NODE_CRUNCH_TIME;
+constexpr std::chrono::nanoseconds Default::FUSION_NODE_CRUNCH_TIME;
+constexpr std::chrono::nanoseconds Default::REACTOR_NODE_CRUNCH_TIME;
 }  // namespace timing
 }  // namespace nodes
 #endif  // REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
