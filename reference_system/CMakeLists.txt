@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
-project(reference_system)
+project(reference_system
+  VERSION 0.0.1
+)
 
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
@@ -12,77 +14,28 @@ endif()
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
-# future reference system executables can be added here
+# Add header-only library
+add_library(${PROJECT_NAME} INTERFACE)
 
-# Single Threaded Executor
-ament_auto_add_executable(autoware_default_singlethreaded
-  src/ros2/executor/autoware_default_singlethreaded.cpp
+target_include_directories(${PROJECT_NAME} INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
 )
-
-# Static Single Threaded Executor
-ament_auto_add_executable(autoware_default_staticsinglethreaded
-  src/ros2/executor/autoware_default_staticsinglethreaded.cpp
-)
-
-# Multi Threaded Executor
-ament_auto_add_executable(autoware_default_multithreaded
-  src/ros2/executor/autoware_default_multithreaded.cpp
-)
-
-# Add new executors to test here
-#ament_auto_add_executable(autoware_default_custom
-#  src/ros2/executor/autoware_default_custom.cpp
-#)
 
 if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
-
-  find_package(ros_testing REQUIRED)
-
-  # run target for n seconds
-  function(test_reference_system_autoware target timeout)
-    set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
-    set(TEST_EXECUTABLE_NAME ${target}_${rmw_implementation})
-    set(TIMEOUT ${timeout})
-    set(RMW_IMPLEMENTATION ${rmw_implementation})
-
-    # replaces all @var@ and ${var} within input file
-    configure_file(
-      test/test_${PROJECT_NAME}.py
-      test_${target}_${rmw_implementation}.py
-      @ONLY
-    )
-
-    add_ros_test(
-      ${CMAKE_CURRENT_BINARY_DIR}/test_${target}_${rmw_implementation}.py
-      TIMEOUT 10 # seconds
-    )
-
-    if(TARGET ${target})
-      ament_target_dependencies(${target}
-        "rclcpp" "reference_interfaces")
-    endif()
-  endfunction()
-
-  # get available rmw implementations
-  find_package(rmw_implementation_cmake REQUIRED)
-  get_available_rmw_implementations(rmws_available)
-
-  # loop over each rmw implmentation
-  foreach(rmw_implementation ${rmws_available})
-    find_package("${rmw_implementation}" REQUIRED)
-
-    # add each exe to test
-    test_reference_system_autoware(autoware_default_singlethreaded 10)
-    test_reference_system_autoware(autoware_default_staticsinglethreaded 10)
-    test_reference_system_autoware(autoware_default_multithreaded 10)
-    # Add new exe's here to test
-    #test_reference_system_autoware(autoware_default_custom)
-
-  endforeach()
 endif()
 
-ament_auto_package(
-  INSTALL_TO_SHARE test
+# Install
+install(TARGETS ${PROJECT_NAME}
+        EXPORT "export_${PROJECT_NAME}"
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        INCLUDES DESTINATION include
 )
+
+ament_export_targets("export_${PROJECT_NAME}")
+ament_auto_package()
+

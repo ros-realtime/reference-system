@@ -14,23 +14,24 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-#include "reference_system/autoware_system_builder.hpp"
 #include "reference_system/system/systems.hpp"
-#include "reference_system/system/timing/benchmark.hpp"
-#include "reference_system/system/timing/default.hpp"
+
+#include "autoware_reference_system/autoware_system_builder.hpp"
+#include "autoware_reference_system/system/timing/benchmark.hpp"
+#include "autoware_reference_system/system/timing/default.hpp"
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  using TimeConfig = nodes::timing::Default;
+  // using TimeConfig = nodes::timing::Default;
   // uncomment for benchmarking
-  // using TimeConfig = nodes::timing::BenchmarkCPUUsage;
+  using TimeConfig = nodes::timing::BenchmarkCPUUsage;
   // set_benchmark_mode(true);
 
   auto nodes = create_autoware_nodes<RclcppSystem, TimeConfig>();
 
-  rclcpp::executors::StaticSingleThreadedExecutor executor;
+  rclcpp::executors::MultiThreadedExecutor executor;
   for (auto & node : nodes) {
     executor.add_node(node);
   }

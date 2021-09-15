@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_
-#define REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_
+#ifndef AUTOWARE_REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_
+#define AUTOWARE_REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_
 #include <chrono>
 #include <memory>
 #include <vector>
@@ -213,4 +213,4 @@ auto create_autoware_nodes()
   return nodes;
 }
 
-#endif  // REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_
+#endif  // AUTOWARE_REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_

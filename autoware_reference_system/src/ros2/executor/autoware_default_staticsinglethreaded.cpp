@@ -15,9 +15,10 @@
 #include "rclcpp/rclcpp.hpp"
 
 #include "reference_system/system/systems.hpp"
-#include "reference_system/autoware_system_builder.hpp"
-#include "reference_system/system/timing/default.hpp"
-#include "reference_system/system/timing/benchmark.hpp"
+
+#include "autoware_reference_system/autoware_system_builder.hpp"
+#include "autoware_reference_system/system/timing/benchmark.hpp"
+#include "autoware_reference_system/system/timing/default.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -30,7 +31,7 @@ int main(int argc, char * argv[])
 
   auto nodes = create_autoware_nodes<RclcppSystem, TimeConfig>();
 
-  rclcpp::executors::SingleThreadedExecutor executor;
+  rclcpp::executors::StaticSingleThreadedExecutor executor;
   for (auto & node : nodes) {
     executor.add_node(node);
   }

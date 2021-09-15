@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>reference_system</name>
+  <name>autoware_reference_system</name>
   <version>0.0.0</version>
-  <description>Reference system for the ROScon workshop</description>
+  <description>Autoware Reference System for the ROScon workshop</description>
   <maintainer email="evan.flynn@apex.ai">Evan Flynn</maintainer>
   <license>Apache License 2.0</license>
 
@@ -11,6 +11,8 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
+
+  <depend>reference_system</depend>
 
   <depend>rclcpp</depend>
   <depend>reference_interfaces</depend>
