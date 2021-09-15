@@ -31,14 +31,20 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   ADD_LINTER_TESTS
 )
 
+ament_auto_package()
+
 # fix rosidl_generator_py bug #143
 # https://github.com/ros2/rosidl_python/issues/143
+set(GENERATED_FILE "${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_py/reference_interfaces/msg/_transmission_stats.py")
+
+message(STATUS "checking generated file: ${GENERATED_FILE}")
+if(EXISTS ${GENERATED_FILE})
 add_custom_command(
   TARGET ${PROJECT_NAME}
-  POST_BUILD
-  COMMAND sed -i "s/all\\(val \\>\\= 0 and val\\) \\< 256/all\\(ord\\(val\\) \\>\\= 0 and ord\\(val\\) \\< 256/" ${CMAKE_BINARY_DIR}/rosidl_generator_py/reference_interfaces/msg/_transmission_stats.py
-  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-  COMMENT "Check generated message files for extra parenthesis..."
-)
-
-ament_auto_package()
+  COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/fix-generated-idl.sh ${GENERATED_FILE}
+  COMMENT "Check generated IDL files for extra parenthesis..."
+  VERBATIM)
+else()
+  message(STATUS "generated file does not exist: ${GENERATED_FILE}")
+  message(WARN " Generated IDL file has an error, rerun `colcon build` to fix the generated file automatically")
+endif()
