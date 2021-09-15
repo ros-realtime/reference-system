@@ -17,7 +17,4 @@
 // Add available systems here
 #include "reference_system/system/type/rclcpp_system.hpp"
 
-// Add available timing configurations here
-#include "reference_system/system/timing/default.hpp"
-
 #endif  // REFERENCE_SYSTEM__SYSTEM__SYSTEMS_HPP_

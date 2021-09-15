@@ -5,7 +5,7 @@ module reference_interfaces {
     };
     struct TransmissionStats { // 64 bytes
       uint64 timestamp;
-      char   node_name[56];
+      char  node_name[56];
     };
   };
 };
