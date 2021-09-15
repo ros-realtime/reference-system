@@ -15,10 +15,13 @@
 #define REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
 #include <chrono>
 
-namespace nodes {
-namespace timing {
+namespace nodes
+{
+namespace timing
+{
 
-struct Default {
+struct Default
+{
   using time_t = std::chrono::nanoseconds;
   using milliseconds = std::chrono::milliseconds;
 
