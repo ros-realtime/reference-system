@@ -1,0 +1,16 @@
+#include "reference_interfaces/msg/TransmissionStats.idl"
+
+module reference_interfaces {
+  module msg {
+    module Message4kb_Constants {
+      const uint64 STATS_CAPACITY = 63;
+    };
+    struct Message4kb {
+      uint64 size;                 //   8
+      reference_interfaces::msg::TransmissionStats stats[63]; // + 4032 = 63 * 64
+      int64 data[7];               // + 56  = 7 * 8
+                                   //-----------------
+                                   // 4096
+    };
+  };
+};
