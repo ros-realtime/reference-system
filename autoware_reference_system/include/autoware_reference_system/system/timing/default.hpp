@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
-#define REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
+#ifndef AUTOWARE_REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
+#define AUTOWARE_REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
 #include <chrono>
 
 namespace nodes
@@ -79,4 +79,4 @@ constexpr Default::time_t Default::BEHAVIOR_PLANNER;
 
 }  // namespace timing
 }  // namespace nodes
-#endif  // REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
+#endif  // AUTOWARE_REFERENCE_SYSTEM__SYSTEM__TIMING__DEFAULT_HPP_
