@@ -38,13 +38,9 @@ ament_auto_package()
 set(GENERATED_FILE "${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_py/reference_interfaces/msg/_transmission_stats.py")
 
 message(STATUS "checking generated file: ${GENERATED_FILE}")
-if(EXISTS ${GENERATED_FILE})
 add_custom_command(
-  TARGET ${PROJECT_NAME}
+  TARGET ${PROJECT_NAME}__python
+  POST_BUILD
   COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/fix-generated-idl.sh ${GENERATED_FILE}
   COMMENT "Check generated IDL files for extra parenthesis..."
   VERBATIM)
-else()
-  message(STATUS "generated file does not exist: ${GENERATED_FILE}")
-  message(WARN " Generated IDL file has an error, rerun `colcon build` to fix the generated file automatically")
-endif()
