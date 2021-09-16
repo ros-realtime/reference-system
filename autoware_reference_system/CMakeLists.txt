@@ -48,6 +48,15 @@ if(${BUILD_TESTING})
 
   # check platform
   if(${RUN_BENCHMARK})
+    # Add new executables here to test
+    set(TEST_TARGETS
+      autoware_default_singlethreaded
+      autoware_default_staticsinglethreaded
+      autoware_default_multithreaded
+      #autoware_default_custom
+    )
+
+    # check current platform
     ament_add_pytest_test(${PROJECT_NAME}
       test/test_platform.py
       TIMEOUT 5
@@ -84,15 +93,13 @@ if(${BUILD_TESTING})
     find_package(rmw_implementation_cmake REQUIRED)
     get_available_rmw_implementations(rmws_available)
 
-    # loop over each rmw implmentation
-    foreach(rmw_implementation ${rmws_available})
-      find_package("${rmw_implementation}" REQUIRED)
-      # add each exe to test
-      test_reference_system_autoware(autoware_default_singlethreaded 10)
-      test_reference_system_autoware(autoware_default_staticsinglethreaded 10)
-      test_reference_system_autoware(autoware_default_multithreaded 10)
-      # Add new exe's here to test
-      #test_reference_system_autoware(autoware_default_custom)
+    # check each executable matches the system requirements
+    foreach(exe ${TEST_TARGETS})
+      # loop over each rmw implmentation
+      foreach(rmw_implementation ${rmws_available})
+        find_package("${rmw_implementation}" REQUIRED)
+        test_reference_system_autoware(${exe} 5)
+      endforeach()
     endforeach()
   endif()
 endif()
