@@ -72,13 +72,13 @@ These basic building-block nodes can be mixed-and-matched to create quite comple
 
 The first reference system benchmark proposed is based on the *Autoware.Auto* lidar data pipeline as stated above and shown in the node graph image above as well.
 
-1. [**Reference System Autoware.Auto**](reference_system/reference_system_autoware.md)
+1. [**Reference System Autoware.Auto**](autoware_reference_system/README.md)
     - ROS2:
         - Executors:
             - Default:
-                - [Single Threaded](reference_system/src/ros2/executor/autoware_default_singlethreaded.cpp)
-                - [Sttaic Singe Threaded](reference_system/src/ros2/executor/autoware_default_staticsinglethreaded.cpp)
-                - [Multithreaded](reference_system/src/ros2/executor/autoware_default_multithreaded.cpp)
+                - [Single Threaded](autoware_reference_system/src/ros2/executor/autoware_default_singlethreaded.cpp)
+                - [Sttaic Singe Threaded](autoware_reference_system/src/ros2/executor/autoware_default_staticsinglethreaded.cpp)
+                - [Multithreaded](autoware_reference_system/src/ros2/executor/autoware_default_multithreaded.cpp)
 
 Results below show various characteristics of the same simulated system (Autoware.Auto).
 
