@@ -47,3 +47,6 @@ def test_platform():
     if platform_supported:
         print('platform supported')
         assert True
+    else:
+        print('platform unsupported')
+        assert False

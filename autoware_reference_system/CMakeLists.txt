@@ -65,12 +65,12 @@ if(${BUILD_TESTING})
       # replaces all @var@ and ${var} within input file
       configure_file(
         test/test_requirements.py
-        test_${target}_${rmw_implementation}_${timeout}.py
+        test_requirements_${target}_${rmw_implementation}_${timeout}.py
         @ONLY
       )
 
       add_ros_test(
-        ${CMAKE_CURRENT_BINARY_DIR}/test_${target}_${rmw_implementation}_${timeout}.py
+        ${CMAKE_CURRENT_BINARY_DIR}/test_requirements_${target}_${rmw_implementation}_${timeout}.py
         TIMEOUT ${timeout} # seconds
       )
 
