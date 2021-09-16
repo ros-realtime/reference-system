@@ -55,9 +55,9 @@ auto create_autoware_nodes()
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Sensor>(
-      nodes::SensorSettings{.node_name = "rviz2",
-        .topic_name = "rviz2",
-        .cycle_time = TimingConfig::RVIZ2}));
+      nodes::SensorSettings{.node_name = "Visualizer",
+        .topic_name = "Visualizer",
+        .cycle_time = TimingConfig::VISUALIZER}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Sensor>(
@@ -65,82 +65,82 @@ auto create_autoware_nodes()
         .topic_name = "Lanelet2Map",
         .cycle_time = TimingConfig::LANELET2MAP}));
 
-  // processing nodes
+  // transform nodes
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Processing>(
-      nodes::ProcessingSettings{
+    std::make_shared<typename SystemType::Transform>(
+      nodes::TransformSettings{
     .node_name = "PointsTransformerFront",
     .input_topic = "FrontLidarDriver",
     .output_topic = "PointsTransformerFront",
     .number_crunch_time = TimingConfig::POINTS_TRANSFORMER_FRONT}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Processing>(
-      nodes::ProcessingSettings{
+    std::make_shared<typename SystemType::Transform>(
+      nodes::TransformSettings{
     .node_name = "PointsTransformerRear",
     .input_topic = "RearLidarDriver",
     .output_topic = "PointsTransformerRear",
     .number_crunch_time = TimingConfig::POINTS_TRANSFORMER_REAR}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Processing>(
-      nodes::ProcessingSettings{
+    std::make_shared<typename SystemType::Transform>(
+      nodes::TransformSettings{
     .node_name = "VoxelGridDownsampler",
     .input_topic = "PointCloudFusion",
     .output_topic = "VoxelGridDownsampler",
     .number_crunch_time = TimingConfig::VOXEL_GRID_DOWNSAMPLER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Processing>(
-      nodes::ProcessingSettings{
+    std::make_shared<typename SystemType::Transform>(
+      nodes::TransformSettings{
     .node_name = "PointCloudMapLoader",
     .input_topic = "PointCloudMap",
     .output_topic = "PointCloudMapLoader",
     .number_crunch_time = TimingConfig::POINT_CLOUD_MAP_LOADER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Processing>(
-      nodes::ProcessingSettings{
+    std::make_shared<typename SystemType::Transform>(
+      nodes::TransformSettings{
     .node_name = "RayGroundFilter",
     .input_topic = "PointCloudFusion",
     .output_topic = "RayGroundFilter",
     .number_crunch_time = TimingConfig::RAY_GROUND_FILTER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Processing>(
-      nodes::ProcessingSettings{
+    std::make_shared<typename SystemType::Transform>(
+      nodes::TransformSettings{
     .node_name = "EuclideanClusterDetector",
     .input_topic = "RayGroundFilter",
     .output_topic = "EuclideanClusterDetector",
     .number_crunch_time = TimingConfig::EUCLIDEAN_CLUSTER_DETECTOR}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Processing>(
-      nodes::ProcessingSettings{
+    std::make_shared<typename SystemType::Transform>(
+      nodes::TransformSettings{
     .node_name = "ObjectCollisionEstimator",
     .input_topic = "EuclideanClusterDetector",
     .output_topic = "ObjectCollisionEstimator",
     .number_crunch_time = TimingConfig::OBJECT_COLLISION_ESTIMATOR}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Processing>(
-      nodes::ProcessingSettings{
+    std::make_shared<typename SystemType::Transform>(
+      nodes::TransformSettings{
     .node_name = "MPCController",
     .input_topic = "BehaviorPlanner",
     .output_topic = "MPCController",
     .number_crunch_time = TimingConfig::MPC_CONTROLLER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Processing>(
-      nodes::ProcessingSettings{
+    std::make_shared<typename SystemType::Transform>(
+      nodes::TransformSettings{
     .node_name = "ParkingPlanner",
     .input_topic = "Lanelet2MapLoader",
     .output_topic = "ParkingPlanner",
     .number_crunch_time = TimingConfig::PARKING_PLANNER}));
 
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Processing>(
-      nodes::ProcessingSettings{
+    std::make_shared<typename SystemType::Transform>(
+      nodes::TransformSettings{
     .node_name = "LanePlanner",
     .input_topic = "Lanelet2MapLoader",
     .output_topic = "LanePlanner",
@@ -178,7 +178,7 @@ auto create_autoware_nodes()
     std::make_shared<typename SystemType::Fusion>(
       nodes::FusionSettings{
     .node_name = "Lanelet2GlobalPlanner",
-    .input_0 = "rviz2",
+    .input_0 = "Visualizer",
     .input_1 = "NDTLocalizer",
     .output_topic = "Lanelet2GlobalPlanner",
     .number_crunch_time = TimingConfig::LANELET_2_GLOBAL_PLANNER}));

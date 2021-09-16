@@ -1,12 +1,12 @@
-# reference-system-autoware
+# Overview
 
 With the distributed development of ROS across many different organizations it is sometimes hard to benchmark and concretely show how a certain change to a certain system improves or reduces the performance of that system.  For example did a change from one executor to another actually reduce the CPU or was it something else entirely?
 
-In order to try and address this problem we at [Apex.AI](https://apex.ai) would like to propose a definition of a [_reference system_](#reference-system) that simulates a real world scenario - in this case Autoware.Auto and its lidar data pipeline - that can be repeated no matter the underlying change of any piece of the full stack (i.e. executor, DDS or even RMW).
+In order to try and address this problem we at [Apex.AI](https://apex.ai) would like to propose a definition of a [_reference system_](#reference-system) that simulates a real world scenario - in this first case Autoware.Auto and its lidar data pipeline - that can be repeated no matter the underlying change of any piece of the full stack (i.e. executor, DDS or even RMW).
 
-![Node graph of reference-system-autoware](content/img/dotgraph_autoware.svg)
+![Node graph of reference-system-autoware](content/img/autoware_reference_system.svg)
 
-Future reference systems could be proposed that are more complex using the same basic node building blocks developed for this first scenario.
+Future _reference systems_ could be proposed that are more complex using the same basic node building blocks within the `reference_system` package.
 
 ## Reference System
 
@@ -50,8 +50,9 @@ The above node graph can be boiled down to only a handful of node "types" that a
 
 1. [**Sensor Node**](reference_system/include/reference_system/nodes/rclcpp/sensor.hpp)
     - input node to system
+    - one publisher, zero subscribers
     - publishes message cyclically at some fixed frequency
-2. [**Processing Node**](reference_system/include/reference_system/nodes/rclcpp/processing.hpp)
+2. [**Transform Node**](reference_system/include/reference_system/nodes/rclcpp/transform.hpp)
     - one subscriber, one publisher
     - starts processing for N milliseconds after a message is received
     - publishes message after processing is complete
@@ -72,12 +73,12 @@ These basic building-block nodes can be mixed-and-matched to create quite comple
 
 The first reference system benchmark proposed is based on the *Autoware.Auto* lidar data pipeline as stated above and shown in the node graph image above as well.
 
-1. [**Reference System Autoware.Auto**](autoware_reference_system/README.md)
+1. [**Autoware Reference System**](autoware_reference_system/README.md)
     - ROS2:
         - Executors:
             - Default:
                 - [Single Threaded](autoware_reference_system/src/ros2/executor/autoware_default_singlethreaded.cpp)
-                - [Sttaic Singe Threaded](autoware_reference_system/src/ros2/executor/autoware_default_staticsinglethreaded.cpp)
+                - [Static Single Threaded](autoware_reference_system/src/ros2/executor/autoware_default_staticsinglethreaded.cpp)
                 - [Multithreaded](autoware_reference_system/src/ros2/executor/autoware_default_multithreaded.cpp)
 
 Results below show various characteristics of the same simulated system (Autoware.Auto).
@@ -98,8 +99,10 @@ Tests are provided to automatically generate results for you by running `colcon 
 To run the test, simply run the following command from your workspace:
 
 ```
-colcon test  --packages-up-to reference_system_autoware
+colcon build --packages-select autoware_reference_system --cmake-args -DRUN_BENCHMARK=True
 ```
+
+The `RUN_BENCHMARK` CMake variable will tell CMake to build the benchmark tests that will check the current platform and reference system before running a sweep of tests to generate trace files and reports. Without the `RUN_BENCHMARK` variable set to `True` only the standard linter tests will be run.
 
 Alternatively if for some reason you do not or cannot use `colcon` the tests are simple `gtests` that can be ported and ran on any configuration.
 
