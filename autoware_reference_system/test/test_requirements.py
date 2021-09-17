@@ -23,11 +23,8 @@ from launch_testing import post_shutdown_test
 import launch_testing.actions
 from launch_testing.asserts import assertExitCodes
 
-import rclpy
 from ros2cli.node.direct import DirectNode
 import ros2topic.api
-
-import reference_interfaces.msg
 
 # Tests to check if executable complies with the requirements for
 # the autoware_reference_system by checking number of nodes, publishers,
@@ -36,7 +33,7 @@ import reference_interfaces.msg
 # this file has @variables@ that are meant to be automatically replaced
 # by values using the `configure_file` CMake function during the build
 
-checks = {'topic_exists': False, 'pubs': False, 'subs': False}
+checks = {'topic_exists': False, 'pubs_match': False, 'subs_match': False}
 
 # define autoware_reference_system requirements for each topic
 # NOTE: the pub/sub counts are for the topic, not the node itself
@@ -64,12 +61,10 @@ reference_system = {
     '/VehicleDBWSystem': {'pub_count': 1, 'sub_count': 0, 'checks': checks.copy()},
 }
 
+
 def generate_test_description():
     env = os.environ.copy()
     env['RCUTILS_CONSOLE_OUTPUT_FORMAT'] = '[{severity}] [{name}]: {message}'
-    # specify rmw to use
-    env['RCL_ASSERT_RMW_ID_MATCHES'] = '@RMW_IMPLEMENTATION@'
-    env['RMW_IMPLEMENTATION'] = '@RMW_IMPLEMENTATION@'
 
     launch_description = LaunchDescription()
     proc_under_test = ExecuteProcess(
@@ -86,19 +81,12 @@ def generate_test_description():
     return launch_description, locals()
 
 
-class TestAutowareReferenceSystem(unittest.TestCase):
+class TestRequirementsAutowareReferenceSystem(unittest.TestCase):
 
-    # @classmethod
-    # def setUpClass(cls):
-
-    # @classmethod
-    # def tearDownClass(cls):
-
-    def test_pubsub(self):
+    def test_pubs_and_subs(self):
         with DirectNode([]) as node:
             seen_topics = {}
             data_collected = False
-            
             try:
                 while True:
                     print('topic_monitor looping:')
@@ -113,24 +101,30 @@ class TestAutowareReferenceSystem(unittest.TestCase):
 
                         if seen_topics[name]['sub_count'] < subscribers:
                             seen_topics[name]['sub_count'] = subscribers
-                        # print(f"\t\t{name}: ['pub_count'={seen_topics[name]['pub_count']}, 'sub_count'={seen_topics[name]['sub_count']}]")
 
                     if not data_collected:
-                        print("Topic monitor data collected")
+                        print('Topic monitor data collected')
                         data_collected = True
                         for name in reference_system:
                             if name in seen_topics.keys():
                                 reference_system[name]['checks']['topic_exists'] = True
 
-                                if(reference_system[name]['pub_count'] == seen_topics[name]['pub_count']):
-                                    reference_system[name]['checks']['pubs'] = True
-                                if(reference_system[name]['sub_count'] == seen_topics[name]['sub_count']):
-                                    reference_system[name]['checks']['subs'] = True
+                                if(reference_system[name]['pub_count'] ==
+                                   seen_topics[name]['pub_count']):
+                                    reference_system[name]['checks']['pubs_match'] = True
+                                if(reference_system[name]['sub_count'] ==
+                                   seen_topics[name]['sub_count']):
+                                    reference_system[name]['checks']['subs_match'] = True
 
-                            #print(all(reference_system[name]['checks'].values()))
-                            print(f"\t\t{name}: ['topic_exists'={reference_system[name]['checks']['topic_exists']}," \
-                                                f" 'pubs'={reference_system[name]['checks']['pubs']}," \
-                                                f" 'subs'={reference_system[name]['checks']['subs']}]")
+                            print(all(reference_system[name]['checks'].values()))
+                            print(
+                                f'\t\t{name}: '
+                                f"['topic_exists'="
+                                f"{reference_system[name]['checks']['topic_exists']},"
+                                f" 'pubs_match'="
+                                f"{reference_system[name]['checks']['pubs_match']},"
+                                f" 'subs_match'="
+                                f"{reference_system[name]['checks']['subs_match']}]")
                     # Slow down the loop
                     time.sleep(1)
             except SystemError:
@@ -140,7 +134,7 @@ class TestAutowareReferenceSystem(unittest.TestCase):
 
 
 @post_shutdown_test()
-class TestAutowareReferenceSystemAfterShutdown(unittest.TestCase):
+class TestRequirementsAutowareReferenceSystemAfterShutdown(unittest.TestCase):
 
     def test_process_exit_codes(self):
         # Checks that all processes exited cleanly

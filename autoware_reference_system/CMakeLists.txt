@@ -48,7 +48,7 @@ if(${BUILD_TESTING})
 
   # check platform
   if(${RUN_BENCHMARK})
-    # Add new executables here to test
+    # Add executables here to test
     set(TEST_TARGETS
       autoware_default_singlethreaded
       autoware_default_staticsinglethreaded
@@ -65,7 +65,31 @@ if(${BUILD_TESTING})
     find_package(ros_testing REQUIRED)
 
     # run target for n seconds
-    function(test_reference_system_autoware target timeout)
+    function(test_requirements target timeout)
+      set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
+      set(TEST_EXECUTABLE_NAME test_requirements_${target}_${timeout})
+      set(TIMEOUT ${timeout})
+
+      # replaces all @var@ and ${var} within input file
+      configure_file(
+        test/test_requirements.py
+        test_requirements_${target}_${timeout}s.py
+        @ONLY
+      )
+
+      add_ros_test(
+        ${CMAKE_CURRENT_BINARY_DIR}/test_requirements_${target}_${timeout}s.py
+        TIMEOUT ${timeout} # seconds
+      )
+
+      if(TARGET ${target})
+        ament_target_dependencies(${target}
+          "rclcpp" "reference_interfaces" "reference_system")
+      endif()
+    endfunction()
+
+    # run target for n seconds
+    function(generate_traces target timeout)
       set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
       set(TEST_EXECUTABLE_NAME ${target}_${rmw_implementation})
       set(TIMEOUT ${timeout})
@@ -73,13 +97,13 @@ if(${BUILD_TESTING})
 
       # replaces all @var@ and ${var} within input file
       configure_file(
-        test/test_requirements.py
-        test_requirements_${target}_${rmw_implementation}_${timeout}.py
+        test/generate_traces.py
+        generate_traces_${target}_${rmw_implementation}_${timeout}.py
         @ONLY
       )
 
       add_ros_test(
-        ${CMAKE_CURRENT_BINARY_DIR}/test_requirements_${target}_${rmw_implementation}_${timeout}.py
+        ${CMAKE_CURRENT_BINARY_DIR}/generate_traces_${target}_${rmw_implementation}_${timeout}.py
         TIMEOUT ${timeout} # seconds
       )
 
@@ -95,10 +119,16 @@ if(${BUILD_TESTING})
 
     # check each executable matches the system requirements
     foreach(exe ${TEST_TARGETS})
+      test_requirements(${exe} 3)
+    endforeach()
+
+    # generate traces for each executable
+    foreach(exe ${TEST_TARGETS})
       # loop over each rmw implmentation
       foreach(rmw_implementation ${rmws_available})
         find_package("${rmw_implementation}" REQUIRED)
-        test_reference_system_autoware(${exe} 5)
+        message(STATUS "genereate_traces for ${exe}_${rmw_implementation}_5s")
+        #generate_traces(${exe} 5)
       endforeach()
     endforeach()
   endif()
