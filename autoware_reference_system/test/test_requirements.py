@@ -11,10 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# import multiprocessing
 import os
-# import platform
 import time
 import unittest
 
@@ -26,23 +23,48 @@ from launch_testing import post_shutdown_test
 import launch_testing.actions
 from launch_testing.asserts import assertExitCodes
 
-import rclpy
-from rclpy.context import Context
-import rclpy.executors
-from rclpy.qos import HistoryPolicy, QoSProfile, ReliabilityPolicy
+from ros2cli.node.direct import DirectNode
+import ros2topic.api
 
-import reference_interfaces.msg
+# Tests to check if executable complies with the requirements for
+# the autoware_reference_system by checking number of nodes, publishers,
+# subscribers and frequency of some topics
 
 # this file has @variables@ that are meant to be automatically replaced
 # by values using the `configure_file` CMake function during the build
+
+checks = {'topic_exists': False, 'pubs_match': False, 'subs_match': False}
+
+# define autoware_reference_system requirements for each topic
+# NOTE: the pub/sub counts are for the topic, not the node itself
+reference_system = {
+    '/FrontLidarDriver': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/RearLidarDriver': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/PointCloudMap': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/Visualizer': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/Lanelet2Map': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/PointsTransformerFront': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/PointsTransformerRear': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/VoxelGridDownsampler': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/PointCloudMapLoader': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/EuclideanClusterDetector': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/ObjectCollisionEstimator': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/MPCController': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/ParkingPlanner': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/LanePlanner': {'pub_count': 1, 'sub_count': 1, 'checks': checks.copy()},
+    '/PointCloudFusion': {'pub_count': 1, 'sub_count': 2, 'checks': checks.copy()},
+    '/NDTLocalizer': {'pub_count': 1, 'sub_count': 2, 'checks': checks.copy()},
+    '/VehicleInterface': {'pub_count': 1, 'sub_count': 2, 'checks': checks.copy()},
+    '/Lanelet2GlobalPlanner': {'pub_count': 1, 'sub_count': 2, 'checks': checks.copy()},
+    '/Lanelet2MapLoader': {'pub_count': 1, 'sub_count': 2, 'checks': checks.copy()},
+    '/BehaviorPlanner': {'pub_count': 1, 'sub_count': 6, 'checks': checks.copy()},
+    '/VehicleDBWSystem': {'pub_count': 1, 'sub_count': 0, 'checks': checks.copy()},
+}
 
 
 def generate_test_description():
     env = os.environ.copy()
     env['RCUTILS_CONSOLE_OUTPUT_FORMAT'] = '[{severity}] [{name}]: {message}'
-    # specify rmw to use
-    env['RCL_ASSERT_RMW_ID_MATCHES'] = '@RMW_IMPLEMENTATION@'
-    env['RMW_IMPLEMENTATION'] = '@RMW_IMPLEMENTATION@'
 
     launch_description = LaunchDescription()
     proc_under_test = ExecuteProcess(
@@ -59,88 +81,60 @@ def generate_test_description():
     return launch_description, locals()
 
 
-class TestReferenceSystemAutoware(unittest.TestCase):
+class TestRequirementsAutowareReferenceSystem(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        cls.context = Context()
-        rclpy.init(context=cls.context)
-        cls.node = rclpy.create_node('test_node', context=cls.context)
-        cls.msgs = []
+    def test_pubs_and_subs(self):
+        with DirectNode([]) as node:
+            seen_topics = {}
+            data_collected = False
+            try:
+                while True:
+                    print('topic_monitor looping:')
+                    for name in ros2topic.api.get_topic_names(node=node):
+                        if name not in seen_topics:
+                            seen_topics[name] = {'pub_count': 0, 'sub_count': 0}
+                        publishers = node.count_publishers(name)
+                        subscribers = node.count_subscribers(name)
 
-        # TODO(flynneva): sweep over different QoS settings during testing?
-        qos_profile = QoSProfile(
-            reliability=ReliabilityPolicy.BEST_EFFORT,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=1
-        )
+                        if seen_topics[name]['pub_count'] < publishers:
+                            seen_topics[name]['pub_count'] = publishers
 
-        cls.sub = cls.node.create_subscription(
-            msg_type=reference_interfaces.msg.Message4kb,
-            topic='/FrontLidarDriver',
-            callback=cls._msg_received,
-            qos_profile=qos_profile
-        )
+                        if seen_topics[name]['sub_count'] < subscribers:
+                            seen_topics[name]['sub_count'] = subscribers
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.node.destroy_subscription(cls.sub)
-        rclpy.shutdown(context=cls.context)
+                    if not data_collected:
+                        print('Topic monitor data collected')
+                        data_collected = True
+                        for name in reference_system:
+                            if name in seen_topics.keys():
+                                reference_system[name]['checks']['topic_exists'] = True
 
-    @classmethod
-    def _msg_received(self, msg):
-        # Callback for ROS subscriber used in the test
-        self.msgs.append(msg)
+                                if(reference_system[name]['pub_count'] ==
+                                   seen_topics[name]['pub_count']):
+                                    reference_system[name]['checks']['pubs_match'] = True
+                                if(reference_system[name]['sub_count'] ==
+                                   seen_topics[name]['sub_count']):
+                                    reference_system[name]['checks']['subs_match'] = True
 
-    def get_message(self):
-        # Try up to 60sec to receive messages
-        startlen = len(self.msgs)
-
-        executor = rclpy.executors.SingleThreadedExecutor(context=self.context)
-        executor.add_node(self.node)
-
-        try:
-            end_time = time.time() + 60.0
-            while time.time() < end_time:
-                executor.spin_once(timeout_sec=0.1)
-                if startlen != len(self.msgs):
-                    break
-
-            self.assertNotEqual(startlen, len(self.msgs))
-            return self.msgs[-1]
-        finally:
-            executor.remove_node(self.node)
-
-    def test_msg_rate(self):
-        # Receive messages for 5 seconds - make sure we don't get too many or too few
-        RUNTIME = 5.0
-        start_time = time.time()
-        end_time = start_time + RUNTIME
-
-        while time.time() < end_time:
-            self.get_message()
-
-        self.assertGreater(len(self.msgs), 0)
-        # self.assertGreater(len(self.msgs), RUNTIME)  # At least 1 message per second
-        # self.assertLess(len(self.msgs), RUNTIME * 9)  # Fewer than 15 messages per second
-
-#    def test_cpu_info(self):
-#        # get current system information
-#        system, node, release, version, machine, processor = platform.uname()
-#        platform_supported = False
-#        for pform in platforms:
-#            if(platforms[pform]['system'] == system):
-#                if(platforms[pform]['processor'] == processor):
-#                    platform_supported = True
-#                    self.assertEqual(multiprocessing.cpu_count(), platforms[pform]['cores'])
-#                    if(platforms[pform]['realtime']):
-#                        self.assertNotEqual(version.find('PREEMPT_RT'), -1)
-#
-#        self.assertEqual(platform_supported, True)
+                            print(all(reference_system[name]['checks'].values()))
+                            print(
+                                f'\t\t{name}: '
+                                f"['topic_exists'="
+                                f"{reference_system[name]['checks']['topic_exists']},"
+                                f" 'pubs_match'="
+                                f"{reference_system[name]['checks']['pubs_match']},"
+                                f" 'subs_match'="
+                                f"{reference_system[name]['checks']['subs_match']}]")
+                    # Slow down the loop
+                    time.sleep(1)
+            except SystemError:
+                pass
+            except KeyboardInterrupt:
+                pass
 
 
 @post_shutdown_test()
-class TestReferenceSystemAutowareAfterShutdown(unittest.TestCase):
+class TestRequirementsAutowareReferenceSystemAfterShutdown(unittest.TestCase):
 
     def test_process_exit_codes(self):
         # Checks that all processes exited cleanly
