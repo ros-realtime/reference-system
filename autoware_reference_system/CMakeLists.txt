@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.5)
 project(autoware_reference_system)
 
+# pass in via command line or set to True to test if platform is supported
+message(STATUS "TEST_PLATFORM=${TEST_PLATFORM}")
+if(${TEST_PLATFORM})
+  message(STATUS "Building platform test")
+else()
+  message(STATUS "Not building platform tests")
+endif()
+
 # pass in via command line or set to True to run full benchmark tests
 message(STATUS "RUN_BENCHMARK=${RUN_BENCHMARK}")
 if(${RUN_BENCHMARK})
@@ -19,8 +27,6 @@ endif()
 
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
-
-# find_package(reference_system REQUIRED)
 
 # Single Threaded Executor
 ament_auto_add_executable(autoware_default_singlethreaded
@@ -46,7 +52,14 @@ if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
-  # check platform
+  if(${TEST_PLATFORM})
+    # check current platform
+    ament_add_pytest_test(${PROJECT_NAME}
+      test/test_platform.py
+      TIMEOUT 5
+    )
+  endif()
+
   if(${RUN_BENCHMARK})
     # Add executables here to test
     set(TEST_TARGETS
@@ -54,12 +67,6 @@ if(${BUILD_TESTING})
       autoware_default_staticsinglethreaded
       autoware_default_multithreaded
       #autoware_default_custom
-    )
-
-    # check current platform
-    ament_add_pytest_test(${PROJECT_NAME}
-      test/test_platform.py
-      TIMEOUT 5
     )
 
     find_package(ros_testing REQUIRED)
