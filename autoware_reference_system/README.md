@@ -4,6 +4,8 @@ This file is meant to define the Autoware Reference System and all of its nodes,
 
 ![Node graph of reference-system-autoware](../content/img/autoware_reference_system.svg)
 
+_See the [generating a node graph](#generate-node-graph) using graphviz section on how to generate the above image_
+
 ## Message Types
 
 A **single message type** is used for the entire _reference system_ when generating results in order to simplify the setup as well as make it more repeatible and extensible.
@@ -78,3 +80,18 @@ For simplicity's sake, every node except for the _command nodes_ only ever publi
     - for this _reference system_ there is onle [**1 _command node_**](include/autoware_reference_system/autoware_system_builder.hpp#L217)
     - this _command node_ has **1 subscriber** and zero publishers
     - this _command node_ prints out the final latency statistics after a message is received on the specified topic
+
+## Generating Node Graph Image
+
+To generate the image shown above you can take advantage of [a program called `graphviz`](https://graphviz.org/doc/info/command.html) that has a command line interface (CLI) command `dot`.
+
+First, check out the provided `.dot` file [within this directory](autoware_reference_system.dot) to get an idea of how the `dot` syntax works (feel free to modify it for your use case or future _reference systems_).
+
+To generate the `.dot` file into an `.svg` image, run the following command:
+
+```
+dot -Tsvg autoware_reference_system.dot
+```
+
+_Note:_ you can change the generated image type to any of [the supported type parameters](https://graphviz.org/docs/outputs/) if you would like a different filetype.
+

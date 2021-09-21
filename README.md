@@ -24,7 +24,7 @@ A _reference system_ is defined by:
 
 With these defined attributes the _reference system_ can be replicated across many different possible configurations to be used to benchmark each configuration against the other in a reliable and fair manner.
 
-With this approach [unit tests](#unit-testing) can also be defined to reliably confirm if a given _reference system_ meets the requirements.
+With this approach [portable and repeatable tests](#testing) can also be defined to reliably confirm if a given _reference system_ meets the requirements.
 
 ## Supported Platforms
 
@@ -89,23 +89,22 @@ To add your own executor / middleware / configuration to the list above follow t
 
 Results will be added to different tagged releases along with the specific configurations ran during the tests.
 
-## Unit Testing
+## Testing
 
 Unit tests can be written for the _reference system_ to check if all nodes, topics and other requirements are met before accepting test results.
-
 
 Tests are provided to automatically generate results for you by running `colcon test` on a supported platform above.
 
 To run the test, simply run the following command from your workspace:
 
 ```
-colcon build --packages-select autoware_reference_system --cmake-args -DRUN_BENCHMARK=True
+colcon build --packages-select autoware_reference_system --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
 ```
 
-The `RUN_BENCHMARK` CMake variable will tell CMake to build the benchmark tests that will check the current platform and reference system before running a sweep of tests to generate trace files and reports. Without the `RUN_BENCHMARK` variable set to `True` only the standard linter tests will be run.
+The `RUN_BENCHMARK` CMake variable will tell CMake to build the benchmark tests that will check the reference system against its requirements before running a sweep of tests to generate trace files and reports. Without the `RUN_BENCHMARK` variable set to `True` only the standard linter tests will be run.
 
-Alternatively if for some reason you do not or cannot use `colcon` the tests are simple `gtests` that can be ported and ran on any configuration.
-
+The `TEST_PLATFORM` tests whether the tests are being run from a [supported platform](#supported-platforms) or not.
+This flag can be ommited if you would like to run the tests on a development system before running them on a supported platform.
 
 ## Contributing
 
@@ -116,10 +115,10 @@ create `include/reference_system/MY_EXECUTOR_NAME_nodes`
 ## Howto Implement Your Custom Executor 
 
 1. Read over [the above documentation](#concept-overview) on the base node types
-2. Review the base [`rclcpp nodes`](include/reference_system/nodes/rclcpp) that are provided and determine if your executor can use them
-3. If you cannot, implment your own version of each base node type and place the source in [`include/reference_system/nodes`](include/reference_system/nodes)
-4. Add your new nodes as a seperate `node system` in [`include/reference_system/system/systems.hpp`](include/reference_system/system/systems.hpp)
-5. Copy one of the provided example `.cpp` files from the [`src/ros2/executor`](src/ros2/executor) directory and replace the `create_autoware_nodes` template type with your new `node system` which should be in the `system/systems.hpp` file already included
+2. Review the base [`rclcpp nodes`](reference_system/include/reference_system/nodes/rclcpp) that are provided and determine if your executor can use them
+3. If you cannot, implment your own version of each base node type and place the source in [with the other nodes in the `reference_system`.](reference_system/include/reference_system/nodes)
+4. Add your new nodes as a seperate `node system` in [the `reference_system` package](reference_system/include/reference_system/system/systems.hpp)
+5. Copy one of the provided example `.cpp` files from the [`src/ros2/executor`](autoware_reference_system/src/ros2/executor) directory and replace the `create_autoware_nodes` template type with your new `node system` which should be in the `system/systems.hpp` file already included
 6. Add new `.cpp` source file as a new executable in the `CMakelist.txt`
 7. Add new executable to test wtihin the `CMakelist.txt`
 8. Build and run tests!

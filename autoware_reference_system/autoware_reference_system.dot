@@ -1,7 +1,7 @@
 digraph G {
     labelloc="b";
     labeljust="l";
-    label="reference_system_autoware";
+    label="autoware_reference_system";
     nodesep=0.5;
     node [shape=box, style=filled, penwidth=2, ordering=in];
     edge [weight=8];
