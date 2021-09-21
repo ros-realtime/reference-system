@@ -15,7 +15,7 @@
 #define REFERENCE_SYSTEM__SYSTEM__TYPE__RCLCPP_SYSTEM_HPP_
 #include "reference_system/nodes/rclcpp/command.hpp"
 #include "reference_system/nodes/rclcpp/fusion.hpp"
-#include "reference_system/nodes/rclcpp/processing.hpp"
+#include "reference_system/nodes/rclcpp/transform.hpp"
 #include "reference_system/nodes/rclcpp/reactor.hpp"
 #include "reference_system/nodes/rclcpp/sensor.hpp"
 
@@ -26,7 +26,7 @@ struct RclcppSystem
   using Command = nodes::rclcpp_system::Command;
   using Fusion = nodes::rclcpp_system::Fusion;
   using Reactor = nodes::rclcpp_system::Reactor;
-  using Processing = nodes::rclcpp_system::Processing;
+  using Transform = nodes::rclcpp_system::Transform;
 };
 
 #endif  // REFERENCE_SYSTEM__SYSTEM__TYPE__RCLCPP_SYSTEM_HPP_

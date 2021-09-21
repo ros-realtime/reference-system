@@ -36,20 +36,6 @@ import reference_interfaces.msg
 # this file has @variables@ that are meant to be automatically replaced
 # by values using the `configure_file` CMake function during the build
 
-platforms = {}
-
-# TODO(flynneva): move this to its own file for portability
-# can add more supported platforms here
-platforms['rpi4-linux-rt'] = {
-    'common-name': 'raspberrypi4',
-    'machine': 'aarch64',
-    'processor': 'aarch64',
-    'system': 'Linux',
-    'flavor': 'ubuntu',
-    'cores': 4,
-    'realtime': True
-}
-
 
 def generate_test_description():
     env = os.environ.copy()

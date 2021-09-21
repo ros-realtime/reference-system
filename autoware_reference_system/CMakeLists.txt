@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.5)
 project(autoware_reference_system)
 
+# pass in via command line or set to True to run full benchmark tests
+message(STATUS "RUN_BENCHMARK=${RUN_BENCHMARK}")
+if(${RUN_BENCHMARK})
+  message(STATUS "Building full benchmark tests")
+else()
+  message(STATUS "Not building benchmark tests")
+endif()
+
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
 endif()
@@ -38,49 +46,55 @@ if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
-  find_package(ros_testing REQUIRED)
-
-  # run target for n seconds
-  function(test_reference_system_autoware target timeout)
-    set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
-    set(TEST_EXECUTABLE_NAME ${target}_${rmw_implementation})
-    set(TIMEOUT ${timeout})
-    set(RMW_IMPLEMENTATION ${rmw_implementation})
-
-    # replaces all @var@ and ${var} within input file
-    configure_file(
-      test/test_${PROJECT_NAME}.py
-      test_${target}_${rmw_implementation}.py
-      @ONLY
+  # check platform
+  if(${RUN_BENCHMARK})
+    ament_add_pytest_test(${PROJECT_NAME}
+      test/test_platform.py
+      TIMEOUT 5
     )
 
-    add_ros_test(
-      ${CMAKE_CURRENT_BINARY_DIR}/test_${target}_${rmw_implementation}.py
-      TIMEOUT 10 # seconds
-    )
+    find_package(ros_testing REQUIRED)
 
-    if(TARGET ${target})
-      ament_target_dependencies(${target}
-        "rclcpp" "reference_interfaces" "reference_system")
-    endif()
-  endfunction()
+    # run target for n seconds
+    function(test_reference_system_autoware target timeout)
+      set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
+      set(TEST_EXECUTABLE_NAME ${target}_${rmw_implementation})
+      set(TIMEOUT ${timeout})
+      set(RMW_IMPLEMENTATION ${rmw_implementation})
 
-  # get available rmw implementations
-  find_package(rmw_implementation_cmake REQUIRED)
-  get_available_rmw_implementations(rmws_available)
+      # replaces all @var@ and ${var} within input file
+      configure_file(
+        test/test_requirements.py
+        test_${target}_${rmw_implementation}_${timeout}.py
+        @ONLY
+      )
 
-  # loop over each rmw implmentation
-  foreach(rmw_implementation ${rmws_available})
-    find_package("${rmw_implementation}" REQUIRED)
+      add_ros_test(
+        ${CMAKE_CURRENT_BINARY_DIR}/test_${target}_${rmw_implementation}_${timeout}.py
+        TIMEOUT ${timeout} # seconds
+      )
 
-    # add each exe to test
-    test_reference_system_autoware(autoware_default_singlethreaded 10)
-    test_reference_system_autoware(autoware_default_staticsinglethreaded 10)
-    test_reference_system_autoware(autoware_default_multithreaded 10)
-    # Add new exe's here to test
-    #test_reference_system_autoware(autoware_default_custom)
+      if(TARGET ${target})
+        ament_target_dependencies(${target}
+          "rclcpp" "reference_interfaces" "reference_system")
+      endif()
+    endfunction()
 
-  endforeach()
+    # get available rmw implementations
+    find_package(rmw_implementation_cmake REQUIRED)
+    get_available_rmw_implementations(rmws_available)
+
+    # loop over each rmw implmentation
+    foreach(rmw_implementation ${rmws_available})
+      find_package("${rmw_implementation}" REQUIRED)
+      # add each exe to test
+      test_reference_system_autoware(autoware_default_singlethreaded 10)
+      test_reference_system_autoware(autoware_default_staticsinglethreaded 10)
+      test_reference_system_autoware(autoware_default_multithreaded 10)
+      # Add new exe's here to test
+      #test_reference_system_autoware(autoware_default_custom)
+    endforeach()
+  endif()
 endif()
 
 ament_auto_package(

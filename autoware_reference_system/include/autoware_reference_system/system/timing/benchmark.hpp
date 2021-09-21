@@ -29,7 +29,7 @@ struct BenchmarkThroughput
   static constexpr time_t FRONT_LIDAR_DRIVER = milliseconds(0);
   static constexpr time_t REAR_LIDAR_DRIVER = milliseconds(0);
   static constexpr time_t POINT_CLOUD_MAP = milliseconds(0);
-  static constexpr time_t RVIZ2 = milliseconds(0);
+  static constexpr time_t VISUALIZER = milliseconds(0);
   static constexpr time_t LANELET2MAP = milliseconds(0);
 
   // processing
@@ -58,7 +58,7 @@ struct BenchmarkThroughput
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::FRONT_LIDAR_DRIVER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::REAR_LIDAR_DRIVER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::POINT_CLOUD_MAP;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::RVIZ2;
+constexpr BenchmarkThroughput::time_t BenchmarkThroughput::VISUALIZER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET2MAP;
 constexpr BenchmarkThroughput::time_t
 BenchmarkThroughput::POINTS_TRANSFORMER_FRONT;
@@ -93,7 +93,7 @@ struct BenchmarkCPUUsage
   static constexpr time_t FRONT_LIDAR_DRIVER = milliseconds(50);
   static constexpr time_t REAR_LIDAR_DRIVER = milliseconds(50);
   static constexpr time_t POINT_CLOUD_MAP = milliseconds(50);
-  static constexpr time_t RVIZ2 = milliseconds(50);
+  static constexpr time_t VISUALIZER = milliseconds(50);
   static constexpr time_t LANELET2MAP = milliseconds(50);
 
   // processing
@@ -122,7 +122,7 @@ struct BenchmarkCPUUsage
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::FRONT_LIDAR_DRIVER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::REAR_LIDAR_DRIVER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINT_CLOUD_MAP;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::RVIZ2;
+constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::VISUALIZER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET2MAP;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINTS_TRANSFORMER_FRONT;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINTS_TRANSFORMER_REAR;

@@ -36,7 +36,7 @@ struct FusionSettings
   std::chrono::nanoseconds number_crunch_time;
 };
 
-struct ProcessingSettings
+struct TransformSettings
 {
   std::string node_name;
   std::string input_topic;

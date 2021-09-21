@@ -29,7 +29,7 @@ struct Default
   static constexpr time_t FRONT_LIDAR_DRIVER = milliseconds(100);
   static constexpr time_t REAR_LIDAR_DRIVER = milliseconds(100);
   static constexpr time_t POINT_CLOUD_MAP = milliseconds(100);
-  static constexpr time_t RVIZ2 = milliseconds(100);
+  static constexpr time_t VISUALIZER = milliseconds(100);
   static constexpr time_t LANELET2MAP = milliseconds(100);
 
   // processing
@@ -58,7 +58,7 @@ struct Default
 constexpr Default::time_t Default::FRONT_LIDAR_DRIVER;
 constexpr Default::time_t Default::REAR_LIDAR_DRIVER;
 constexpr Default::time_t Default::POINT_CLOUD_MAP;
-constexpr Default::time_t Default::RVIZ2;
+constexpr Default::time_t Default::VISUALIZER;
 constexpr Default::time_t Default::LANELET2MAP;
 constexpr Default::time_t Default::POINTS_TRANSFORMER_FRONT;
 constexpr Default::time_t Default::POINTS_TRANSFORMER_REAR;

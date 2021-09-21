@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__NODES__RCLCPP__PROCESSING_HPP_
-#define REFERENCE_SYSTEM__NODES__RCLCPP__PROCESSING_HPP_
+#ifndef REFERENCE_SYSTEM__NODES__RCLCPP__TRANSFORM_HPP_
+#define REFERENCE_SYSTEM__NODES__RCLCPP__TRANSFORM_HPP_
 #include <chrono>
 #include <string>
 #include <utility>
@@ -28,10 +28,10 @@ namespace nodes
 namespace rclcpp_system
 {
 
-class Processing : public rclcpp::Node
+class Transform : public rclcpp::Node
 {
 public:
-  explicit Processing(const ProcessingSettings & settings)
+  explicit Transform(const TransformSettings & settings)
   : Node(settings.node_name),
     number_crunch_time_(settings.number_crunch_time)
   {
@@ -62,4 +62,4 @@ private:
 };
 }  // namespace rclcpp_system
 }  // namespace nodes
-#endif  // REFERENCE_SYSTEM__NODES__RCLCPP__PROCESSING_HPP_
+#endif  // REFERENCE_SYSTEM__NODES__RCLCPP__TRANSFORM_HPP_
