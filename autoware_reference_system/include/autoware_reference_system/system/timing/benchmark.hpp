@@ -24,6 +24,7 @@ struct BenchmarkThroughput
 {
   using time_t = std::chrono::nanoseconds;
   using milliseconds = std::chrono::milliseconds;
+  using seconds = std::chrono::seconds;
 
   // sensors
   static constexpr time_t FRONT_LIDAR_DRIVER = milliseconds(0);
@@ -50,6 +51,12 @@ struct BenchmarkThroughput
   static constexpr time_t VEHICLE_INTERFACE = milliseconds(0);
   static constexpr time_t LANELET_2_GLOBAL_PLANNER = milliseconds(0);
   static constexpr time_t LANELET_2_MAP_LOADER = milliseconds(0);
+
+  static constexpr time_t POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF = seconds(9999);
+  static constexpr time_t NDT_LOCALIZER_MAX_INPUT_TIME_DIFF = seconds(9999);
+  static constexpr time_t VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF = seconds(9999);
+  static constexpr time_t LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF = seconds(9999);
+  static constexpr time_t LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF = seconds(9999);
 
   // reactor
   static constexpr time_t BEHAVIOR_PLANNER = milliseconds(0);
@@ -82,12 +89,19 @@ constexpr BenchmarkThroughput::time_t BenchmarkThroughput::VEHICLE_INTERFACE;
 constexpr BenchmarkThroughput::time_t
 BenchmarkThroughput::LANELET_2_GLOBAL_PLANNER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET_2_MAP_LOADER;
+constexpr BenchmarkThroughput::time_t BenchmarkThroughput::POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF;
+constexpr BenchmarkThroughput::time_t BenchmarkThroughput::NDT_LOCALIZER_MAX_INPUT_TIME_DIFF;
+constexpr BenchmarkThroughput::time_t BenchmarkThroughput::VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF;
+constexpr BenchmarkThroughput::time_t BenchmarkThroughput::
+LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF;
+constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::BEHAVIOR_PLANNER;
 
 struct BenchmarkCPUUsage
 {
   using time_t = std::chrono::nanoseconds;
   using milliseconds = std::chrono::milliseconds;
+  using seconds = std::chrono::seconds;
 
   // sensors
   static constexpr time_t FRONT_LIDAR_DRIVER = milliseconds(50);
@@ -115,6 +129,12 @@ struct BenchmarkCPUUsage
   static constexpr time_t LANELET_2_GLOBAL_PLANNER = milliseconds(0);
   static constexpr time_t LANELET_2_MAP_LOADER = milliseconds(0);
 
+  static constexpr time_t POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF = seconds(9999);
+  static constexpr time_t NDT_LOCALIZER_MAX_INPUT_TIME_DIFF = seconds(9999);
+  static constexpr time_t VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF = seconds(9999);
+  static constexpr time_t LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF = seconds(9999);
+  static constexpr time_t LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF = seconds(9999);
+
   // reactor
   static constexpr time_t BEHAVIOR_PLANNER = milliseconds(0);
 };
@@ -141,6 +161,11 @@ constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::NDT_LOCALIZER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::VEHICLE_INTERFACE;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET_2_GLOBAL_PLANNER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET_2_MAP_LOADER;
+constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF;
+constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::NDT_LOCALIZER_MAX_INPUT_TIME_DIFF;
+constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF;
+constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF;
+constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::BEHAVIOR_PLANNER;
 
 }  // namespace timing

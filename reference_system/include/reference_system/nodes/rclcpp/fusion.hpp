@@ -33,7 +33,8 @@ class Fusion : public rclcpp::Node
 public:
   explicit Fusion(const FusionSettings & settings)
   : Node(settings.node_name),
-    number_crunch_time_(settings.number_crunch_time)
+    number_crunch_time_(settings.number_crunch_time),
+    max_input_time_difference_(settings.max_input_time_difference)
   {
     subscription_[0] = this->create_subscription<message_t>(
       settings.input_0, 10,
@@ -58,6 +59,19 @@ private:
       return;
     }
 
+    uint64_t timestamp_input0 = get_sample_timestamp(message_cache_[0]);
+    uint64_t timestamp_input1 = get_sample_timestamp(message_cache_[1]);
+    int64_t time_diff = (timestamp_input0 < timestamp_input1) ?
+      timestamp_input1 - timestamp_input0 :
+      timestamp_input0 - timestamp_input1;
+
+    if (time_diff >= max_input_time_difference_.count()) {
+      std::cerr << "[ Warning ] " << this->get_name() << " : input latency exceeded from " <<
+        "{" << subscription_[0]->get_topic_name() << ", " <<
+        subscription_[1]->get_topic_name() << "} " << std::endl;
+      exit(0);
+    }
+
     auto number_cruncher_result = number_cruncher(number_crunch_time_);
 
     auto output_message = publisher_->borrow_loaned_message();
@@ -77,6 +91,7 @@ private:
   rclcpp::Subscription<message_t>::SharedPtr subscription_[2];
 
   std::chrono::nanoseconds number_crunch_time_;
+  std::chrono::nanoseconds max_input_time_difference_;
 };
 }  // namespace rclcpp_system
 }  // namespace nodes

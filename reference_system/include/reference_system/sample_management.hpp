@@ -56,6 +56,16 @@ void set_sample(const std::string & node_name, SampleTypePointer & sample)
     .count());
 }
 
+template<typename SampleTypePointer>
+uint64_t get_sample_timestamp(SampleTypePointer & sample)
+{
+  if (is_in_benchmark_mode() || sample->size == 0) {
+    return 0;
+  } else {
+    return sample->stats[sample->size - 1].timestamp;
+  }
+}
+
 template<typename SampleTypePointer, typename SourceType>
 void fuse_samples(
   const std::string & node_name, SampleTypePointer & destination,
