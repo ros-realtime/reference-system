@@ -138,13 +138,11 @@ if(${BUILD_TESTING})
       add_test(
         NAME convert_trace_${target}_${rmw_implementation}_${timeout}s
         COMMAND bash -c "ros2 run tracetools_analysis convert ${TRACE_DIR}"
-        COMMENT "Convert CTF traces to single file"
       )
 
       add_test(
         NAME process_trace_${target}_${rmw_implementation}_${timeout}s
         COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
-        COMMENT "Process converted traces to create data model"
       )
 
 #      add_test(
