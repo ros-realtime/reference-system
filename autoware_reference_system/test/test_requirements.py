@@ -58,7 +58,7 @@ reference_system = {
     '/Lanelet2GlobalPlanner': {'pub_count': 1, 'sub_count': 2, 'checks': checks.copy()},
     '/Lanelet2MapLoader': {'pub_count': 1, 'sub_count': 2, 'checks': checks.copy()},
     '/BehaviorPlanner': {'pub_count': 1, 'sub_count': 6, 'checks': checks.copy()},
-    '/VehicleDBWSystem': {'pub_count': 1, 'sub_count': 0, 'checks': checks.copy()},
+    '/VehicleDBWSystem': {'pub_count': 0, 'sub_count': 1, 'checks': checks.copy()},
 }
 
 
@@ -90,6 +90,7 @@ class TestRequirementsAutowareReferenceSystem(unittest.TestCase):
             try:
                 while True:
                     print('topic_monitor looping:')
+
                     for name in ros2topic.api.get_topic_names(node=node):
                         if name not in seen_topics:
                             seen_topics[name] = {'pub_count': 0, 'sub_count': 0}
@@ -112,9 +113,20 @@ class TestRequirementsAutowareReferenceSystem(unittest.TestCase):
                                 if(reference_system[name]['pub_count'] ==
                                    seen_topics[name]['pub_count']):
                                     reference_system[name]['checks']['pubs_match'] = True
+                                else:
+                                    print('[' + name + '::pubs] EXPECTED: ' +
+                                          str(reference_system[name]['pub_count']))
+                                    print('[' + name + '::pubs] RECEIVED: ' +
+                                          str(seen_topics[name]['pub_count']))
+
                                 if(reference_system[name]['sub_count'] ==
                                    seen_topics[name]['sub_count']):
                                     reference_system[name]['checks']['subs_match'] = True
+                                else:
+                                    print('[' + name + '::subs] EXPECTED: ' +
+                                          str(reference_system[name]['sub_count']))
+                                    print('[' + name + '::subs] RECEIVED: ' +
+                                          str(seen_topics[name]['sub_count']))
 
                             print(all(reference_system[name]['checks'].values()))
                             print(

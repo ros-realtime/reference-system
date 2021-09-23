@@ -1,4 +1,4 @@
-# Overview
+# Overview [![CI status](https://github.com/ros-realtime/reference-system/actions/workflows/colcon-build.yml/badge.svg)](https://github.com/ros-realtime/reference-system/actions/workflows/colcon-build.yml)
 
 With the distributed development of ROS across many different organizations it is sometimes hard to benchmark and concretely show how a certain change to a certain system improves or reduces the performance of that system.  For example did a change from one executor to another actually reduce the CPU or was it something else entirely?
 

@@ -22,6 +22,10 @@ from launch_testing import post_shutdown_test
 import launch_testing.actions
 from launch_testing.asserts import assertExitCodes
 
+from tracetools_launch.action import Trace
+# from tracetools_trace.tools.names import DEFAULT_CONTEXT
+# from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS
+
 # Generate traces for specified executables and RMWs
 
 # this file has @variables@ that are meant to be automatically replaced
@@ -31,18 +35,31 @@ from launch_testing.asserts import assertExitCodes
 def generate_test_description():
     env = os.environ.copy()
     env['RCUTILS_CONSOLE_OUTPUT_FORMAT'] = '[{severity}] [{name}]: {message}'
+
+    # replaced with cmake `configure_file` function
+    rmw_impl = '@RMW_IMPLEMENTATION@'
+    test_exe = '@TEST_EXECUTABLE@'
+    test_exe_name = '@TEST_EXECUTABLE_NAME@'
+    timeout = '@TIMEOUT@'
+
     # specify rmw to use
-    env['RCL_ASSERT_RMW_ID_MATCHES'] = '@RMW_IMPLEMENTATION@'
-    env['RMW_IMPLEMENTATION'] = '@RMW_IMPLEMENTATION@'
+    env['RCL_ASSERT_RMW_ID_MATCHES'] = rmw_impl
+    env['RMW_IMPLEMENTATION'] = rmw_impl
 
     launch_description = LaunchDescription()
     proc_under_test = ExecuteProcess(
-        cmd=['@TEST_EXECUTABLE@'],
-        name='@TEST_EXECUTABLE_NAME@',
-        sigterm_timeout='@TIMEOUT@',
+        cmd=[test_exe],
+        name=test_exe_name,
+        sigterm_timeout=timeout,
         output='screen',
         env=env,
     )
+
+    trace_action = Trace(
+        session_name='profile-' + test_exe_name + '-' + rmw_impl + '-' + str(timeout) + 's'
+    )
+
+    launch_description.add_action(trace_action)
     launch_description.add_action(proc_under_test)
     launch_description.add_action(
         launch_testing.actions.ReadyToTest()
