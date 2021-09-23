@@ -71,7 +71,6 @@ def generate_test_description():
     proc_under_test = ExecuteProcess(
         cmd=['@TEST_EXECUTABLE@'],
         name='@TEST_EXECUTABLE_NAME@',
-        sigterm_timeout='@TIMEOUT@',
         output='screen',
         env=env,
     )
@@ -88,7 +87,6 @@ class TestRequirementsAutowareReferenceSystem(unittest.TestCase):
         with DirectNode([]) as node:
             seen_topics = {}
             try:
-                test_result = False
                 while True:
                     print('topic_monitor looping:')
                     for name in ros2topic.api.get_topic_names(node=node):

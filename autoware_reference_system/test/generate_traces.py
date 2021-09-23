@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import time
 import os
 import unittest
 
@@ -50,7 +51,6 @@ def generate_test_description():
     proc_under_test = ExecuteProcess(
         cmd=[test_exe],
         name=test_exe_name,
-        sigterm_timeout=timeout,
         output='screen',
         env=env,
     )
@@ -81,15 +81,16 @@ def generate_test_description():
     return launch_description, locals()
 
 
-class TestAutowareReferenceSystem(unittest.TestCase):
+class TestGenerateTracesAutowareReferenceSystem(unittest.TestCase):
 
-    def test_pubs_and_subs(self):
-        print('test_pubs_and_subs')
+    def test_generate_traces(self):
+        RUNTIME = float('@TIMEOUT@')
+        print(RUNTIME)
+        start_time = time.time()
+        end_time = start_time + RUNTIME
 
+        while time.time() < end_time:
+            print('generating traces...')
+            time.sleep(1) # second
 
-@post_shutdown_test()
-class TestAutowareReferenceSystemAfterShutdown(unittest.TestCase):
-
-    def test_process_exit_codes(self):
-        # Checks that all processes exited cleanly
-        assertExitCodes(self.proc_info)
+        self.assertTrue(True)

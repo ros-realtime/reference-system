@@ -81,22 +81,21 @@ if(${BUILD_TESTING})
 
     find_package(ros_testing REQUIRED)
 
-    # run target for n seconds
-    function(test_requirements target timeout)
+    # make sure executable matches system requirements
+    function(test_requirements target)
       set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
-      set(TEST_EXECUTABLE_NAME test_requirements_${target}_${timeout})
-      set(TIMEOUT ${timeout})
+      set(TEST_EXECUTABLE_NAME test_requirements_${target})
 
       # replaces all @var@ and ${var} within input file
       configure_file(
         test/test_requirements.py
-        test_requirements_${target}_${timeout}s.py
+        test_requirements_${target}.py
         @ONLY
       )
 
       add_ros_test(
-        ${CMAKE_CURRENT_BINARY_DIR}/test_requirements_${target}_${timeout}s.py
-        TIMEOUT ${timeout} # seconds
+        ${CMAKE_CURRENT_BINARY_DIR}/test_requirements_${target}.py
+        TIMEOUT 3 # seconds
       )
 
       if(TARGET ${target})
@@ -115,12 +114,12 @@ if(${BUILD_TESTING})
       # replaces all @var@ and ${var} within input file
       configure_file(
         test/generate_traces.py
-        generate_traces_${target}_${rmw_implementation}_${timeout}.py
+        generate_traces_${target}_${rmw_implementation}_${timeout}s.py
         @ONLY
       )
 
       add_ros_test(
-        ${CMAKE_CURRENT_BINARY_DIR}/generate_traces_${target}_${rmw_implementation}_${timeout}.py
+        ${CMAKE_CURRENT_BINARY_DIR}/generate_traces_${target}_${rmw_implementation}_${timeout}s.py
         TIMEOUT ${timeout} # seconds
       )
 
