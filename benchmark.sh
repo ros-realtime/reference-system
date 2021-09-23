@@ -9,7 +9,7 @@ fi
 
 # colcon build --packages-up-to reference_system
 
-for FILE in $(find build/reference_system/ -maxdepth 1 -type f -executable); do
+for FILE in $(find build/autoware_reference_system/ -maxdepth 1 -type f -executable); do
     BASE_FILE=$(basename ${FILE})
     echo benchmarking: ${BASE_FILE}
     psrecord ./${FILE} --include-children --plot ${BASE_FILE}_benchmark.png --duration ${BENCHMARK_DURATION_IN_SECONDS} >/dev/null 2>/dev/null
