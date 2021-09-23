@@ -52,6 +52,8 @@ if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
+  set(ROS_HOME ${CMAKE_BINARY_DIR}/../..)
+  message(STATUS "ROS_HOME: ${ROS_HOME}")
   if(${TEST_PLATFORM})
     # check current platform
     ament_add_pytest_test(${PROJECT_NAME}
@@ -67,6 +69,14 @@ if(${BUILD_TESTING})
       autoware_default_staticsinglethreaded
       autoware_default_multithreaded
       #autoware_default_custom
+    )
+
+    # Add more run times here (time to run traces for)
+    set(RUN_TIMES
+      5
+      # 10
+      # 30
+      # 60
     )
 
     find_package(ros_testing REQUIRED)
@@ -120,6 +130,32 @@ if(${BUILD_TESTING})
       endif()
     endfunction()
 
+    # generate report from traces
+    function(generate_report target timeout)
+      set(TRACE_DIR "${ROS_HOME}/tracing/profile_${target}_${rmw_implementation}_${timeout}s")
+      
+      # future note: this will fail on windows
+      add_test(
+        NAME convert_trace_${target}_${rmw_implementation}_${timeout}s
+        COMMAND bash -c "ros2 run tracetools_analysis convert ${TRACE_DIR}"
+        COMMENT "Convert CTF traces to single file"
+      )
+
+      add_test(
+        NAME process_trace_${target}_${rmw_implementation}_${timeout}s
+        COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
+        COMMENT "Process converted traces to create data model"
+      )
+
+#      add_test(
+#        NAME generate_report_${target}_${rmw_implementation}_${timeout}s
+#        COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
+#        COMMENT "Process converted traces to create data model"
+#      )
+
+
+    endfunction()
+
     # get available rmw implementations
     find_package(rmw_implementation_cmake REQUIRED)
     get_available_rmw_implementations(rmws_available)
@@ -134,8 +170,13 @@ if(${BUILD_TESTING})
       # loop over each rmw implmentation
       foreach(rmw_implementation ${rmws_available})
         find_package("${rmw_implementation}" REQUIRED)
-        message(STATUS "genereate_traces for ${exe}_${rmw_implementation}_5s")
-        generate_traces(${exe} 5)
+        foreach(time ${RUN_TIMES})
+          message(STATUS "for ${exe}_${rmw_implementation}_${time}s:")
+          message(STATUS "  generate traces")
+          generate_traces(${exe} ${time})
+          message(STATUS "  generate report")
+          generate_report(${exe} ${time})
+        endforeach()
       endforeach()
     endforeach()
   endif()

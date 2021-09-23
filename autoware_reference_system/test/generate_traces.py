@@ -23,8 +23,8 @@ import launch_testing.actions
 from launch_testing.asserts import assertExitCodes
 
 from tracetools_launch.action import Trace
-# from tracetools_trace.tools.names import DEFAULT_CONTEXT
-# from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS
+from tracetools_trace.tools.names import DEFAULT_CONTEXT
+from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS
 
 # Generate traces for specified executables and RMWs
 
@@ -56,7 +56,21 @@ def generate_test_description():
     )
 
     trace_action = Trace(
-        session_name='profile-' + test_exe_name + '-' + rmw_impl + '-' + str(timeout) + 's'
+        session_name='profile_' + test_exe_name + '_' + str(timeout) + 's',
+        events_ust=[
+            'lttng_ust_cyg_profile_fast:func_entry',
+            'lttng_ust_cyg_profile_fast:func_exit',
+            'lttng_ust_statedump:start',
+            'lttng_ust_statedump:end',
+            'lttng_ust_statedump:bin_info',
+            'lttng_ust_statedump:build_id',
+        ] + DEFAULT_EVENTS_ROS,
+        events_kernel=[
+            'sched_switch',
+        ],
+        context_names=[
+            'ip',
+        ] + DEFAULT_CONTEXT,
     )
 
     launch_description.add_action(trace_action)

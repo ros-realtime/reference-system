@@ -91,14 +91,35 @@ Results will be added to different tagged releases along with the specific confi
 
 ## Testing
 
-Unit tests can be written for the _reference system_ to check if all nodes, topics and other requirements are met before accepting test results.
+Tests can be written for the _reference system_ to check the platform as well as if all nodes, topics and other requirements are met before accepting test results.
 
 Tests are provided to automatically generate results for you by running `colcon test` on a supported platform above.
 
-To run the test, simply run the following command from your workspace:
+### Dependencies
+
+Before running the tests there are a few prerequisites to complete:
+
+- install LTTNG and `ros2_tracing` [following the instructions in `ros2_tracing`](https://gitlab.com/ros-tracing/ros2_tracing#building)
+   - _Note:_ if you are setting up [ a realtime linux kernel for a raspberry pi using this docker file](https://github.com/ros-realtime/rt-kernel-docker-builder#raspberry-pi-4-rt-linux-kernel), it should [already include LTTNG](https://github.com/ros-realtime/rt-kernel-docker-builder/pull/18)
+- install dependencies using the following command from the `colcon_ws` directory:
+    - `rosdep install --from-paths src --ignore-src -y`
+
+Once the above steps are complete you sould be ready to run the tests and generate some results.
+
+Source your ROS distribution as well as your `ros2_tracing` overlay, compile this repository using the proper CMake arguments and generate some test results:
 
 ```
-colcon build --packages-select autoware_reference_system --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
+# source your ROS distribution
+source /opt/ros/galactic/setup.bash
+# source your ros2_tracing overlay
+source /path/to/ros2_tracing_ws/install/setup.bash
+
+# cd to your colcon_ws with this repo inside
+cd /path/to/colcon_ws
+# build packages with benchmark tests enabled
+colcon build --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
+# run tests, generate traces and reports
+colcon test
 ```
 
 The `RUN_BENCHMARK` CMake variable will tell CMake to build the benchmark tests that will check the reference system against its requirements before running a sweep of tests to generate trace files and reports. Without the `RUN_BENCHMARK` variable set to `True` only the standard linter tests will be run.
