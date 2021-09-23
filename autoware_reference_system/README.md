@@ -19,7 +19,7 @@ Other messages with different fixed sizes could be added here in the future.
 
 When reporting results it will be important to include the _message type_ used duing the experiement so that comparisons can be done "apples to apples" and not "apples to pears".
 
-## Reference System Autoware
+## Autoware Reference System
 
 Built from [a handful of building-block node types](../README.md#concept-overview), each one of these nodes are meant to simulate a real-world node from the Autoware.Auto project lidar data pipeline.
 
@@ -64,6 +64,7 @@ For simplicity's sake, every node except for the _command nodes_ only ever publi
 4. [**Fusion Nodes**](../reference_system/include/reference_system/nodes/rclcpp/fusion.hpp)
     - all _fusion nodes_ have **two subscribers** and one publisher for this _reference system_
     - all _fusion nodes_ start processing for [**25 milliseconds**](include/autoware_reference_system/system/timing/default.hpp#L30) after a message is received **from all** subscriptions
+    - all _fusion nodes_ have a max input time difference between the first input received and last input received before publishing of [**9999** seconds](include/autoware_reference_system/system/timing/benchmark.hpp)
     - publishes message after processing is complete
     - total of **5 _fusion nodes_:**
         - [Point Cloud Fusion](include/autoware_reference_system/autoware_system_builder.hpp#L160)
