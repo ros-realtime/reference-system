@@ -11,17 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import time
 import os
+import time
 import unittest
 
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess
 
 import launch_testing
-from launch_testing import post_shutdown_test
 import launch_testing.actions
-from launch_testing.asserts import assertExitCodes
 
 from tracetools_launch.action import Trace
 from tracetools_trace.tools.names import DEFAULT_CONTEXT
@@ -91,6 +89,6 @@ class TestGenerateTracesAutowareReferenceSystem(unittest.TestCase):
 
         while time.time() < end_time:
             print('generating traces...')
-            time.sleep(1) # second
+            time.sleep(1)  # second
 
         self.assertTrue(True)

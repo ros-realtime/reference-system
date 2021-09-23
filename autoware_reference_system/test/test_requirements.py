@@ -19,9 +19,7 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess
 
 import launch_testing
-from launch_testing import post_shutdown_test
 import launch_testing.actions
-from launch_testing.asserts import assertExitCodes
 
 from ros2cli.node.direct import DirectNode
 import ros2topic.api
@@ -137,7 +135,7 @@ class TestRequirementsAutowareReferenceSystem(unittest.TestCase):
                         # exit while loop, data was collected
                         return
                     # slow down while loop
-                    time.sleep(0.5) 
+                    time.sleep(0.5)
             except SystemError:
                 pass
             except KeyboardInterrupt:
