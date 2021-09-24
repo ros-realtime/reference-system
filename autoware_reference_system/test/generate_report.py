@@ -25,6 +25,7 @@ from tracetools_analysis.processor.ros2 import Ros2Handler
 from tracetools_analysis.utils.ros2 import Ros2DataModelUtil
 
 path = ''
+pwd = ''
 symbols = None
 data_model = None
 
@@ -40,6 +41,10 @@ def checkPath(p):
     if not os.path.isdir(p):
         print('Given path does not exist: ' + p)
         sys.exit()
+
+    global pwd
+    pwd = os.path.basename(os.path.normpath(path))
+    print(pwd)
     return p
 
 
@@ -57,8 +62,9 @@ def initTraceData():
 
 def memory_usage_report():
     global path
+    global pwd
     output_file(
-        filename=path + 'memory_usage_report.html',
+        filename=path + pwd + '_memory_usage_report.html',
         title='Memory Usage Report')
 
     # duration_summary = summary(symbols, data_model=data_model, size=SIZE_SUMMARY)
@@ -72,10 +78,11 @@ def memory_usage_report():
 
 def callback_report():
     global path
+    global pwd
     global data_model
 
     output_file(
-        filename=path + 'callback_duration_report.html',
+        filename=path + pwd + '_callback_duration_report.html',
         title='Callback Duration Report')
 
     duration_summary = summary(symbols, data_model=data_model, size=SIZE_SUMMARY)
@@ -85,7 +92,7 @@ def callback_report():
 
     # show(report)
     save(report)
-    export_png(report, filename=path + 'callback_duration_report.png')
+    export_png(report, filename=path + pwd + '_callback_duration_report.png')
 
 
 def generate_reports():
