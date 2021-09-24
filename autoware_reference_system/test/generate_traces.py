@@ -55,7 +55,7 @@ def generate_test_description():
         env=env,
     )
 
-    trace_action = Trace(
+    trace_callback_action = Trace(
         session_name='profile_' + test_exe_name + '_' + str(timeout) + 's',
         events_ust=[
             'lttng_ust_cyg_profile_fast:func_entry',
@@ -63,7 +63,7 @@ def generate_test_description():
             'lttng_ust_statedump:start',
             'lttng_ust_statedump:end',
             'lttng_ust_statedump:bin_info',
-            'lttng_ust_statedump:build_id',
+            'lttng_ust_statedump:build_id'
         ] + DEFAULT_EVENTS_ROS,
         events_kernel=[
             'sched_switch',
@@ -73,7 +73,24 @@ def generate_test_description():
         ] + DEFAULT_CONTEXT,
     )
 
-    launch_description.add_action(trace_action)
+    trace_memalloc_action = Trace(
+        session_name='profile_' + test_exe_name + '_' + str(timeout) + 's',
+        events_ust=[
+            'lttng_ust_libc:malloc',
+            'lttng_ust_libc:calloc',
+            'lttng_ust_libc:realloc',
+            'lttng_ust_libc:free',
+            'lttng_ust_libc:memalign',
+            'lttng_ust_libc:posix_memalign'
+        ] + DEFAULT_EVENTS_ROS,
+        events_kernel=[
+            'kmem_mm_page_alloc',
+            'kmem_mm_page_free'
+        ]
+    )
+
+    # launch_description.add_action(trace_callback_action)
+    launch_description.add_action(trace_memalloc_action)
     launch_description.add_action(proc_under_test)
     launch_description.add_action(
         launch_testing.actions.ReadyToTest()

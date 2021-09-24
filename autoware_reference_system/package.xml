@@ -26,6 +26,8 @@
   <test_depend>tracetools_analysis</test_depend>
   <test_depend>tracetools_launch</test_depend>
   <test_depend>tracetools_trace</test_depend>
+  <test_depend>python3-bokeh-pip</test_depend>
+  <test_depend>python3-selenium</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

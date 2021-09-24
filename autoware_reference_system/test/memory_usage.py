@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import sys
 
 from bokeh.io import show
 from bokeh.models import ColumnDataSource
@@ -27,11 +28,13 @@ from tracetools_analysis.processor.memory_usage import KernelMemoryUsageHandler
 from tracetools_analysis.processor.memory_usage import UserspaceMemoryUsageHandler
 from tracetools_analysis.processor.ros2 import Ros2Handler
 from tracetools_analysis.utils.memory_usage import MemoryUsageDataModelUtil
-from tracetools_analysis.utils.ros2 import Ros2DataModelUtil  # Process
-# sys.path.insert(0, '../')
-# sys.path.insert(0, '../../../ros-tracing/ros2_tracing/tracetools_read/')
+from tracetools_analysis.utils.ros2 import Ros2DataModelUtil
 
-path = '/'
+# get path from command line if available, otherwise set to default
+if(len(sys.argv) >= 2):
+    path = sys.argv[1]
+else:
+    path = '/home/ubuntu/.ros/tracing/profile'
 
 events = load_file(path)
 ust_memory_handler = UserspaceMemoryUsageHandler()

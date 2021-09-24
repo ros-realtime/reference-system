@@ -151,13 +151,11 @@ if(${BUILD_TESTING})
         COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
       )
 
-#      add_test(
-#        NAME generate_report_${target}_${rmw_implementation}_${timeout}s
-#        COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
-#        COMMENT "Process converted traces to create data model"
-#      )
-
-
+      add_test(
+        NAME generate_report_${target}_${rmw_implementation}_${timeout}s
+        COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_report.py ${TRACE_DIR}"
+        COMMENT "Process converted traces to create data model"
+      )
     endfunction()
 
     # get available rmw implementations

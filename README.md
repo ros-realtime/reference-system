@@ -124,7 +124,7 @@ colcon build --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
 # source the newly built workspace to make sure to use the updated tracetools package
 source install/local_setup.bash
 # run tests, generate traces and reports
-colcon test
+colcon test --packages-select $(colcon list -n --base-paths src/reference-system/)
 ```
 
 After the tests are complete you should now have a director called `tracing` in your `colcon_ws` top-level directory.
