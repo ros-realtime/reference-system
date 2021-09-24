@@ -110,24 +110,25 @@ if(${BUILD_TESTING})
     endfunction()
 
     # run target for n seconds
-    function(generate_traces target timeout)
+    function(generate_traces target runtime)
       set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
       set(TEST_EXECUTABLE_NAME ${target}_${rmw_implementation})
-      set(TIMEOUT ${timeout})
+      set(RUNTIME ${runtime})
       set(RMW_IMPLEMENTATION ${rmw_implementation})
 
-      # add exta time to make sure tests can run for entire timeout period
-      math(EXPR EXTRA_TIMEOUT "${TIMEOUT} + 5")
+      # ensure timeout is longer than the test runtime
+      math(EXPR TIMEOUT "${RUNTIME} + 5")
+
       # replaces all @var@ and ${var} within input file
       configure_file(
         test/generate_traces.py
-        generate_traces_${target}_${rmw_implementation}_${timeout}s.py
+        generate_traces_${target}_${rmw_implementation}_${runtime}s.py
         @ONLY
       )
 
       add_ros_test(
-        ${CMAKE_CURRENT_BINARY_DIR}/generate_traces_${target}_${rmw_implementation}_${timeout}s.py
-        TIMEOUT ${EXTRA_TIMEOUT} # seconds
+        ${CMAKE_CURRENT_BINARY_DIR}/generate_traces_${target}_${rmw_implementation}_${runtime}s.py
+        TIMEOUT ${TIMEOUT} # seconds
       )
 
       if(TARGET ${target})
@@ -137,22 +138,22 @@ if(${BUILD_TESTING})
     endfunction()
 
     # generate report from traces
-    function(generate_report target timeout)
-      set(TRACE_DIR "${ROS_HOME}/tracing/profile_${target}_${rmw_implementation}_${timeout}s")
+    function(generate_report target runtime)
+      set(TRACE_DIR "${ROS_HOME}/tracing/profile_${target}_${rmw_implementation}_${runtime}s")
 
       # future note: this will fail on windows
       add_test(
-        NAME convert_trace_${target}_${rmw_implementation}_${timeout}s
+        NAME convert_trace_${target}_${rmw_implementation}_${runtime}s
         COMMAND bash -c "ros2 run tracetools_analysis convert ${TRACE_DIR}"
       )
 
       add_test(
-        NAME process_trace_${target}_${rmw_implementation}_${timeout}s
+        NAME process_trace_${target}_${rmw_implementation}_${runtime}s
         COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
       )
 
       add_test(
-        NAME generate_report_${target}_${rmw_implementation}_${timeout}s
+        NAME generate_report_${target}_${rmw_implementation}_${runtime}s
         COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_report.py ${TRACE_DIR}"
         COMMENT "Process converted traces to create data model"
       )
