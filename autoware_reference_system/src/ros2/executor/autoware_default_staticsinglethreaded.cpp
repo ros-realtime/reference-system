@@ -24,9 +24,9 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  using TimeConfig = nodes::timing::Default;
+  // using TimeConfig = nodes::timing::Default;
   // uncomment for benchmarking
-  // using TimeConfig = nodes::timing::BenchmarkCPUUsage;
+  using TimeConfig = nodes::timing::BenchmarkCPUUsage;
   // set_benchmark_mode(true);
 
   auto nodes = create_autoware_nodes<RclcppSystem, TimeConfig>();

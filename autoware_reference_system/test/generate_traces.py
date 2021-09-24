@@ -12,19 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import os
+import time
 import unittest
 
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess
 
 import launch_testing
-from launch_testing import post_shutdown_test
 import launch_testing.actions
-from launch_testing.asserts import assertExitCodes
 
 from tracetools_launch.action import Trace
-# from tracetools_trace.tools.names import DEFAULT_CONTEXT
-# from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS
+from tracetools_trace.tools.names import DEFAULT_CONTEXT
+from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS
 
 # Generate traces for specified executables and RMWs
 
@@ -40,7 +39,8 @@ def generate_test_description():
     rmw_impl = '@RMW_IMPLEMENTATION@'
     test_exe = '@TEST_EXECUTABLE@'
     test_exe_name = '@TEST_EXECUTABLE_NAME@'
-    timeout = '@TIMEOUT@'
+    timeout = int('@TIMEOUT@')
+    extra_timeout = timeout + 5
 
     # specify rmw to use
     env['RCL_ASSERT_RMW_ID_MATCHES'] = rmw_impl
@@ -50,13 +50,27 @@ def generate_test_description():
     proc_under_test = ExecuteProcess(
         cmd=[test_exe],
         name=test_exe_name,
-        sigterm_timeout=timeout,
+        sigterm_timeout=str(extra_timeout),
         output='screen',
         env=env,
     )
 
     trace_action = Trace(
-        session_name='profile-' + test_exe_name + '-' + rmw_impl + '-' + str(timeout) + 's'
+        session_name='profile_' + test_exe_name + '_' + str(timeout) + 's',
+        events_ust=[
+            'lttng_ust_cyg_profile_fast:func_entry',
+            'lttng_ust_cyg_profile_fast:func_exit',
+            'lttng_ust_statedump:start',
+            'lttng_ust_statedump:end',
+            'lttng_ust_statedump:bin_info',
+            'lttng_ust_statedump:build_id',
+        ] + DEFAULT_EVENTS_ROS,
+        events_kernel=[
+            'sched_switch',
+        ],
+        context_names=[
+            'ip',
+        ] + DEFAULT_CONTEXT,
     )
 
     launch_description.add_action(trace_action)
@@ -67,15 +81,16 @@ def generate_test_description():
     return launch_description, locals()
 
 
-class TestAutowareReferenceSystem(unittest.TestCase):
+class TestGenerateTracesAutowareReferenceSystem(unittest.TestCase):
 
-    def test_pubs_and_subs(self):
-        print('test_pubs_and_subs')
+    def test_generate_traces(self):
+        RUNTIME = float('@TIMEOUT@')
+        print(RUNTIME)
+        start_time = time.time()
+        end_time = start_time + RUNTIME
 
+        while time.time() < end_time:
+            print('generating traces...')
+            time.sleep(1)  # second
 
-@post_shutdown_test()
-class TestAutowareReferenceSystemAfterShutdown(unittest.TestCase):
-
-    def test_process_exit_codes(self):
-        # Checks that all processes exited cleanly
-        assertExitCodes(self.proc_info)
+        self.assertTrue(True)

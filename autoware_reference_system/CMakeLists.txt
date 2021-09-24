@@ -52,6 +52,8 @@ if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
+  set(ROS_HOME ${CMAKE_BINARY_DIR}/../..)
+  message(STATUS "ROS_HOME: ${ROS_HOME}")
   if(${TEST_PLATFORM})
     # check current platform
     ament_add_pytest_test(${PROJECT_NAME}
@@ -69,24 +71,31 @@ if(${BUILD_TESTING})
       #autoware_default_custom
     )
 
+    # Add more run times here (time to run traces for)
+    set(RUN_TIMES
+      5
+      # 10
+      # 30
+      # 60
+    )
+
     find_package(ros_testing REQUIRED)
 
-    # run target for n seconds
-    function(test_requirements target timeout)
+    # make sure executable matches system requirements
+    function(test_requirements target)
       set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
-      set(TEST_EXECUTABLE_NAME test_requirements_${target}_${timeout})
-      set(TIMEOUT ${timeout})
+      set(TEST_EXECUTABLE_NAME test_requirements_${target})
 
       # replaces all @var@ and ${var} within input file
       configure_file(
         test/test_requirements.py
-        test_requirements_${target}_${timeout}s.py
+        test_requirements_${target}.py
         @ONLY
       )
 
       add_ros_test(
-        ${CMAKE_CURRENT_BINARY_DIR}/test_requirements_${target}_${timeout}s.py
-        TIMEOUT ${timeout} # seconds
+        ${CMAKE_CURRENT_BINARY_DIR}/test_requirements_${target}.py
+        TIMEOUT 3 # seconds
       )
 
       if(TARGET ${target})
@@ -102,22 +111,48 @@ if(${BUILD_TESTING})
       set(TIMEOUT ${timeout})
       set(RMW_IMPLEMENTATION ${rmw_implementation})
 
+      # add exta time to make sure tests can run for entire timeout period
+      math(EXPR EXTRA_TIMEOUT "${TIMEOUT} + 5")
       # replaces all @var@ and ${var} within input file
       configure_file(
         test/generate_traces.py
-        generate_traces_${target}_${rmw_implementation}_${timeout}.py
+        generate_traces_${target}_${rmw_implementation}_${timeout}s.py
         @ONLY
       )
 
       add_ros_test(
-        ${CMAKE_CURRENT_BINARY_DIR}/generate_traces_${target}_${rmw_implementation}_${timeout}.py
-        TIMEOUT ${timeout} # seconds
+        ${CMAKE_CURRENT_BINARY_DIR}/generate_traces_${target}_${rmw_implementation}_${timeout}s.py
+        TIMEOUT ${EXTRA_TIMEOUT} # seconds
       )
 
       if(TARGET ${target})
         ament_target_dependencies(${target}
           "rclcpp" "reference_interfaces" "reference_system")
       endif()
+    endfunction()
+
+    # generate report from traces
+    function(generate_report target timeout)
+      set(TRACE_DIR "${ROS_HOME}/tracing/profile_${target}_${rmw_implementation}_${timeout}s")
+
+      # future note: this will fail on windows
+      add_test(
+        NAME convert_trace_${target}_${rmw_implementation}_${timeout}s
+        COMMAND bash -c "ros2 run tracetools_analysis convert ${TRACE_DIR}"
+      )
+
+      add_test(
+        NAME process_trace_${target}_${rmw_implementation}_${timeout}s
+        COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
+      )
+
+#      add_test(
+#        NAME generate_report_${target}_${rmw_implementation}_${timeout}s
+#        COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
+#        COMMENT "Process converted traces to create data model"
+#      )
+
+
     endfunction()
 
     # get available rmw implementations
@@ -134,8 +169,13 @@ if(${BUILD_TESTING})
       # loop over each rmw implmentation
       foreach(rmw_implementation ${rmws_available})
         find_package("${rmw_implementation}" REQUIRED)
-        message(STATUS "genereate_traces for ${exe}_${rmw_implementation}_5s")
-        generate_traces(${exe} 5)
+        foreach(time ${RUN_TIMES})
+          message(STATUS "for ${exe}_${rmw_implementation}_${time}s:")
+          message(STATUS "  generate traces")
+          generate_traces(${exe} ${time})
+          message(STATUS "  generate report")
+          generate_report(${exe} ${time})
+        endforeach()
       endforeach()
     endforeach()
   endif()

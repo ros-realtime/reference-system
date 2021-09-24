@@ -91,15 +91,44 @@ Results will be added to different tagged releases along with the specific confi
 
 ## Testing
 
-Unit tests can be written for the _reference system_ to check if all nodes, topics and other requirements are met before accepting test results.
+Tests can be written for the _reference system_ to check the platform as well as if all nodes, topics and other requirements are met before accepting test results.
 
 Tests are provided to automatically generate results for you by running `colcon test` on a supported platform above.
 
-To run the test, simply run the following command from your workspace:
+**Note:** during the testing _trace data_ generated from `LTTng` will be placed in `colcon_ws/tracing`. If the tracing directory isnt there the tests will automatically generate it for you.
+
+### Dependencies
+
+Before running the tests there are a few prerequisites to complete:
+
+- install LTTng and `ros2_tracing` [following the instructions in `ros2_tracing`](https://gitlab.com/ros-tracing/ros2_tracing#building)
+   - _Note:_ if you are setting up [ a realtime linux kernel for a raspberry pi using this docker file](https://github.com/ros-realtime/rt-kernel-docker-builder#raspberry-pi-4-rt-linux-kernel), it should [already include LTTng](https://github.com/ros-realtime/rt-kernel-docker-builder/pull/18)
+   - _Note:_ make sure to clone `ros2_tracing` into **the same workspace as where you put the `reference-system`**, the tests will not properly run if they are not in the same directory.
+- install dependencies using the following command from the `colcon_ws` directory:
+    - `rosdep install --from-paths src --ignore-src -y`
+
+Once the above steps are complete you sould be ready to run the tests and generate some results.
+
+Source your ROS distribution as well as your `ros2_tracing` overlay, compile this repository using the proper CMake arguments and generate some test results:
 
 ```
-colcon build --packages-select autoware_reference_system --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
+# source your ROS distribution
+source /opt/ros/galactic/setup.bash
+
+# cd to your colcon_ws with this repo and `ros2_tracing` inside
+cd /path/to/colcon_ws
+# build packages with benchmark tests enabled
+colcon build --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
+
+# IMPORTANT
+# source the newly built workspace to make sure to use the updated tracetools package
+source install/local_setup.bash
+# run tests, generate traces and reports
+colcon test
 ```
+
+After the tests are complete you should now have a director called `tracing` in your `colcon_ws` top-level directory.
+This directory should now hold tracing data and reports for all tests performed.
 
 The `RUN_BENCHMARK` CMake variable will tell CMake to build the benchmark tests that will check the reference system against its requirements before running a sweep of tests to generate trace files and reports. Without the `RUN_BENCHMARK` variable set to `True` only the standard linter tests will be run.
 

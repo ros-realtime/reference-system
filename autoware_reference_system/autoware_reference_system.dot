@@ -69,9 +69,8 @@ digraph G {
     "Point Cloud Map Loader" -> "NDT Localizer";
     "Lanelet2 Global Planner" -> "Lanelet2 Map Loader";
     "Lanelet2 Global Planner" -> "Behavior Planner";
-
+    "Lanelet2 Map Loader" -> "Behavior Planner";
     "Lanelet2 Map Loader" -> "Parking Planner";
-
     "Parking Planner" -> "Behavior Planner";
     "Lanelet2 Map Loader" -> "Lane Planner" [constraint=false];
 
