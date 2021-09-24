@@ -57,8 +57,13 @@ if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
-  set(ROS_HOME ${CMAKE_BINARY_DIR}/../..)
-  message(STATUS "ROS_HOME: ${ROS_HOME}")
+  # tracetools uses ROS_HOME to place tracing data
+  if(NOT DEFINED $ENV{ROS_HOME})
+    set(ROS_HOME $ENV{HOME}/.ros)
+  else()
+    set(ROS_HOME $ENV{ROS_HOME})
+  endif()
+
   if(${TEST_PLATFORM})
     # check current platform
     ament_add_pytest_test(${PROJECT_NAME}
