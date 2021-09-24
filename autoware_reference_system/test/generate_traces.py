@@ -39,7 +39,8 @@ def generate_test_description():
     rmw_impl = '@RMW_IMPLEMENTATION@'
     test_exe = '@TEST_EXECUTABLE@'
     test_exe_name = '@TEST_EXECUTABLE_NAME@'
-    timeout = '@TIMEOUT@'
+    timeout = int('@TIMEOUT@')
+    extra_timeout = timeout + 5
 
     # specify rmw to use
     env['RCL_ASSERT_RMW_ID_MATCHES'] = rmw_impl
@@ -49,6 +50,7 @@ def generate_test_description():
     proc_under_test = ExecuteProcess(
         cmd=[test_exe],
         name=test_exe_name,
+        sigterm_timeout=str(extra_timeout),
         output='screen',
         env=env,
     )

@@ -111,6 +111,8 @@ if(${BUILD_TESTING})
       set(TIMEOUT ${timeout})
       set(RMW_IMPLEMENTATION ${rmw_implementation})
 
+      # add exta time to make sure tests can run for entire timeout period
+      math(EXPR EXTRA_TIMEOUT "${TIMEOUT} + 5")
       # replaces all @var@ and ${var} within input file
       configure_file(
         test/generate_traces.py
@@ -120,7 +122,7 @@ if(${BUILD_TESTING})
 
       add_ros_test(
         ${CMAKE_CURRENT_BINARY_DIR}/generate_traces_${target}_${rmw_implementation}_${timeout}s.py
-        TIMEOUT ${timeout} # seconds
+        TIMEOUT ${EXTRA_TIMEOUT} # seconds
       )
 
       if(TARGET ${target})
@@ -132,7 +134,7 @@ if(${BUILD_TESTING})
     # generate report from traces
     function(generate_report target timeout)
       set(TRACE_DIR "${ROS_HOME}/tracing/profile_${target}_${rmw_implementation}_${timeout}s")
-      
+
       # future note: this will fail on windows
       add_test(
         NAME convert_trace_${target}_${rmw_implementation}_${timeout}s

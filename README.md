@@ -119,6 +119,10 @@ source /opt/ros/galactic/setup.bash
 cd /path/to/colcon_ws
 # build packages with benchmark tests enabled
 colcon build --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
+
+# IMPORTANT
+# source the newly built workspace to make sure to use the updated tracetools package
+source install/local_setup.bash
 # run tests, generate traces and reports
 colcon test
 ```
