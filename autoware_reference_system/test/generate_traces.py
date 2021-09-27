@@ -11,12 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import os
 import time
 import unittest
 
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess
+from launch.actions import ExecuteProcess, SetEnvironmentVariable
 
 import launch_testing
 import launch_testing.actions
@@ -33,29 +32,31 @@ RUNTIME = int('@RUNTIME@')
 
 
 def generate_test_description():
-    env = os.environ.copy()
-    env['RCUTILS_CONSOLE_OUTPUT_FORMAT'] = '[{severity}] [{name}]: {message}'
-
     # replaced with cmake `configure_file` function
     rmw_impl = '@RMW_IMPLEMENTATION@'
     test_exe = '@TEST_EXECUTABLE@'
     test_exe_name = '@TEST_EXECUTABLE_NAME@'
     timeout = int('@TIMEOUT@')
 
-    # specify rmw to use
-    env['RCL_ASSERT_RMW_ID_MATCHES'] = rmw_impl
-    env['RMW_IMPLEMENTATION'] = rmw_impl
-
     launch_description = LaunchDescription()
+
+    # see https://github.com/ros2/launch/issues/417
+    # have to use `SetEnvironmentVariable` to set env vars in launch description
+    envvar_rcutils_action = SetEnvironmentVariable(
+        'RCUTILS_CONSOLE_OUTPUT_FORMAT', '[{severity}] [{name}]: {message}')
+    envvar_rmw_action = SetEnvironmentVariable(
+        'RMW_IMPLEMENTATION', rmw_impl)
+    envvar_rclassert_rmw_action = SetEnvironmentVariable(
+        'RCL_ASSERT_RMW_ID_MATCHES', rmw_impl)
+
     proc_under_test = ExecuteProcess(
         cmd=[test_exe],
         name=test_exe_name,
         sigterm_timeout=str(timeout),
-        output='screen',
-        env=env,
+        output='screen'
     )
 
-    trace_callback_action = Trace(
+    trace_action = Trace(
         session_name='profile_' + test_exe_name + '_' + str(RUNTIME) + 's',
         events_ust=[
             'lttng_ust_cyg_profile_fast:func_entry',
@@ -64,18 +65,6 @@ def generate_test_description():
             'lttng_ust_statedump:end',
             'lttng_ust_statedump:bin_info',
             'lttng_ust_statedump:build_id',
-        ] + DEFAULT_EVENTS_ROS,
-        events_kernel=[
-            'sched_switch',
-        ],
-        context_names=[
-            'ip',
-        ] + DEFAULT_CONTEXT,
-    )
-
-    trace_memalloc_action = Trace(
-        session_name='profile_' + test_exe_name + '_' + str(RUNTIME) + 's',
-        events_ust=[
             'lttng_ust_libc:malloc',
             'lttng_ust_libc:calloc',
             'lttng_ust_libc:realloc',
@@ -84,13 +73,19 @@ def generate_test_description():
             'lttng_ust_libc:posix_memalign',
         ] + DEFAULT_EVENTS_ROS,
         events_kernel=[
+            'sched_switch',
             'kmem_mm_page_alloc',
             'kmem_mm_page_free',
-        ]
+        ],
+        context_names=[
+            'ip',
+        ] + DEFAULT_CONTEXT,
     )
 
-    launch_description.add_action(trace_callback_action)
-    launch_description.add_action(trace_memalloc_action)
+    launch_description.add_action(envvar_rcutils_action)
+    launch_description.add_action(envvar_rclassert_rmw_action)
+    launch_description.add_action(envvar_rmw_action)
+    launch_description.add_action(trace_action)
     launch_description.add_action(proc_under_test)
     launch_description.add_action(
         launch_testing.actions.ReadyToTest()
