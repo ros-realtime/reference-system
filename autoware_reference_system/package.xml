@@ -23,6 +23,8 @@
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <test_depend>ros_testing</test_depend>
+  <test_depend>launch</test_depend>
+  <test_depend>launch_ros</test_depend>
   <test_depend>tracetools_analysis</test_depend>
   <test_depend>tracetools_launch</test_depend>
   <test_depend>tracetools_trace</test_depend>

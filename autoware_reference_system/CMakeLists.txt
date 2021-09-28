@@ -89,6 +89,15 @@ if(${BUILD_TESTING})
       # 60
     )
 
+    # Add more trace types here
+    # had to seperate out traces due to dropped events
+    # see https://github.com/ros-realtime/reference-system/pull/33#issuecomment-928264240
+    set(TRACE_TYPES
+      callback
+      memory
+      # cpu
+    )
+
     find_package(ros_testing REQUIRED)
 
     # make sure executable matches system requirements
@@ -115,8 +124,8 @@ if(${BUILD_TESTING})
     endfunction()
 
     # run target for n seconds
-    function(generate_traces target runtime)
-      set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
+    function(generate_traces target  trace_type runtime)
+      set(TEST_EXECUTABLE ${target})
       set(TEST_EXECUTABLE_NAME ${target}_${rmw_implementation})
       set(RUNTIME ${runtime})
       set(RMW_IMPLEMENTATION ${rmw_implementation})
@@ -126,13 +135,13 @@ if(${BUILD_TESTING})
 
       # replaces all @var@ and ${var} within input file
       configure_file(
-        test/generate_traces.py
-        generate_traces_${target}_${rmw_implementation}_${runtime}s.py
+        test/generate_${trace_type}_traces.py
+        generate_${trace_type}_traces_${target}_${rmw_implementation}_${runtime}s.py
         @ONLY
       )
 
       add_ros_test(
-        ${CMAKE_CURRENT_BINARY_DIR}/generate_traces_${target}_${rmw_implementation}_${runtime}s.py
+        ${CMAKE_CURRENT_BINARY_DIR}/generate_${trace_type}_traces_${target}_${rmw_implementation}_${runtime}s.py
         TIMEOUT ${TIMEOUT} # seconds
       )
 
@@ -143,23 +152,23 @@ if(${BUILD_TESTING})
     endfunction()
 
     # generate report from traces
-    function(generate_report target runtime)
-      set(TRACE_DIR "${ROS_HOME}/tracing/profile_${target}_${rmw_implementation}_${runtime}s")
+    function(generate_report target trace_type runtime)
+      set(TRACE_DIR "${ROS_HOME}/tracing/profile_${trace_type}_${target}_${rmw_implementation}_${runtime}s")
 
       # future note: this will fail on windows
       add_test(
-        NAME convert_trace_${target}_${rmw_implementation}_${runtime}s
+        NAME convert_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
         COMMAND bash -c "ros2 run tracetools_analysis convert ${TRACE_DIR}"
       )
 
       add_test(
-        NAME process_trace_${target}_${rmw_implementation}_${runtime}s
+        NAME process_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
         COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
       )
 
       add_test(
-        NAME generate_report_${target}_${rmw_implementation}_${runtime}s
-        COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_report.py ${TRACE_DIR}"
+        NAME generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
+        COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_reports.py ${TRACE_DIR}"
         COMMENT "Process converted traces to create data model"
       )
     endfunction()
@@ -179,11 +188,10 @@ if(${BUILD_TESTING})
       foreach(rmw_implementation ${rmws_available})
         find_package("${rmw_implementation}" REQUIRED)
         foreach(time ${RUN_TIMES})
-          message(STATUS "for ${exe}_${rmw_implementation}_${time}s:")
-          message(STATUS "  generate traces")
-          generate_traces(${exe} ${time})
-          message(STATUS "  generate report")
-          generate_report(${exe} ${time})
+          foreach(type ${TRACE_TYPES})
+            generate_traces(${exe} ${type} ${time})
+            generate_report(${exe} ${type} ${time})
+          endforeach()
         endforeach()
       endforeach()
     endforeach()

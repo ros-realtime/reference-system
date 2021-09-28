@@ -16,7 +16,7 @@ import sys
 
 from bokeh.io import export_png, output_file
 from bokeh.layouts import layout
-from bokeh.plotting import save, show
+from bokeh.plotting import save
 
 import callback_duration
 import memory_usage
@@ -36,9 +36,17 @@ memory_data_model = None
 callback_symbols = None
 ust_memory_usage_dfs = None
 kernel_memory_usage_dfs = None
+trace_type = None
 
 SIZE_SUMMARY = 800
 SIZE_SUBPLOT = 500
+
+TRACE_CALLBACK = 'callback'
+TRACE_MEMORY = 'memory'
+TRACE_UNSUPPORTED = 'unsupported'
+# TODO(flynneva): support path as just the `tracing` directory and loop over
+# all subdirectories that have tracing data in them
+TRACE_DIRECTORY = 'tracing'
 
 
 def checkPath(p):
@@ -50,43 +58,64 @@ def checkPath(p):
         print('Given path does not exist: ' + p)
         sys.exit()
 
+    # check if given path is a callback trace
+    global trace_type
+    if p.find(TRACE_CALLBACK) >= 0:
+        trace_type = TRACE_CALLBACK
+    elif p.find(TRACE_MEMORY) >= 0:
+        trace_type = TRACE_MEMORY
+    else:
+        trace_type = TRACE_UNSUPPORTED
+
     global pwd
     pwd = os.path.basename(os.path.normpath(path))
     print(pwd)
     return p
 
 
-def initTraceData():
+def initCallbackTraceData():
+    events = load_file(path)
+    handler = Ros2Handler.process(events)
+    handler.data.print_data()
+
+    global data_model
+    data_model = Ros2DataModelUtil(handler.data)
+
+    global symbols
+    symbols = data_model.get_callback_symbols()
+
+    global callback_symbols
+    callback_symbols = ros2_data_model.get_callback_symbols()
+
+
+def initMemoryTraceData():
     events = load_file(path)
     ros2_handler = Ros2Handler.process(events)
     ust_memory_handler = UserspaceMemoryUsageHandler()
     kernel_memory_handler = KernelMemoryUsageHandler()
 
-    global ros2_data_model
-    # callback duration
-    ros2_data_model = Ros2DataModelUtil(ros2_handler.data)
-    global callback_symbols
-    callback_symbols = ros2_data_model.get_callback_symbols()
-
     # memory usage
     ros2_handler = Ros2Handler()
     mem_proc = Processor(
-        ros2_handler,
         ust_memory_handler,
-        kernel_memory_handler
+        kernel_memory_handler,
+        ros2_handler
     )
     mem_proc.process(events)
 
+    global ros2_data_model
     global memory_data_model
     memory_data_model = MemoryUsageDataModelUtil(
         userspace=ust_memory_handler.data,
         kernel=kernel_memory_handler.data
     )
+    ros2_data_model = Ros2DataModelUtil(ros2_handler.data)
 
 
-def memory_usage_report():
+def memory_report():
+    fname = path + pwd + '_memory_usage_report'
     output_file(
-        filename=path + pwd + '_memory_usage_report.html',
+        filename=fname + '.html',
         title='Memory Usage Report')
 
     report = memory_usage.summary(
@@ -94,13 +123,14 @@ def memory_usage_report():
         ros2_data_util=ros2_data_model,
         size=SIZE_SUMMARY)
 
-    show(report)
+    save(report)
+    export_png(report, filename=fname + '.png')
 
 
 def callback_report():
-
+    fname = path + pwd + '_callback_duration_report'
     output_file(
-        filename=path + pwd + '_callback_duration_report.html',
+        filename=fname + '.html',
         title='Callback Duration Report')
 
     duration_summary = callback_duration.summary(
@@ -116,11 +146,14 @@ def callback_report():
 
     # show(report)
     save(report)
-    export_png(report, filename=path + pwd + '_callback_duration_report.png')
+    export_png(report, filename=fname + '.png')
 
 
 def generate_reports():
-    callback_report()
+    if(trace_type == TRACE_CALLBACK):
+        callback_report()
+    elif(trace_type == TRACE_MEMORY):
+        memory_report()
 
 
 if __name__ == '__main__':
@@ -129,5 +162,14 @@ if __name__ == '__main__':
     else:
         path = '/home/ubuntu/.ros/tracing/profile'
     path = checkPath(path)
-    initTraceData()
+
+    if(trace_type == TRACE_CALLBACK):
+        initCallbackTraceData()
+    elif(trace_type == TRACE_MEMORY):
+        initMemoryTraceData()
+    elif(trace_type == TRACE_UNSUPPORTED):
+        print('Trace files supplied have an unsupported profile name')
+        print('Make sure they have either `callback` or `memory` in the directory name')
+        sys.exit()
+
     generate_reports()

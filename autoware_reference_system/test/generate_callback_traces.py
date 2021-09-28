@@ -15,7 +15,8 @@ import time
 import unittest
 
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, SetEnvironmentVariable
+from launch.actions import SetEnvironmentVariable
+from launch_ros.actions import Node
 
 import launch_testing
 import launch_testing.actions
@@ -36,7 +37,6 @@ def generate_test_description():
     rmw_impl = '@RMW_IMPLEMENTATION@'
     test_exe = '@TEST_EXECUTABLE@'
     test_exe_name = '@TEST_EXECUTABLE_NAME@'
-    timeout = int('@TIMEOUT@')
 
     launch_description = LaunchDescription()
 
@@ -49,36 +49,27 @@ def generate_test_description():
     envvar_rclassert_rmw_action = SetEnvironmentVariable(
         'RCL_ASSERT_RMW_ID_MATCHES', rmw_impl)
 
-    proc_under_test = ExecuteProcess(
-        cmd=[test_exe],
-        name=test_exe_name,
-        sigterm_timeout=str(timeout),
+    node_under_test = Node(
+        package='autoware_reference_system',
+        executable=test_exe,
         output='screen'
     )
 
     trace_action = Trace(
-        session_name='profile_' + test_exe_name + '_' + str(RUNTIME) + 's',
+        session_name='profile_callback_' + test_exe_name + '_' + str(RUNTIME) + 's',
         events_ust=[
             'lttng_ust_cyg_profile_fast:func_entry',
             'lttng_ust_cyg_profile_fast:func_exit',
             'lttng_ust_statedump:start',
             'lttng_ust_statedump:end',
             'lttng_ust_statedump:bin_info',
-            'lttng_ust_statedump:build_id',
-            'lttng_ust_libc:malloc',
-            'lttng_ust_libc:calloc',
-            'lttng_ust_libc:realloc',
-            'lttng_ust_libc:free',
-            'lttng_ust_libc:memalign',
-            'lttng_ust_libc:posix_memalign',
+            'lttng_ust_statedump:build_id'
         ] + DEFAULT_EVENTS_ROS,
         events_kernel=[
-            'sched_switch',
-            'kmem_mm_page_alloc',
-            'kmem_mm_page_free',
+            'sched_switch'
         ],
         context_names=[
-            'ip',
+            'ip'
         ] + DEFAULT_CONTEXT,
     )
 
@@ -86,7 +77,7 @@ def generate_test_description():
     launch_description.add_action(envvar_rclassert_rmw_action)
     launch_description.add_action(envvar_rmw_action)
     launch_description.add_action(trace_action)
-    launch_description.add_action(proc_under_test)
+    launch_description.add_action(node_under_test)
     launch_description.add_action(
         launch_testing.actions.ReadyToTest()
     )

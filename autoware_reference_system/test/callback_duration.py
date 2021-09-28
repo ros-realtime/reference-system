@@ -88,7 +88,8 @@ def summary(callback_symbols, data_model, size):
         label_text_font_size='8pt',
         label_standoff=1,
         padding=1,
-        spacing=1)
+        spacing=1
+    )
     legend.click_policy = 'mute'
 
     duration.add_layout(legend, 'right')
