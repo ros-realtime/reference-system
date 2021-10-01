@@ -78,11 +78,11 @@ def initCallbackTraceData():
     handler = Ros2Handler.process(events)
     handler.data.print_data()
 
-    global data_model
-    data_model = Ros2DataModelUtil(handler.data)
+    global ros2_data_model
+    ros2_data_model = Ros2DataModelUtil(handler.data)
 
     global symbols
-    symbols = data_model.get_callback_symbols()
+    symbols = ros2_data_model.get_callback_symbols()
 
     global callback_symbols
     callback_symbols = ros2_data_model.get_callback_symbols()
@@ -118,10 +118,7 @@ def memory_report():
         filename=fname + '.html',
         title='Memory Usage Report')
 
-    report = memory_usage.summary(
-        memory_data_util=memory_data_model,
-        ros2_data_util=ros2_data_model,
-        size=SIZE_SUMMARY)
+    report = memory_usage.summary(size=SIZE_SUMMARY)
 
     save(report)
     export_png(report, filename=fname + '.png')

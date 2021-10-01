@@ -131,19 +131,39 @@ if(${BUILD_TESTING})
       set(RMW_IMPLEMENTATION ${rmw_implementation})
 
       # ensure timeout is longer than the test runtime
-      math(EXPR TIMEOUT "${RUNTIME} + 5")
+      math(EXPR TIMEOUT "${runtime} + 5")
 
-      # replaces all @var@ and ${var} within input file
-      configure_file(
-        test/generate_${trace_type}_traces.py
-        generate_${trace_type}_traces_${target}_${rmw_implementation}_${runtime}s.py
-        @ONLY
-      )
+      if(${trace_type} MATCHES "memory")
+        set(MEMRECORD_PATH "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/scripts/benchmark_one.sh")
+        set(MEMRECORD_LOG "${ROS_HOME}/${trace_type}")
+        set(MEMRECORD_LOG_NAME "activity_${target}_${rmw_implementation}_${runtime}.txt")
+        set(MEMRECORD_EXE "$(ros2 pkg prefix ${PROJECT_NAME})/lib/${PROJECT_NAME}/${target}")
+        # run psrecord script instead of ros2_tracing for memory usage plots
+        add_test(
+          NAME generate_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
+          COMMAND
+            bash -c
+              "chmod u+x ${MEMRECORD_PATH};
+              RMW_IMPLEMENTATION=${rmw_implementation} \
+              ${MEMRECORD_PATH} \
+              ${MEMRECORD_EXE} \
+              ${runtime} \
+              ${MEMRECORD_LOG} \
+              ${MEMRECORD_LOG_NAME}"
+        )
+      else()
+        # replaces all @var@ and ${var} within input file
+        configure_file(
+          test/generate_${trace_type}_traces.py
+          generate_${trace_type}_traces_${target}_${rmw_implementation}_${runtime}s.py
+          @ONLY
+        )
 
-      add_ros_test(
-        ${CMAKE_CURRENT_BINARY_DIR}/generate_${trace_type}_traces_${target}_${rmw_implementation}_${runtime}s.py
-        TIMEOUT ${TIMEOUT} # seconds
-      )
+        add_ros_test(
+          ${CMAKE_CURRENT_BINARY_DIR}/generate_${trace_type}_traces_${target}_${rmw_implementation}_${runtime}s.py
+          TIMEOUT ${TIMEOUT} # seconds
+        )
+      endif()
 
       if(TARGET ${target})
         ament_target_dependencies(${target}
@@ -155,22 +175,26 @@ if(${BUILD_TESTING})
     function(generate_report target trace_type runtime)
       set(TRACE_DIR "${ROS_HOME}/tracing/profile_${trace_type}_${target}_${rmw_implementation}_${runtime}s")
 
-      # future note: this will fail on windows
-      add_test(
-        NAME convert_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
-        COMMAND bash -c "ros2 run tracetools_analysis convert ${TRACE_DIR}"
-      )
+      if(${trace_type} MATCHES "memory")
+        message(STATUS "generate report for memory and cpu usage")
+      else()
+        # future note: this will fail on windows
+        add_test(
+          NAME convert_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
+          COMMAND bash -c "ros2 run tracetools_analysis convert ${TRACE_DIR}"
+        )
 
-      add_test(
-        NAME process_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
-        COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
-      )
+        add_test(
+          NAME process_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
+          COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
+        )
 
-      add_test(
-        NAME generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
-        COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_reports.py ${TRACE_DIR}"
-        COMMENT "Process converted traces to create data model"
-      )
+        add_test(
+          NAME generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
+          COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_reports.py ${TRACE_DIR}"
+          COMMENT "Process converted traces to create data model"
+        )
+      endif()
     endfunction()
 
     # get available rmw implementations
@@ -199,5 +223,5 @@ if(${BUILD_TESTING})
 endif()
 
 ament_auto_package(
-  INSTALL_TO_SHARE test
+  INSTALL_TO_SHARE test scripts
 )
