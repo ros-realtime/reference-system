@@ -16,6 +16,7 @@ import random
 from bokeh.models import ColumnDataSource
 from bokeh.models import DatetimeTickFormatter
 from bokeh.models import Legend
+from bokeh.models.tools import HoverTool
 from bokeh.plotting import figure
 import numpy as np
 import pandas as pd
@@ -76,7 +77,8 @@ def summary(callback_symbols, data_model, size):
             line_color=colours[colour_i],
             alpha=0.8,
             muted_color=colours[colour_i],
-            muted_alpha=0.2
+            muted_alpha=0.2,
+            name=fname
         )
         legend_it.append((fname, [c]))
         colour_i += 1
@@ -90,9 +92,22 @@ def summary(callback_symbols, data_model, size):
         padding=1,
         spacing=1
     )
-    legend.click_policy = 'mute'
+    legend.click_policy = 'hide'
 
     duration.add_layout(legend, 'right')
+
+    # add hover tool
+    hover = HoverTool()
+    hover.tooltips = [
+        ('Callback', '$name'),
+        ('Duration', '@duration{0.000}' + 's'),
+        ('Timestamp', '@timestamp{%S.%3Ns}')
+    ]
+    hover.formatters = {
+        '@timestamp': 'datetime'
+    }
+    duration.add_tools(hover)
+
     return duration
     # show(duration)
     # export_png(duration, filename=path + 'callback_duration_summary.png')
@@ -147,10 +162,21 @@ def individual(callback_symbols, data_model, size):
             legend_label=fname,
             line_width=2,
             source=source,
-            line_color=colours[colour_i],
+            line_color=colours[colour_i]
         )
         # duration.legend_label.text_font_size = '11px'
         duration.xaxis[0].formatter = DatetimeTickFormatter(seconds=['%Ss'])
+
+        # add hover tool
+        hover = HoverTool()
+        hover.tooltips = [
+            ('Duration', '@duration{0.000}' + 's'),
+            ('Timestamp', '@timestamp{%S.%3Ns}')
+        ]
+        hover.formatters = {
+            '@timestamp': 'datetime'
+        }
+        duration.add_tools(hover)
 
         # Histogram
         # (convert to milliseconds)

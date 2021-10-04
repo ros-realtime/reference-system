@@ -22,11 +22,7 @@ import callback_duration
 import memory_usage
 
 from tracetools_analysis.loading import load_file
-from tracetools_analysis.processor import Processor
-from tracetools_analysis.processor.memory_usage import KernelMemoryUsageHandler
-from tracetools_analysis.processor.memory_usage import UserspaceMemoryUsageHandler
 from tracetools_analysis.processor.ros2 import Ros2Handler
-from tracetools_analysis.utils.memory_usage import MemoryUsageDataModelUtil
 from tracetools_analysis.utils.ros2 import Ros2DataModelUtil
 
 path = ''
@@ -52,11 +48,14 @@ TRACE_DIRECTORY = 'tracing'
 def checkPath(p):
     # make sure path ends in a `/`
     if (p[-1] != '/'):
-        p += '/'
+        if not (p.find('.txt') >= 0):
+            p += '/'
     # make sure directory exists
     if not os.path.isdir(p):
-        print('Given path does not exist: ' + p)
-        sys.exit()
+        # make sure given path isnt a file
+        if not os.path.isfile(p):
+            print('Given path does not exist: ' + p)
+            sys.exit()
 
     # check if given path is a callback trace
     global trace_type
@@ -69,7 +68,11 @@ def checkPath(p):
 
     global pwd
     pwd = os.path.basename(os.path.normpath(path))
+    if (pwd.find('.txt') >= 0):
+        print('removing filetype extension')
+        pwd = pwd[:-4]
     print(pwd)
+
     return p
 
 
@@ -89,37 +92,20 @@ def initCallbackTraceData():
 
 
 def initMemoryTraceData():
-    events = load_file(path)
-    ros2_handler = Ros2Handler.process(events)
-    ust_memory_handler = UserspaceMemoryUsageHandler()
-    kernel_memory_handler = KernelMemoryUsageHandler()
-
-    # memory usage
-    ros2_handler = Ros2Handler()
-    mem_proc = Processor(
-        ust_memory_handler,
-        kernel_memory_handler,
-        ros2_handler
-    )
-    mem_proc.process(events)
-
-    global ros2_data_model
-    global memory_data_model
-    memory_data_model = MemoryUsageDataModelUtil(
-        userspace=ust_memory_handler.data,
-        kernel=kernel_memory_handler.data
-    )
-    ros2_data_model = Ros2DataModelUtil(ros2_handler.data)
+    # TODO(flynneva): implement once ros2_tracing memory & cpu usage is fully supported
+    # see: https://github.com/ros-realtime/reference-system/pull/33
+    return
 
 
 def memory_report():
-    fname = path + pwd + '_memory_usage_report'
+    fname = path + '_memory_usage_report'
     output_file(
         filename=fname + '.html',
         title='Memory Usage Report')
 
-    report = memory_usage.summary(size=SIZE_SUMMARY)
+    mem_individual = memory_usage.individual(path, size=SIZE_SUMMARY)
 
+    report = layout([[*mem_individual]])
     save(report)
     export_png(report, filename=fname + '.png')
 
