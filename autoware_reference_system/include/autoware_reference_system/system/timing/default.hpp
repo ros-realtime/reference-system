@@ -51,7 +51,7 @@ struct Default
   static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 10000000;
   static constexpr uint64_t LANELET_2_MAP_LOADER = 10000000;
 
-  // reactor
+  // cyclic
   static constexpr uint64_t BEHAVIOR_PLANNER = 10000000;
 };
 

@@ -192,10 +192,10 @@ auto create_autoware_nodes()
     .output_topic = "Lanelet2MapLoader",
     .number_crunch_limit = TimingConfig::LANELET_2_MAP_LOADER}));
 
-  // reactor node
+  // cyclic node
   nodes.emplace_back(
-    std::make_shared<typename SystemType::Reactor>(
-      nodes::ReactorSettings{
+    std::make_shared<typename SystemType::Cyclic>(
+      nodes::CyclicSettings{
     .node_name = "BehaviorPlanner",
     .inputs = {"ObjectCollisionEstimator", "NDTLocalizer",
       "Lanelet2GlobalPlanner", "Lanelet2MapLoader",

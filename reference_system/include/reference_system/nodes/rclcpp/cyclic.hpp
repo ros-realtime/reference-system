@@ -29,10 +29,10 @@ namespace nodes
 namespace rclcpp_system
 {
 
-class Reactor : public rclcpp::Node
+class Cyclic : public rclcpp::Node
 {
 public:
-  explicit Reactor(const ReactorSettings & settings)
+  explicit Cyclic(const CyclicSettings & settings)
   : Node(settings.node_name),
     number_crunch_limit_(settings.number_crunch_limit)
   {

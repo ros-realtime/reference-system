@@ -16,7 +16,7 @@
 #include "reference_system/nodes/rclcpp/command.hpp"
 #include "reference_system/nodes/rclcpp/fusion.hpp"
 #include "reference_system/nodes/rclcpp/transform.hpp"
-#include "reference_system/nodes/rclcpp/reactor.hpp"
+#include "reference_system/nodes/rclcpp/cyclic.hpp"
 #include "reference_system/nodes/rclcpp/sensor.hpp"
 
 struct RclcppSystem
@@ -25,7 +25,7 @@ struct RclcppSystem
   using Sensor = nodes::rclcpp_system::Sensor;
   using Command = nodes::rclcpp_system::Command;
   using Fusion = nodes::rclcpp_system::Fusion;
-  using Reactor = nodes::rclcpp_system::Reactor;
+  using Cyclic = nodes::rclcpp_system::Cyclic;
   using Transform = nodes::rclcpp_system::Transform;
 };
 

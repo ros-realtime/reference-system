@@ -44,7 +44,7 @@ struct TransformSettings
   uint64_t number_crunch_limit;
 };
 
-struct ReactorSettings
+struct CyclicSettings
 {
   std::string node_name;
   std::vector<std::string> inputs;

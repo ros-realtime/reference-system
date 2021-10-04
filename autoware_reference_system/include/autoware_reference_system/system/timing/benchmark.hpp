@@ -52,7 +52,7 @@ struct BenchmarkThroughput
   static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 0;
   static constexpr uint64_t LANELET_2_MAP_LOADER = 0;
 
-  // reactor
+  // cyclic
   static constexpr uint64_t BEHAVIOR_PLANNER = 0;
 };
 
@@ -110,7 +110,7 @@ struct BenchmarkCPUUsage
   static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 0;
   static constexpr uint64_t LANELET_2_MAP_LOADER = 0;
 
-  // reactor
+  // cyclic
   static constexpr uint64_t BEHAVIOR_PLANNER = 0;
 };
 
