@@ -34,23 +34,23 @@ struct BenchmarkThroughput
   static constexpr time_t LANELET2MAP = milliseconds(0);
 
   // processing
-  static constexpr time_t POINTS_TRANSFORMER_FRONT = milliseconds(0);
-  static constexpr time_t POINTS_TRANSFORMER_REAR = milliseconds(0);
-  static constexpr time_t VOXEL_GRID_DOWNSAMPLER = milliseconds(0);
-  static constexpr time_t POINT_CLOUD_MAP_LOADER = milliseconds(0);
-  static constexpr time_t RAY_GROUND_FILTER = milliseconds(0);
-  static constexpr time_t EUCLIDEAN_CLUSTER_DETECTOR = milliseconds(0);
-  static constexpr time_t OBJECT_COLLISION_ESTIMATOR = milliseconds(0);
-  static constexpr time_t MPC_CONTROLLER = milliseconds(0);
-  static constexpr time_t PARKING_PLANNER = milliseconds(0);
-  static constexpr time_t LANE_PLANNER = milliseconds(0);
+  static constexpr uint64_t POINTS_TRANSFORMER_FRONT = 0;
+  static constexpr uint64_t POINTS_TRANSFORMER_REAR = 0;
+  static constexpr uint64_t VOXEL_GRID_DOWNSAMPLER = 0;
+  static constexpr uint64_t POINT_CLOUD_MAP_LOADER = 0;
+  static constexpr uint64_t RAY_GROUND_FILTER = 0;
+  static constexpr uint64_t EUCLIDEAN_CLUSTER_DETECTOR = 0;
+  static constexpr uint64_t OBJECT_COLLISION_ESTIMATOR = 0;
+  static constexpr uint64_t MPC_CONTROLLER = 0;
+  static constexpr uint64_t PARKING_PLANNER = 0;
+  static constexpr uint64_t LANE_PLANNER = 0;
 
   // fusion
-  static constexpr time_t POINT_CLOUD_FUSION = milliseconds(0);
-  static constexpr time_t NDT_LOCALIZER = milliseconds(0);
-  static constexpr time_t VEHICLE_INTERFACE = milliseconds(0);
-  static constexpr time_t LANELET_2_GLOBAL_PLANNER = milliseconds(0);
-  static constexpr time_t LANELET_2_MAP_LOADER = milliseconds(0);
+  static constexpr uint64_t POINT_CLOUD_FUSION = 0;
+  static constexpr uint64_t NDT_LOCALIZER = 0;
+  static constexpr uint64_t VEHICLE_INTERFACE = 0;
+  static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 0;
+  static constexpr uint64_t LANELET_2_MAP_LOADER = 0;
 
   static constexpr time_t POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF = seconds(9999);
   static constexpr time_t NDT_LOCALIZER_MAX_INPUT_TIME_DIFF = seconds(9999);
@@ -59,7 +59,7 @@ struct BenchmarkThroughput
   static constexpr time_t LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF = seconds(9999);
 
   // reactor
-  static constexpr time_t BEHAVIOR_PLANNER = milliseconds(0);
+  static constexpr uint64_t BEHAVIOR_PLANNER = 0;
 };
 
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::FRONT_LIDAR_DRIVER;
@@ -67,35 +67,27 @@ constexpr BenchmarkThroughput::time_t BenchmarkThroughput::REAR_LIDAR_DRIVER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::POINT_CLOUD_MAP;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::VISUALIZER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET2MAP;
-constexpr BenchmarkThroughput::time_t
-BenchmarkThroughput::POINTS_TRANSFORMER_FRONT;
-constexpr BenchmarkThroughput::time_t
-BenchmarkThroughput::POINTS_TRANSFORMER_REAR;
-constexpr BenchmarkThroughput::time_t
-BenchmarkThroughput::VOXEL_GRID_DOWNSAMPLER;
-constexpr BenchmarkThroughput::time_t
-BenchmarkThroughput::POINT_CLOUD_MAP_LOADER;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::RAY_GROUND_FILTER;
-constexpr BenchmarkThroughput::time_t
-BenchmarkThroughput::EUCLIDEAN_CLUSTER_DETECTOR;
-constexpr BenchmarkThroughput::time_t
-BenchmarkThroughput::OBJECT_COLLISION_ESTIMATOR;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::MPC_CONTROLLER;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::PARKING_PLANNER;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANE_PLANNER;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::POINT_CLOUD_FUSION;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::NDT_LOCALIZER;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::VEHICLE_INTERFACE;
-constexpr BenchmarkThroughput::time_t
-BenchmarkThroughput::LANELET_2_GLOBAL_PLANNER;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET_2_MAP_LOADER;
+constexpr uint64_t BenchmarkThroughput::POINTS_TRANSFORMER_FRONT;
+constexpr uint64_t BenchmarkThroughput::POINTS_TRANSFORMER_REAR;
+constexpr uint64_t BenchmarkThroughput::VOXEL_GRID_DOWNSAMPLER;
+constexpr uint64_t BenchmarkThroughput::POINT_CLOUD_MAP_LOADER;
+constexpr uint64_t BenchmarkThroughput::RAY_GROUND_FILTER;
+constexpr uint64_t BenchmarkThroughput::EUCLIDEAN_CLUSTER_DETECTOR;
+constexpr uint64_t BenchmarkThroughput::OBJECT_COLLISION_ESTIMATOR;
+constexpr uint64_t BenchmarkThroughput::MPC_CONTROLLER;
+constexpr uint64_t BenchmarkThroughput::PARKING_PLANNER;
+constexpr uint64_t BenchmarkThroughput::LANE_PLANNER;
+constexpr uint64_t BenchmarkThroughput::POINT_CLOUD_FUSION;
+constexpr uint64_t BenchmarkThroughput::NDT_LOCALIZER;
+constexpr uint64_t BenchmarkThroughput::VEHICLE_INTERFACE;
+constexpr uint64_t BenchmarkThroughput::LANELET_2_GLOBAL_PLANNER;
+constexpr uint64_t BenchmarkThroughput::LANELET_2_MAP_LOADER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::NDT_LOCALIZER_MAX_INPUT_TIME_DIFF;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::
-LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF;
+constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::BEHAVIOR_PLANNER;
+constexpr uint64_t BenchmarkThroughput::BEHAVIOR_PLANNER;
 
 struct BenchmarkCPUUsage
 {
@@ -111,23 +103,23 @@ struct BenchmarkCPUUsage
   static constexpr time_t LANELET2MAP = milliseconds(50);
 
   // processing
-  static constexpr time_t POINTS_TRANSFORMER_FRONT = milliseconds(0);
-  static constexpr time_t POINTS_TRANSFORMER_REAR = milliseconds(0);
-  static constexpr time_t VOXEL_GRID_DOWNSAMPLER = milliseconds(0);
-  static constexpr time_t POINT_CLOUD_MAP_LOADER = milliseconds(0);
-  static constexpr time_t RAY_GROUND_FILTER = milliseconds(0);
-  static constexpr time_t EUCLIDEAN_CLUSTER_DETECTOR = milliseconds(0);
-  static constexpr time_t OBJECT_COLLISION_ESTIMATOR = milliseconds(0);
-  static constexpr time_t MPC_CONTROLLER = milliseconds(0);
-  static constexpr time_t PARKING_PLANNER = milliseconds(0);
-  static constexpr time_t LANE_PLANNER = milliseconds(0);
+  static constexpr uint64_t POINTS_TRANSFORMER_FRONT = 0;
+  static constexpr uint64_t POINTS_TRANSFORMER_REAR = 0;
+  static constexpr uint64_t VOXEL_GRID_DOWNSAMPLER = 0;
+  static constexpr uint64_t POINT_CLOUD_MAP_LOADER = 0;
+  static constexpr uint64_t RAY_GROUND_FILTER = 0;
+  static constexpr uint64_t EUCLIDEAN_CLUSTER_DETECTOR = 0;
+  static constexpr uint64_t OBJECT_COLLISION_ESTIMATOR = 0;
+  static constexpr uint64_t MPC_CONTROLLER = 0;
+  static constexpr uint64_t PARKING_PLANNER = 0;
+  static constexpr uint64_t LANE_PLANNER = 0;
 
   // fusion
-  static constexpr time_t POINT_CLOUD_FUSION = milliseconds(0);
-  static constexpr time_t NDT_LOCALIZER = milliseconds(0);
-  static constexpr time_t VEHICLE_INTERFACE = milliseconds(0);
-  static constexpr time_t LANELET_2_GLOBAL_PLANNER = milliseconds(0);
-  static constexpr time_t LANELET_2_MAP_LOADER = milliseconds(0);
+  static constexpr uint64_t POINT_CLOUD_FUSION = 0;
+  static constexpr uint64_t NDT_LOCALIZER = 0;
+  static constexpr uint64_t VEHICLE_INTERFACE = 0;
+  static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 0;
+  static constexpr uint64_t LANELET_2_MAP_LOADER = 0;
 
   static constexpr time_t POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF = seconds(9999);
   static constexpr time_t NDT_LOCALIZER_MAX_INPUT_TIME_DIFF = seconds(9999);
@@ -136,7 +128,7 @@ struct BenchmarkCPUUsage
   static constexpr time_t LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF = seconds(9999);
 
   // reactor
-  static constexpr time_t BEHAVIOR_PLANNER = milliseconds(0);
+  static constexpr uint64_t BEHAVIOR_PLANNER = 0;
 };
 
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::FRONT_LIDAR_DRIVER;
@@ -144,29 +136,27 @@ constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::REAR_LIDAR_DRIVER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINT_CLOUD_MAP;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::VISUALIZER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET2MAP;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINTS_TRANSFORMER_FRONT;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINTS_TRANSFORMER_REAR;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::VOXEL_GRID_DOWNSAMPLER;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINT_CLOUD_MAP_LOADER;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::RAY_GROUND_FILTER;
-constexpr BenchmarkCPUUsage::time_t
-BenchmarkCPUUsage::EUCLIDEAN_CLUSTER_DETECTOR;
-constexpr BenchmarkCPUUsage::time_t
-BenchmarkCPUUsage::OBJECT_COLLISION_ESTIMATOR;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::MPC_CONTROLLER;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::PARKING_PLANNER;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANE_PLANNER;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINT_CLOUD_FUSION;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::NDT_LOCALIZER;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::VEHICLE_INTERFACE;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET_2_GLOBAL_PLANNER;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET_2_MAP_LOADER;
+constexpr uint64_t BenchmarkCPUUsage::POINTS_TRANSFORMER_FRONT;
+constexpr uint64_t BenchmarkCPUUsage::POINTS_TRANSFORMER_REAR;
+constexpr uint64_t BenchmarkCPUUsage::VOXEL_GRID_DOWNSAMPLER;
+constexpr uint64_t BenchmarkCPUUsage::POINT_CLOUD_MAP_LOADER;
+constexpr uint64_t BenchmarkCPUUsage::RAY_GROUND_FILTER;
+constexpr uint64_t BenchmarkCPUUsage::EUCLIDEAN_CLUSTER_DETECTOR;
+constexpr uint64_t BenchmarkCPUUsage::OBJECT_COLLISION_ESTIMATOR;
+constexpr uint64_t BenchmarkCPUUsage::MPC_CONTROLLER;
+constexpr uint64_t BenchmarkCPUUsage::PARKING_PLANNER;
+constexpr uint64_t BenchmarkCPUUsage::LANE_PLANNER;
+constexpr uint64_t BenchmarkCPUUsage::POINT_CLOUD_FUSION;
+constexpr uint64_t BenchmarkCPUUsage::NDT_LOCALIZER;
+constexpr uint64_t BenchmarkCPUUsage::VEHICLE_INTERFACE;
+constexpr uint64_t BenchmarkCPUUsage::LANELET_2_GLOBAL_PLANNER;
+constexpr uint64_t BenchmarkCPUUsage::LANELET_2_MAP_LOADER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::NDT_LOCALIZER_MAX_INPUT_TIME_DIFF;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::BEHAVIOR_PLANNER;
+constexpr uint64_t BenchmarkCPUUsage::BEHAVIOR_PLANNER;
 
 }  // namespace timing
 }  // namespace nodes

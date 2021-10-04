@@ -43,6 +43,11 @@ ament_auto_add_executable(autoware_default_multithreaded
   src/ros2/executor/autoware_default_multithreaded.cpp
 )
 
+# Number Cruncher Benchmark
+ament_auto_add_executable(number_cruncher_benchmark
+  src/ros2/number_cruncher_benchmark.cpp
+)
+
 # Add new executors to test here
 #ament_auto_add_executable(autoware_default_custom
 #  src/ros2/executor/autoware_default_custom.cpp

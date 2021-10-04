@@ -33,7 +33,7 @@ class Transform : public rclcpp::Node
 public:
   explicit Transform(const TransformSettings & settings)
   : Node(settings.node_name),
-    number_crunch_time_(settings.number_crunch_time)
+    number_crunch_limit_(settings.number_crunch_limit)
   {
     subscription_ = this->create_subscription<message_t>(
       settings.input_topic, 10,
@@ -44,21 +44,21 @@ public:
 private:
   void input_callback(const message_t::SharedPtr input_message) const
   {
-    auto number_cruncher_result = number_cruncher(number_crunch_time_);
+    auto number_cruncher_result = number_cruncher(number_crunch_limit_);
 
     auto output_message = publisher_->borrow_loaned_message();
 
     fuse_samples(this->get_name(), output_message.get(), input_message);
 
     // use result so that it is not optimizied away by some clever compiler
-    output_message.get().data[0] = number_cruncher_result.empty();
+    output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
   }
 
 private:
   rclcpp::Publisher<message_t>::SharedPtr publisher_;
   rclcpp::Subscription<message_t>::SharedPtr subscription_;
-  std::chrono::nanoseconds number_crunch_time_;
+  uint64_t number_crunch_limit_;
 };
 }  // namespace rclcpp_system
 }  // namespace nodes

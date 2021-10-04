@@ -33,7 +33,7 @@ class Fusion : public rclcpp::Node
 public:
   explicit Fusion(const FusionSettings & settings)
   : Node(settings.node_name),
-    number_crunch_time_(settings.number_crunch_time),
+    number_crunch_limit_(settings.number_crunch_limit),
     max_input_time_difference_(settings.max_input_time_difference)
   {
     subscription_[0] = this->create_subscription<message_t>(
@@ -72,13 +72,13 @@ private:
       exit(0);
     }
 
-    auto number_cruncher_result = number_cruncher(number_crunch_time_);
+    auto number_cruncher_result = number_cruncher(number_crunch_limit_);
 
     auto output_message = publisher_->borrow_loaned_message();
     fuse_samples(
       this->get_name(), output_message.get(), message_cache_[0],
       message_cache_[1]);
-    output_message.get().data[0] = number_cruncher_result.empty();
+    output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
 
     message_cache_[0].reset();
@@ -90,7 +90,7 @@ private:
   rclcpp::Publisher<message_t>::SharedPtr publisher_;
   rclcpp::Subscription<message_t>::SharedPtr subscription_[2];
 
-  std::chrono::nanoseconds number_crunch_time_;
+  uint64_t number_crunch_limit_;
   std::chrono::nanoseconds max_input_time_difference_;
 };
 }  // namespace rclcpp_system

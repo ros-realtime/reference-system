@@ -34,7 +34,7 @@ class Reactor : public rclcpp::Node
 public:
   explicit Reactor(const ReactorSettings & settings)
   : Node(settings.node_name),
-    number_crunch_time_(settings.number_crunch_time)
+    number_crunch_limit_(settings.number_crunch_limit)
   {
     uint64_t input_number = 0U;
     for (const auto & input_topic : settings.inputs) {
@@ -55,20 +55,20 @@ private:
     const message_t::SharedPtr input_message) const
   {
     (void)input_number;
-    auto number_cruncher_result = number_cruncher(number_crunch_time_);
+    auto number_cruncher_result = number_cruncher(number_crunch_limit_);
 
     auto output_message = publisher_->borrow_loaned_message();
 
     fuse_samples(this->get_name(), output_message.get(), input_message);
 
-    output_message.get().data[0] = number_cruncher_result.empty();
+    output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
   }
 
 private:
   rclcpp::Publisher<message_t>::SharedPtr publisher_;
   std::vector<rclcpp::Subscription<message_t>::SharedPtr> subscriptions_;
-  std::chrono::nanoseconds number_crunch_time_;
+  uint64_t number_crunch_limit_;
 };
 }  // namespace rclcpp_system
 }  // namespace nodes
