@@ -51,12 +51,6 @@ struct Default
   static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 10000000;
   static constexpr uint64_t LANELET_2_MAP_LOADER = 10000000;
 
-  static constexpr time_t POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF = milliseconds(125);
-  static constexpr time_t NDT_LOCALIZER_MAX_INPUT_TIME_DIFF = milliseconds(125);
-  static constexpr time_t VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF = milliseconds(125);
-  static constexpr time_t LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF = milliseconds(125);
-  static constexpr time_t LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF = milliseconds(125);
-
   // reactor
   static constexpr uint64_t BEHAVIOR_PLANNER = 10000000;
 };
@@ -81,11 +75,6 @@ constexpr uint64_t Default::NDT_LOCALIZER;
 constexpr uint64_t Default::VEHICLE_INTERFACE;
 constexpr uint64_t Default::LANELET_2_GLOBAL_PLANNER;
 constexpr uint64_t Default::LANELET_2_MAP_LOADER;
-constexpr Default::time_t Default::POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF;
-constexpr Default::time_t Default::NDT_LOCALIZER_MAX_INPUT_TIME_DIFF;
-constexpr Default::time_t Default::VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF;
-constexpr Default::time_t Default::LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF;
-constexpr Default::time_t Default::LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF;
 constexpr uint64_t Default::BEHAVIOR_PLANNER;
 
 }  // namespace timing

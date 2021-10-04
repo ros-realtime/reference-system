@@ -52,12 +52,6 @@ struct BenchmarkThroughput
   static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 0;
   static constexpr uint64_t LANELET_2_MAP_LOADER = 0;
 
-  static constexpr time_t POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF = seconds(9999);
-  static constexpr time_t NDT_LOCALIZER_MAX_INPUT_TIME_DIFF = seconds(9999);
-  static constexpr time_t VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF = seconds(9999);
-  static constexpr time_t LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF = seconds(9999);
-  static constexpr time_t LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF = seconds(9999);
-
   // reactor
   static constexpr uint64_t BEHAVIOR_PLANNER = 0;
 };
@@ -82,11 +76,6 @@ constexpr uint64_t BenchmarkThroughput::NDT_LOCALIZER;
 constexpr uint64_t BenchmarkThroughput::VEHICLE_INTERFACE;
 constexpr uint64_t BenchmarkThroughput::LANELET_2_GLOBAL_PLANNER;
 constexpr uint64_t BenchmarkThroughput::LANELET_2_MAP_LOADER;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::NDT_LOCALIZER_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF;
 constexpr uint64_t BenchmarkThroughput::BEHAVIOR_PLANNER;
 
 struct BenchmarkCPUUsage
@@ -121,12 +110,6 @@ struct BenchmarkCPUUsage
   static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 0;
   static constexpr uint64_t LANELET_2_MAP_LOADER = 0;
 
-  static constexpr time_t POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF = seconds(9999);
-  static constexpr time_t NDT_LOCALIZER_MAX_INPUT_TIME_DIFF = seconds(9999);
-  static constexpr time_t VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF = seconds(9999);
-  static constexpr time_t LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF = seconds(9999);
-  static constexpr time_t LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF = seconds(9999);
-
   // reactor
   static constexpr uint64_t BEHAVIOR_PLANNER = 0;
 };
@@ -151,11 +134,6 @@ constexpr uint64_t BenchmarkCPUUsage::NDT_LOCALIZER;
 constexpr uint64_t BenchmarkCPUUsage::VEHICLE_INTERFACE;
 constexpr uint64_t BenchmarkCPUUsage::LANELET_2_GLOBAL_PLANNER;
 constexpr uint64_t BenchmarkCPUUsage::LANELET_2_MAP_LOADER;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::NDT_LOCALIZER_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF;
 constexpr uint64_t BenchmarkCPUUsage::BEHAVIOR_PLANNER;
 
 }  // namespace timing

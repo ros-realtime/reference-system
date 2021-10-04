@@ -34,7 +34,6 @@ struct FusionSettings
   std::string input_1;
   std::string output_topic;
   uint64_t number_crunch_limit;
-  std::chrono::nanoseconds max_input_time_difference;
 };
 
 struct TransformSettings

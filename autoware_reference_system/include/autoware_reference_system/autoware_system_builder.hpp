@@ -154,8 +154,7 @@ auto create_autoware_nodes()
     .input_0 = "PointsTransformerFront",
     .input_1 = "PointsTransformerRear",
     .output_topic = "PointCloudFusion",
-    .number_crunch_limit = TimingConfig::POINT_CLOUD_FUSION,
-    .max_input_time_difference = TimingConfig::POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF}));
+    .number_crunch_limit = TimingConfig::POINT_CLOUD_FUSION}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Fusion>(
@@ -164,8 +163,7 @@ auto create_autoware_nodes()
     .input_0 = "VoxelGridDownsampler",
     .input_1 = "PointCloudMapLoader",
     .output_topic = "NDTLocalizer",
-    .number_crunch_limit = TimingConfig::NDT_LOCALIZER,
-    .max_input_time_difference = TimingConfig::NDT_LOCALIZER_MAX_INPUT_TIME_DIFF}));
+    .number_crunch_limit = TimingConfig::NDT_LOCALIZER}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Fusion>(
@@ -174,8 +172,7 @@ auto create_autoware_nodes()
     .input_0 = "MPCController",
     .input_1 = "BehaviorPlanner",
     .output_topic = "VehicleInterface",
-    .number_crunch_limit = TimingConfig::VEHICLE_INTERFACE,
-    .max_input_time_difference = TimingConfig::VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF}));
+    .number_crunch_limit = TimingConfig::VEHICLE_INTERFACE}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Fusion>(
@@ -184,8 +181,7 @@ auto create_autoware_nodes()
     .input_0 = "Visualizer",
     .input_1 = "NDTLocalizer",
     .output_topic = "Lanelet2GlobalPlanner",
-    .number_crunch_limit = TimingConfig::LANELET_2_GLOBAL_PLANNER,
-    .max_input_time_difference = TimingConfig::LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF}));
+    .number_crunch_limit = TimingConfig::LANELET_2_GLOBAL_PLANNER}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Fusion>(
@@ -194,8 +190,7 @@ auto create_autoware_nodes()
     .input_0 = "Lanelet2Map",
     .input_1 = "Lanelet2GlobalPlanner",
     .output_topic = "Lanelet2MapLoader",
-    .number_crunch_limit = TimingConfig::LANELET_2_MAP_LOADER,
-    .max_input_time_difference = TimingConfig::LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF}));
+    .number_crunch_limit = TimingConfig::LANELET_2_MAP_LOADER}));
 
   // reactor node
   nodes.emplace_back(

@@ -27,7 +27,7 @@ long double get_crunch_time_in_ms(const uint64_t maximum_number) {
 int main() {
     long double crunch_time = 0.0;
     std::cout << "maximum_number     run time" << std::endl;
-    for (uint64_t i = 10; crunch_time < 1000.0; i *= 10) {
+    for (uint64_t i = 64; crunch_time < 1000.0; i *= 2) {
         crunch_time = get_crunch_time_in_ms(i);
         std::cout << std::setfill(' ') << std::setw(12) << i << "       "
                   << crunch_time << "ms" << std::endl;
