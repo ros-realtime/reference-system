@@ -201,7 +201,8 @@ auto create_autoware_nodes()
       "Lanelet2GlobalPlanner", "Lanelet2MapLoader",
       "ParkingPlanner", "LanePlanner"},
     .output_topic = "BehaviorPlanner",
-    .number_crunch_limit = TimingConfig::BEHAVIOR_PLANNER}));
+    .number_crunch_limit = TimingConfig::BEHAVIOR_PLANNER,
+    .cycle_time = TimingConfig::BEHAVIOR_PLANNER_CYCLE}));
 
   // command node
   nodes.emplace_back(

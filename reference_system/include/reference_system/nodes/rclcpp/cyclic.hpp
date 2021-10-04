@@ -46,28 +46,51 @@ public:
           }));
       ++input_number;
     }
+    message_cache_.resize(subscriptions_.size());
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
+    timer_ = this->create_wall_timer(
+      settings.cycle_time,
+      [this]{timer_callback();});
   }
 
 private:
   void input_callback(
     const uint64_t input_number,
-    const message_t::SharedPtr input_message) const
+    const message_t::SharedPtr input_message)
   {
-    (void)input_number;
-    auto number_cruncher_result = number_cruncher(number_crunch_limit_);
+    message_cache_[input_number] = input_message;
+  }
 
-    auto output_message = publisher_->borrow_loaned_message();
+  void timer_callback()
+  {
+    uint64_t sent_samples = 0;
+    for(auto & m : message_cache_) {
+      if ( !m ) continue;;
 
-    fuse_samples(this->get_name(), output_message.get(), input_message);
+      auto output_message = publisher_->borrow_loaned_message();
 
-    output_message.get().data[0] = number_cruncher_result;
-    publisher_->publish(std::move(output_message));
+      fuse_samples(this->get_name(), output_message.get(), m);
+
+      publisher_->publish(std::move(output_message));
+      m.reset();
+      ++sent_samples;
+    }
+
+    if ( sent_samples == 0 ) {
+      auto message = publisher_->borrow_loaned_message();
+      message.get().size = 0;
+
+      set_sample(this->get_name(), message.get());
+
+      publisher_->publish(std::move(message));
+    }
   }
 
 private:
   rclcpp::Publisher<message_t>::SharedPtr publisher_;
+  rclcpp::TimerBase::SharedPtr timer_;
   std::vector<rclcpp::Subscription<message_t>::SharedPtr> subscriptions_;
+  std::vector<message_t::SharedPtr> message_cache_;
   uint64_t number_crunch_limit_;
 };
 }  // namespace rclcpp_system

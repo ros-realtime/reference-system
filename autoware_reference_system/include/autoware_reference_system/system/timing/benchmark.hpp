@@ -54,6 +54,7 @@ struct BenchmarkThroughput
 
   // cyclic
   static constexpr uint64_t BEHAVIOR_PLANNER = 0;
+  static constexpr time_t BEHAVIOR_PLANNER_CYCLE = milliseconds(0);
 };
 
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::FRONT_LIDAR_DRIVER;
@@ -77,6 +78,7 @@ constexpr uint64_t BenchmarkThroughput::VEHICLE_INTERFACE;
 constexpr uint64_t BenchmarkThroughput::LANELET_2_GLOBAL_PLANNER;
 constexpr uint64_t BenchmarkThroughput::LANELET_2_MAP_LOADER;
 constexpr uint64_t BenchmarkThroughput::BEHAVIOR_PLANNER;
+constexpr BenchmarkThroughput::time_t BenchmarkThroughput::BEHAVIOR_PLANNER_CYCLE;
 
 struct BenchmarkCPUUsage
 {
@@ -112,6 +114,7 @@ struct BenchmarkCPUUsage
 
   // cyclic
   static constexpr uint64_t BEHAVIOR_PLANNER = 0;
+  static constexpr time_t BEHAVIOR_PLANNER_CYCLE = milliseconds(50);
 };
 
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::FRONT_LIDAR_DRIVER;
@@ -135,6 +138,7 @@ constexpr uint64_t BenchmarkCPUUsage::VEHICLE_INTERFACE;
 constexpr uint64_t BenchmarkCPUUsage::LANELET_2_GLOBAL_PLANNER;
 constexpr uint64_t BenchmarkCPUUsage::LANELET_2_MAP_LOADER;
 constexpr uint64_t BenchmarkCPUUsage::BEHAVIOR_PLANNER;
+constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::BEHAVIOR_PLANNER_CYCLE;
 
 }  // namespace timing
 }  // namespace nodes

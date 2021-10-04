@@ -53,6 +53,7 @@ struct Default
 
   // cyclic
   static constexpr uint64_t BEHAVIOR_PLANNER = 10000000;
+  static constexpr time_t BEHAVIOR_PLANNER_CYCLE = milliseconds(100);
 };
 
 constexpr Default::time_t Default::FRONT_LIDAR_DRIVER;
@@ -76,6 +77,7 @@ constexpr uint64_t Default::VEHICLE_INTERFACE;
 constexpr uint64_t Default::LANELET_2_GLOBAL_PLANNER;
 constexpr uint64_t Default::LANELET_2_MAP_LOADER;
 constexpr uint64_t Default::BEHAVIOR_PLANNER;
+constexpr Default::time_t Default::BEHAVIOR_PLANNER_CYCLE;
 
 }  // namespace timing
 }  // namespace nodes
