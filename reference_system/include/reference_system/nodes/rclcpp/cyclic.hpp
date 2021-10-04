@@ -63,13 +63,20 @@ private:
 
   void timer_callback()
   {
+    auto local_cache = message_cache_;
+    for(auto & m : message_cache_)
+      m.reset();
+
+    auto number_cruncher_result = number_cruncher(number_crunch_limit_);
+
     uint64_t sent_samples = 0;
-    for(auto & m : message_cache_) {
+    for(auto & m : local_cache) {
       if ( !m ) continue;;
 
       auto output_message = publisher_->borrow_loaned_message();
 
       fuse_samples(this->get_name(), output_message.get(), m);
+      output_message.get().data[0] = number_cruncher_result;
 
       publisher_->publish(std::move(output_message));
       m.reset();
@@ -81,6 +88,7 @@ private:
       message.get().size = 0;
 
       set_sample(this->get_name(), message.get());
+      message.get().data[0] = number_cruncher_result;
 
       publisher_->publish(std::move(message));
     }
