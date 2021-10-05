@@ -159,7 +159,7 @@ def summary(path, duration, size):
 
 def individual(path, size):
     print('Parse psrecord log files')
-    print(path)
+    basename = os.path.basename(path)
     # open file
     data = open(path).read().splitlines()[1:]
     data = [[float(element) for element in line.split()] for line in data]
@@ -177,7 +177,7 @@ def individual(path, size):
     ]
     # initialize raw data figure
     raw_data_fig = figure(
-        title='Memory and CPU Usage Data',
+        title='Memory and CPU Usage Data: ' + basename,
         x_axis_label=f'Time (sec)',
         y_axis_label='CPU (%)',
         plot_width=int(size * 2.0),

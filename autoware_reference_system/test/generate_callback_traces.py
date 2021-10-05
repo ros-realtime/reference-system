@@ -56,7 +56,7 @@ def generate_test_description():
     )
 
     trace_action = Trace(
-        session_name=test_exe_name + '_' + str(RUNTIME) + 's',
+        session_name='callback_' + test_exe_name + '_' + str(RUNTIME) + 's',
         events_ust=[
             'lttng_ust_cyg_profile_fast:func_entry',
             'lttng_ust_cyg_profile_fast:func_exit',

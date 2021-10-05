@@ -181,7 +181,7 @@ if(${BUILD_TESTING})
           COMMENT "Generate CPU and Memory Usage report from psrecord data"
         )
       else()
-        set(TRACE_DIR "${ROS_HOME}/tracing/${target}_${rmw_implementation}_${runtime}s")
+        set(TRACE_DIR "${ROS_HOME}/tracing/${trace_type}_${target}_${rmw_implementation}_${runtime}s")
         # future note: this will fail on windows
         add_test(
           NAME convert_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
@@ -202,10 +202,10 @@ if(${BUILD_TESTING})
     endfunction()
 
     # generate summary report from all trace data
-    function(generate_summary_report run_time)
+    function(generate_summary_report trace_type run_time)
       set(TRACE_DIR "${ROS_HOME}/${trace_type}")
       add_test(
-        NAME generate_memory_summary_report
+        NAME generate_memory_summary_report_${trace_type}_${run_time}s
         COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_summary_reports.py ${TRACE_DIR} ${run_time}"
       COMMENT "Generate CPU and Memory Usage Summary Report"
       )
@@ -235,8 +235,10 @@ if(${BUILD_TESTING})
       endforeach()
     endforeach()
 
-    foreach(time ${RUN_TIMES})
-      generate_summary_report(${time})
+    foreach(trace_type ${TRACE_TYPES})
+      foreach(time ${RUN_TIMES})
+        generate_summary_report(${trace_type} ${time})
+      endforeach()
     endforeach()
   endif()
 endif()

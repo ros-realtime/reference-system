@@ -100,7 +100,7 @@ def initMemoryTraceData():
 
 
 def memory_report():
-    fname = path + pwd + '_memory_usage_report'
+    fname = path + pwd + '_memory_and_cpu_usage_report'
     output_file(
         filename=fname + '.html',
         title='Memory Usage Report')
