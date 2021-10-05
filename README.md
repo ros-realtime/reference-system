@@ -57,12 +57,12 @@ The above node graph can be boiled down to only a handful of node "types" that a
     - starts processing for N milliseconds after a message is received
     - publishes message after processing is complete
 3. [**Fusion Node**](reference_system/include/reference_system/nodes/rclcpp/fusion.hpp)
-    - N subscribers, one publisher
+    - 2 subscribers, one publisher
     - starts processing for N milliseconds after a message is received **from all** subscriptions
     - publishes message after processing is complete
-4. [**Reactor Node**](reference_system/include/reference_system/nodes/rclcpp/reactor.hpp)
+4. [**Cyclic Node**](reference_system/include/reference_system/nodes/rclcpp/cyclic.hpp)
     - N subscribers, one publisher
-    - starts processing for N milliseconds after a message is received **from any** single subscription
+    - cyclically processes all received messages since the last cycle for N milliseconds
     - publishes message after processing is complete
 5. [**Command Node**](reference_system/include/reference_system/nodes/rclcpp/command.hpp)
     - prints output stats everytime a message is received

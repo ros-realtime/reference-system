@@ -72,10 +72,10 @@ For simplicity's sake, every node except for the _command nodes_ only ever publi
         - [Vehicle Interface](include/autoware_reference_system/autoware_system_builder.hpp#L178)
         - [Lanelet2 Global Planner](include/autoware_reference_system/autoware_system_builder.hpp#L187)
         - [Lanelet 2 Map Loader](include/autoware_reference_system/autoware_system_builder.hpp#L196)
-5. [**Reactor Nodes**](../reference_system/include/reference_system/nodes/rclcpp/reactor.hpp)
-    - for this _reference system_ there is onle [**1 _reactor node_**](include/autoware_reference_system/autoware_system_builder.hpp#L206)
-    - this _reactor node_ has **6 subscribers**and one publisher
-    - this _reactor node_ starts processing for [**1 millisecond**](include/autoware_reference_system/system/timing/default.hpp#L32) after a message is received **from any** single subscription
+5. [**Cyclic Nodes**](../reference_system/include/reference_system/nodes/rclcpp/cyclic.hpp)
+    - for this _reference system_ there is onle [**1 _cyclic node_**](include/autoware_reference_system/autoware_system_builder.hpp#L206)
+    - this _cyclic node_ has **6 subscribers**and one publisher
+    - this _cyclic node_ starts processing for [**1 millisecond**](include/autoware_reference_system/system/timing/default.hpp#L32) after a message is received **from any** single subscription
     - publishes message after processing is complete
 6. [**Command Nodes**](../reference_system/include/reference_system/nodes/rclcpp/command.hpp)
     - for this _reference system_ there is onle [**1 _command node_**](include/autoware_reference_system/autoware_system_builder.hpp#L217)

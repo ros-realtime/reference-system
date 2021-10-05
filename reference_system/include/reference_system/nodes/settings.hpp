@@ -33,8 +33,7 @@ struct FusionSettings
   std::string input_0;
   std::string input_1;
   std::string output_topic;
-  std::chrono::nanoseconds number_crunch_time;
-  std::chrono::nanoseconds max_input_time_difference;
+  uint64_t number_crunch_limit;
 };
 
 struct TransformSettings
@@ -42,15 +41,16 @@ struct TransformSettings
   std::string node_name;
   std::string input_topic;
   std::string output_topic;
-  std::chrono::nanoseconds number_crunch_time;
+  uint64_t number_crunch_limit;
 };
 
-struct ReactorSettings
+struct CyclicSettings
 {
   std::string node_name;
   std::vector<std::string> inputs;
   std::string output_topic;
-  std::chrono::nanoseconds number_crunch_time;
+  uint64_t number_crunch_limit;
+  std::chrono::nanoseconds cycle_time;
 };
 
 struct SensorSettings

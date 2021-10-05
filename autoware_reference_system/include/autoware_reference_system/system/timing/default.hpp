@@ -33,32 +33,27 @@ struct Default
   static constexpr time_t LANELET2MAP = milliseconds(100);
 
   // processing
-  static constexpr time_t POINTS_TRANSFORMER_FRONT = milliseconds(50);
-  static constexpr time_t POINTS_TRANSFORMER_REAR = milliseconds(50);
-  static constexpr time_t VOXEL_GRID_DOWNSAMPLER = milliseconds(50);
-  static constexpr time_t POINT_CLOUD_MAP_LOADER = milliseconds(50);
-  static constexpr time_t RAY_GROUND_FILTER = milliseconds(50);
-  static constexpr time_t EUCLIDEAN_CLUSTER_DETECTOR = milliseconds(50);
-  static constexpr time_t OBJECT_COLLISION_ESTIMATOR = milliseconds(50);
-  static constexpr time_t MPC_CONTROLLER = milliseconds(50);
-  static constexpr time_t PARKING_PLANNER = milliseconds(50);
-  static constexpr time_t LANE_PLANNER = milliseconds(50);
+  static constexpr uint64_t POINTS_TRANSFORMER_FRONT = 10000000;
+  static constexpr uint64_t POINTS_TRANSFORMER_REAR = 10000000;
+  static constexpr uint64_t VOXEL_GRID_DOWNSAMPLER = 10000000;
+  static constexpr uint64_t POINT_CLOUD_MAP_LOADER = 10000000;
+  static constexpr uint64_t RAY_GROUND_FILTER = 10000000;
+  static constexpr uint64_t EUCLIDEAN_CLUSTER_DETECTOR = 10000000;
+  static constexpr uint64_t OBJECT_COLLISION_ESTIMATOR = 10000000;
+  static constexpr uint64_t MPC_CONTROLLER = 10000000;
+  static constexpr uint64_t PARKING_PLANNER = 10000000;
+  static constexpr uint64_t LANE_PLANNER = 10000000;
 
   // fusion
-  static constexpr time_t POINT_CLOUD_FUSION = milliseconds(25);
-  static constexpr time_t NDT_LOCALIZER = milliseconds(25);
-  static constexpr time_t VEHICLE_INTERFACE = milliseconds(25);
-  static constexpr time_t LANELET_2_GLOBAL_PLANNER = milliseconds(25);
-  static constexpr time_t LANELET_2_MAP_LOADER = milliseconds(25);
+  static constexpr uint64_t POINT_CLOUD_FUSION = 10000000;
+  static constexpr uint64_t NDT_LOCALIZER = 10000000;
+  static constexpr uint64_t VEHICLE_INTERFACE = 10000000;
+  static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 10000000;
+  static constexpr uint64_t LANELET_2_MAP_LOADER = 10000000;
 
-  static constexpr time_t POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF = milliseconds(125);
-  static constexpr time_t NDT_LOCALIZER_MAX_INPUT_TIME_DIFF = milliseconds(125);
-  static constexpr time_t VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF = milliseconds(125);
-  static constexpr time_t LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF = milliseconds(125);
-  static constexpr time_t LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF = milliseconds(125);
-
-  // reactor
-  static constexpr time_t BEHAVIOR_PLANNER = milliseconds(1);
+  // cyclic
+  static constexpr uint64_t BEHAVIOR_PLANNER = 10000000;
+  static constexpr time_t BEHAVIOR_PLANNER_CYCLE = milliseconds(100);
 };
 
 constexpr Default::time_t Default::FRONT_LIDAR_DRIVER;
@@ -66,27 +61,23 @@ constexpr Default::time_t Default::REAR_LIDAR_DRIVER;
 constexpr Default::time_t Default::POINT_CLOUD_MAP;
 constexpr Default::time_t Default::VISUALIZER;
 constexpr Default::time_t Default::LANELET2MAP;
-constexpr Default::time_t Default::POINTS_TRANSFORMER_FRONT;
-constexpr Default::time_t Default::POINTS_TRANSFORMER_REAR;
-constexpr Default::time_t Default::VOXEL_GRID_DOWNSAMPLER;
-constexpr Default::time_t Default::POINT_CLOUD_MAP_LOADER;
-constexpr Default::time_t Default::RAY_GROUND_FILTER;
-constexpr Default::time_t Default::EUCLIDEAN_CLUSTER_DETECTOR;
-constexpr Default::time_t Default::OBJECT_COLLISION_ESTIMATOR;
-constexpr Default::time_t Default::MPC_CONTROLLER;
-constexpr Default::time_t Default::PARKING_PLANNER;
-constexpr Default::time_t Default::LANE_PLANNER;
-constexpr Default::time_t Default::POINT_CLOUD_FUSION;
-constexpr Default::time_t Default::NDT_LOCALIZER;
-constexpr Default::time_t Default::VEHICLE_INTERFACE;
-constexpr Default::time_t Default::LANELET_2_GLOBAL_PLANNER;
-constexpr Default::time_t Default::LANELET_2_MAP_LOADER;
-constexpr Default::time_t Default::POINT_CLOUD_FUSION_MAX_INPUT_TIME_DIFF;
-constexpr Default::time_t Default::NDT_LOCALIZER_MAX_INPUT_TIME_DIFF;
-constexpr Default::time_t Default::VEHICLE_INTERFACE_MAX_INPUT_TIME_DIFF;
-constexpr Default::time_t Default::LANELET_2_GLOBAL_PLANNER_MAX_INPUT_TIME_DIFF;
-constexpr Default::time_t Default::LANELET_2_MAP_LOADER_MAX_INPUT_TIME_DIFF;
-constexpr Default::time_t Default::BEHAVIOR_PLANNER;
+constexpr uint64_t Default::POINTS_TRANSFORMER_FRONT;
+constexpr uint64_t Default::POINTS_TRANSFORMER_REAR;
+constexpr uint64_t Default::VOXEL_GRID_DOWNSAMPLER;
+constexpr uint64_t Default::POINT_CLOUD_MAP_LOADER;
+constexpr uint64_t Default::RAY_GROUND_FILTER;
+constexpr uint64_t Default::EUCLIDEAN_CLUSTER_DETECTOR;
+constexpr uint64_t Default::OBJECT_COLLISION_ESTIMATOR;
+constexpr uint64_t Default::MPC_CONTROLLER;
+constexpr uint64_t Default::PARKING_PLANNER;
+constexpr uint64_t Default::LANE_PLANNER;
+constexpr uint64_t Default::POINT_CLOUD_FUSION;
+constexpr uint64_t Default::NDT_LOCALIZER;
+constexpr uint64_t Default::VEHICLE_INTERFACE;
+constexpr uint64_t Default::LANELET_2_GLOBAL_PLANNER;
+constexpr uint64_t Default::LANELET_2_MAP_LOADER;
+constexpr uint64_t Default::BEHAVIOR_PLANNER;
+constexpr Default::time_t Default::BEHAVIOR_PLANNER_CYCLE;
 
 }  // namespace timing
 }  // namespace nodes
