@@ -50,7 +50,7 @@ public:
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
     timer_ = this->create_wall_timer(
       settings.cycle_time,
-      [this]{timer_callback();});
+      [this] {timer_callback();});
   }
 
 private:
@@ -64,14 +64,15 @@ private:
   void timer_callback()
   {
     auto local_cache = message_cache_;
-    for(auto & m : message_cache_)
+    for (auto & m : message_cache_) {
       m.reset();
+    }
 
     auto number_cruncher_result = number_cruncher(number_crunch_limit_);
 
     uint64_t sent_samples = 0;
-    for(auto & m : local_cache) {
-      if ( !m ) continue;;
+    for (auto & m : local_cache) {
+      if (!m) {continue;}
 
       auto output_message = publisher_->borrow_loaned_message();
 
@@ -83,7 +84,7 @@ private:
       ++sent_samples;
     }
 
-    if ( sent_samples == 0 ) {
+    if (sent_samples == 0) {
       auto message = publisher_->borrow_loaned_message();
       message.get().size = 0;
 

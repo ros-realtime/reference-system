@@ -17,19 +17,21 @@
 #include <iostream>
 #include <iomanip>
 
-long double get_crunch_time_in_ms(const uint64_t maximum_number) {
-    auto start = std::chrono::system_clock::now();
-    number_cruncher(maximum_number);
-    auto stop = std::chrono::system_clock::now();
-    return static_cast<long double>(
-        std::chrono::nanoseconds(stop - start).count() / 1000000.0);
+long double get_crunch_time_in_ms(const uint64_t maximum_number)
+{
+  auto start = std::chrono::system_clock::now();
+  number_cruncher(maximum_number);
+  auto stop = std::chrono::system_clock::now();
+  return static_cast<long double>(
+    std::chrono::nanoseconds(stop - start).count() / 1000000.0);
 }
-int main() {
-    long double crunch_time = 0.0;
-    std::cout << "maximum_number     run time" << std::endl;
-    for (uint64_t i = 64; crunch_time < 1000.0; i *= 2) {
-        crunch_time = get_crunch_time_in_ms(i);
-        std::cout << std::setfill(' ') << std::setw(12) << i << "       "
-                  << crunch_time << "ms" << std::endl;
-    }
+int main()
+{
+  long double crunch_time = 0.0;
+  std::cout << "maximum_number     run time" << std::endl;
+  for (uint64_t i = 64; crunch_time < 1000.0; i *= 2) {
+    crunch_time = get_crunch_time_in_ms(i);
+    std::cout << std::setfill(' ') << std::setw(12) << i << "       " <<
+      crunch_time << "ms" << std::endl;
+  }
 }

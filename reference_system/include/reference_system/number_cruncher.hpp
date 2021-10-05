@@ -27,9 +27,11 @@ uint64_t number_cruncher(const uint64_t maximum_number)
     bool is_prime = true;
     for (uint64_t n = 2; n < rootOfI; ++n) {
       if (i % n == 0) {
+        is_prime = false;
         break;
       }
     }
+
     if (is_prime) {
       ++number_of_primes;
     }
