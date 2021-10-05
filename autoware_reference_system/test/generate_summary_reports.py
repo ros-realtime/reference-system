@@ -26,6 +26,7 @@ from tracetools_analysis.processor.ros2 import Ros2Handler
 from tracetools_analysis.utils.ros2 import Ros2DataModelUtil
 
 path = ''
+duration = 0
 pwd = ''
 ros2_data_model = None
 memory_data_model = None
@@ -46,20 +47,17 @@ TRACE_DIRECTORY = 'tracing'
 
 
 def checkPath(p):
+    # make sure path ends in a `/`
+    if (p[-1] != '/'):
+        if not (p.find('.txt') >= 0):
+            p += '/'
     # make sure directory exists
     if not os.path.isdir(p):
         # make sure given path isnt a file
         if not os.path.isfile(p):
             print('Given path does not exist: ' + p)
             sys.exit()
-        else:
-            # given path is a filename, remove filename but keep rest of path
-            p = os.path.dirname(p)
 
-    # make sure path ends in a `/`
-    if (p[-1] != '/'):
-        if not (p.find('.txt') >= 0):
-            p += '/'
     # check if given path is a callback trace
     global trace_type
     if p.find(TRACE_CALLBACK) >= 0:
@@ -99,21 +97,20 @@ def initMemoryTraceData():
     return
 
 
-def memory_report():
-    fname = path + pwd + '_memory_usage_report'
+def memory_summary_report():
+    fname = path + 'memory_and_cpu_usage_summary_report'
     output_file(
         filename=fname + '.html',
         title='Memory Usage Report')
 
-    mem_individual = memory_usage.individual(path + pwd + '.txt', size=SIZE_SUMMARY)
+    mem_summary = memory_usage.summary(path, duration=duration, size=SIZE_SUMMARY)
 
-    report = layout([[*mem_individual]])
-
+    report = layout([[*mem_summary]])
     save(report)
     export_png(report, filename=fname + '.png')
 
 
-def callback_report():
+def callback_summary_report():
     fname = path + pwd + '_callback_duration_report'
     output_file(
         filename=fname + '.html',
@@ -130,27 +127,29 @@ def callback_report():
 
     report = layout([[duration_summary], *duration_individual])
 
-    # show(report)
     save(report)
     export_png(report, filename=fname + '.png')
 
 
-def generate_reports():
+def generate_summary_reports():
     if(trace_type == TRACE_CALLBACK):
-        callback_report()
+        print('skipping callback summary report for now')
+        # callback_summary_report()
     elif(trace_type == TRACE_MEMORY):
-        memory_report()
+        memory_summary_report()
 
 
 if __name__ == '__main__':
     if(len(sys.argv) >= 2):
         path = sys.argv[1]
+        duration = sys.argv[2]
     else:
         path = '/home/ubuntu/.ros/tracing/profile'
     path = checkPath(path)
 
     if(trace_type == TRACE_CALLBACK):
-        initCallbackTraceData()
+        print('skipping callback summary report for now')
+        # initCallbackTraceData()
     elif(trace_type == TRACE_MEMORY):
         initMemoryTraceData()
     elif(trace_type == TRACE_UNSUPPORTED):
@@ -158,4 +157,4 @@ if __name__ == '__main__':
         print('Make sure they have either `callback` or `memory` in the directory name')
         sys.exit()
 
-    generate_reports()
+    generate_summary_reports()

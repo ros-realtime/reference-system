@@ -136,7 +136,7 @@ if(${BUILD_TESTING})
       if(${trace_type} MATCHES "memory")
         set(MEMRECORD_PATH "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/scripts/benchmark_one.sh")
         set(MEMRECORD_LOG "${ROS_HOME}/${trace_type}")
-        set(MEMRECORD_LOG_NAME "activity_${target}_${rmw_implementation}_${runtime}s.txt")
+        set(MEMRECORD_LOG_NAME "${target}_${rmw_implementation}_${runtime}s.txt")
         set(MEMRECORD_EXE "$(ros2 pkg prefix ${PROJECT_NAME})/lib/${PROJECT_NAME}/${target}")
         # run psrecord script instead of ros2_tracing for memory usage plots
         add_test(
@@ -174,14 +174,14 @@ if(${BUILD_TESTING})
     # generate report from traces
     function(generate_report target trace_type runtime)
       if(${trace_type} MATCHES "memory")
-        set(TRACE_DIR "${ROS_HOME}/${trace_type}/activity_${target}_${rmw_implementation}_${runtime}s.txt")
+        set(TRACE_DIR "${ROS_HOME}/${trace_type}/${target}_${rmw_implementation}_${runtime}s.txt")
         add_test(
           NAME generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
           COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_reports.py ${TRACE_DIR}"
           COMMENT "Generate CPU and Memory Usage report from psrecord data"
         )
       else()
-        set(TRACE_DIR "${ROS_HOME}/tracing/profile_${trace_type}_${target}_${rmw_implementation}_${runtime}s")
+        set(TRACE_DIR "${ROS_HOME}/tracing/${target}_${rmw_implementation}_${runtime}s")
         # future note: this will fail on windows
         add_test(
           NAME convert_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
@@ -199,6 +199,17 @@ if(${BUILD_TESTING})
           COMMENT "Process converted traces to create data model"
         )
       endif()
+    endfunction()
+
+    # generate summary report from all trace data
+    function(generate_summary_report run_time)
+      set(TRACE_DIR "${ROS_HOME}/${trace_type}")
+      add_test(
+        NAME generate_memory_summary_report
+        COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_summary_reports.py ${TRACE_DIR} ${run_time}"
+      COMMENT "Generate CPU and Memory Usage Summary Report"
+      )
+
     endfunction()
 
     # get available rmw implementations
@@ -222,6 +233,10 @@ if(${BUILD_TESTING})
           endforeach()
         endforeach()
       endforeach()
+    endforeach()
+
+    foreach(time ${RUN_TIMES})
+      generate_summary_report(${time})
     endforeach()
   endif()
 endif()

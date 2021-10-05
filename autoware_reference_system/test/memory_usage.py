@@ -11,13 +11,150 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from collections import OrderedDict
+import glob
+import os
+
 from bokeh.models import ColumnDataSource
 from bokeh.models.axes import LinearAxis
-from bokeh.models.ranges import Range1d
+from bokeh.models.ranges import FactorRange, Range1d
 from bokeh.models.tools import HoverTool
 from bokeh.models.widgets.tables import DataTable, TableColumn
+from bokeh.palettes import cividis
 from bokeh.plotting import figure
+from bokeh.transform import factor_cmap
 import pandas as pd
+
+
+def summary(path, duration, size):
+    print('Parse all psrecord log files')
+    data = []
+    df = []
+    df_summary = []
+    exes = set()
+    rmws = set()
+    summary_data = {}
+
+    for idx, fpath in enumerate(glob.glob(path + '*' + duration + '*.txt')):
+        fname = os.path.basename(fpath)
+        if (fname.find('.txt') >= 0):
+            fname = fname[:-4]
+
+        tmp_name = fname.find('_rmw')
+        exe_name = fname[0:tmp_name]
+        rmw_name = fname[tmp_name + 1:-(len(duration) + 2)]
+
+        exes.add(exe_name)
+        rmws.add(rmw_name)
+
+        try:
+            summary_data[exe_name]
+        except KeyError:
+            summary_data[exe_name] = {}
+        try:
+            summary_data[exe_name][rmw_name]
+        except KeyError:
+            summary_data[exe_name][rmw_name] = {}
+
+        data.append(open(fpath).read().splitlines()[1:])
+        data[idx] = [[float(element) for element in line.split()] for line in data[idx]]
+
+        df.append(
+            pd.DataFrame(
+                data=data[idx],
+                columns=[
+                    'Elapsed Time',
+                    'CPU (%)',
+                    'Real (MB)',
+                    'Virtual (MB)']))
+        # df[idx] = df[idx].sample(200)
+        df_summary.append(df[idx].describe().T.reset_index())
+        avg_data = df_summary[idx]['mean'].tolist()
+        summary_data[exe_name][rmw_name] = avg_data
+
+    print(summary_data)
+    # sort dict by key
+    summary_data = OrderedDict(sorted(summary_data.items()))
+    for exe in summary_data:
+        summary_data[exe] = OrderedDict(sorted(summary_data[exe].items()))
+
+    x = []
+    cpu_usage = []
+    real_mb = []
+    virtual_mb = []
+    for exe in summary_data:
+        for rmw in summary_data[exe]:
+            x.append((exe, rmw))
+            cpu_usage.append(summary_data[exe][rmw][1])
+            real_mb.append(summary_data[exe][rmw][2])
+            virtual_mb.append(summary_data[exe][rmw][3])
+    print(cpu_usage)
+    source = ColumnDataSource({
+        'x': x,
+        'cpu_usage': cpu_usage,
+        'real_mb': real_mb,
+        'virtual_mb': virtual_mb})
+
+    # initialize list of figures
+    memory = []
+    # initialize raw data figure
+    summary_fig = figure(
+        title='Memory and CPU Usage Summary',
+        x_axis_label=f'Executors (with RMW)',
+        y_axis_label='Average CPU (%)',
+        x_range=FactorRange(*x),
+        plot_width=int(size * 2.0),
+        plot_height=size,
+        margin=(10, 10, 10, 10)
+    )
+
+    summary_fig.vbar(
+        width=0.2,
+        x='x',
+        top='cpu_usage',
+        source=source,
+        line_color='white',
+        fill_color=factor_cmap('x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+
+    # add extra y ranges
+    summary_fig.extra_y_ranges = {
+        'real_mb': Range1d(
+            start=0,
+            end=max(real_mb) + 5
+        )
+    }
+    summary_fig.add_layout(
+        LinearAxis(
+            y_range_name='real_mb',
+            axis_label='Real (MB)'),
+        'right'
+    )
+    summary_fig.triangle(
+        x='x',
+        y='real_mb',
+        size=15,
+        y_range_name='real_mb',
+        source=source,
+        line_color='white',
+        fill_color=factor_cmap('x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+
+    summary_fig.legend.location = 'top_right'
+    summary_fig.y_range.start = 0
+    summary_fig.x_range.range_padding = 0.1
+
+    # add hover tool
+    hover = HoverTool()
+    hover.tooltips = [
+        ('Mean CPU (%)', '@{cpu_usage}{0.00}'),
+        ('Real (MB)', '@{real_mb}{0.00}'),
+        ('Virtual (MB)', '@{virtual_mb}{0.00}')
+    ]
+    summary_fig.add_tools(hover)
+
+    memory = [summary_fig]
+    return memory
 
 
 def individual(path, size):
@@ -40,7 +177,7 @@ def individual(path, size):
     ]
     # initialize raw data figure
     raw_data_fig = figure(
-        title='CPU and Memory Usage Data',
+        title='Memory and CPU Usage Data',
         x_axis_label=f'Time (sec)',
         y_axis_label='CPU (%)',
         plot_width=int(size * 2.0),
