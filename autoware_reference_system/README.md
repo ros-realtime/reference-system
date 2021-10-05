@@ -4,7 +4,48 @@ This file is meant to define the Autoware Reference System and all of its nodes,
 
 ![Node graph of reference-system-autoware](../content/img/autoware_reference_system.svg)
 
+To get started and test this system yourself, head down to [the _Quick Start section_](#quick-start) and follow the instructions there.
+
 _See the [generating a node graph](#generate-node-graph) using graphviz section on how to generate the above image_
+
+## Evaluation Criteria
+
+The _autoware reference system_ was made with a few goals in mind. See the list below to get the complete picture of why certian tests are run and why this system was chosen as a good system to benchmark different executors.
+
+Each item below should have a corresponding test report with it or be able to be extracted from an existing test report. See the [testing](#running-the-tests) section for more details on how to generate your own test reports.
+
+If you believe we are missing another metric to measure executors by, please create an issue and let us know!
+
+### **Key Performance Indicators (KPIs)**
+
+- **CPU utilization**
+    - In general a lower CPU utilization is better since it enables you to choose a smaller CPU or have more functionality on a larger CPU for other things.
+    - **The lower CPU utilization the better**
+- **Memory utilization**
+    - In general a lower memory utilization is better since it enables you to choose a smaller memory or have more space for other things
+    - **The lower memory utilization the better**
+- **Use latest samples, count dropped samples**
+    - This is representative of the real-world where old sensor data is much less valuable than new sensor data
+        - For example an image from 30 seconds ago wont help you to drive down the road as much as an image from 0.1 seconds ago)
+    - If there is more than one new sample, the old ones will be dropped in favor of the newest sample
+    - As a result, dropped messages may mean that information was lost
+        - Fusion Nodes may drop messages by design if their inputs have different frequencies, do not count dropped messages for these nodes
+        - Transform nodes should not drop messages though, and these should be counted
+    - **The lower number of dropped samples the better**
+- **Every Front Lidar sample should cause update in Object Collision Estimator**
+    - The Front and Rear Lidars have the same publishing frequency
+    - This means Object Collision Estimator should run for every lidar sample
+    - Count number of executions of Object Collision Estimator and Front Lidar and report any difference
+    - **The smaller the difference in executions, the better**
+- **Lowest possible latency from Front Lidar to Object Collision Estimator**
+    - As in the real world, we want to know as soon as possible if the reference system will collide with something
+    - Measure the mean and max latency for this chain of nodes
+    - **The lower latency of the signal chain the better**
+- **The Behavior Planner should be as cyclical as possible**
+    - The desired behavior of the Behavior Planner is to be as cyclical as possible, meaning it should be executed as close to its set frequency of _100ms_ as possible
+    - Measure the jitter and drift over time of the timer callback
+    - **The lower the jitter and drift of the Behavior Node timer callback the better**
+
 
 ## Message Types
 
@@ -81,6 +122,59 @@ For simplicity's sake, every node except for the _command nodes_ only ever publi
     - for this _reference system_ there is onle [**1 _command node_**](include/autoware_reference_system/autoware_system_builder.hpp#L217)
     - this _command node_ has **1 subscriber** and zero publishers
     - this _command node_ prints out the final latency statistics after a message is received on the specified topic
+
+## Quick Start
+
+This section will go over how to clone, build and run the `autoware_reference_system` in order to generate your own test reports.
+
+### Dependencies
+
+Before running the tests there are a few prerequisites to complete:
+
+- install LTTng and `ros2_tracing` [following the instructions in `ros2_tracing`](https://gitlab.com/ros-tracing/ros2_tracing#building)
+   - _Note:_ if you are setting up [ a realtime linux kernel for a raspberry pi using this docker file](https://github.com/ros-realtime/rt-kernel-docker-builder#raspberry-pi-4-rt-linux-kernel), it should [already include LTTng](https://github.com/ros-realtime/rt-kernel-docker-builder/pull/18)
+   - _Note:_ make sure to clone `ros2_tracing` into **the same workspace as where you put the `reference-system`**, the tests will not properly run if they are not in the same directory.
+- install dependencies using the following command from the `colcon_ws` directory:
+    - `rosdep install --from-paths src --ignore-src -y`
+
+Once the above steps are complete you sould be ready to run the tests and generate some results.
+
+## Running the Tests
+
+Source your ROS distribution as well as your `ros2_tracing` overlay, compile this repository using the proper CMake arguments and generate some test results:
+
+### Supported CMake Arguments
+
+- `RUN_BENCHMARK`
+    - Tell CMake to build the benchmark tests that will check the reference system against its requirements before running a sweep of tests to generate trace files and reports
+    - Without the `RUN_BENCHMARK` variable set to `True` only the standard linter tests will be run
+- `TEST_PLATFORM`
+    - Test CMake to build the tests to check if the tests are being run from a [supported platform](../README.md#supported-platforms) or not
+    - This flag can be ommited if you would like to run the tests on a development system before running them on a supported platform.
+
+```
+# source your ROS distribution
+source /opt/ros/galactic/setup.bash
+
+# cd to your colcon_ws with this repo and `ros2_tracing` inside
+cd /path/to/colcon_ws
+# build packages with benchmark tests enabled
+colcon build --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
+
+# IMPORTANT
+# source the newly built workspace to make sure to use the updated tracetools package
+source install/local_setup.bash
+# run tests, generate traces and reports
+colcon test
+```
+
+**Note:** during the testing _trace data_ generated from `LTTng` will be placed in `$ROS_HOME/tracing`.
+
+If the `$ROS_HOME/tracing` directory is missing the tests will automatically generate it for you.
+
+This directory should now hold tracing data and reports for all `ros2_tracing` tests performed.
+
+Additionally, CPU and Memory Usage tests generate data and reports and saves them to `$ROS_HOME/memory`.
 
 ## Generating Node Graph Image
 

@@ -83,7 +83,7 @@ The first reference system benchmark proposed is based on the *Autoware.Auto* li
 
 Results below show various characteristics of the same simulated system (Autoware.Auto).
 
-To add your own executor / middleware / configuration to the list above follow the *Contributing* section below.
+To add your own executor to the list above follow the [*how to add your custom executor*](#how-to-implement-your-custom-executor) section below.
 
 ## Benchmark Results
 
@@ -133,8 +133,6 @@ This directory should now hold tracing data and reports for all tests performed.
 
 The `RUN_BENCHMARK` CMake variable will tell CMake to build the benchmark tests that will check the reference system against its requirements before running a sweep of tests to generate trace files and reports. Without the `RUN_BENCHMARK` variable set to `True` only the standard linter tests will be run.
 
-The `TEST_PLATFORM` tests whether the tests are being run from a [supported platform](#supported-platforms) or not.
-This flag can be ommited if you would like to run the tests on a development system before running them on a supported platform.
 
 ## Contributing
 
@@ -142,7 +140,8 @@ If you see a missing configuration on the list above that you would like to see 
 
 - look over the open / closed [issues](https://github.com/ros-realtime/reference-system-autoware/issues/) to make sure there isn't already an open ticket for the configuration you are looking for
 create `include/reference_system/MY_EXECUTOR_NAME_nodes`
-## Howto Implement Your Custom Executor 
+
+## How to Implement Your Custom Executor 
 
 1. Read over [the above documentation](#concept-overview) on the base node types
 2. Review the base [`rclcpp nodes`](reference_system/include/reference_system/nodes/rclcpp) that are provided and determine if your executor can use them
