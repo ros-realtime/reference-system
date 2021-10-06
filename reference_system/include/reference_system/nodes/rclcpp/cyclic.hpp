@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__NODES__RCLCPP__REACTOR_HPP_
-#define REFERENCE_SYSTEM__NODES__RCLCPP__REACTOR_HPP_
+#ifndef REFERENCE_SYSTEM__NODES__RCLCPP__CYCLIC_HPP_
+#define REFERENCE_SYSTEM__NODES__RCLCPP__CYCLIC_HPP_
 #include <chrono>
 #include <string>
 #include <utility>
@@ -104,4 +104,4 @@ private:
 };
 }  // namespace rclcpp_system
 }  // namespace nodes
-#endif  // REFERENCE_SYSTEM__NODES__RCLCPP__REACTOR_HPP_
+#endif  // REFERENCE_SYSTEM__NODES__RCLCPP__CYCLIC_HPP_
