@@ -64,6 +64,8 @@ if(${BUILD_TESTING})
     set(ROS_HOME $ENV{ROS_HOME})
   endif()
 
+  set(DEFAULT_TIMEOUT 300)  # seconds, 300 = roughly 5min
+
   if(${TEST_PLATFORM})
     # check current platform
     ament_add_pytest_test(${PROJECT_NAME}
@@ -114,7 +116,7 @@ if(${BUILD_TESTING})
 
       add_ros_test(
         ${CMAKE_CURRENT_BINARY_DIR}/test_requirements_${target}.py
-        TIMEOUT 3 # seconds
+        TIMEOUT ${DEFAULT_TIMEOUT}  # seconds
       )
 
       if(TARGET ${target})
@@ -131,7 +133,7 @@ if(${BUILD_TESTING})
       set(RMW_IMPLEMENTATION ${rmw_implementation})
 
       # ensure timeout is longer than the test runtime
-      math(EXPR TIMEOUT "${runtime} + 5")
+      math(EXPR timeout "${runtime} + 5")
 
       if(${trace_type} MATCHES "memory")
         set(MEMRECORD_PATH "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/scripts/benchmark_one.sh")
@@ -151,6 +153,8 @@ if(${BUILD_TESTING})
               ${MEMRECORD_LOG} \
               ${MEMRECORD_LOG_NAME}"
         )
+        set_tests_properties(generate_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
+          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
       else()
         # replaces all @var@ and ${var} within input file
         configure_file(
@@ -161,7 +165,7 @@ if(${BUILD_TESTING})
 
         add_ros_test(
           ${CMAKE_CURRENT_BINARY_DIR}/generate_${trace_type}_traces_${target}_${rmw_implementation}_${runtime}s.py
-          TIMEOUT ${TIMEOUT} # seconds
+          TIMEOUT ${timeout}  # seconds
         )
       endif()
 
@@ -180,6 +184,8 @@ if(${BUILD_TESTING})
           COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_reports.py ${TRACE_DIR}"
           COMMENT "Generate CPU and Memory Usage report from psrecord data"
         )
+        set_tests_properties(generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
+          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
       else()
         set(TRACE_DIR "${ROS_HOME}/tracing/${trace_type}_${target}_${rmw_implementation}_${runtime}s")
         # future note: this will fail on windows
@@ -187,17 +193,23 @@ if(${BUILD_TESTING})
           NAME convert_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
           COMMAND bash -c "ros2 run tracetools_analysis convert ${TRACE_DIR}"
         )
+        set_tests_properties(convert_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
+          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
 
         add_test(
           NAME process_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
           COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
         )
+        set_tests_properties(process_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
+          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
 
         add_test(
           NAME generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
           COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_reports.py ${TRACE_DIR}"
           COMMENT "Process converted traces to create data model"
         )
+        set_tests_properties(generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
+          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
       endif()
     endfunction()
 
@@ -207,8 +219,10 @@ if(${BUILD_TESTING})
       add_test(
         NAME generate_memory_summary_report_${trace_type}_${run_time}s
         COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_summary_reports.py ${TRACE_DIR} ${run_time}"
-      COMMENT "Generate CPU and Memory Usage Summary Report"
+        COMMENT "Generate CPU and Memory Usage Summary Report"
       )
+      set_tests_properties(generate_memory_summary_report_${trace_type}_${run_time}s
+          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
 
     endfunction()
 
