@@ -104,6 +104,7 @@ Before running the tests there are a few prerequisites to complete:
 - install LTTng and `ros2_tracing` [following the instructions in `ros2_tracing`](https://gitlab.com/ros-tracing/ros2_tracing#building)
    - _Note:_ if you are setting up [ a realtime linux kernel for a raspberry pi using this docker file](https://github.com/ros-realtime/rt-kernel-docker-builder#raspberry-pi-4-rt-linux-kernel), it should [already include LTTng](https://github.com/ros-realtime/rt-kernel-docker-builder/pull/18)
    - _Note:_ make sure to clone `ros2_tracing` into **the same workspace as where you put the `reference-system`**, the tests will not properly run if they are not in the same directory.
+   - Check out the proper branch for `ros2_tracing` according to your ROS distro `git checkout $ROS_DISTRO`
 - install dependencies using the following command from the `colcon_ws` directory:
     - `rosdep install --from-paths src --ignore-src -y`
 
@@ -124,7 +125,7 @@ colcon build --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
 # source the newly built workspace to make sure to use the updated tracetools package
 source install/local_setup.bash
 # run tests, generate traces and reports
-colcon test
+colcon test --packages-select $(colcon list -n --base-paths src/reference-system/)
 ```
 
 After the tests are complete you should now have a director called `tracing` in your `colcon_ws` top-level directory.
