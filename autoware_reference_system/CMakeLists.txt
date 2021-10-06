@@ -12,10 +12,19 @@ endif()
 # pass in via command line or set to True to run full benchmark tests
 message(STATUS "RUN_BENCHMARK=${RUN_BENCHMARK}")
 if(${RUN_BENCHMARK})
-  message(STATUS "Building full benchmark tests")
+  # pass in via command line or set to True to skip ros2_tracing tests
+  message(STATUS "SKIP_TRACING=${SKIP_TRACING}")
+  if(${SKIP_TRACING})
+    message(STATUS "Only building memory and CPU usage benchmark tests")
+    message(STATUS "Skipping ros2_tracing (LTTng) tests")
+  else()
+    message(STATUS "Building full benchmark tests")
+  endif()
 else()
   message(STATUS "Not building benchmark tests")
 endif()
+
+
 
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
@@ -93,10 +102,17 @@ if(${BUILD_TESTING})
     # had to seperate out traces due to dropped events
     # see https://github.com/ros-realtime/reference-system/pull/33#issuecomment-928264240
     set(TRACE_TYPES
-      callback
-      memory
-      # cpu
+      callback  # uses ros2_tracing, LTTng
+      memory    # uses psrecord
+      # cpu     # built into memory tests using psrecord
     )
+
+    # remove ros2_tracing trace_types if SKIP_TRACING is TRUE
+    if(${SKIP_TRACING})
+      message(STATUS "SKIP_TRACING is TRUE")
+      message(STATUS "Removing callback trace tests")
+      list(REMOVE_ITEM TRACE_TYPES "callback")
+    endif()
 
     find_package(ros_testing REQUIRED)
 
@@ -228,8 +244,8 @@ if(${BUILD_TESTING})
         find_package("${rmw_implementation}" REQUIRED)
         foreach(time ${RUN_TIMES})
           foreach(type ${TRACE_TYPES})
-            generate_traces(${exe} ${type} ${time})
-            generate_report(${exe} ${type} ${time})
+              generate_traces(${exe} ${type} ${time})
+              generate_report(${exe} ${type} ${time})
           endforeach()
         endforeach()
       endforeach()
