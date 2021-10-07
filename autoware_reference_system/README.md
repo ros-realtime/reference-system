@@ -136,8 +136,41 @@ Before running the tests there are a few prerequisites to complete:
    - _Note:_ make sure to clone `ros2_tracing` into **the same workspace as where you put the `reference-system`**, the tests will not properly run if they are not in the same directory.
 - install dependencies using the following command from the `colcon_ws` directory:
     - `rosdep install --from-paths src --ignore-src -y`
+- install `psrecord`, used to record CPU and memory usage
+    - `python3 -m pip install psrecord`
 
-Once the above steps are complete you sould be ready to run the tests and generate some results.
+Once the above steps are complete you sould be ready to configure the setup for your platform and run the tests to generate some results.
+
+## Configure Processing Time
+
+Many nodes in the reference system are actually performing some _psuedo work_ by finding prime numbers up until some _maximum value_.  Depending on the platform, this _maximum value_ will need to be changed so that these nodes do not take an absurd amount of time.  This _maximum value_ should be chosen on a platform-by-platform basis so that the total _run time_ of this work takes some desired amount.
+
+In order to make finding this _maximum value_ a bit easier across many different platforms a simple **number_cruncher_benchmark** is provided that will loop over various _maximum values_ and spit out how long each one takes to run.  After running this executable on your platform you should have a good idea what _maximum value_ you should use in your [timing configuration](include/autoware_reference_system/system/timing/default.hpp) so that each node does some measurable work for some desired amount of time.
+
+Here is an example output of the `number_cruncher_benchmark` run on a typical development platform (Intel 9i7):
+
+```
+ros2 run autoware_reference_system number_cruncher_benchmark 
+maximum_number     run time
+          64       0.001609ms
+         128       0.002896ms
+         256       0.006614ms
+         512       0.035036ms
+        1024       0.050957ms
+        2048       0.092732ms
+        4096       0.22837ms
+        8192       0.566779ms
+       16384       1.48837ms
+       32768       3.64588ms
+       65536       9.6687ms
+      131072       24.1154ms
+      262144       62.3475ms
+      524288       162.762ms
+     1048576       429.882ms
+     2097152       1149.79ms
+```
+
+Run the above command on your system, select your desired `run_time` and place it in the [timing configuration file](include/autoware_reference_system/system/timing/default.hpp) for the desired nodes.
 
 ## Running the Tests
 

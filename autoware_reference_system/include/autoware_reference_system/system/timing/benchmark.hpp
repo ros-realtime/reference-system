@@ -33,6 +33,11 @@ struct BenchmarkThroughput
   static constexpr time_t VISUALIZER = milliseconds(0);
   static constexpr time_t LANELET2MAP = milliseconds(0);
 
+  // the following values are used as the number_cruncher_limit
+  // to search for primes up to starting at 3
+  // for your platform, run the `number_cruncher_benchmark` executable
+  // to figure out what values to place here corresponding to the run_time
+  // you would like to run each node for
   // processing
   static constexpr uint64_t POINTS_TRANSFORMER_FRONT = 0;
   static constexpr uint64_t POINTS_TRANSFORMER_REAR = 0;
@@ -93,6 +98,11 @@ struct BenchmarkCPUUsage
   static constexpr time_t VISUALIZER = milliseconds(50);
   static constexpr time_t LANELET2MAP = milliseconds(50);
 
+  // the following values are used as the number_cruncher_limit
+  // to search for primes up to starting at 3
+  // for your platform, run the `number_cruncher_benchmark` executable
+  // to figure out what values to place here corresponding to the run_time
+  // you would like to run each node for
   // processing
   static constexpr uint64_t POINTS_TRANSFORMER_FRONT = 0;
   static constexpr uint64_t POINTS_TRANSFORMER_REAR = 0;

@@ -28,31 +28,36 @@ struct Default
   // sensors
   static constexpr time_t FRONT_LIDAR_DRIVER = milliseconds(100);
   static constexpr time_t REAR_LIDAR_DRIVER = milliseconds(100);
-  static constexpr time_t POINT_CLOUD_MAP = milliseconds(100);
-  static constexpr time_t VISUALIZER = milliseconds(100);
+  static constexpr time_t POINT_CLOUD_MAP = milliseconds(120);
+  static constexpr time_t VISUALIZER = milliseconds(60);
   static constexpr time_t LANELET2MAP = milliseconds(100);
 
+  // the following values are used as the number_cruncher_limit
+  // to search for primes up to starting at 3
+  // for your platform, run the `number_cruncher_benchmark` executable
+  // to figure out what values to place here corresponding to the run_time
+  // you would like to run each node for
   // processing
-  static constexpr uint64_t POINTS_TRANSFORMER_FRONT = 10000000;
-  static constexpr uint64_t POINTS_TRANSFORMER_REAR = 10000000;
-  static constexpr uint64_t VOXEL_GRID_DOWNSAMPLER = 10000000;
-  static constexpr uint64_t POINT_CLOUD_MAP_LOADER = 10000000;
-  static constexpr uint64_t RAY_GROUND_FILTER = 10000000;
-  static constexpr uint64_t EUCLIDEAN_CLUSTER_DETECTOR = 10000000;
-  static constexpr uint64_t OBJECT_COLLISION_ESTIMATOR = 10000000;
-  static constexpr uint64_t MPC_CONTROLLER = 10000000;
-  static constexpr uint64_t PARKING_PLANNER = 10000000;
-  static constexpr uint64_t LANE_PLANNER = 10000000;
+  static constexpr uint64_t POINTS_TRANSFORMER_FRONT = 65536;
+  static constexpr uint64_t POINTS_TRANSFORMER_REAR = 65536;
+  static constexpr uint64_t VOXEL_GRID_DOWNSAMPLER = 65536;
+  static constexpr uint64_t POINT_CLOUD_MAP_LOADER = 65536;
+  static constexpr uint64_t RAY_GROUND_FILTER = 65536;
+  static constexpr uint64_t EUCLIDEAN_CLUSTER_DETECTOR = 65536;
+  static constexpr uint64_t OBJECT_COLLISION_ESTIMATOR = 65536;
+  static constexpr uint64_t MPC_CONTROLLER = 65536;
+  static constexpr uint64_t PARKING_PLANNER = 65536;
+  static constexpr uint64_t LANE_PLANNER = 65536;
 
   // fusion
-  static constexpr uint64_t POINT_CLOUD_FUSION = 10000000;
-  static constexpr uint64_t NDT_LOCALIZER = 10000000;
-  static constexpr uint64_t VEHICLE_INTERFACE = 10000000;
-  static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 10000000;
-  static constexpr uint64_t LANELET_2_MAP_LOADER = 10000000;
+  static constexpr uint64_t POINT_CLOUD_FUSION = 65536;
+  static constexpr uint64_t NDT_LOCALIZER = 65536;
+  static constexpr uint64_t VEHICLE_INTERFACE = 65536;
+  static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 65536;
+  static constexpr uint64_t LANELET_2_MAP_LOADER = 65536;
 
   // cyclic
-  static constexpr uint64_t BEHAVIOR_PLANNER = 10000000;
+  static constexpr uint64_t BEHAVIOR_PLANNER = 65536;
   static constexpr time_t BEHAVIOR_PLANNER_CYCLE = milliseconds(100);
 };
 
