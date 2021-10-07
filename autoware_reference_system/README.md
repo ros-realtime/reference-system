@@ -151,6 +151,10 @@ Source your ROS distribution as well as your `ros2_tracing` overlay, compile thi
 - `TEST_PLATFORM`
     - Test CMake to build the tests to check if the tests are being run from a [supported platform](../README.md#supported-platforms) or not
     - This flag can be ommited if you would like to run the tests on a development system before running them on a supported platform.
+- `ALL_RMWS`
+    - Set this to `ON` if you'd like to run tests on all available RMWS as well
+    - Otherwise use only default RMW (first one listed by CMake function `get_available_rmw_implementations`)
+    - Defaults to `OFF`
 
 ```
 # source your ROS distribution
