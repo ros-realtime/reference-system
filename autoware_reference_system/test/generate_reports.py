@@ -81,7 +81,7 @@ def checkPath(p):
 def initCallbackTraceData():
     events = load_file(path)
     handler = Ros2Handler.process(events)
-    handler.data.print_data()
+    # handler.data.print_data()
 
     global ros2_data_model
     ros2_data_model = Ros2DataModelUtil(handler.data)
