@@ -143,9 +143,9 @@ Once the above steps are complete you sould be ready to configure the setup for 
 
 ## Configure Processing Time
 
-Many nodes in the reference system are actually performing some _psuedo work_ by finding prime numbers up until some _maximum value_.  Depending on the platform, this _maximum value_ will need to be changed so that these nodes do not take an absurd amount of time.  This _maximum value_ should be chosen on a platform-by-platform basis so that the total _run time_ of this work takes some desired amount.
+Many nodes in the reference system are actually performing some _psuedo work_ by finding prime numbers up until some _maximum value_.  Depending on the platform, this _maximum value_ will need to be changed so that these nodes do not take an absurd amount of time.  This _maximum value_ should be chosen on a platform-by-platform basis so that the total _run time_ of this work takes some desired length of time.
 
-In order to make finding this _maximum value_ a bit easier across many different platforms a simple **number_cruncher_benchmark** is provided that will loop over various _maximum values_ and spit out how long each one takes to run.  After running this executable on your platform you should have a good idea what _maximum value_ you should use in your [timing configuration](include/autoware_reference_system/system/timing/default.hpp) so that each node does some measurable work for some desired amount of time.
+In order to make finding this _maximum value_ a bit easier across many different platforms a simple [**number_cruncher_benchmark**](src/ros2/number_cruncher_benchmark.cpp) is provided that will loop over various _maximum values_ and spit out how long each one takes to run.  After running this executable on your platform you should have a good idea what _maximum value_ you should use in your [timing configuration](include/autoware_reference_system/system/timing/default.hpp) so that each node does some measurable work for some desired amount of time.
 
 Here is an example output of the `number_cruncher_benchmark` run on a typical development platform (Intel 9i7):
 
@@ -170,7 +170,7 @@ maximum_number     run time
      2097152       1149.79ms
 ```
 
-Run the above command on your system, select your desired `run_time` and place it in the [timing configuration file](include/autoware_reference_system/system/timing/default.hpp) for the desired nodes.
+Run the above command on your system, select your desired `run_time` and place the corresponding `maximum_number` in the [timing configuration file](include/autoware_reference_system/system/timing/default.hpp) for the desired nodes.
 
 ## Running the Tests
 
