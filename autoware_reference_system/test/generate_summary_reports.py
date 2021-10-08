@@ -14,7 +14,7 @@
 import os
 import sys
 
-from bokeh.io import export_png, output_file
+from bokeh.io import output_file
 from bokeh.layouts import layout
 from bokeh.plotting import save
 
@@ -107,7 +107,7 @@ def memory_summary_report():
 
     report = layout([[*mem_summary]])
     save(report)
-    export_png(report, filename=fname + '.png')
+    # export_png(report, filename=fname + '.png')
 
 
 def callback_summary_report():
@@ -128,7 +128,7 @@ def callback_summary_report():
     report = layout([[duration_summary], *duration_individual])
 
     save(report)
-    export_png(report, filename=fname + '.png')
+    # export_png(report, filename=fname + '.png')
 
 
 def generate_summary_reports():

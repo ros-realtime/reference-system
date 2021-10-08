@@ -14,12 +14,9 @@
 import random
 
 from bokeh.models import ColumnDataSource
-from bokeh.models import DatetimeTickFormatter
-from bokeh.models import Legend
 from bokeh.models.tools import HoverTool
 from bokeh.models.widgets.tables import DataTable, TableColumn
 from bokeh.plotting import figure
-import numpy as np
 import pandas as pd
 
 
@@ -34,7 +31,7 @@ def summary(data_model, size):
     period_data = []
     for obj, symbol in callback_symbols.items():
         callback_df = data_model.get_callback_durations(obj)
-        # get node information and filter out internal subscriptions and 
+        # get node information and filter out internal subscriptions
         owner_info = data_model.get_callback_owner_info(obj)
         if not owner_info or '/parameter_events' in owner_info:
             continue
@@ -67,15 +64,17 @@ def summary(data_model, size):
         # add name of callback and count to list
         dropped_data.append([str(fname), float(len(callback_df)), 0.0, 0.0, colors[color_i]])
         if period != 0.0:
-          period_data.append([str(fname), period, 0])  # expected_count as 0 until we know runtime
+            period_data.append([str(fname), period, 0])  # set to 0 until we know runtime
         if len(callback_df) > 200:  # this is a hack specific for the autoware reference system
             period_data.append([str(fname), 0.0, 0])  # these callbacks are after behavior planner
         else:
             period
-        color_i+=1
+        color_i += 1
 
-    dropped_df = pd.DataFrame(dropped_data, columns=['node_name', 'count', 'dropped', 'expected_count', 'color'])
-    period_df = pd.DataFrame(period_data, columns=['node_name', 'period', 'expected_count'])
+    dropped_df = pd.DataFrame(
+        dropped_data, columns=['node_name', 'count', 'dropped', 'expected_count', 'color'])
+    period_df = pd.DataFrame(
+        period_data, columns=['node_name', 'period', 'expected_count'])
     # calculate run time for experiment
     approx_run_time = (latest_date - earliest_date).total_seconds()
     # calculate expected counts for each period
@@ -85,7 +84,6 @@ def summary(data_model, size):
     # after the behavior planner node, all nodes are triggered on every message
     expected_count_sum = sum(period_df['expected_count'])
     mask = period_df['period'] == 0
-    period_zero = period_df[mask]
     period_df.loc[mask, 'expected_count'] = expected_count_sum
     # calculate dropped messages
     for callback in dropped_df.node_name:
@@ -97,12 +95,12 @@ def summary(data_model, size):
         else:
             # assume has same frequence as Front Lidar Driver
             expected = float(
-                period_df.loc[period_df.node_name == str('node_FrontLidarDriver'), 'expected_count'])
+                period_df.loc[
+                    period_df.node_name == str('node_FrontLidarDriver'), 'expected_count'])
             count = float(
                 dropped_df.loc[dropped_df.node_name == str(callback), 'count'])
         dropped_df.loc[dropped_df.node_name == str(callback), 'dropped'] = abs(expected - count)
-        dropped_df.loc[dropped_df.node_name == str(callback), 'expected_count'] = \
-                expected
+        dropped_df.loc[dropped_df.node_name == str(callback), 'expected_count'] = expected
     source = ColumnDataSource(dropped_df)
     max_dropped = max(dropped_df['dropped']) + 0.25
     dropped = figure(
@@ -116,7 +114,7 @@ def summary(data_model, size):
         margin=(10, 10, 10, 10)
     )
 
-    v = dropped.hbar(
+    dropped.hbar(
         y='node_name',
         right='dropped',
         width=0.1,

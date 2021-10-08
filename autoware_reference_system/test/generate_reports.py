@@ -14,15 +14,13 @@
 import os
 import sys
 
-from bokeh.io import export_png, output_file
+from bokeh.io import output_file
 from bokeh.layouts import layout
 from bokeh.plotting import save
 
 import callback_duration
 import dropped_messages
 import memory_usage
-
-import pandas as pd
 
 from tracetools_analysis.loading import load_file
 from tracetools_analysis.processor.ros2 import Ros2Handler
@@ -88,6 +86,7 @@ def initCallbackTraceData():
     global ros2_data_model
     ros2_data_model = Ros2DataModelUtil(handler.data)
 
+
 def initMemoryTraceData():
     # TODO(flynneva): implement once ros2_tracing memory & cpu usage is fully supported
     # see: https://github.com/ros-realtime/reference-system/pull/33
@@ -126,6 +125,7 @@ def callback_report():
     save(report)
     # export_png(report, filename=fname + '.png')
 
+
 def dropped_messages_report():
     fname = path + pwd + '_dropped_messages_report'
     output_file(
@@ -140,7 +140,6 @@ def dropped_messages_report():
 
     save(report)
     # export_png(report, filename=fname + '.png')
-
 
 
 def generate_reports():
