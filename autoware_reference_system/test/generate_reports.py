@@ -135,11 +135,8 @@ def dropped_messages_report():
     dropped_summary = dropped_messages.summary(
         data_model=ros2_data_model,
         size=SIZE_SUMMARY)
-    dropped_individual = dropped_messages.individual(
-        data_model=ros2_data_model,
-        size=SIZE_SUBPLOT)
 
-    report = layout([[dropped_summary], *dropped_individual])
+    report = layout([[dropped_summary]])
 
     save(report)
     # export_png(report, filename=fname + '.png')

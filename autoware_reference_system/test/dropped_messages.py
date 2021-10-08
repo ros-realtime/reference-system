@@ -65,7 +65,7 @@ def summary(data_model, size):
         if latest_date is None or thelastdate >= latest_date:
             latest_date = thelastdate
         # add name of callback and count to list
-        dropped_data.append([str(fname), float(len(callback_df)), 0.0, colors[color_i]])
+        dropped_data.append([str(fname), float(len(callback_df)), 0.0, 0.0, colors[color_i]])
         if period != 0.0:
           period_data.append([str(fname), period, 0])  # expected_count as 0 until we know runtime
         if len(callback_df) > 200:  # this is a hack specific for the autoware reference system
@@ -74,7 +74,7 @@ def summary(data_model, size):
             period
         color_i+=1
 
-    dropped_df = pd.DataFrame(dropped_data, columns=['node_name', 'count', 'dropped', 'color'])
+    dropped_df = pd.DataFrame(dropped_data, columns=['node_name', 'count', 'dropped', 'expected_count', 'color'])
     period_df = pd.DataFrame(period_data, columns=['node_name', 'period', 'expected_count'])
     # calculate run time for experiment
     approx_run_time = (latest_date - earliest_date).total_seconds()
@@ -94,7 +94,6 @@ def summary(data_model, size):
                 period_df.loc[period_df.node_name == str(callback), 'expected_count'])
             count = float(
                 dropped_df.loc[dropped_df.node_name == str(callback), 'count'])
-            dropped_df.loc[dropped_df.node_name == str(callback), 'dropped'] = abs(expected - count)
         else:
             # assume has same frequence as Front Lidar Driver
             expected = float(
@@ -102,6 +101,8 @@ def summary(data_model, size):
             count = float(
                 dropped_df.loc[dropped_df.node_name == str(callback), 'count'])
         dropped_df.loc[dropped_df.node_name == str(callback), 'dropped'] = abs(expected - count)
+        dropped_df.loc[dropped_df.node_name == str(callback), 'expected_count'] = \
+                expected
     source = ColumnDataSource(dropped_df)
     max_dropped = max(dropped_df['dropped']) + 0.25
     dropped = figure(
@@ -130,7 +131,8 @@ def summary(data_model, size):
     hover.tooltips = [
         ('Callback', '@node_name'),
         ('Dropped', '@dropped'),
-        ('Total Count', '@count')
+        ('Expected', '@expected_count'),
+        ('Received', '@count')
     ]
     dropped.add_tools(hover)
 
@@ -141,104 +143,7 @@ def summary(data_model, size):
         columns=columns,
         source=ColumnDataSource(dropped_summary),
         margin=(10, 10, 10, 10),
-        height=140
+        height=75,
+        width=size
     )
     return [summary_table, dropped]
-
-
-def individual(data_model, size):
-    # returns a list of individual plots for each callback symbol
-    callback_symbols = data_model.get_callback_symbols()
-    colors = []  # Adds random colors for each callback
-    color_i = 0
-    fname = ''
-    figs = []
-    for obj, symbol in callback_symbols.items():
-        owner_info = data_model.get_callback_owner_info(obj)
-        if owner_info is None:
-            owner_info = '[unknown]'
-
-        # Filter out internal subscriptions
-        if '/parameter_events' in owner_info:
-            continue
-
-        substr = 'node: '
-        index = str.find(owner_info, substr)
-        if index >= 0:
-            index += len(substr)
-            fname = 'node_' + owner_info[index:(str.find(owner_info, ','))]
-        substr = 'topic: /'
-        index = str.find(owner_info, substr)
-        if index >= 0:
-            index += len(substr)
-            fname += '_topic_' + owner_info[index:]
-
-        # Duration
-        duration_df = data_model.get_callback_durations(obj)
-        starttime = duration_df.loc[:, 'timestamp'].iloc[0].strftime('%Y-%m-%d %H:%M')
-        source = ColumnDataSource(duration_df)
-        duration = figure(
-            title='Callback Duration Over time',
-            x_axis_label=f'start ({starttime})',
-            y_axis_label='duration (ms)',
-            plot_width=int(size * 1.2),
-            plot_height=size,
-            margin=(10, 10, 10, 175)  # Top, R, Bottom, L
-        )
-        duration.title.align = 'center'
-
-        if(len(colors) <= color_i):
-            colors.append('#%06X' % random.randint(0, 256**3-1))
-
-        duration.line(
-            x='timestamp',
-            y='duration',
-            legend_label=fname,
-            line_width=2,
-            source=source,
-            line_color=colors[color_i]
-        )
-        # duration.legend_label.text_font_size = '11px'
-        duration.xaxis[0].formatter = DatetimeTickFormatter(seconds=['%Ss'])
-
-        # add hover tool
-        hover = HoverTool()
-        hover.tooltips = [
-            ('Duration', '@duration{0.000}' + 's'),
-            ('Timestamp', '@timestamp{%S.%3Ns}')
-        ]
-        hover.formatters = {
-            '@timestamp': 'datetime'
-        }
-        duration.add_tools(hover)
-
-        # Histogram
-        # (convert to milliseconds)
-        dur_hist, edges = np.histogram(duration_df['duration'] * 1000 / np.timedelta64(1, 's'))
-        duration_hist = pd.DataFrame({
-            'duration': dur_hist,
-            'left': edges[:-1],
-            'right': edges[1:],
-        })
-        hist = figure(
-            title='Frequency of Callback Duration',
-            x_axis_label='duration (ms)',
-            y_axis_label='frequency',
-            plot_width=int(size * 1.2),
-            plot_height=size,
-            margin=(10, 10, 10, 25)  # Top, R, Bottom, L
-        )
-        hist.title.align = 'center'
-        hist.quad(
-            bottom=0,
-            top=duration_hist['duration'],
-            left=duration_hist['left'],
-            right=duration_hist['right'],
-            fill_color=colors[color_i],
-            line_color=colors[color_i],
-            legend_label=fname
-        )
-
-        color_i += 1
-        figs.append([duration, hist])
-    return figs
