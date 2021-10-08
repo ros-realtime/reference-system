@@ -24,7 +24,14 @@ else()
   message(STATUS "Not building benchmark tests")
 endif()
 
-
+# pass in via command line or set to True to run for all available RMWs
+message(STATUS "ALL_RMWS=${ALL_RMWS}")
+if(${ALL_RMWS})
+  message(STATUS "Run tests on all available RMW's")
+else()
+  set(ALL_RMWS OFF)
+  message(STATUS "Using default RMW for tests")
+endif()
 
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
@@ -118,133 +125,27 @@ if(${BUILD_TESTING})
 
     find_package(ros_testing REQUIRED)
 
-    # make sure executable matches system requirements
-    function(test_requirements target)
-      set(TEST_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/${target})
-      set(TEST_EXECUTABLE_NAME test_requirements_${target})
-
-      # replaces all @var@ and ${var} within input file
-      configure_file(
-        test/test_requirements.py
-        test_requirements_${target}.py
-        @ONLY
-      )
-
-      add_ros_test(
-        ${CMAKE_CURRENT_BINARY_DIR}/test_requirements_${target}.py
-        TIMEOUT ${DEFAULT_TIMEOUT}  # seconds
-      )
-
-      if(TARGET ${target})
-        ament_target_dependencies(${target}
-          "rclcpp" "reference_interfaces" "reference_system")
-      endif()
-    endfunction()
-
-    # run target for n seconds
-    function(generate_traces target  trace_type runtime)
-      set(TEST_EXECUTABLE ${target})
-      set(TEST_EXECUTABLE_NAME ${target}_${rmw_implementation})
-      set(RUNTIME ${runtime})
-      set(RMW_IMPLEMENTATION ${rmw_implementation})
-
-      # ensure timeout is longer than the test runtime
-      math(EXPR timeout "${runtime} + 5")
-
-      if(${trace_type} MATCHES "memory")
-        set(MEMRECORD_PATH "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/scripts/benchmark_one.sh")
-        set(MEMRECORD_LOG "${ROS_HOME}/${trace_type}")
-        set(MEMRECORD_LOG_NAME "${target}_${rmw_implementation}_${runtime}s.txt")
-        set(MEMRECORD_EXE "$(ros2 pkg prefix ${PROJECT_NAME})/lib/${PROJECT_NAME}/${target}")
-        # run psrecord script instead of ros2_tracing for memory usage plots
-        add_test(
-          NAME generate_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
-          COMMAND
-            bash -c
-              "chmod u+x ${MEMRECORD_PATH};
-              RMW_IMPLEMENTATION=${rmw_implementation} \
-              ${MEMRECORD_PATH} \
-              ${MEMRECORD_EXE} \
-              ${runtime} \
-              ${MEMRECORD_LOG} \
-              ${MEMRECORD_LOG_NAME}"
-        )
-        set_tests_properties(generate_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
-          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
-      else()
-        # replaces all @var@ and ${var} within input file
-        configure_file(
-          test/generate_${trace_type}_traces.py
-          generate_${trace_type}_traces_${target}_${rmw_implementation}_${runtime}s.py
-          @ONLY
-        )
-
-        add_ros_test(
-          ${CMAKE_CURRENT_BINARY_DIR}/generate_${trace_type}_traces_${target}_${rmw_implementation}_${runtime}s.py
-          TIMEOUT ${timeout}  # seconds
-        )
-      endif()
-
-      if(TARGET ${target})
-        ament_target_dependencies(${target}
-          "rclcpp" "reference_interfaces" "reference_system")
-      endif()
-    endfunction()
-
-    # generate report from traces
-    function(generate_report target trace_type runtime)
-      if(${trace_type} MATCHES "memory")
-        set(TRACE_DIR "${ROS_HOME}/${trace_type}/${target}_${rmw_implementation}_${runtime}s.txt")
-        add_test(
-          NAME generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
-          COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_reports.py ${TRACE_DIR}"
-          COMMENT "Generate CPU and Memory Usage report from psrecord data"
-        )
-        set_tests_properties(generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
-          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
-      else()
-        set(TRACE_DIR "${ROS_HOME}/tracing/${trace_type}_${target}_${rmw_implementation}_${runtime}s")
-        # future note: this will fail on windows
-        add_test(
-          NAME convert_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
-          COMMAND bash -c "ros2 run tracetools_analysis convert ${TRACE_DIR}"
-        )
-        set_tests_properties(convert_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
-          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
-
-        add_test(
-          NAME process_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
-          COMMAND bash -c "ros2 run tracetools_analysis process ${TRACE_DIR}"
-        )
-        set_tests_properties(process_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
-          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
-
-        add_test(
-          NAME generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
-          COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_reports.py ${TRACE_DIR}"
-          COMMENT "Process converted traces to create data model"
-        )
-        set_tests_properties(generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
-          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
-      endif()
-    endfunction()
-
-    # generate summary report from all trace data
-    function(generate_summary_report trace_type run_time)
-      set(TRACE_DIR "${ROS_HOME}/${trace_type}")
-      add_test(
-        NAME generate_memory_summary_report_${trace_type}_${run_time}s
-        COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_summary_reports.py ${TRACE_DIR} ${run_time}"
-        COMMENT "Generate CPU and Memory Usage Summary Report"
-      )
-      set_tests_properties(generate_memory_summary_report_${trace_type}_${run_time}s
-          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
-
-    endfunction()
-
     # get available rmw implementations
     find_package(rmw_implementation_cmake REQUIRED)
     get_available_rmw_implementations(rmws_available)
+
+    # only use default RMW by default
+    if(${ALL_RMWS} MATCHES OFF)
+      list(REVERSE rmws_available)
+      foreach(rmw ${rmws_available})
+        list(LENGTH rmws_available COUNT)
+        if(NOT COUNT MATCHES 1)
+          # message("Removing ${rmw} from tests")
+          list(REMOVE_AT rmws_available COUNT)
+        endif()
+      endforeach()
+    endif()
+
+    # include cmake functions to use later on
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/test_requirements.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_traces.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_report.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_summary_report.cmake)
 
     # check each executable matches the system requirements
     foreach(exe ${TEST_TARGETS})
