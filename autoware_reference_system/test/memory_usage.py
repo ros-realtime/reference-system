@@ -72,7 +72,6 @@ def summary(path, duration, size):
         avg_data = df_summary[idx]['mean'].tolist()
         summary_data[exe_name][rmw_name] = avg_data
 
-    print(summary_data)
     # sort dict by key
     summary_data = OrderedDict(sorted(summary_data.items()))
     for exe in summary_data:
@@ -88,7 +87,7 @@ def summary(path, duration, size):
             cpu_usage.append(summary_data[exe][rmw][1])
             real_mb.append(summary_data[exe][rmw][2])
             virtual_mb.append(summary_data[exe][rmw][3])
-    print(cpu_usage)
+
     source = ColumnDataSource({
         'x': x,
         'cpu_usage': cpu_usage,

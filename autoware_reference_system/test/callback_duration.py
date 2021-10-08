@@ -22,7 +22,8 @@ import numpy as np
 import pandas as pd
 
 
-def summary(callback_symbols, data_model, size):
+def summary(data_model, size):
+    callback_symbols = data_model.get_callback_symbols()
     colours = []  # Adds random colours for each callback
     colour_i = 0
     earliest_date = None
@@ -43,10 +44,10 @@ def summary(callback_symbols, data_model, size):
         margin=(10, 10, 10, 10)
     )
 
-    colour_i = 0
     legend_it = []
     for obj, symbol in callback_symbols.items():
-        # Filter out internal subscriptions
+
+        # Filter out internal subscriptions and get node information
         owner_info = data_model.get_callback_owner_info(obj)
         if not owner_info or '/parameter_events' in owner_info:
             continue
@@ -113,8 +114,9 @@ def summary(callback_symbols, data_model, size):
     # export_png(duration, filename=path + 'callback_duration_summary.png')
 
 
-def individual(callback_symbols, data_model, size):
+def individual(data_model, size):
     # returns a list of individual plots for each callback symbol
+    callback_symbols = data_model.get_callback_symbols()
     colours = []  # Adds random colours for each callback
     colour_i = 0
     fname = ''

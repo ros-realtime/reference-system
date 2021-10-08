@@ -19,7 +19,10 @@ from bokeh.layouts import layout
 from bokeh.plotting import save
 
 import callback_duration
+import dropped_messages
 import memory_usage
+
+import pandas as pd
 
 from tracetools_analysis.loading import load_file
 from tracetools_analysis.processor.ros2 import Ros2Handler
@@ -29,7 +32,6 @@ path = ''
 pwd = ''
 ros2_data_model = None
 memory_data_model = None
-callback_symbols = None
 ust_memory_usage_dfs = None
 kernel_memory_usage_dfs = None
 trace_type = None
@@ -86,13 +88,6 @@ def initCallbackTraceData():
     global ros2_data_model
     ros2_data_model = Ros2DataModelUtil(handler.data)
 
-    global symbols
-    symbols = ros2_data_model.get_callback_symbols()
-
-    global callback_symbols
-    callback_symbols = ros2_data_model.get_callback_symbols()
-
-
 def initMemoryTraceData():
     # TODO(flynneva): implement once ros2_tracing memory & cpu usage is fully supported
     # see: https://github.com/ros-realtime/reference-system/pull/33
@@ -110,7 +105,7 @@ def memory_report():
     report = layout([[*mem_individual]])
 
     save(report)
-    export_png(report, filename=fname + '.png')
+    # export_png(report, filename=fname + '.png')
 
 
 def callback_report():
@@ -120,24 +115,41 @@ def callback_report():
         title='Callback Duration Report')
 
     duration_summary = callback_duration.summary(
-        callback_symbols,
         data_model=ros2_data_model,
         size=SIZE_SUMMARY)
     duration_individual = callback_duration.individual(
-        callback_symbols,
         data_model=ros2_data_model,
         size=SIZE_SUBPLOT)
 
     report = layout([[duration_summary], *duration_individual])
 
-    # show(report)
     save(report)
-    export_png(report, filename=fname + '.png')
+    # export_png(report, filename=fname + '.png')
+
+def dropped_messages_report():
+    fname = path + pwd + '_dropped_messages_report'
+    output_file(
+        filename=fname + '.html',
+        title='Dropped Messages Report')
+
+    dropped_summary = dropped_messages.summary(
+        data_model=ros2_data_model,
+        size=SIZE_SUMMARY)
+    dropped_individual = dropped_messages.individual(
+        data_model=ros2_data_model,
+        size=SIZE_SUBPLOT)
+
+    report = layout([[dropped_summary], *dropped_individual])
+
+    save(report)
+    # export_png(report, filename=fname + '.png')
+
 
 
 def generate_reports():
     if(trace_type == TRACE_CALLBACK):
         callback_report()
+        dropped_messages_report()
     elif(trace_type == TRACE_MEMORY):
         memory_report()
 
