@@ -31,6 +31,7 @@ struct Default
   static constexpr time_t POINT_CLOUD_MAP = milliseconds(120);
   static constexpr time_t VISUALIZER = milliseconds(60);
   static constexpr time_t LANELET2MAP = milliseconds(100);
+  static constexpr time_t EUCLIDEAN_CLUSTER_SETTINGS = milliseconds(25);
 
   // the following values are used as the number_cruncher_limit
   // to search for primes up to starting at 3
@@ -44,6 +45,7 @@ struct Default
   static constexpr uint64_t POINT_CLOUD_MAP_LOADER = 65536;
   static constexpr uint64_t RAY_GROUND_FILTER = 65536;
   static constexpr uint64_t EUCLIDEAN_CLUSTER_DETECTOR = 65536;
+  static constexpr uint64_t EUCLIDEAN_INTERSECTION = 65536;
   static constexpr uint64_t OBJECT_COLLISION_ESTIMATOR = 65536;
   static constexpr uint64_t MPC_CONTROLLER = 65536;
   static constexpr uint64_t PARKING_PLANNER = 65536;
@@ -66,12 +68,14 @@ constexpr Default::time_t Default::REAR_LIDAR_DRIVER;
 constexpr Default::time_t Default::POINT_CLOUD_MAP;
 constexpr Default::time_t Default::VISUALIZER;
 constexpr Default::time_t Default::LANELET2MAP;
+constexpr Default::time_t Default::EUCLIDEAN_CLUSTER_SETTINGS;
 constexpr uint64_t Default::POINTS_TRANSFORMER_FRONT;
 constexpr uint64_t Default::POINTS_TRANSFORMER_REAR;
 constexpr uint64_t Default::VOXEL_GRID_DOWNSAMPLER;
 constexpr uint64_t Default::POINT_CLOUD_MAP_LOADER;
 constexpr uint64_t Default::RAY_GROUND_FILTER;
 constexpr uint64_t Default::EUCLIDEAN_CLUSTER_DETECTOR;
+constexpr uint64_t Default::EUCLIDEAN_INTERSECTION;
 constexpr uint64_t Default::OBJECT_COLLISION_ESTIMATOR;
 constexpr uint64_t Default::MPC_CONTROLLER;
 constexpr uint64_t Default::PARKING_PLANNER;

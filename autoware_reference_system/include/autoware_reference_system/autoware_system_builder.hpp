@@ -65,6 +65,12 @@ auto create_autoware_nodes()
         .topic_name = "Lanelet2Map",
         .cycle_time = TimingConfig::LANELET2MAP}));
 
+  nodes.emplace_back(
+    std::make_shared<typename SystemType::Sensor>(
+      nodes::SensorSettings{.node_name = "EuclideanClusterSettings",
+        .topic_name = "EuclideanClusterSettings",
+        .cycle_time = TimingConfig::EUCLIDEAN_CLUSTER_SETTINGS}));
+
   // transform nodes
   nodes.emplace_back(
     std::make_shared<typename SystemType::Transform>(
@@ -105,14 +111,6 @@ auto create_autoware_nodes()
     .input_topic = "PointCloudFusion",
     .output_topic = "RayGroundFilter",
     .number_crunch_limit = TimingConfig::RAY_GROUND_FILTER}));
-
-  nodes.emplace_back(
-    std::make_shared<typename SystemType::Transform>(
-      nodes::TransformSettings{
-    .node_name = "EuclideanClusterDetector",
-    .input_topic = "RayGroundFilter",
-    .output_topic = "EuclideanClusterDetector",
-    .number_crunch_limit = TimingConfig::EUCLIDEAN_CLUSTER_DETECTOR}));
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Transform>(
@@ -204,11 +202,33 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::BEHAVIOR_PLANNER,
     .cycle_time = TimingConfig::BEHAVIOR_PLANNER_CYCLE}));
 
+  nodes.emplace_back(
+    std::make_shared<typename SystemType::Intersection>(
+      nodes::IntersectionSettings{
+    .node_name = "EuclideanClusterDetector",
+    .connections = {
+      { .input_topic = "RayGroundFilter",
+        .output_topic = "EuclideanClusterDetector",
+        .number_crunch_limit = TimingConfig::EUCLIDEAN_CLUSTER_DETECTOR},
+      { .input_topic = "EuclideanClusterSettings",
+        .output_topic = "EuclideanIntersection",
+        .number_crunch_limit = TimingConfig::EUCLIDEAN_INTERSECTION
+      }
+    }}
+    ));
+
+
   // command node
   nodes.emplace_back(
     std::make_shared<typename SystemType::Command>(
       nodes::CommandSettings{
     .node_name = "VehicleDBWSystem", .input_topic = "VehicleInterface"}));
+
+  nodes.emplace_back(
+    std::make_shared<typename SystemType::Command>(
+      nodes::CommandSettings{
+    .node_name = "IntersectionOutput", 
+    .input_topic = "EuclideanIntersection"}));
 #pragma GCC diagnostic pop
 
   return nodes;
