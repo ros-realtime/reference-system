@@ -14,6 +14,7 @@
 import random
 
 from bokeh.models import ColumnDataSource
+from bokeh.models import DatetimeTickFormatter
 from bokeh.models.tools import HoverTool
 from bokeh.models.widgets.tables import DataTable, TableColumn
 from bokeh.plotting import figure
@@ -29,6 +30,8 @@ def summary(data_model, size):
     fname = ''
     dropped_data = []
     period_data = []
+    front_lidar_data = pd.DataFrame()
+    object_collision_data = pd.DataFrame()
     for obj, symbol in callback_symbols.items():
         callback_df = data_model.get_callback_durations(obj)
         # get node information and filter out internal subscriptions
@@ -40,6 +43,11 @@ def summary(data_model, size):
             # assume in milliseconds so convert to seconds
             period = float(owner_info[
                 owner_info.find('period: ') + len('period: '):owner_info.rfind(' ')]) / 1000
+        if not owner_info or 'FrontLidarDriver' in owner_info and 'Timer' in owner_info:
+            front_lidar_data = callback_df
+        if not owner_info or 'ObjectCollisionEstimator' in owner_info:
+            object_collision_data = callback_df
+
         # add color to list if needed
         if(len(colors) <= color_i):
             colors.append('#%06X' % random.randint(0, 256**3-1))
@@ -71,10 +79,24 @@ def summary(data_model, size):
             period
         color_i += 1
 
+    front_lidar_data = front_lidar_data.reset_index(drop=True)
+    object_collision_data = object_collision_data.reset_index(drop=True)
+
+    # ensure dataframes are same length for latency calc, drop extra lidar frames
+    extra = len(front_lidar_data) - len(object_collision_data)
+    if(extra > 0):
+        front_lidar_data.drop(front_lidar_data.tail(extra).index, inplace=True)
+    mask = object_collision_data['timestamp'] > front_lidar_data['timestamp']
+    latency = object_collision_data['timestamp'] - front_lidar_data['timestamp']
     dropped_df = pd.DataFrame(
         dropped_data, columns=['node_name', 'count', 'dropped', 'expected_count', 'color'])
     period_df = pd.DataFrame(
         period_data, columns=['node_name', 'period', 'expected_count'])
+    latency_df = pd.DataFrame(
+        {'index': range(0, len(latency)),
+         'latency': latency,
+         'timestamp': front_lidar_data['timestamp']})
+
     # calculate run time for experiment
     approx_run_time = (latest_date - earliest_date).total_seconds()
     # calculate expected counts for each period
@@ -144,4 +166,26 @@ def summary(data_model, size):
         height=75,
         width=size
     )
-    return [summary_table, dropped]
+
+    # add latency plot
+    latency_fig = figure(
+        title='Latency From Front Lidar to Collision Estimator',
+        x_axis_label='Time',
+        y_axis_label='Latency to Object Collision Estimator (ms)',
+        plot_width=int(size * 2.0),
+        plot_height=size,
+        margin=(10, 10, 10, 10)
+    )
+
+    print(latency_df)
+    latency_fig.line(
+        x='timestamp',
+        y='latency',
+        source=ColumnDataSource(latency_df),
+        legend_label='latency',
+        line_width=2
+    )
+
+    latency_fig.xaxis[0].formatter = DatetimeTickFormatter(seconds=['%Ss'])
+
+    return [summary_table, dropped, latency_fig]
