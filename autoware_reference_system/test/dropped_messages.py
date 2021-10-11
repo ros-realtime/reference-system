@@ -11,17 +11,144 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
 import random
 
+from bokeh.io import output_file
+from bokeh.layouts import layout
 from bokeh.models import ColumnDataSource
 from bokeh.models import DatetimeTickFormatter
 from bokeh.models.tools import HoverTool
 from bokeh.models.widgets.tables import DataTable, TableColumn
-from bokeh.plotting import figure
+from bokeh.plotting import figure, save
 import pandas as pd
 
+from utils import getPWD, initDataModel
 
-def summary(data_model, size):
+
+def summary(path, duration, size):
+    fname = path + 'dropped_messages_and_latency_summary_' + duration + 's'
+    print('Output report to ' + fname + '.html')
+    output_file(
+        filename=fname + '.html',
+        title='Dropped Messages and Latency Summary Report (' + duration + 's)')
+    for fname in os.listdir(path):
+        fpath = path + fname
+        # load tracing data
+        data_model = initDataModel(fpath)
+        pwd = getPWD(path)
+        data_dict = parseData(data_model)
+        dropped_df = data_dict['dropped']
+        period_df = data_dict['period']
+        latency_df = data_dict['latency']
+        start = data_dict['start']
+        end = data_dict['end']
+        print(start)
+
+
+
+def individual(data_model, size):
+    data_dict = parseData(data_model)
+    dropped_df = data_dict['dropped']
+    period_df = data_dict['period']
+    latency_df = data_dict['latency']
+    start = data_dict['start']
+    end = data_dict['end']
+    # calculate run time for experiment
+    approx_run_time = (end- start).total_seconds()
+    # calculate expected counts for each period
+    mask = (period_df['period'] != 0)
+    period_non_zero = period_df[mask]
+    period_df.loc[mask, 'expected_count'] = approx_run_time / period_non_zero['period']
+    # after the behavior planner node, all nodes are triggered on every message
+    expected_count_sum = sum(period_df['expected_count'])
+    mask = period_df['period'] == 0
+    period_df.loc[mask, 'expected_count'] = expected_count_sum
+    # calculate dropped messages
+    for callback in dropped_df.node_name:
+        if str(callback) in str(period_df.node_name):
+            expected = float(
+                period_df.loc[period_df.node_name == str(callback), 'expected_count'])
+            count = float(
+                dropped_df.loc[dropped_df.node_name == str(callback), 'count'])
+        else:
+            # assume has same frequence as Front Lidar Driver
+            expected = float(
+                period_df.loc[
+                    period_df.node_name == str('node_FrontLidarDriver'), 'expected_count'])
+            count = float(
+                dropped_df.loc[dropped_df.node_name == str(callback), 'count'])
+        dropped_df.loc[dropped_df.node_name == str(callback), 'dropped'] = abs(expected - count)
+        dropped_df.loc[dropped_df.node_name == str(callback), 'expected_count'] = expected
+    source = ColumnDataSource(dropped_df)
+    max_dropped = max(dropped_df['dropped']) + 0.25
+    # initialize figure
+    dropped = figure(
+        title='Dropped Messages Summary ({:.2f} s)'.format(float(approx_run_time)),
+        y_axis_label='Node Name',
+        x_axis_label='Dropped Messages',
+        y_range=dropped_df['node_name'],
+        x_range=(0, max_dropped),
+        plot_width=int(size * 2.0),
+        plot_height=size,
+        margin=(10, 10, 10, 10)
+    )
+    # add horizontal bar to figure
+    dropped.hbar(
+        y='node_name',
+        right='dropped',
+        width=0.1,
+        fill_color='color',
+        source=source
+    )
+    # add legend
+    # legend = Legend(items=[dropped_df['node_name'], v])
+    # dropped.add_layout(legend, 'right')
+    # add hover tool
+    hover = HoverTool()
+    hover.tooltips = [
+        ('Callback', '@node_name'),
+        ('Dropped', '@dropped'),
+        ('Expected', '@expected_count'),
+        ('Received', '@count')
+    ]
+    dropped.add_tools(hover)
+
+    # add summary table
+    dropped_summary = dropped_df.describe().T.reset_index()
+    columns = [TableColumn(field=col, title=col) for col in dropped_summary]
+    summary_table = DataTable(
+        columns=columns,
+        source=ColumnDataSource(dropped_summary),
+        margin=(10, 10, 10, 10),
+        height=75,
+        width=size
+    )
+
+    # add latency plot
+    latency_fig = figure(
+        title='Latency From Front Lidar to Collision Estimator',
+        x_axis_label='Time',
+        y_axis_label='Latency to Object Collision Estimator (ms)',
+        plot_width=int(size * 2.0),
+        plot_height=size,
+        margin=(10, 10, 10, 10)
+    )
+
+    latency_fig.line(
+        x='timestamp',
+        y='latency',
+        source=ColumnDataSource(latency_df),
+        legend_label='latency',
+        line_width=2
+    )
+
+    latency_fig.xaxis[0].formatter = DatetimeTickFormatter(seconds=['%Ss'])
+
+    return [summary_table, dropped, latency_fig]
+
+
+def parseData(data_model):
     callback_symbols = data_model.get_callback_symbols()
     colors = []  # Adds random colors for each callback
     color_i = 0
@@ -75,8 +202,6 @@ def summary(data_model, size):
             period_data.append([str(fname), period, 0])  # set to 0 until we know runtime
         if len(callback_df) > 200:  # this is a hack specific for the autoware reference system
             period_data.append([str(fname), 0.0, 0])  # these callbacks are after behavior planner
-        else:
-            period
         color_i += 1
 
     front_lidar_data = front_lidar_data.reset_index(drop=True)
@@ -86,7 +211,6 @@ def summary(data_model, size):
     extra = len(front_lidar_data) - len(object_collision_data)
     if(extra > 0):
         front_lidar_data.drop(front_lidar_data.tail(extra).index, inplace=True)
-    mask = object_collision_data['timestamp'] > front_lidar_data['timestamp']
     latency = object_collision_data['timestamp'] - front_lidar_data['timestamp']
     dropped_df = pd.DataFrame(
         dropped_data, columns=['node_name', 'count', 'dropped', 'expected_count', 'color'])
@@ -96,96 +220,12 @@ def summary(data_model, size):
         {'index': range(0, len(latency)),
          'latency': latency,
          'timestamp': front_lidar_data['timestamp']})
-
-    # calculate run time for experiment
-    approx_run_time = (latest_date - earliest_date).total_seconds()
-    # calculate expected counts for each period
-    mask = (period_df['period'] != 0)
-    period_non_zero = period_df[mask]
-    period_df.loc[mask, 'expected_count'] = approx_run_time / period_non_zero['period']
-    # after the behavior planner node, all nodes are triggered on every message
-    expected_count_sum = sum(period_df['expected_count'])
-    mask = period_df['period'] == 0
-    period_df.loc[mask, 'expected_count'] = expected_count_sum
-    # calculate dropped messages
-    for callback in dropped_df.node_name:
-        if str(callback) in str(period_df.node_name):
-            expected = float(
-                period_df.loc[period_df.node_name == str(callback), 'expected_count'])
-            count = float(
-                dropped_df.loc[dropped_df.node_name == str(callback), 'count'])
-        else:
-            # assume has same frequence as Front Lidar Driver
-            expected = float(
-                period_df.loc[
-                    period_df.node_name == str('node_FrontLidarDriver'), 'expected_count'])
-            count = float(
-                dropped_df.loc[dropped_df.node_name == str(callback), 'count'])
-        dropped_df.loc[dropped_df.node_name == str(callback), 'dropped'] = abs(expected - count)
-        dropped_df.loc[dropped_df.node_name == str(callback), 'expected_count'] = expected
-    source = ColumnDataSource(dropped_df)
-    max_dropped = max(dropped_df['dropped']) + 0.25
-    dropped = figure(
-        title='Dropped Messages Summary ({:.2f} s)'.format(float(approx_run_time)),
-        y_axis_label='Node Name',
-        x_axis_label='Dropped Messages',
-        y_range=dropped_df['node_name'],
-        x_range=(0, max_dropped),
-        plot_width=int(size * 2.0),
-        plot_height=size,
-        margin=(10, 10, 10, 10)
-    )
-
-    dropped.hbar(
-        y='node_name',
-        right='dropped',
-        width=0.1,
-        fill_color='color',
-        source=source
-    )
-    # add legend
-    # legend = Legend(items=[dropped_df['node_name'], v])
-    # dropped.add_layout(legend, 'right')
-    # add hover tool
-    hover = HoverTool()
-    hover.tooltips = [
-        ('Callback', '@node_name'),
-        ('Dropped', '@dropped'),
-        ('Expected', '@expected_count'),
-        ('Received', '@count')
-    ]
-    dropped.add_tools(hover)
-
-    # add summary table
-    dropped_summary = dropped_df.describe().T.reset_index()
-    columns = [TableColumn(field=col, title=col) for col in dropped_summary]
-    summary_table = DataTable(
-        columns=columns,
-        source=ColumnDataSource(dropped_summary),
-        margin=(10, 10, 10, 10),
-        height=75,
-        width=size
-    )
-
-    # add latency plot
-    latency_fig = figure(
-        title='Latency From Front Lidar to Collision Estimator',
-        x_axis_label='Time',
-        y_axis_label='Latency to Object Collision Estimator (ms)',
-        plot_width=int(size * 2.0),
-        plot_height=size,
-        margin=(10, 10, 10, 10)
-    )
-
-    print(latency_df)
-    latency_fig.line(
-        x='timestamp',
-        y='latency',
-        source=ColumnDataSource(latency_df),
-        legend_label='latency',
-        line_width=2
-    )
-
-    latency_fig.xaxis[0].formatter = DatetimeTickFormatter(seconds=['%Ss'])
-
-    return [summary_table, dropped, latency_fig]
+    # prepare output
+    data_dict = {
+        'dropped': dropped_df,
+        'period': period_df,
+        'latency': latency_df,
+        'start': earliest_date,
+        'end': latest_date
+    }
+    return data_dict

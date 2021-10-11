@@ -27,7 +27,6 @@ import pandas as pd
 
 
 def summary(path, duration, size):
-    print('Parse all psrecord log files')
     data = []
     df = []
     df_summary = []
@@ -139,7 +138,6 @@ def summary(path, duration, size):
         fill_color=factor_cmap('x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
     )
 
-    summary_fig.legend.location = 'top_right'
     summary_fig.y_range.start = 0
     summary_fig.x_range.range_padding = 0.1
 
@@ -157,7 +155,6 @@ def summary(path, duration, size):
 
 
 def individual(path, size):
-    print('Parse psrecord log files')
     basename = os.path.basename(path)
     # open file
     data = open(path).read().splitlines()[1:]
