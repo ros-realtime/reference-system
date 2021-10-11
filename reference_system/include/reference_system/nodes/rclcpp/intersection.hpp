@@ -16,6 +16,7 @@
 #include <chrono>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "rclcpp/rclcpp.hpp"
 #include "reference_system/nodes/settings.hpp"
@@ -34,15 +35,17 @@ public:
   explicit Intersection(const IntersectionSettings & settings)
   : Node(settings.node_name)
   {
-    for(auto & connection : settings.connections) {
-      connections_.emplace_back(Connection{
-        this->create_publisher<message_t>(connection.output_topic, 10),
-        this->create_subscription<message_t>(connection.input_topic, 10, 
-            [this,id = connections_.size()](const message_t::SharedPtr msg){ 
-              input_callback(msg, id);
-            }),
-        connection.number_crunch_limit
-      });
+    for (auto & connection : settings.connections) {
+      connections_.emplace_back(
+        Connection{
+            this->create_publisher<message_t>(connection.output_topic, 10),
+            this->create_subscription<message_t>(
+              connection.input_topic, 10,
+              [this, id = connections_.size()](const message_t::SharedPtr msg) {
+                input_callback(msg, id);
+              }),
+            connection.number_crunch_limit
+          });
     }
   }
 
@@ -61,7 +64,8 @@ private:
   }
 
 private:
-  struct Connection {
+  struct Connection
+  {
     rclcpp::Publisher<message_t>::SharedPtr publisher;
     rclcpp::Subscription<message_t>::SharedPtr subscription;
     uint64_t number_crunch_limit;
@@ -70,4 +74,4 @@ private:
 };
 }  // namespace rclcpp_system
 }  // namespace nodes
-#endif  // REFERENCE_SYSTEM__NODES__RCLCPP__TRANSFORM_HPP_
+#endif  // REFERENCE_SYSTEM__NODES__RCLCPP__INTERSECTION_HPP_

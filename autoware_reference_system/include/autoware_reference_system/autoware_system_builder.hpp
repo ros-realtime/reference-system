@@ -208,15 +208,15 @@ auto create_autoware_nodes()
       nodes::IntersectionSettings{
     .node_name = "EuclideanClusterDetector",
     .connections = {
-      { .input_topic = "RayGroundFilter",
+      {.input_topic = "RayGroundFilter",
         .output_topic = "EuclideanClusterDetector",
         .number_crunch_limit = TimingConfig::EUCLIDEAN_CLUSTER_DETECTOR},
-      { .input_topic = "EuclideanClusterSettings",
+      {.input_topic = "EuclideanClusterSettings",
         .output_topic = "EuclideanIntersection",
         .number_crunch_limit = TimingConfig::EUCLIDEAN_INTERSECTION
       }
     }}
-    ));
+  ));
 
   // command node
   nodes.emplace_back(
@@ -227,7 +227,7 @@ auto create_autoware_nodes()
   nodes.emplace_back(
     std::make_shared<typename SystemType::Command>(
       nodes::CommandSettings{
-    .node_name = "IntersectionOutput", 
+    .node_name = "IntersectionOutput",
     .input_topic = "EuclideanIntersection"}));
 #pragma GCC diagnostic pop
 

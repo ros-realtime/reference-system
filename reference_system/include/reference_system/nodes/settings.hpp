@@ -46,7 +46,8 @@ struct TransformSettings
 
 struct IntersectionSettings
 {
-  struct Connection {
+  struct Connection
+  {
     std::string input_topic;
     std::string output_topic;
     uint64_t number_crunch_limit;
