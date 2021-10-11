@@ -202,6 +202,7 @@ auto create_autoware_nodes()
     .number_crunch_limit = TimingConfig::BEHAVIOR_PLANNER,
     .cycle_time = TimingConfig::BEHAVIOR_PLANNER_CYCLE}));
 
+  // intersection node
   nodes.emplace_back(
     std::make_shared<typename SystemType::Intersection>(
       nodes::IntersectionSettings{
@@ -216,7 +217,6 @@ auto create_autoware_nodes()
       }
     }}
     ));
-
 
   // command node
   nodes.emplace_back(

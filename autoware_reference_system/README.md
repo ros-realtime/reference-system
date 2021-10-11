@@ -97,7 +97,6 @@ For simplicity's sake, every node except for the _command nodes_ only ever publi
         - [Voxel Grid Downsampler](include/autoware_reference_system/autoware_system_builder.hpp#L87)
         - [Point Cloud Map Loader](include/autoware_reference_system/autoware_system_builder.hpp#L96)
         - [Ray Ground Filter](include/autoware_reference_system/autoware_system_builder.hpp#L105)
-        - [Euclidean Cluster Detector](include/autoware_reference_system/autoware_system_builder.hpp#L114)
         - [Object Collision Estimator](include/autoware_reference_system/autoware_system_builder.hpp#L123)
         - [MPC Controller](include/autoware_reference_system/autoware_system_builder.hpp#L132)
         - [Parking Planner](include/autoware_reference_system/autoware_system_builder.hpp#L141)
@@ -114,14 +113,21 @@ For simplicity's sake, every node except for the _command nodes_ only ever publi
         - [Lanelet2 Global Planner](include/autoware_reference_system/autoware_system_builder.hpp#L187)
         - [Lanelet 2 Map Loader](include/autoware_reference_system/autoware_system_builder.hpp#L196)
 5. [**Cyclic Nodes**](../reference_system/include/reference_system/nodes/rclcpp/cyclic.hpp)
-    - for this _reference system_ there is onle [**1 _cyclic node_**](include/autoware_reference_system/autoware_system_builder.hpp#L206)
+    - for this _reference system_ there is only [**1 _cyclic node_**](include/autoware_reference_system/autoware_system_builder.hpp#L206)
     - this _cyclic node_ has **6 subscribers**and one publisher
     - this _cyclic node_ starts processing for [**1 millisecond**](include/autoware_reference_system/system/timing/default.hpp#L32) after a message is received **from any** single subscription
     - publishes message after processing is complete
 6. [**Command Nodes**](../reference_system/include/reference_system/nodes/rclcpp/command.hpp)
-    - for this _reference system_ there is onle [**1 _command node_**](include/autoware_reference_system/autoware_system_builder.hpp#L217)
-    - this _command node_ has **1 subscriber** and zero publishers
-    - this _command node_ prints out the final latency statistics after a message is received on the specified topic
+    - all _command nodes_ have **1 subscriber** and zero publishers
+    - all _command nodes_ prints out the final latency statistics after a message is received on the specified topic
+    - total of **2 _command nodes_:**
+        - [VehicleDBWSystem](include/autoware_reference_system/autoware_system_builder.hpp#L222)
+        - [IntersectionOutput](include/autoware_reference_system/autoware_system_builder.hpp#L227)
+7. [**Intersection Nodes**](../reference_system/include/reference_system/nodes/rclcpp/intersection.hpp)
+    - for this _reference system_ there is only [EuclideanClusterDetector](include/autoware_reference_system/autoware_system_builder.hpp#L206)
+    - this _intersection node_ has **2 subscribers** and **2 publishers**
+    - publishes message after processing is complete on the correspoding publisher
+
 
 ## Quick Start
 

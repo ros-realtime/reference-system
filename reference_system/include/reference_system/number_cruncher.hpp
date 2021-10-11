@@ -21,7 +21,6 @@
 uint64_t number_cruncher(const uint64_t maximum_number)
 {
   uint64_t number_of_primes = 0;
-  bool has_timeout_occurred = false;
   for (uint64_t i = 3; i < maximum_number; ++i) {
     uint64_t rootOfI = static_cast<uint64_t>(std::sqrt(i));
     bool is_prime = true;

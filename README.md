@@ -66,6 +66,11 @@ The above node graph can be boiled down to only a handful of node "types" that a
     - publishes message after processing is complete
 5. [**Command Node**](reference_system/include/reference_system/nodes/rclcpp/command.hpp)
     - prints output stats everytime a message is received
+6. [**Intersection Node**](reference_system/include/reference_system/nodes/rclcpp/intersection.hpp)
+    - behaves like N transform nodes
+    - N subscribers, N publisher bundled together in one-to-one connections
+    - starts processing on connection where sample was received
+    - publishes message after processing is complete
 
 These basic building-block nodes can be mixed-and-matched to create quite complex systems that replicate real-world scenarios to benchmark different configurations against each other.
 
