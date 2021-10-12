@@ -32,6 +32,7 @@ struct BenchmarkThroughput
   static constexpr time_t POINT_CLOUD_MAP = milliseconds(0);
   static constexpr time_t VISUALIZER = milliseconds(0);
   static constexpr time_t LANELET2MAP = milliseconds(0);
+  static constexpr time_t EUCLIDEAN_CLUSTER_SETTINGS = milliseconds(0);
 
   // the following values are used as the number_cruncher_limit
   // to search for primes up to starting at 3
@@ -45,6 +46,7 @@ struct BenchmarkThroughput
   static constexpr uint64_t POINT_CLOUD_MAP_LOADER = 0;
   static constexpr uint64_t RAY_GROUND_FILTER = 0;
   static constexpr uint64_t EUCLIDEAN_CLUSTER_DETECTOR = 0;
+  static constexpr uint64_t EUCLIDEAN_INTERSECTION = 0;
   static constexpr uint64_t OBJECT_COLLISION_ESTIMATOR = 0;
   static constexpr uint64_t MPC_CONTROLLER = 0;
   static constexpr uint64_t PARKING_PLANNER = 0;
@@ -67,12 +69,14 @@ constexpr BenchmarkThroughput::time_t BenchmarkThroughput::REAR_LIDAR_DRIVER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::POINT_CLOUD_MAP;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::VISUALIZER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET2MAP;
+constexpr BenchmarkThroughput::time_t BenchmarkThroughput::EUCLIDEAN_CLUSTER_SETTINGS;
 constexpr uint64_t BenchmarkThroughput::POINTS_TRANSFORMER_FRONT;
 constexpr uint64_t BenchmarkThroughput::POINTS_TRANSFORMER_REAR;
 constexpr uint64_t BenchmarkThroughput::VOXEL_GRID_DOWNSAMPLER;
 constexpr uint64_t BenchmarkThroughput::POINT_CLOUD_MAP_LOADER;
 constexpr uint64_t BenchmarkThroughput::RAY_GROUND_FILTER;
 constexpr uint64_t BenchmarkThroughput::EUCLIDEAN_CLUSTER_DETECTOR;
+constexpr uint64_t BenchmarkThroughput::EUCLIDEAN_INTERSECTION;
 constexpr uint64_t BenchmarkThroughput::OBJECT_COLLISION_ESTIMATOR;
 constexpr uint64_t BenchmarkThroughput::MPC_CONTROLLER;
 constexpr uint64_t BenchmarkThroughput::PARKING_PLANNER;
@@ -97,6 +101,7 @@ struct BenchmarkCPUUsage
   static constexpr time_t POINT_CLOUD_MAP = milliseconds(50);
   static constexpr time_t VISUALIZER = milliseconds(50);
   static constexpr time_t LANELET2MAP = milliseconds(50);
+  static constexpr time_t EUCLIDEAN_CLUSTER_SETTINGS = milliseconds(50);
 
   // the following values are used as the number_cruncher_limit
   // to search for primes up to starting at 3
@@ -110,6 +115,7 @@ struct BenchmarkCPUUsage
   static constexpr uint64_t POINT_CLOUD_MAP_LOADER = 0;
   static constexpr uint64_t RAY_GROUND_FILTER = 0;
   static constexpr uint64_t EUCLIDEAN_CLUSTER_DETECTOR = 0;
+  static constexpr uint64_t EUCLIDEAN_INTERSECTION = 0;
   static constexpr uint64_t OBJECT_COLLISION_ESTIMATOR = 0;
   static constexpr uint64_t MPC_CONTROLLER = 0;
   static constexpr uint64_t PARKING_PLANNER = 0;
@@ -132,12 +138,14 @@ constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::REAR_LIDAR_DRIVER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINT_CLOUD_MAP;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::VISUALIZER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET2MAP;
+constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::EUCLIDEAN_CLUSTER_SETTINGS;
 constexpr uint64_t BenchmarkCPUUsage::POINTS_TRANSFORMER_FRONT;
 constexpr uint64_t BenchmarkCPUUsage::POINTS_TRANSFORMER_REAR;
 constexpr uint64_t BenchmarkCPUUsage::VOXEL_GRID_DOWNSAMPLER;
 constexpr uint64_t BenchmarkCPUUsage::POINT_CLOUD_MAP_LOADER;
 constexpr uint64_t BenchmarkCPUUsage::RAY_GROUND_FILTER;
 constexpr uint64_t BenchmarkCPUUsage::EUCLIDEAN_CLUSTER_DETECTOR;
+constexpr uint64_t BenchmarkCPUUsage::EUCLIDEAN_INTERSECTION;
 constexpr uint64_t BenchmarkCPUUsage::OBJECT_COLLISION_ESTIMATOR;
 constexpr uint64_t BenchmarkCPUUsage::MPC_CONTROLLER;
 constexpr uint64_t BenchmarkCPUUsage::PARKING_PLANNER;

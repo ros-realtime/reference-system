@@ -18,14 +18,17 @@
 #include "reference_system/nodes/rclcpp/transform.hpp"
 #include "reference_system/nodes/rclcpp/cyclic.hpp"
 #include "reference_system/nodes/rclcpp/sensor.hpp"
+#include "reference_system/nodes/rclcpp/intersection.hpp"
 
 struct RclcppSystem
 {
   using NodeBaseType = rclcpp::Node;
-  using Sensor = nodes::rclcpp_system::Sensor;
+
   using Command = nodes::rclcpp_system::Command;
-  using Fusion = nodes::rclcpp_system::Fusion;
   using Cyclic = nodes::rclcpp_system::Cyclic;
+  using Fusion = nodes::rclcpp_system::Fusion;
+  using Intersection = nodes::rclcpp_system::Intersection;
+  using Sensor = nodes::rclcpp_system::Sensor;
   using Transform = nodes::rclcpp_system::Transform;
 };
 

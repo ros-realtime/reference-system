@@ -44,6 +44,19 @@ struct TransformSettings
   uint64_t number_crunch_limit;
 };
 
+struct IntersectionSettings
+{
+  struct Connection
+  {
+    std::string input_topic;
+    std::string output_topic;
+    uint64_t number_crunch_limit;
+  };
+
+  std::string node_name;
+  std::vector<Connection> connections;
+};
+
 struct CyclicSettings
 {
   std::string node_name;
