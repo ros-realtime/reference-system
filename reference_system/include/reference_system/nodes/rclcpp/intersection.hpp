@@ -47,11 +47,17 @@ public:
             connection.number_crunch_limit
           });
     }
+#ifdef PICAS
+    connections_[0].subscription->callback_priority = settings.connections[0].callback_priority;
+    connections_[1].subscription->callback_priority = settings.connections[1].callback_priority;
+#endif
   }
 
 private:
   void input_callback(const message_t::SharedPtr input_message, const uint64_t id) const
   {
+    std::cout << "intersection node input msgs id: " << id << std::endl;
+    
     auto number_cruncher_result = number_cruncher(connections_[id].number_crunch_limit);
 
     auto output_message = connections_[id].publisher->borrow_loaned_message();

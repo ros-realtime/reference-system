@@ -37,6 +37,9 @@ public:
     timer_ = this->create_wall_timer(
       settings.cycle_time,
       [this] {timer_callback();});
+#ifdef PICAS
+    timer_->callback_priority = settings.callback_priority;
+#endif
   }
 
 private:

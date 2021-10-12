@@ -36,6 +36,9 @@ public:
     subscription_ = this->create_subscription<message_t>(
       settings.input_topic, 10,
       [this](const message_t::SharedPtr msg) {input_callback(msg);});
+#ifdef PICAS
+    subscription_->callback_priority = settings.callback_priority;
+#endif
   }
 
 private:

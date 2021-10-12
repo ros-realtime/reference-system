@@ -50,7 +50,16 @@ public:
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
     timer_ = this->create_wall_timer(
       settings.cycle_time,
-      [this] {timer_callback();});
+      [this] {timer_callback();});    
+#ifdef PICAS
+    subscriptions_[0]->callback_priority = settings.callback_priority_1;
+    subscriptions_[1]->callback_priority = settings.callback_priority_2;
+    subscriptions_[2]->callback_priority = settings.callback_priority_3;
+    subscriptions_[3]->callback_priority = settings.callback_priority_4;
+    subscriptions_[4]->callback_priority = settings.callback_priority_5;
+    subscriptions_[5]->callback_priority = settings.callback_priority_6;
+    timer_->callback_priority = settings.callback_priority_7;
+#endif
   }
 
 private:

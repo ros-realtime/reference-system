@@ -39,6 +39,9 @@ public:
       settings.input_topic, 10,
       [this](const message_t::SharedPtr msg) {input_callback(msg);});
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
+#ifdef PICAS
+    subscription_->callback_priority = settings.callback_priority;
+#endif
   }
 
 private:

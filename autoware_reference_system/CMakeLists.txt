@@ -41,6 +41,10 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+if(${PICAS})
+  add_compile_options(-DPICAS)
+endif()
+
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
@@ -63,6 +67,19 @@ ament_auto_add_executable(autoware_default_multithreaded
 ament_auto_add_executable(number_cruncher_benchmark
   src/ros2/number_cruncher_benchmark.cpp
 )
+
+# PICAS Executor
+if(${PICAS})
+  # PiCAS Single Threaded Executor 
+  ament_auto_add_executable(autoware_default_singlethreaded_picas_single_executor
+    src/ros2/executor/autoware_default_singlethreaded_picas_single_executor.cpp
+  )
+
+  # PICAS Single Threaded Executor
+  ament_auto_add_executable(autoware_default_singlethreaded_picas_multi_executors
+    src/ros2/executor/autoware_default_singlethreaded_picas_multi_executors.cpp
+  )
+endif()
 
 # Add new executors to test here
 #ament_auto_add_executable(autoware_default_custom
@@ -96,6 +113,8 @@ if(${BUILD_TESTING})
       autoware_default_singlethreaded
       autoware_default_staticsinglethreaded
       autoware_default_multithreaded
+      autoware_default_singlethreaded_picas_single_executor
+      autoware_default_singlethreaded_picas_multi_executors
       #autoware_default_custom
     )
 
