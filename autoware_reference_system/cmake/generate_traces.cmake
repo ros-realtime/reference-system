@@ -16,6 +16,7 @@
 function(generate_traces target  trace_type runtime)
     set(TEST_EXECUTABLE ${target})
     set(TEST_EXECUTABLE_NAME ${target}_${rmw_implementation})
+    set(TRACE_TYPE ${trace_type})
     set(RUNTIME ${runtime})
     set(RMW_IMPLEMENTATION ${rmw_implementation})
     # ensure timeout is longer than the test runtime

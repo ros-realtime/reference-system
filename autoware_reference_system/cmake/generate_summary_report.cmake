@@ -14,12 +14,17 @@
 
 # generate summary report from all trace data
 function(generate_summary_report trace_type run_time)
-      set(TRACE_DIR "${ROS_HOME}/${trace_type}")
-      add_test(
-        NAME generate_memory_summary_report_${trace_type}_${run_time}s
-        COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_summary_reports.py ${TRACE_DIR} ${run_time}"
-        COMMENT "Generate CPU and Memory Usage Summary Report"
-      )
-      set_tests_properties(generate_memory_summary_report_${trace_type}_${run_time}s
-          PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
+  if(${trace_type} MATCHES "memory")
+    set(TRACE_DIR "${ROS_HOME}/${trace_type}")
+  else()
+    set(TRACE_DIR "${ROS_HOME}/tracing")
+  endif()
+
+  add_test(
+    NAME generate_summary_report_${trace_type}_${run_time}s
+    COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_summary_reports.py ${TRACE_DIR} ${run_time}"
+    COMMENT "Generate Summary Report"
+  )
+  set_tests_properties(generate_summary_report_${trace_type}_${run_time}s
+    PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
 endfunction()

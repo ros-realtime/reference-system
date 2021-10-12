@@ -36,6 +36,7 @@ def generate_test_description():
     rmw_impl = '@RMW_IMPLEMENTATION@'
     test_exe = '@TEST_EXECUTABLE@'
     test_exe_name = '@TEST_EXECUTABLE_NAME@'
+    trace_type = '@TRACE_TYPE@'
 
     launch_description = LaunchDescription()
 
@@ -55,7 +56,7 @@ def generate_test_description():
     )
 
     trace_action = Trace(
-        session_name='callback_' + test_exe_name + '_' + str(RUNTIME) + 's',
+        session_name=trace_type + '_' + test_exe_name + '_' + str(RUNTIME) + 's',
         events_ust=DEFAULT_EVENTS_ROS,
         events_kernel=[],
     )

@@ -11,16 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import numpy as np
 import os
 import random
 
 from bokeh.io import output_file
-from bokeh.layouts import layout
+# from bokeh.layouts import layout
 from bokeh.models import ColumnDataSource
 from bokeh.models import DatetimeTickFormatter
 from bokeh.models.tools import HoverTool
 from bokeh.models.widgets.tables import DataTable, TableColumn
-from bokeh.plotting import figure, save
+from bokeh.plotting import figure
+from numpy.core.numeric import False_  # , save
 import pandas as pd
 
 from utils import getPWD, initDataModel
@@ -32,19 +34,49 @@ def summary(path, duration, size):
     output_file(
         filename=fname + '.html',
         title='Dropped Messages and Latency Summary Report (' + duration + 's)')
+    data_dict = {}
     for fname in os.listdir(path):
         fpath = path + fname
         # load tracing data
         data_model = initDataModel(fpath)
-        pwd = getPWD(path)
-        data_dict = parseData(data_model)
-        dropped_df = data_dict['dropped']
-        period_df = data_dict['period']
-        latency_df = data_dict['latency']
-        start = data_dict['start']
-        end = data_dict['end']
-        print(start)
+        pwd = getPWD(fpath)
 
+        tmp_name = pwd.find('_rmw')
+        exe = fname[0:tmp_name]
+        rmw = fname[tmp_name + 1:-(len(duration) + 2)]
+
+        try:
+            data_dict[exe]
+        except KeyError:
+            data_dict[exe] = {}
+        try:
+            data_dict[exe][rmw]
+        except KeyError:
+            data_dict[exe][rmw] = {}
+
+        data_dict[exe][rmw] = parseData(data_model)
+        # calculate run time
+        approx_run_time = getRunTime(
+            data_dict[exe][rmw]['start'],
+            data_dict[exe][rmw]['end'])
+        # calculate estimated count and received count
+        data_dict[exe][rmw]['period'] = calcTotals(
+            approx_run_time,
+            data_dict[exe][rmw]['dropped'],
+            data_dict[exe][rmw]['period'])
+        # estimated count - actual received count
+        data_dict[exe][rmw]['dropped'] = countDropped(
+            data_dict[exe][rmw]['dropped'],
+            data_dict[exe][rmw]['period'])
+    
+    
+    x = []
+    dropped = []
+    latency = []
+    for exe in data_dict:
+        for rmw in data_dict[exe]:
+            x.append((exe, rmw))
+            # print(data_dict[exe][rmw]['dropped'])
 
 
 def individual(data_model, size):
@@ -54,40 +86,21 @@ def individual(data_model, size):
     latency_df = data_dict['latency']
     start = data_dict['start']
     end = data_dict['end']
-    # calculate run time for experiment
-    approx_run_time = (end- start).total_seconds()
-    # calculate expected counts for each period
-    mask = (period_df['period'] != 0)
-    period_non_zero = period_df[mask]
-    period_df.loc[mask, 'expected_count'] = approx_run_time / period_non_zero['period']
-    # after the behavior planner node, all nodes are triggered on every message
-    expected_count_sum = sum(period_df['expected_count'])
-    mask = period_df['period'] == 0
-    period_df.loc[mask, 'expected_count'] = expected_count_sum
-    # calculate dropped messages
-    for callback in dropped_df.node_name:
-        if str(callback) in str(period_df.node_name):
-            expected = float(
-                period_df.loc[period_df.node_name == str(callback), 'expected_count'])
-            count = float(
-                dropped_df.loc[dropped_df.node_name == str(callback), 'count'])
-        else:
-            # assume has same frequence as Front Lidar Driver
-            expected = float(
-                period_df.loc[
-                    period_df.node_name == str('node_FrontLidarDriver'), 'expected_count'])
-            count = float(
-                dropped_df.loc[dropped_df.node_name == str(callback), 'count'])
-        dropped_df.loc[dropped_df.node_name == str(callback), 'dropped'] = abs(expected - count)
-        dropped_df.loc[dropped_df.node_name == str(callback), 'expected_count'] = expected
+    # calculate run time
+    approx_run_time = getRunTime(start, end)
+    # calculate estimated count and received count
+    period_df = calcTotals(approx_run_time, dropped_df, period_df)
+    # estimated count - actual received count
+    dropped_df = countDropped(dropped_df, period_df)
     source = ColumnDataSource(dropped_df)
+    # use this for axis of figure ~0.25 of buffer
     max_dropped = max(dropped_df['dropped']) + 0.25
     # initialize figure
     dropped = figure(
         title='Dropped Messages Summary ({:.2f} s)'.format(float(approx_run_time)),
         y_axis_label='Node Name',
         x_axis_label='Dropped Messages',
-        y_range=dropped_df['node_name'],
+        y_range=dropped_df['node'],
         x_range=(0, max_dropped),
         plot_width=int(size * 2.0),
         plot_height=size,
@@ -95,19 +108,19 @@ def individual(data_model, size):
     )
     # add horizontal bar to figure
     dropped.hbar(
-        y='node_name',
+        y='node',
         right='dropped',
         width=0.1,
         fill_color='color',
         source=source
     )
     # add legend
-    # legend = Legend(items=[dropped_df['node_name'], v])
+    # legend = Legend(items=[dropped_df['node'], v])
     # dropped.add_layout(legend, 'right')
     # add hover tool
     hover = HoverTool()
     hover.tooltips = [
-        ('Callback', '@node_name'),
+        ('Callback', '@node'),
         ('Dropped', '@dropped'),
         ('Expected', '@expected_count'),
         ('Received', '@count')
@@ -154,7 +167,6 @@ def parseData(data_model):
     color_i = 0
     earliest_date = None
     latest_date = None
-    fname = ''
     dropped_data = []
     period_data = []
     front_lidar_data = pd.DataFrame()
@@ -183,12 +195,14 @@ def parseData(data_model):
         index = str.find(owner_info, substr)
         if index >= 0:
             index += len(substr)
-            fname = 'node_' + owner_info[index:(str.find(owner_info, ','))]
+            node = owner_info[index:(str.find(owner_info, ','))]
         substr = 'topic: /'
         index = str.find(owner_info, substr)
         if index >= 0:
             index += len(substr)
-            fname += '_topic_' + owner_info[index:]
+            topic = owner_info[index:]
+        else:
+            topic = ''
         # get first and last timestamp of data
         thefirstdate = callback_df.loc[:, 'timestamp'].iloc[0]
         if earliest_date is None or thefirstdate <= earliest_date:
@@ -197,11 +211,9 @@ def parseData(data_model):
         if latest_date is None or thelastdate >= latest_date:
             latest_date = thelastdate
         # add name of callback and count to list
-        dropped_data.append([str(fname), float(len(callback_df)), 0.0, 0.0, colors[color_i]])
+        dropped_data.append([str(node), str(topic), float(len(callback_df)), 0.0, 0.0, colors[color_i]])
         if period != 0.0:
-            period_data.append([str(fname), period, 0])  # set to 0 until we know runtime
-        if len(callback_df) > 200:  # this is a hack specific for the autoware reference system
-            period_data.append([str(fname), 0.0, 0])  # these callbacks are after behavior planner
+            period_data.append([str(node), str(topic),  period, 0])  # set to 0 until we know runtime
         color_i += 1
 
     front_lidar_data = front_lidar_data.reset_index(drop=True)
@@ -213,13 +225,15 @@ def parseData(data_model):
         front_lidar_data.drop(front_lidar_data.tail(extra).index, inplace=True)
     latency = object_collision_data['timestamp'] - front_lidar_data['timestamp']
     dropped_df = pd.DataFrame(
-        dropped_data, columns=['node_name', 'count', 'dropped', 'expected_count', 'color'])
+        dropped_data, columns=['node', 'topic', 'count', 'dropped', 'expected_count', 'color'])
     period_df = pd.DataFrame(
-        period_data, columns=['node_name', 'period', 'expected_count'])
+        period_data, columns=['node', 'topic', 'period', 'expected_count'])
     latency_df = pd.DataFrame(
         {'index': range(0, len(latency)),
          'latency': latency,
          'timestamp': front_lidar_data['timestamp']})
+    # sort values by node and topic
+    dropped_df = dropped_df.sort_values(by=['node', 'topic'])
     # prepare output
     data_dict = {
         'dropped': dropped_df,
@@ -229,3 +243,106 @@ def parseData(data_model):
         'end': latest_date
     }
     return data_dict
+
+
+def getRunTime(start, end):
+    # calculate run time in seconds for experiment
+    return (end- start).total_seconds()
+
+
+def calcTotals(run_time, dropped_df, period_df):
+    # calculate expected counts for each period
+    mask = (period_df['period'] != 0)
+    period_non_zero = period_df[mask]
+    period_df.loc[mask, 'expected_count'] = (run_time / period_non_zero['period']).apply(np.floor)
+#     expected_count_sum = sum(period_df['expected_count'])
+#     mask = period_df['period'] == 0
+#     period_df.loc[mask, 'expected_count'] = expected_count_sum
+    return period_df
+
+
+def countDropped(dropped_df, period_df):
+    # calculate dropped messages
+    for node in period_df.node:
+        if str(node) in str(period_df.node):
+            # node is a sensor node
+            try:
+                print(node)
+                expected = float(period_df.loc[period_df.node == str(node), 'expected_count'])
+                sub_exists = True
+                search_topic = node
+                last_topic = node
+                branch_topics = []
+                in_fork = False
+                # loop over signal chain starting at sensor node copying down expected count
+                while sub_exists:
+                    if (len(branch_topics) != 0 and not in_fork):
+                        print('FORK')
+                        search_topic = branch_topics.pop(0)
+                        print('topic: ' + search_topic)
+                        in_fork = True
+                    sub_df = dropped_df.loc[((dropped_df.topic == search_topic) & (dropped_df.expected_count == 0))]
+                    if not sub_df.empty:
+                        if(sub_df.shape[0] > 1):
+                            for fork_node in sub_df['node']:
+                                branch_topics.append(fork_node)
+                        for sub_node in sub_df.node:
+                            if not dropped_df.loc[dropped_df.topic == sub_node].empty:
+                                # current node has a node that subscribes to it
+                                last_topic = search_topic
+                                search_topic = sub_node
+                                print(search_topic)
+                                # set current node expected and count
+                            else:
+                                # no more nodes after this one
+                                if(in_fork):
+                                    in_fork = False
+                                    continue
+                                sub_exists = False
+                            if(dropped_df.loc[dropped_df.node == search_topic].shape[0] == 2):
+                                # fusion node, use lesser of the two expected values
+                                print('FUSION NODE')
+                                print('node: ' + search_topic)
+                                print('topic: ' + last_topic)
+                                print(expected)
+                                print(dropped_df.loc[
+                                    ((dropped_df.node == search_topic) &
+                                     (dropped_df.topic == last_topic) &
+                                     (dropped_df.expected_count))])
+                                dropped_df.loc[
+                                    ((dropped_df.node == search_topic) &
+                                     (dropped_df.topic == last_topic) &
+                                     (dropped_df.expected_count >= expected)),
+                                    'expected_count'] = expected
+                            # if expected count is 0, always set it.
+                            dropped_df.loc[
+                                    ((dropped_df.node == search_topic) &
+                                     (dropped_df.topic == last_topic) &
+                                     (dropped_df.expected_count == 0)),
+                                    'expected_count'] = expected
+                            if(search_topic == 'BehaviorPlanner' or
+                               search_topic == 'VehicleInterface'):
+                                print('HACK')
+                                print(expected)
+                                # hack for last topic in pipeline
+                                dropped_df.loc[
+                                     ((dropped_df.topic == search_topic) &
+                                     (dropped_df.expected_count == 0)),
+                                    'expected_count'] += expected
+                        dropped_df.loc[
+                                    ((dropped_df.node == node) & (dropped_df.expected_count == 0)),
+                                    'expected_count'] = expected
+                    else:
+                        # no more nodes after this one
+                        if(in_fork):
+                            in_fork = False
+                            continue
+                        sub_exists = False
+                        dropped_df.loc[
+                                    dropped_df.node == node,
+                                    'expected_count'] = expected
+            except TypeError as e:
+                print('NODE: ' + node)
+                print(e)
+    print(dropped_df)
+    return dropped_df

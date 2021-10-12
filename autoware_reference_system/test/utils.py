@@ -46,9 +46,7 @@ def checkPath(path: str):
 
 def getTraceType(path):
     # check if given path is a callback trace
-    print(path)
     if path.find(TRACE_CALLBACK) >= 0:
-        print('tracing type')
         return TRACE_CALLBACK
     elif path.find(TRACE_MEMORY) >= 0:
         return TRACE_MEMORY
