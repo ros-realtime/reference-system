@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import numpy as np
 import os
 import random
 
@@ -22,7 +21,7 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.models.tools import HoverTool
 from bokeh.models.widgets.tables import DataTable, TableColumn
 from bokeh.plotting import figure
-from numpy.core.numeric import False_  # , save
+import numpy as np
 import pandas as pd
 
 from utils import getPWD, initDataModel
@@ -68,11 +67,7 @@ def summary(path, duration, size):
         data_dict[exe][rmw]['dropped'] = countDropped(
             data_dict[exe][rmw]['dropped'],
             data_dict[exe][rmw]['period'])
-    
-    
     x = []
-    dropped = []
-    latency = []
     for exe in data_dict:
         for rmw in data_dict[exe]:
             x.append((exe, rmw))
@@ -211,9 +206,11 @@ def parseData(data_model):
         if latest_date is None or thelastdate >= latest_date:
             latest_date = thelastdate
         # add name of callback and count to list
-        dropped_data.append([str(node), str(topic), float(len(callback_df)), 0.0, 0.0, colors[color_i]])
+        dropped_data.append(
+            [str(node), str(topic), float(len(callback_df)), 0.0, 0.0, colors[color_i]])
         if period != 0.0:
-            period_data.append([str(node), str(topic),  period, 0])  # set to 0 until we know runtime
+            # set to 0 until we know runtime
+            period_data.append([str(node), str(topic),  period, 0])
         color_i += 1
 
     front_lidar_data = front_lidar_data.reset_index(drop=True)
@@ -247,7 +244,7 @@ def parseData(data_model):
 
 def getRunTime(start, end):
     # calculate run time in seconds for experiment
-    return (end- start).total_seconds()
+    return (end - start).total_seconds()
 
 
 def calcTotals(run_time, dropped_df, period_df):
@@ -281,7 +278,8 @@ def countDropped(dropped_df, period_df):
                         search_topic = branch_topics.pop(0)
                         print('topic: ' + search_topic)
                         in_fork = True
-                    sub_df = dropped_df.loc[((dropped_df.topic == search_topic) & (dropped_df.expected_count == 0))]
+                    sub_df = dropped_df.loc[
+                        ((dropped_df.topic == search_topic) & (dropped_df.expected_count == 0))]
                     if not sub_df.empty:
                         if(sub_df.shape[0] > 1):
                             for fork_node in sub_df['node']:
@@ -325,13 +323,12 @@ def countDropped(dropped_df, period_df):
                                 print('HACK')
                                 print(expected)
                                 # hack for last topic in pipeline
-                                dropped_df.loc[
-                                     ((dropped_df.topic == search_topic) &
-                                     (dropped_df.expected_count == 0)),
-                                    'expected_count'] += expected
-                        dropped_df.loc[
-                                    ((dropped_df.node == node) & (dropped_df.expected_count == 0)),
-                                    'expected_count'] = expected
+                                dropped_df.loc[((dropped_df.topic == search_topic) &
+                                               (dropped_df.expected_count == 0)),
+                                               'expected_count'] += expected
+                        dropped_df.loc[((dropped_df.node == node) &
+                                       (dropped_df.expected_count == 0)),
+                                       'expected_count'] = expected
                     else:
                         # no more nodes after this one
                         if(in_fork):
