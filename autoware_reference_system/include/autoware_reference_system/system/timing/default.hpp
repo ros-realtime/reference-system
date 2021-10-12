@@ -31,7 +31,7 @@ struct Default
   static constexpr time_t POINT_CLOUD_MAP = milliseconds(120);
   static constexpr time_t VISUALIZER = milliseconds(60);
   static constexpr time_t LANELET2MAP = milliseconds(100);
-  static constexpr time_t EUCLIDEAN_CLUSTER_SETTINGS = milliseconds(1000);
+  static constexpr time_t EUCLIDEAN_CLUSTER_SETTINGS = milliseconds(25);
 
   // the following values are used as the number_cruncher_limit
   // to search for primes up to starting at 3

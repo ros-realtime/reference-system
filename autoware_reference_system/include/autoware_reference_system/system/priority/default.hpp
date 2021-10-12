@@ -22,10 +22,10 @@ namespace priority
     static constexpr int RAY_GROUND_FILTER_CALLBACK = 46;
     static constexpr int NDT_LOCALIZER_CALLBACK_1 = 39;
     static constexpr int NDT_LOCALIZER_CALLBACK_2 = 38;
-    static constexpr int EUCLIDEAN_CLUSTER_SETTINGS_CALLBACK = 47;
-    static constexpr int INTERSECTION_OUTPUT_CALLBACK = 49;
+    static constexpr int EUCLIDEAN_CLUSTER_SETTINGS_CALLBACK = 18;
+    static constexpr int INTERSECTION_OUTPUT_CALLBACK = 20;
     static constexpr int EUCLIDEAN_CLUSTER_DETECTOR_CALLBACK = 50;
-    static constexpr int EUCLIDEAN_INTERSECTION_CALLBACK = 48;
+    static constexpr int EUCLIDEAN_INTERSECTION_CALLBACK = 19;
     static constexpr int LANELET_2_GLOBAL_PLANNER_CALLBACK_1 = 25;
     static constexpr int LANELET_2_GLOBAL_PLANNER_CALLBACK_2 = 24;
     static constexpr int LANELET_2_MAP_LOADER_CALLBACK_1 = 28;
@@ -39,11 +39,11 @@ namespace priority
     static constexpr int BEHAVIOR_PLANNER_CALLBACK_4 = 33;
     static constexpr int BEHAVIOR_PLANNER_CALLBACK_5 = 32;
     static constexpr int BEHAVIOR_PLANNER_CALLBACK_6 = 34;
-    static constexpr int BEHAVIOR_PLANNER_CALLBACK_7 = 18;
-    static constexpr int MPC_CONTROLLER_CALLBACK = 21;
-    static constexpr int VEHICLE_INTERFACE_CALLBACK_1 = 20;
-    static constexpr int VEHICLE_INTERFACE_CALLBACK_2 = 19;
-    static constexpr int VEHICLE_DBW_SYSTEM_CALLBACK = 22;
+    static constexpr int BEHAVIOR_PLANNER_CALLBACK_7 = 52;
+    static constexpr int MPC_CONTROLLER_CALLBACK = 54;
+    static constexpr int VEHICLE_INTERFACE_CALLBACK_1 = 55;
+    static constexpr int VEHICLE_INTERFACE_CALLBACK_2 = 53;
+    static constexpr int VEHICLE_DBW_SYSTEM_CALLBACK = 56;
     
     
     

@@ -56,8 +56,6 @@ public:
 private:
   void input_callback(const message_t::SharedPtr input_message, const uint64_t id) const
   {
-    std::cout << "intersection node input msgs id: " << id << std::endl;
-    
     auto number_cruncher_result = number_cruncher(connections_[id].number_crunch_limit);
 
     auto output_message = connections_[id].publisher->borrow_loaned_message();
