@@ -40,14 +40,14 @@ public:
     for (const auto & input_topic : settings.inputs) {
       subscriptions_.emplace_back(
         this->create_subscription<message_t>(
-          input_topic, 10,
+          input_topic, 1,
           [this, input_number](const message_t::SharedPtr msg) {
             input_callback(input_number, msg);
           }));
       ++input_number;
     }
     message_cache_.resize(subscriptions_.size());
-    publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
+    publisher_ = this->create_publisher<message_t>(settings.output_topic, 1);
     timer_ = this->create_wall_timer(
       settings.cycle_time,
       [this] {timer_callback();});
@@ -63,6 +63,7 @@ private:
 
   void timer_callback()
   {
+    uint64_t timestamp = now_as_int();
     auto local_cache = message_cache_;
     for (auto & m : message_cache_) {
       m.reset();
@@ -70,29 +71,19 @@ private:
 
     auto number_cruncher_result = number_cruncher(number_crunch_limit_);
 
-    uint64_t sent_samples = 0;
+    auto output_message = publisher_->borrow_loaned_message();
+    output_message.get().size = 0;
+
     for (auto & m : local_cache) {
       if (!m) {continue;}
 
-      auto output_message = publisher_->borrow_loaned_message();
-
-      fuse_samples(this->get_name(), output_message.get(), m);
-      output_message.get().data[0] = number_cruncher_result;
-
-      publisher_->publish(std::move(output_message));
+      merge_history_into_sample(output_message.get(), m);
       m.reset();
-      ++sent_samples;
     }
+    set_sample(this->get_name(), sequence_number_++, 0, timestamp, output_message.get());
 
-    if (sent_samples == 0) {
-      auto message = publisher_->borrow_loaned_message();
-      message.get().size = 0;
-
-      set_sample(this->get_name(), message.get());
-      message.get().data[0] = number_cruncher_result;
-
-      publisher_->publish(std::move(message));
-    }
+    output_message.get().data[0] = number_cruncher_result;
+    publisher_->publish(std::move(output_message));
   }
 
 private:
@@ -101,6 +92,7 @@ private:
   std::vector<rclcpp::Subscription<message_t>::SharedPtr> subscriptions_;
   std::vector<message_t::SharedPtr> message_cache_;
   uint64_t number_crunch_limit_;
+  uint32_t sequence_number_ = 0;
 };
 }  // namespace rclcpp_system
 }  // namespace nodes

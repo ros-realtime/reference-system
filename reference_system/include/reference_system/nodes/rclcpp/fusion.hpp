@@ -36,13 +36,13 @@ public:
     number_crunch_limit_(settings.number_crunch_limit)
   {
     subscription_[0] = this->create_subscription<message_t>(
-      settings.input_0, 10,
+      settings.input_0, 1,
       [this](const message_t::SharedPtr msg) {input_callback(0U, msg);});
 
     subscription_[1] = this->create_subscription<message_t>(
-      settings.input_1, 10,
+      settings.input_1, 1,
       [this](const message_t::SharedPtr msg) {input_callback(1U, msg);});
-    publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
+    publisher_ = this->create_publisher<message_t>(settings.output_topic, 1);
   }
 
 private:
@@ -50,6 +50,7 @@ private:
     const uint64_t input_number,
     const message_t::SharedPtr input_message)
   {
+    uint64_t timestamp = now_as_int();
     message_cache_[input_number] = input_message;
 
     // only process and publish when we can perform an actual fusion, this means
@@ -61,9 +62,11 @@ private:
     auto number_cruncher_result = number_cruncher(number_crunch_limit_);
 
     auto output_message = publisher_->borrow_loaned_message();
-    fuse_samples(
-      this->get_name(), output_message.get(), message_cache_[0],
-      message_cache_[1]);
+    output_message.get().size = 0;
+    merge_history_into_sample(output_message.get(), message_cache_[0]);
+    merge_history_into_sample(output_message.get(), message_cache_[1]);
+    set_sample(this->get_name(), sequence_number_++, 0, timestamp, output_message.get());
+
     output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
 
@@ -77,6 +80,7 @@ private:
   rclcpp::Subscription<message_t>::SharedPtr subscription_[2];
 
   uint64_t number_crunch_limit_;
+  uint32_t sequence_number_ = 0;
 };
 }  // namespace rclcpp_system
 }  // namespace nodes
