@@ -19,12 +19,15 @@ digraph G {
     "Point Cloud Map Loader";
     "Voxel Grid Downsampler";
     "Ray Ground Filter";
-    "Euclidean Cluster Detector";
     "Object Collision Estimator";
     "MPC Controller";
     "Lane Planner";
     "Parking Planner";
 
+    node [fillcolor="#FF6961"];
+    "Euclidean Cluster Settings" [shape=box];
+    "Euclidean Cluster Detector" [shape=octagon];
+    
     node [fillcolor="#9D813B"];
     "Point Cloud Fusion";
     "NDT Localizer";
@@ -96,16 +99,26 @@ digraph G {
     /* rank 4 */
     {
       rank = same;
+      "Euclidean Cluster Settings";
       "Ray Ground Filter";
       "Euclidean Cluster Detector";
       "Object Collision Estimator";
       "MPC Controller";
       "Vehicle Interface";
-      "Vehicle DBW System";
+      "Vehicle DBW System" [constraint=false];
     }
+    "Euclidean Cluster Settings" -> "Euclidean Cluster Detector";
     "Ray Ground Filter" -> "Euclidean Cluster Detector";
     "Euclidean Cluster Detector" -> "Object Collision Estimator";
     "Object Collision Estimator" -> "Behavior Planner";
     "MPC Controller" -> "Vehicle Interface";
     "Vehicle Interface" -> "Vehicle DBW System";
+    
+     {
+       rank = same;
+       edge[style=invis];
+       "Euclidean Cluster Settings" -> "Ray Ground Filter" -> "Euclidean Cluster Detector" -> "Object Collision Estimator" -> "MPC Controller" -> "Vehicle Interface";
+       rankdir = LR;
+     }
+    
 }
