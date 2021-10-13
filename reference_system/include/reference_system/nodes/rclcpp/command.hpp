@@ -39,13 +39,15 @@ public:
   }
 
 private:
-  void input_callback(const message_t::SharedPtr input_message) const
+  void input_callback(const message_t::SharedPtr input_message)
   {
-    print_sample_path(this->get_name(), input_message);
+    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(input_message, sequence_number_);
+    print_sample_path(this->get_name(), missed_samples, input_message);
   }
 
 private:
   rclcpp::Subscription<message_t>::SharedPtr subscription_;
+  uint32_t sequence_number_ = 0;
 };
 }  // namespace rclcpp_system
 }  // namespace nodes

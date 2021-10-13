@@ -50,7 +50,10 @@ private:
     auto output_message = publisher_->borrow_loaned_message();
     output_message.get().size = 0;
     merge_history_into_sample(output_message.get(), input_message);
-    set_sample(this->get_name(), sequence_number_++, 0, timestamp, output_message.get());
+
+    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(input_message, input_sequence_number_);
+
+    set_sample(this->get_name(), sequence_number_++, missed_samples, timestamp, output_message.get());
 
     // use result so that it is not optimizied away by some clever compiler
     output_message.get().data[0] = number_cruncher_result;
@@ -62,6 +65,7 @@ private:
   rclcpp::Subscription<message_t>::SharedPtr subscription_;
   uint64_t number_crunch_limit_;
   uint32_t sequence_number_ = 0;
+  uint32_t input_sequence_number_ = 0;
 };
 }  // namespace rclcpp_system
 }  // namespace nodes

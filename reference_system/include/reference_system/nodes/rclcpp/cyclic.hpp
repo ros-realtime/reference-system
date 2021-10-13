@@ -38,15 +38,14 @@ public:
   {
     uint64_t input_number = 0U;
     for (const auto & input_topic : settings.inputs) {
-      subscriptions_.emplace_back(
-        this->create_subscription<message_t>(
-          input_topic, 1,
-          [this, input_number](const message_t::SharedPtr msg) {
-            input_callback(input_number, msg);
-          }));
+      subscriptions_.emplace_back(subscription_t{
+          this->create_subscription<message_t>(
+              input_topic, 1,
+              [this, input_number](const message_t::SharedPtr msg) {
+                input_callback(input_number, msg);
+              }), 0, message_t::SharedPtr()});
       ++input_number;
     }
-    message_cache_.resize(subscriptions_.size());
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 1);
     timer_ = this->create_wall_timer(
       settings.cycle_time,
@@ -58,29 +57,27 @@ private:
     const uint64_t input_number,
     const message_t::SharedPtr input_message)
   {
-    message_cache_[input_number] = input_message;
+    subscriptions_[input_number].cache = input_message;
   }
 
   void timer_callback()
   {
     uint64_t timestamp = now_as_int();
-    auto local_cache = message_cache_;
-    for (auto & m : message_cache_) {
-      m.reset();
-    }
-
     auto number_cruncher_result = number_cruncher(number_crunch_limit_);
 
     auto output_message = publisher_->borrow_loaned_message();
     output_message.get().size = 0;
 
-    for (auto & m : local_cache) {
-      if (!m) {continue;}
+    uint32_t missed_samples = 0;
+    for (auto & s : subscriptions_) {
+      if (!s.cache) {continue;}
 
-      merge_history_into_sample(output_message.get(), m);
-      m.reset();
+      missed_samples += get_missed_samples_and_update_seq_nr(s.cache, s.sequence_number);
+
+      merge_history_into_sample(output_message.get(), s.cache);
+      s.cache.reset();
     }
-    set_sample(this->get_name(), sequence_number_++, 0, timestamp, output_message.get());
+    set_sample(this->get_name(), sequence_number_++, missed_samples, timestamp, output_message.get());
 
     output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
@@ -89,8 +86,14 @@ private:
 private:
   rclcpp::Publisher<message_t>::SharedPtr publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
-  std::vector<rclcpp::Subscription<message_t>::SharedPtr> subscriptions_;
-  std::vector<message_t::SharedPtr> message_cache_;
+
+  struct subscription_t {
+    rclcpp::Subscription<message_t>::SharedPtr subscription;
+    uint32_t sequence_number = 0;
+    message_t::SharedPtr cache;
+  };
+
+  std::vector<subscription_t> subscriptions_;
   uint64_t number_crunch_limit_;
   uint32_t sequence_number_ = 0;
 };
