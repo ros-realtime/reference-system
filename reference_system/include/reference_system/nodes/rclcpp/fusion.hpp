@@ -35,14 +35,14 @@ public:
   : Node(settings.node_name),
     number_crunch_limit_(settings.number_crunch_limit)
   {
-    subscription_[0] = this->create_subscription<message_t>(
-      settings.input_0, 10,
+    subscriptions_[0].subscription = this->create_subscription<message_t>(
+      settings.input_0, 1,
       [this](const message_t::SharedPtr msg) {input_callback(0U, msg);});
 
-    subscription_[1] = this->create_subscription<message_t>(
-      settings.input_1, 10,
+    subscriptions_[1].subscription = this->create_subscription<message_t>(
+      settings.input_1, 1,
       [this](const message_t::SharedPtr msg) {input_callback(1U, msg);});
-    publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
+    publisher_ = this->create_publisher<message_t>(settings.output_topic, 1);
   }
 
 private:
@@ -50,33 +50,54 @@ private:
     const uint64_t input_number,
     const message_t::SharedPtr input_message)
   {
-    message_cache_[input_number] = input_message;
+    uint64_t timestamp = now_as_int();
+    subscriptions_[input_number].cache = input_message;
 
     // only process and publish when we can perform an actual fusion, this means
     // we have received a sample from each subscription
-    if (!message_cache_[0] || !message_cache_[1]) {
+    if (!subscriptions_[0].cache || !subscriptions_[1].cache) {
       return;
     }
 
     auto number_cruncher_result = number_cruncher(number_crunch_limit_);
 
     auto output_message = publisher_->borrow_loaned_message();
-    fuse_samples(
-      this->get_name(), output_message.get(), message_cache_[0],
-      message_cache_[1]);
+
+    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(
+      subscriptions_[0].cache,
+      subscriptions_[0].sequence_number)
+      +
+      get_missed_samples_and_update_seq_nr(
+      subscriptions_[1].cache,
+      subscriptions_[1].sequence_number);
+
+    output_message.get().size = 0;
+    merge_history_into_sample(output_message.get(), subscriptions_[0].cache);
+    merge_history_into_sample(output_message.get(), subscriptions_[1].cache);
+    set_sample(
+      this->get_name(), sequence_number_++, missed_samples, timestamp,
+      output_message.get());
+
     output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
 
-    message_cache_[0].reset();
-    message_cache_[1].reset();
+    subscriptions_[0].cache.reset();
+    subscriptions_[1].cache.reset();
   }
 
 private:
-  message_t::SharedPtr message_cache_[2];
+  struct subscription_t
+  {
+    rclcpp::Subscription<message_t>::SharedPtr subscription;
+    uint32_t sequence_number = 0;
+    message_t::SharedPtr cache;
+  };
   rclcpp::Publisher<message_t>::SharedPtr publisher_;
-  rclcpp::Subscription<message_t>::SharedPtr subscription_[2];
+
+  subscription_t subscriptions_[2];
 
   uint64_t number_crunch_limit_;
+  uint32_t sequence_number_ = 0;
 };
 }  // namespace rclcpp_system
 }  // namespace nodes

@@ -38,9 +38,9 @@ public:
     for (auto & connection : settings.connections) {
       connections_.emplace_back(
         Connection{
-            this->create_publisher<message_t>(connection.output_topic, 10),
+            this->create_publisher<message_t>(connection.output_topic, 1),
             this->create_subscription<message_t>(
-              connection.input_topic, 10,
+              connection.input_topic, 1,
               [this, id = connections_.size()](const message_t::SharedPtr msg) {
                 input_callback(msg, id);
               }),
@@ -50,13 +50,22 @@ public:
   }
 
 private:
-  void input_callback(const message_t::SharedPtr input_message, const uint64_t id) const
+  void input_callback(const message_t::SharedPtr input_message, const uint64_t id)
   {
+    uint64_t timestamp = now_as_int();
     auto number_cruncher_result = number_cruncher(connections_[id].number_crunch_limit);
 
     auto output_message = connections_[id].publisher->borrow_loaned_message();
+    output_message.get().size = 0;
+    merge_history_into_sample(output_message.get(), input_message);
 
-    fuse_samples(this->get_name(), output_message.get(), input_message);
+    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(
+      input_message,
+      connections_[id].input_sequence_number);
+
+    set_sample(
+      this->get_name(), connections_[id].sequence_number++, missed_samples, timestamp,
+      output_message.get());
 
     // use result so that it is not optimizied away by some clever compiler
     output_message.get().data[0] = number_cruncher_result;
@@ -69,6 +78,8 @@ private:
     rclcpp::Publisher<message_t>::SharedPtr publisher;
     rclcpp::Subscription<message_t>::SharedPtr subscription;
     uint64_t number_crunch_limit;
+    uint32_t sequence_number = 0;
+    uint32_t input_sequence_number = 0;
   };
   std::vector<Connection> connections_;
 };

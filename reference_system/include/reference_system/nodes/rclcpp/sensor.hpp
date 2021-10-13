@@ -33,7 +33,7 @@ public:
   explicit Sensor(const SensorSettings & settings)
   : Node(settings.node_name)
   {
-    publisher_ = this->create_publisher<message_t>(settings.topic_name, 10);
+    publisher_ = this->create_publisher<message_t>(settings.topic_name, 1);
     timer_ = this->create_wall_timer(
       settings.cycle_time,
       [this] {timer_callback();});
@@ -42,10 +42,11 @@ public:
 private:
   void timer_callback()
   {
+    uint64_t timestamp = now_as_int();
     auto message = publisher_->borrow_loaned_message();
     message.get().size = 0;
 
-    set_sample(this->get_name(), message.get());
+    set_sample(this->get_name(), sequence_number_++, 0, timestamp, message.get());
 
     publisher_->publish(std::move(message));
   }
@@ -53,6 +54,7 @@ private:
 private:
   rclcpp::Publisher<message_t>::SharedPtr publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
+  uint32_t sequence_number_ = 0;
 };
 }  // namespace rclcpp_system
 }  // namespace nodes
