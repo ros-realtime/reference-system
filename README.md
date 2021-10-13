@@ -144,7 +144,7 @@ To build the [PICAS executor](https://github.com/rtenlab/ros2-picas), you can us
 # build packages with the PICAS executor enabled
 colcon build --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE -DPICAS=TRUE
 ```
-This compiles [`autoware_default_singlethreaded_picas_single_executor.cpp`](autoware_reference_system/src/ros2/executor/autoware_default_singlethreaded_picas_single_executor.cpp) and [`autoware_default_singlethreaded_picas_multi_executors.cpp`](autoware_reference_system/src/ros2/executor/autoware_default_singlethreaded_picas_multi_executors.cpp), where the first one launches a single instance (thread) of the PICAS executor and the second launches four threads on different CPUs (CPUS 0-3). PICAS allows the user to assign priorities to individual callbacks. The default callback priorities are defined in [`autoware_reference_system/include/autoware_reference_system/system/priority/default.hpp`](autoware_reference_system/include/autoware_reference_system/system/priority/default.hpp).
+This compiles [`autoware_default_singlethreaded_picas_single_executor.cpp`](autoware_reference_system/src/ros2/executor/autoware_default_singlethreaded_picas_single_executor.cpp) and [`autoware_default_singlethreaded_picas_multi_executors.cpp`](autoware_reference_system/src/ros2/executor/autoware_default_singlethreaded_picas_multi_executors.cpp), where the first one launches a single instance (thread) of the PICAS executor and the second launches four threads on different CPUs (CPUS 0-3). PICAS allows the user to assign priorities to individual callbacks. The default callback priorities are defined in [`system/priority/default.hpp`](autoware_reference_system/include/autoware_reference_system/system/priority/default.hpp).
 
 ## Contributing
 
