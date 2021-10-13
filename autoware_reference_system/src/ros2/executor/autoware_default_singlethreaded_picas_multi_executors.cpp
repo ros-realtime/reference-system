@@ -56,44 +56,38 @@ int main(int argc, char * argv[])
   executor4.set_executor_priority_cpu(87, 3);
   RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "PiCAS executor 4's rt-priority %d and CPU %d", executor4.executor_priority, executor4.executor_cpu);
 
-  std::vector<std::string> executor1_nodes {"VehicleDBWSystem", "VehicleInterface", "MPCController"};
+  std::vector<std::string> executor1_nodes {"VehicleDBWSystem", "VehicleInterface", "MPCController", "BehaviorPlanner"};
   std::vector<std::string> executor2_nodes {"FrontLidarDriver", "RearLidarDriver", "PointsTransformerFront",
-  "PointsTransformerRear", "PointCloudFusion", "RayGroundFilter", "EuclideanClusterDetector", "ObjectCollisionEstimator", 
-  "BehaviorPlanner"};
-  std::vector<std::string> executor3_nodes {"PointCloudMap", "PointCloudMapLoader", "VoxelGridDownsampler", "NDTLocalizer"};
-  std::vector<std::string> executor4_nodes {"Visualizer", "Lanelet2Map", "LanePlanner", "ParkingPlanner", "Lanelet2MapLoader", "Lanelet2GlobalPlanner"};
+  "PointsTransformerRear", "PointCloudFusion", "RayGroundFilter", "ObjectCollisionEstimator"};
+  std::vector<std::string> executor3_nodes {"EuclideanClusterDetector", "EuclideanClusterSettings", "IntersectionOutput"};
+  std::vector<std::string> executor4_nodes {"PointCloudMap", "PointCloudMapLoader", "VoxelGridDownsampler", "NDTLocalizer",
+  "Visualizer", "Lanelet2Map", "LanePlanner", "ParkingPlanner", "Lanelet2MapLoader", "Lanelet2GlobalPlanner"};
   
   for (auto & node : nodes) {
     if (std::count(executor1_nodes.begin(), executor1_nodes.end(), node->get_name())) {
       executor1.add_node(node);
-      std::cout << "exe1 : " << node->get_name() << std::endl;
+      //std::cout << "exe1 : " << node->get_name() << std::endl;
     } else if (std::count(executor2_nodes.begin(), executor2_nodes.end(), node->get_name())) {
       executor2.add_node(node);
-      std::cout << "exe2 : " << node->get_name() << std::endl;
+      //std::cout << "exe2 : " << node->get_name() << std::endl;
     } else if (std::count(executor3_nodes.begin(), executor3_nodes.end(), node->get_name())) {
       executor3.add_node(node);
-      std::cout << "exe3 : " << node->get_name() << std::endl;
+      //std::cout << "exe3 : " << node->get_name() << std::endl;
     } else if (std::count(executor4_nodes.begin(), executor4_nodes.end(), node->get_name())) {
       executor4.add_node(node);
-      std::cout << "exe4 : " << node->get_name() << std::endl;
+      //std::cout << "exe4 : " << node->get_name() << std::endl;
     }
   }
-  /*
-  executor1.spin_rt();
-  executor2.spin_rt();
-  executor3.spin_rt();
-  executor4.spin_rt();
-  */
+  
   std::thread spinThread1(&rclcpp::executors::SingleThreadedExecutor::spin_rt, &executor1);
   std::thread spinThread2(&rclcpp::executors::SingleThreadedExecutor::spin_rt, &executor2);
   std::thread spinThread3(&rclcpp::executors::SingleThreadedExecutor::spin_rt, &executor3);
   std::thread spinThread4(&rclcpp::executors::SingleThreadedExecutor::spin_rt, &executor4);
-
   spinThread1.join();
   spinThread2.join();
   spinThread3.join();
   spinThread4.join();
-
+  
   nodes.clear();
 
   rclcpp::shutdown();

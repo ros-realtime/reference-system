@@ -8,47 +8,43 @@ namespace priority
   struct Default
   {
     // The higher number, more critical callback
-    static constexpr int FRONT_LIDAR_DRIVER_CALLBACK = 42;
-    static constexpr int REAR_LIDAR_DRIVER_CALLBACK = 40;
-    static constexpr int POINT_CLOUD_MAP_CALLBACK = 35;
-    static constexpr int LANELET_2_MAP_CALLBACK = 26;
-    static constexpr int VISUALIZER_CALLBACK = 23;
-    static constexpr int POINTS_TRANSFORMER_REAR_CALLBACK = 41;
-    static constexpr int POINTS_TRANSFORMER_FRONT_CALLBACK = 43;
-    static constexpr int POINT_CLOUD_FUSION_CALLBACK_1 = 45;
-    static constexpr int POINT_CLOUD_FUSION_CALLBACK_2 = 44;
-    static constexpr int POINT_CLOUD_MAP_LOADER_CALLBACK = 36;
-    static constexpr int VOXEL_GRID_DOWNSAMPLER_CALLBACK = 37;
-    static constexpr int RAY_GROUND_FILTER_CALLBACK = 46;
-    static constexpr int NDT_LOCALIZER_CALLBACK_1 = 39;
-    static constexpr int NDT_LOCALIZER_CALLBACK_2 = 38;
-    static constexpr int EUCLIDEAN_CLUSTER_SETTINGS_CALLBACK = 18;
-    static constexpr int INTERSECTION_OUTPUT_CALLBACK = 20;
-    static constexpr int EUCLIDEAN_CLUSTER_DETECTOR_CALLBACK = 50;
-    static constexpr int EUCLIDEAN_INTERSECTION_CALLBACK = 19;
-    static constexpr int LANELET_2_GLOBAL_PLANNER_CALLBACK_1 = 25;
-    static constexpr int LANELET_2_GLOBAL_PLANNER_CALLBACK_2 = 24;
-    static constexpr int LANELET_2_MAP_LOADER_CALLBACK_1 = 28;
-    static constexpr int LANELET_2_MAP_LOADER_CALLBACK_2 = 27;
-    static constexpr int PARKING_PLANNER_CALLBACK = 29;
-    static constexpr int LANE_PLANNER_CALLBACK = 30;
-    static constexpr int OBJECT_COLLISION_ESTIMATOR_CALLBACK = 51;
-    static constexpr int BEHAVIOR_PLANNER_CALLBACK_1 = 52;
-    static constexpr int BEHAVIOR_PLANNER_CALLBACK_2 = 41;
-    static constexpr int BEHAVIOR_PLANNER_CALLBACK_3 = 31;
-    static constexpr int BEHAVIOR_PLANNER_CALLBACK_4 = 33;
-    static constexpr int BEHAVIOR_PLANNER_CALLBACK_5 = 32;
-    static constexpr int BEHAVIOR_PLANNER_CALLBACK_6 = 34;
-    static constexpr int BEHAVIOR_PLANNER_CALLBACK_7 = 52;
-    static constexpr int MPC_CONTROLLER_CALLBACK = 54;
-    static constexpr int VEHICLE_INTERFACE_CALLBACK_1 = 55;
-    static constexpr int VEHICLE_INTERFACE_CALLBACK_2 = 53;
-    static constexpr int VEHICLE_DBW_SYSTEM_CALLBACK = 56;
-    
-    
-    
+    static constexpr int FRONT_LIDAR_DRIVER_CALLBACK = 51;
+    static constexpr int REAR_LIDAR_DRIVER_CALLBACK = 50;
+    static constexpr int POINT_CLOUD_MAP_CALLBACK = 22;
+    static constexpr int LANELET_2_MAP_CALLBACK = 30;
+    static constexpr int VISUALIZER_CALLBACK = 27;
+    static constexpr int POINTS_TRANSFORMER_REAR_CALLBACK = 52;
+    static constexpr int POINTS_TRANSFORMER_FRONT_CALLBACK = 53;
+    static constexpr int POINT_CLOUD_FUSION_CALLBACK_1 = 55;
+    static constexpr int POINT_CLOUD_FUSION_CALLBACK_2 = 54;
+    static constexpr int POINT_CLOUD_MAP_LOADER_CALLBACK = 24;
+    static constexpr int VOXEL_GRID_DOWNSAMPLER_CALLBACK = 23;
+    static constexpr int RAY_GROUND_FILTER_CALLBACK = 56;
+    static constexpr int NDT_LOCALIZER_CALLBACK_1 = 26;
+    static constexpr int NDT_LOCALIZER_CALLBACK_2 = 25;
+    static constexpr int EUCLIDEAN_CLUSTER_SETTINGS_CALLBACK = 47;
+    static constexpr int INTERSECTION_OUTPUT_CALLBACK = 49;
+    static constexpr int EUCLIDEAN_CLUSTER_DETECTOR_CALLBACK = 57;
+    static constexpr int EUCLIDEAN_INTERSECTION_CALLBACK = 48;
+    static constexpr int LANELET_2_GLOBAL_PLANNER_CALLBACK_1 = 29;
+    static constexpr int LANELET_2_GLOBAL_PLANNER_CALLBACK_2 = 28;
+    static constexpr int LANELET_2_MAP_LOADER_CALLBACK_1 = 31;
+    static constexpr int LANELET_2_MAP_LOADER_CALLBACK_2 = 32;
+    static constexpr int PARKING_PLANNER_CALLBACK = 33;
+    static constexpr int LANE_PLANNER_CALLBACK = 34;
+    static constexpr int OBJECT_COLLISION_ESTIMATOR_CALLBACK = 58;
+    static constexpr int BEHAVIOR_PLANNER_CALLBACK_1 = 59;
+    static constexpr int BEHAVIOR_PLANNER_CALLBACK_2 = 39;
+    static constexpr int BEHAVIOR_PLANNER_CALLBACK_3 = 35;
+    static constexpr int BEHAVIOR_PLANNER_CALLBACK_4 = 36;
+    static constexpr int BEHAVIOR_PLANNER_CALLBACK_5 = 38;
+    static constexpr int BEHAVIOR_PLANNER_CALLBACK_6 = 37;
+    static constexpr int BEHAVIOR_PLANNER_CALLBACK_7 = 65;
+    static constexpr int MPC_CONTROLLER_CALLBACK = 68;
+    static constexpr int VEHICLE_INTERFACE_CALLBACK_1 = 67;
+    static constexpr int VEHICLE_INTERFACE_CALLBACK_2 = 66;
+    static constexpr int VEHICLE_DBW_SYSTEM_CALLBACK = 69;
   };
-
   constexpr int Default::FRONT_LIDAR_DRIVER_CALLBACK;
   constexpr int Default::REAR_LIDAR_DRIVER_CALLBACK;
   constexpr int Default::POINT_CLOUD_MAP_CALLBACK;
