@@ -189,10 +189,7 @@ def parseData(data_model):
             latest_date = thelastdate
         # add name of callback and count to list
         dropped_data.append(
-            [str(node), str(topic), float(len(callback_df)), 0.0, 0.0, colors[color_i]])
-        if period != 0.0:
-            # set to 0 until we know runtime
-            period_data.append([str(node), str(topic),  period])
+            [str(node), str(topic), float(len(callback_df)), period, 0.0, 0.0, colors[color_i]])
         color_i += 1
 
     front_lidar_data = front_lidar_data.reset_index(drop=True)
@@ -204,9 +201,7 @@ def parseData(data_model):
         front_lidar_data.drop(front_lidar_data.tail(extra).index, inplace=True)
     latency = object_collision_data['timestamp'] - front_lidar_data['timestamp']
     dropped_df = pd.DataFrame(
-        dropped_data, columns=['node', 'topic', 'count', 'dropped', 'expected_count', 'color'])
-    period_df = pd.DataFrame(
-        period_data, columns=['node', 'topic', 'period'])
+        dropped_data, columns=['node', 'topic', 'count', 'period', 'dropped', 'expected_count', 'color'])
     latency_df = pd.DataFrame(
         {'index': range(0, len(latency)),
          'latency': latency,
@@ -214,19 +209,18 @@ def parseData(data_model):
     # sort values by node and topic
     dropped_df = dropped_df.sort_values(by=['node', 'topic'])
     # generate node graph
-    node_graph = generateNodeGraph(dropped_df, period_df)
+    node_graph = generateNodeGraph(dropped_df)
     # calculate run time
     approx_run_time = None
     if earliest_date is not None and latest_date is not None:
         approx_run_time = getRunTime(earliest_date, latest_date)
     # calculate estimated count and received count
-    period_df = calcTotals(approx_run_time, period_df)
+    dropped_df = calcTotals(approx_run_time, dropped_df)
     # count expected and dropped messages
-    dropped_df = countDropped(dropped_df, period_df, node_graph)
+    dropped_df = countDropped(dropped_df, node_graph)
     # prepare output
     data_dict = {
         'dropped': dropped_df,
-        'period': period_df,
         'latency': latency_df,
         'node_graph': node_graph,
         'start': earliest_date,
@@ -241,18 +235,18 @@ def getRunTime(start, end):
     return (end - start).total_seconds()
 
 
-def calcTotals(run_time, period_df):
+def calcTotals(run_time, dataframe):
     # calculate expected counts for each period
-    mask = (period_df['period'] != 0)
-    period_non_zero = period_df[mask]
-    period_df.loc[mask, 'expected_count'] = (run_time / period_non_zero['period']).apply(np.floor)
-    return period_df
+    mask = (dataframe['period'] != 0)
+    period_non_zero = dataframe[mask]
+    dataframe.loc[mask, 'expected_count'] = (run_time / period_non_zero['period']).apply(np.floor)
+    return dataframe
 
 
-def generateNodeGraph(dropped_df, period_df):
+def generateNodeGraph(dataframe):
     connections = []
     # for every node that has a defined period
-    for node in period_df.node:
+    for node in dataframe.node:
         # assume node has sub nodes by default
         sub_node_exists = True
         # search for sub nodes of current node, assume node name is topic name
@@ -268,9 +262,9 @@ def generateNodeGraph(dropped_df, period_df):
             if(len(sub_topics) != 0):
                 # sub topics still exist
                 current_node = sub_topics.pop(0)
-            sub_node_df = dropped_df.loc[
-                ((dropped_df.topic == current_node) &
-                 (dropped_df.expected_count == 0))]
+            sub_node_df = dataframe.loc[
+                ((dataframe.topic == current_node) &
+                 (dataframe.expected_count == 0))]
             if not sub_node_df.empty:
                 # node has sub node(s)
                 if(sub_node_df.shape[0] > 1):
@@ -281,7 +275,7 @@ def generateNodeGraph(dropped_df, period_df):
                 for sub_node in sub_node_df.node:
                     # add to list of tuples
                     connections.append((current_node, sub_node))
-                    if not dropped_df.loc[dropped_df.topic == sub_node].empty:
+                    if not dataframe.loc[dataframe.topic == sub_node].empty:
                         if sub_node not in sub_topics:
                             sub_topics.append(sub_node)
                     else:
@@ -302,19 +296,84 @@ def generateNodeGraph(dropped_df, period_df):
     return graph
 
 
-def countDropped(dropped_df, period_df, node_graph):
-    for node in dropped_df.node:
-        if node in period_df.node:
-            expected = float(
-                period_df.loc[period_df.node == node, 'expected_count'])
-            count = float(
-                dropped_df.loc[dropped_df.node == node, 'count'])
-            dropped_df.loc[dropped_df.node == node, 'dropped'] = abs(expected - count)
+def countDropped(dataframe, node_graph):
+    print(dataframe)
+    mask = (dataframe['expected_count'] != 0)
+    expected_non_zero = dataframe[mask]
+    # for every node that has a defined period
+    for node in expected_non_zero.node:
+        # assume node has sub nodes by default
+        sub_node_exists = True
+        # search for sub nodes of current node, assume node name is topic name
+        current_node = node  # current top-level node of fork
+        fork_topics = []
+        sub_topics = []
+        in_fork = False
+        pred = len(node_graph.pred[node])
+        print(pred)
+        if(pred > 0):
+            print('cyclic node')
+            # TODO(flynneva): figure out a way to trace up the node graph
+            # to determine if a fusion node reduces the total expected
+            count = expected_non_zero.expected_count.sum()
+            print(count)
+            expected  = count - dataframe.loc[(
+            (dataframe.node == node) &
+            (dataframe.topic == '')),
+            'expected_count'].values[0]
+            expected -= dataframe.loc[(
+                (dataframe.node == 'FrontLidarDriver') &
+                (dataframe.topic == '')),
+                'expected_count'].values[0]
         else:
-            # assume has same frequence as Front Lidar Driver
-            expected = float(
-                period_df.loc[period_df.node == str('node_FrontLidarDriver'), 'expected_count'])
-            count = float(
-                dropped_df.loc[dropped_df.node == node, 'count'])
-        dropped_df.loc[dropped_df.node == node, 'dropped'] = abs(expected - count)
-    return dropped_df
+            expected  = dataframe.loc[(
+                (dataframe.node == node) &
+                (dataframe.topic == '')),
+                'expected_count'].values[0]
+        while sub_node_exists:
+            if(len(fork_topics) != 0 and not in_fork):
+                # fork topic exists
+                current_node = fork_topics.pop(0)
+                in_fork = True
+            if(len(sub_topics) != 0):
+                # sub topics still exist
+                current_node = sub_topics.pop(0)
+            sub_node_df = dataframe.loc[
+                ((dataframe.topic == current_node) &
+                 (dataframe.expected_count == 0))]
+            if not sub_node_df.empty:
+                # node has sub node(s)
+                if(sub_node_df.shape[0] > 1):
+                    # node has more than one sub node
+                    for fork in sub_node_df.node:
+                        if fork not in fork_topics:
+                            fork_topics.append(fork)
+                for sub_node in sub_node_df.node:
+                    dataframe.loc[(
+                        (dataframe.node == sub_node) &
+                        (dataframe.topic == current_node)), 'expected_count'] = expected
+                    count = dataframe.loc[(
+                        (dataframe.node == sub_node) &
+                        (dataframe.topic == current_node)), 'count'].values[0]
+                    print('expected: ' + str(expected))
+                    print('count: ' + str(count))
+                    dataframe.loc[(
+                        (dataframe.node == sub_node) &
+                        (dataframe.topic == current_node)), 'dropped'] = abs(expected - count)
+                    if not dataframe.loc[dataframe.topic == sub_node].empty:
+                        if sub_node not in sub_topics:
+                            sub_topics.append(sub_node)
+                    else:
+                        # no sub nodes
+                        if(in_fork):
+                            in_fork = False
+                            continue
+                        sub_node_exists = False
+            else:
+                # no sub nodes
+                if(in_fork):
+                    in_fork = False
+                    continue
+                sub_node_exists = False
+    print(dataframe)
+    return dataframe
