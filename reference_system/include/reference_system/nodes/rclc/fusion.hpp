@@ -30,6 +30,7 @@ namespace nodes
 namespace rclc_system
 {
 // TODO(jst3si) replace rclcpp::Node with rclc nodes, subscriptions, publishers ...
+// use example from pingpong.
 
 class Fusion : public rclcpp::Node
 {
