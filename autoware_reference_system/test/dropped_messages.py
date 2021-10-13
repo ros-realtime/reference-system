@@ -55,22 +55,6 @@ def summary(path, duration, size):
             data_dict[exe][rmw] = {}
 
         data_dict[exe][rmw] = parseData(data_model)
-        # calculate run time
-        approx_run_time = getRunTime(
-            data_dict[exe][rmw]['start'],
-            data_dict[exe][rmw]['end'])
-        # calculate estimated count and received count
-        data_dict[exe][rmw]['period'] = calcTotals(
-            approx_run_time,
-            data_dict[exe][rmw]['period'])
-        data_dict[exe][rmw]['node_graph'] = generateNodeGraph(
-            data_dict[exe][rmw]['dropped'],
-            data_dict[exe][rmw]['period'])
-        # estimated count - actual received count
-        data_dict[exe][rmw]['dropped'] = countDropped(
-            data_dict[exe][rmw]['dropped'],
-            data_dict[exe][rmw]['period'],
-            data_dict[exe][rmw]['node_graph'])
     x = []
     for exe in data_dict:
         for rmw in data_dict[exe]:
@@ -81,22 +65,14 @@ def summary(path, duration, size):
 def individual(data_model, size):
     data_dict = parseData(data_model)
     dropped_df = data_dict['dropped']
-    period_df = data_dict['period']
     latency_df = data_dict['latency']
-    start = data_dict['start']
-    end = data_dict['end']
-    # calculate run time
-    approx_run_time = getRunTime(start, end)
-    # calculate estimated count and received count
-    period_df = calcTotals(approx_run_time, period_df)
-    # estimated count - actual received count
-    dropped_df = countDropped(dropped_df, period_df)
+    run_time = data_dict['run_time']
     source = ColumnDataSource(dropped_df)
     # use this for axis of figure ~0.25 of buffer
     max_dropped = max(dropped_df['dropped']) + 0.25
     # initialize figure
     dropped = figure(
-        title='Dropped Messages Summary ({:.2f} s)'.format(float(approx_run_time)),
+        title='Dropped Messages Summary ({:.2f} s)'.format(float(run_time)),
         y_axis_label='Node Name',
         x_axis_label='Dropped Messages',
         y_range=dropped_df['node'],
@@ -113,9 +89,6 @@ def individual(data_model, size):
         fill_color='color',
         source=source
     )
-    # add legend
-    # legend = Legend(items=[dropped_df['node'], v])
-    # dropped.add_layout(legend, 'right')
     # add hover tool
     hover = HoverTool()
     hover.tooltips = [
@@ -174,17 +147,18 @@ def parseData(data_model):
         callback_df = data_model.get_callback_durations(obj)
         # get node information and filter out internal subscriptions
         owner_info = data_model.get_callback_owner_info(obj)
-        if not owner_info or '/parameter_events' in owner_info:
-            continue
-        period = 0.0
-        if not owner_info or 'period' in owner_info:
-            # assume in milliseconds so convert to seconds
-            period = float(owner_info[
-                owner_info.find('period: ') + len('period: '):owner_info.rfind(' ')]) / 1000
-        if not owner_info or 'FrontLidarDriver' in owner_info and 'Timer' in owner_info:
-            front_lidar_data = callback_df
-        if not owner_info or 'ObjectCollisionEstimator' in owner_info:
-            object_collision_data = callback_df
+        if owner_info is not None:
+            if '/parameter_events' in owner_info:
+                continue
+            period = 0.0
+            if 'period' in owner_info:
+                # assume in milliseconds so convert to seconds
+                period = float(owner_info[
+                    owner_info.find('period: ') + len('period: '):owner_info.rfind(' ')]) / 1000
+            if 'FrontLidarDriver' in owner_info and 'Timer' in owner_info:
+                front_lidar_data = callback_df
+            if 'ObjectCollisionEstimator' in owner_info:
+                object_collision_data = callback_df
 
         # add color to list if needed
         if(len(colors) <= color_i):
@@ -204,17 +178,21 @@ def parseData(data_model):
             topic = ''
         # get first and last timestamp of data
         thefirstdate = callback_df.loc[:, 'timestamp'].iloc[0]
-        if earliest_date is None or thefirstdate <= earliest_date:
+        if earliest_date is None:
+            earliest_date = thefirstdate
+        elif earliest_date is not None and thefirstdate <= earliest_date:
             earliest_date = thefirstdate
         thelastdate = callback_df.loc[:, 'timestamp'].iloc[len(callback_df)-1]
-        if latest_date is None or thelastdate >= latest_date:
+        if latest_date is None:
+            latest_date = thelastdate
+        elif latest_date is not None and thelastdate >= latest_date:
             latest_date = thelastdate
         # add name of callback and count to list
         dropped_data.append(
             [str(node), str(topic), float(len(callback_df)), 0.0, 0.0, colors[color_i]])
         if period != 0.0:
             # set to 0 until we know runtime
-            period_data.append([str(node), str(topic),  period, 0])
+            period_data.append([str(node), str(topic),  period])
         color_i += 1
 
     front_lidar_data = front_lidar_data.reset_index(drop=True)
@@ -228,20 +206,32 @@ def parseData(data_model):
     dropped_df = pd.DataFrame(
         dropped_data, columns=['node', 'topic', 'count', 'dropped', 'expected_count', 'color'])
     period_df = pd.DataFrame(
-        period_data, columns=['node', 'topic', 'period', 'expected_count'])
+        period_data, columns=['node', 'topic', 'period'])
     latency_df = pd.DataFrame(
         {'index': range(0, len(latency)),
          'latency': latency,
          'timestamp': front_lidar_data['timestamp']})
     # sort values by node and topic
     dropped_df = dropped_df.sort_values(by=['node', 'topic'])
+    # generate node graph
+    node_graph = generateNodeGraph(dropped_df, period_df)
+    # calculate run time
+    approx_run_time = None
+    if earliest_date is not None and latest_date is not None:
+        approx_run_time = getRunTime(earliest_date, latest_date)
+    # calculate estimated count and received count
+    period_df = calcTotals(approx_run_time, period_df)
+    # count expected and dropped messages
+    dropped_df = countDropped(dropped_df, period_df, node_graph)
     # prepare output
     data_dict = {
         'dropped': dropped_df,
         'period': period_df,
         'latency': latency_df,
+        'node_graph': node_graph,
         'start': earliest_date,
-        'end': latest_date
+        'end': latest_date,
+        'run_time': approx_run_time,
     }
     return data_dict
 
@@ -313,8 +303,18 @@ def generateNodeGraph(dropped_df, period_df):
 
 
 def countDropped(dropped_df, period_df, node_graph):
-    for topic in period_df.node:
-        for node in dropped_df.loc[dropped_df.topic == topic, 'node']:
-            print('NODE: ' + node)
-            print('TOPIC: ' + topic)
+    for node in dropped_df.node:
+        if node in period_df.node:
+            expected = float(
+                period_df.loc[period_df.node == node, 'expected_count'])
+            count = float(
+                dropped_df.loc[dropped_df.node == node, 'count'])
+            dropped_df.loc[dropped_df.node == node, 'dropped'] = abs(expected - count)
+        else:
+            # assume has same frequence as Front Lidar Driver
+            expected = float(
+                period_df.loc[period_df.node == str('node_FrontLidarDriver'), 'expected_count'])
+            count = float(
+                dropped_df.loc[dropped_df.node == node, 'count'])
+        dropped_df.loc[dropped_df.node == node, 'dropped'] = abs(expected - count)
     return dropped_df

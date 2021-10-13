@@ -57,9 +57,10 @@ def dropped_summary_report(path, duration):
 def generate_summary_reports(path, duration):
     trace_type = getTraceType(path)
     if(trace_type == TRACE_CALLBACK):
-        dropped_summary_report(path, duration)
+        print('dropped summary report')
+        # dropped_summary_report(path, duration)
     elif(trace_type == TRACE_MEMORY):
-        print('memory summary reports')
+        print('memory summary report')
         memory_summary_report(path, duration)
     elif(trace_type == TRACE_UNSUPPORTED):
         print('Trace type unsupported')
