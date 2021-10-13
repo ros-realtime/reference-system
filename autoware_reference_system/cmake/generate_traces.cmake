@@ -42,6 +42,7 @@ function(generate_traces target  trace_type runtime)
       set_tests_properties(generate_${trace_type}_trace_${target}_${rmw_implementation}_${runtime}s
         PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
     else()
+      # callback and std trace types run ros_tests
       # replaces all @var@ and ${var} within input file
       configure_file(
         test/generate_${trace_type}_traces.py

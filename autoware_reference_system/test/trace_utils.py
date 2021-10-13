@@ -11,14 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from tracetools_analysis.loading import load_file
+from tracetools_analysis.processor.ros2 import Ros2Handler
+from tracetools_analysis.utils.ros2 import Ros2DataModelUtil
 
-TRACE_CALLBACK = 'tracing'
-TRACE_MEMORY = 'memory'
-TRACE_STD = 'log'
-TRACE_UNSUPPORTED = 'unsupported'
-# TODO(flynneva): support path as just the `tracing` directory and loop over
-# all subdirectories that have tracing data in them
-TRACE_DIRECTORY = 'tracing'
 
-SIZE_SUMMARY = 800
-SIZE_SUBPLOT = 500
+def initDataModel(path):
+    events = load_file(path)
+    handler = Ros2Handler.process(events)
+    # handler.data.print_data()
+
+    return Ros2DataModelUtil(handler.data)

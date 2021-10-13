@@ -15,19 +15,7 @@
 import os
 import sys
 
-from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_UNSUPPORTED
-
-from tracetools_analysis.loading import load_file
-from tracetools_analysis.processor.ros2 import Ros2Handler
-from tracetools_analysis.utils.ros2 import Ros2DataModelUtil
-
-
-def initDataModel(path):
-    events = load_file(path)
-    handler = Ros2Handler.process(events)
-    # handler.data.print_data()
-
-    return Ros2DataModelUtil(handler.data)
+from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_STD, TRACE_UNSUPPORTED
 
 
 def checkPath(path: str):
@@ -50,6 +38,8 @@ def getTraceType(path):
         return TRACE_CALLBACK
     elif path.find(TRACE_MEMORY) >= 0:
         return TRACE_MEMORY
+    elif path.find(TRACE_STD) >= 0:
+        return TRACE_STD
     else:
         return TRACE_UNSUPPORTED
 

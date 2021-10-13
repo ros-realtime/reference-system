@@ -25,7 +25,8 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 
-from utils import getPWD, initDataModel
+from trace_utils import initDataModel
+from utils import getPWD
 
 
 def summary(path, duration, size):
@@ -321,6 +322,8 @@ def countDropped(dataframe, node_graph):
             (dataframe.node == node) &
             (dataframe.topic == '')),
             'expected_count'].values[0]
+            # subtract front lidar expected count due to fusion node
+            # TODO(flynneva): figure out a better way to handle fusion nodes
             expected -= dataframe.loc[(
                 (dataframe.node == 'FrontLidarDriver') &
                 (dataframe.topic == '')),
