@@ -138,6 +138,12 @@ This directory should now hold tracing data and reports for all tests performed.
 
 The `RUN_BENCHMARK` CMake variable will tell CMake to build the benchmark tests that will check the reference system against its requirements before running a sweep of tests to generate trace files and reports. Without the `RUN_BENCHMARK` variable set to `True` only the standard linter tests will be run.
 
+To build the [PICAS executor](https://github.com/rtenlab/ros2-picas), you can use the `PICAS` CMake variable:
+```
+# build packages with the PICAS executor enabled
+colcon build --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE -DPICAS=TRUE
+```
+This compiles [`autoware_default_singlethreaded_picas_single_executor.cpp`](autoware_reference_system/src/ros2/executor/autoware_default_singlethreaded_picas_single_executor.cpp) and [`autoware_default_singlethreaded_picas_multi_executors.cpp`](autoware_reference_system/src/ros2/executor/autoware_default_singlethreaded_picas_multi_executors.cpp), both of which use the PICAS executor. The first one launches a single instance (thread) and the second launches four threads on different CPUs (CPUS0-3). PICAS allows the user to assign priorities to individual callbacks, and the default priorities are defined in [`autoware_reference_system/include/autoware_reference_system/system/priority/default.hpp`](autoware_reference_system/include/autoware_reference_system/system/priority/default.hpp).
 
 ## Contributing
 
