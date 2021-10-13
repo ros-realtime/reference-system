@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import networkx as nx
 import os
 import random
 
@@ -22,6 +21,7 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.models.tools import HoverTool
 from bokeh.models.widgets.tables import DataTable, TableColumn
 from bokeh.plotting import figure
+import networkx as nx
 import numpy as np
 import pandas as pd
 
@@ -76,7 +76,6 @@ def summary(path, duration, size):
         for rmw in data_dict[exe]:
             x.append((exe, rmw))
             # print(data_dict[exe][rmw]['dropped'])
-    
 
 
 def individual(data_model, size):
@@ -281,19 +280,19 @@ def generateNodeGraph(dropped_df, period_df):
                 current_node = sub_topics.pop(0)
             sub_node_df = dropped_df.loc[
                 ((dropped_df.topic == current_node) &
-                (dropped_df.expected_count == 0))]
+                 (dropped_df.expected_count == 0))]
             if not sub_node_df.empty:
                 # node has sub node(s)
                 if(sub_node_df.shape[0] > 1):
                     # node has more than one sub node
                     for fork in sub_node_df.node:
-                        if not fork in fork_topics:
+                        if fork not in fork_topics:
                             fork_topics.append(fork)
                 for sub_node in sub_node_df.node:
                     # add to list of tuples
                     connections.append((current_node, sub_node))
                     if not dropped_df.loc[dropped_df.topic == sub_node].empty:
-                        if not sub_node in sub_topics:
+                        if sub_node not in sub_topics:
                             sub_topics.append(sub_node)
                     else:
                         # no sub nodes
