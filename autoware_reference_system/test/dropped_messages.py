@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import networkx as nx
 import os
 import random
 
@@ -61,17 +62,21 @@ def summary(path, duration, size):
         # calculate estimated count and received count
         data_dict[exe][rmw]['period'] = calcTotals(
             approx_run_time,
+            data_dict[exe][rmw]['period'])
+        data_dict[exe][rmw]['node_graph'] = generateNodeGraph(
             data_dict[exe][rmw]['dropped'],
             data_dict[exe][rmw]['period'])
         # estimated count - actual received count
         data_dict[exe][rmw]['dropped'] = countDropped(
             data_dict[exe][rmw]['dropped'],
-            data_dict[exe][rmw]['period'])
+            data_dict[exe][rmw]['period'],
+            data_dict[exe][rmw]['node_graph'])
     x = []
     for exe in data_dict:
         for rmw in data_dict[exe]:
             x.append((exe, rmw))
             # print(data_dict[exe][rmw]['dropped'])
+    
 
 
 def individual(data_model, size):
@@ -84,7 +89,7 @@ def individual(data_model, size):
     # calculate run time
     approx_run_time = getRunTime(start, end)
     # calculate estimated count and received count
-    period_df = calcTotals(approx_run_time, dropped_df, period_df)
+    period_df = calcTotals(approx_run_time, period_df)
     # estimated count - actual received count
     dropped_df = countDropped(dropped_df, period_df)
     source = ColumnDataSource(dropped_df)
@@ -247,99 +252,70 @@ def getRunTime(start, end):
     return (end - start).total_seconds()
 
 
-def calcTotals(run_time, dropped_df, period_df):
+def calcTotals(run_time, period_df):
     # calculate expected counts for each period
     mask = (period_df['period'] != 0)
     period_non_zero = period_df[mask]
     period_df.loc[mask, 'expected_count'] = (run_time / period_non_zero['period']).apply(np.floor)
-#     expected_count_sum = sum(period_df['expected_count'])
-#     mask = period_df['period'] == 0
-#     period_df.loc[mask, 'expected_count'] = expected_count_sum
     return period_df
 
 
-def countDropped(dropped_df, period_df):
-    # calculate dropped messages
+def generateNodeGraph(dropped_df, period_df):
+    connections = []
+    # for every node that has a defined period
     for node in period_df.node:
-        if str(node) in str(period_df.node):
-            # node is a sensor node
-            try:
-                print(node)
-                expected = float(period_df.loc[period_df.node == str(node), 'expected_count'])
-                sub_exists = True
-                search_topic = node
-                last_topic = node
-                branch_topics = []
-                in_fork = False
-                # loop over signal chain starting at sensor node copying down expected count
-                while sub_exists:
-                    if (len(branch_topics) != 0 and not in_fork):
-                        print('FORK')
-                        search_topic = branch_topics.pop(0)
-                        print('topic: ' + search_topic)
-                        in_fork = True
-                    sub_df = dropped_df.loc[
-                        ((dropped_df.topic == search_topic) & (dropped_df.expected_count == 0))]
-                    if not sub_df.empty:
-                        if(sub_df.shape[0] > 1):
-                            for fork_node in sub_df['node']:
-                                branch_topics.append(fork_node)
-                        for sub_node in sub_df.node:
-                            if not dropped_df.loc[dropped_df.topic == sub_node].empty:
-                                # current node has a node that subscribes to it
-                                last_topic = search_topic
-                                search_topic = sub_node
-                                print(search_topic)
-                                # set current node expected and count
-                            else:
-                                # no more nodes after this one
-                                if(in_fork):
-                                    in_fork = False
-                                    continue
-                                sub_exists = False
-                            if(dropped_df.loc[dropped_df.node == search_topic].shape[0] == 2):
-                                # fusion node, use lesser of the two expected values
-                                print('FUSION NODE')
-                                print('node: ' + search_topic)
-                                print('topic: ' + last_topic)
-                                print(expected)
-                                print(dropped_df.loc[
-                                    ((dropped_df.node == search_topic) &
-                                     (dropped_df.topic == last_topic) &
-                                     (dropped_df.expected_count))])
-                                dropped_df.loc[
-                                    ((dropped_df.node == search_topic) &
-                                     (dropped_df.topic == last_topic) &
-                                     (dropped_df.expected_count >= expected)),
-                                    'expected_count'] = expected
-                            # if expected count is 0, always set it.
-                            dropped_df.loc[
-                                    ((dropped_df.node == search_topic) &
-                                     (dropped_df.topic == last_topic) &
-                                     (dropped_df.expected_count == 0)),
-                                    'expected_count'] = expected
-                            if(search_topic == 'BehaviorPlanner' or
-                               search_topic == 'VehicleInterface'):
-                                print('HACK')
-                                print(expected)
-                                # hack for last topic in pipeline
-                                dropped_df.loc[((dropped_df.topic == search_topic) &
-                                               (dropped_df.expected_count == 0)),
-                                               'expected_count'] += expected
-                        dropped_df.loc[((dropped_df.node == node) &
-                                       (dropped_df.expected_count == 0)),
-                                       'expected_count'] = expected
+        # assume node has sub nodes by default
+        sub_node_exists = True
+        # search for sub nodes of current node, assume node name is topic name
+        current_node = node  # current top-level node of fork
+        fork_topics = []
+        sub_topics = []
+        in_fork = False
+        while sub_node_exists:
+            if(len(fork_topics) != 0 and not in_fork):
+                # fork topic exists
+                current_node = fork_topics.pop(0)
+                in_fork = True
+            if(len(sub_topics) != 0):
+                # sub topics still exist
+                current_node = sub_topics.pop(0)
+            sub_node_df = dropped_df.loc[
+                ((dropped_df.topic == current_node) &
+                (dropped_df.expected_count == 0))]
+            if not sub_node_df.empty:
+                # node has sub node(s)
+                if(sub_node_df.shape[0] > 1):
+                    # node has more than one sub node
+                    for fork in sub_node_df.node:
+                        if not fork in fork_topics:
+                            fork_topics.append(fork)
+                for sub_node in sub_node_df.node:
+                    # add to list of tuples
+                    connections.append((current_node, sub_node))
+                    if not dropped_df.loc[dropped_df.topic == sub_node].empty:
+                        if not sub_node in sub_topics:
+                            sub_topics.append(sub_node)
                     else:
-                        # no more nodes after this one
+                        # no sub nodes
                         if(in_fork):
                             in_fork = False
                             continue
-                        sub_exists = False
-                        dropped_df.loc[
-                                    dropped_df.node == node,
-                                    'expected_count'] = expected
-            except TypeError as e:
-                print('NODE: ' + node)
-                print(e)
-    print(dropped_df)
+                        sub_node_exists = False
+            else:
+                # no sub nodes
+                if(in_fork):
+                    in_fork = False
+                    continue
+                sub_node_exists = False
+    # generate DAG from list of tuples
+    graph = nx.DiGraph()
+    graph.add_edges_from(connections)
+    return graph
+
+
+def countDropped(dropped_df, period_df, node_graph):
+    for topic in period_df.node:
+        for node in dropped_df.loc[dropped_df.topic == topic, 'node']:
+            print('NODE: ' + node)
+            print('TOPIC: ' + topic)
     return dropped_df
