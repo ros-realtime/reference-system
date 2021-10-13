@@ -123,7 +123,8 @@ void merge_history_into_sample(SampleTypePointer & sample, const SourceType& sou
 
 struct statistic_value_t
 {
-  double average = 0;
+  double average = 0.0;
+  double deviation = 0.0;
   uint64_t min = std::numeric_limits<uint64_t>::max();
   uint64_t max = 0;
   uint64_t current = 0;
@@ -136,6 +137,7 @@ struct statistic_value_t
     ++total_number;
     current = value;
     average = ((total_number - 1) * average + value) / total_number;
+    deviation = std::sqrt((deviation * deviation * (total_number - 1) + (average - value) * (average - value)) / total_number);
     min = std::min(min, value);
     max = std::max(max, value);
   }
@@ -157,12 +159,13 @@ std::ostream &operator<<(std::ostream & output, const statistic_value_t & v) {
   if ( v.adjustment == 0.0 ) {
     output << v.current << v.suffix << " [min=" << v.min << v.suffix
            << ", max=" << v.max << v.suffix << ", average=" << v.average
-           << v.suffix << "]";
+           << v.suffix << ", deviation=" << v.deviation << "]";
   } else {
     output << static_cast<double>(v.current)/v.adjustment << v.suffix 
             << " [min=" << static_cast<double>(v.min)/v.adjustment  << v.suffix
            << ", max=" << static_cast<double>(v.max)/v.adjustment  << v.suffix
-           << ", average=" << static_cast<double>(v.average)/v.adjustment << v.suffix << "]";
+           << ", average=" << v.average/v.adjustment << v.suffix 
+           << ", deviation=" << v.deviation/v.adjustment << v.suffix << "]";
   }
   return output;
 }
@@ -265,6 +268,25 @@ void print_sample_path(
     }
   }
 
+  // hot path drops
+  uint64_t hot_path_drops = 0;
+  if ( does_contain_hot_path ) {
+    for(uint64_t i = 0; i < sample->size; ++i) {
+      uint64_t idx = sample->size - i - 1;
+      std::string current_node_name(
+        reinterpret_cast<const char *>(sample->stats[idx].node_name.data()));
+      if ( current_node_name == "ObjectCollisionEstimator" || 
+           current_node_name == "FrontLidarDriver" ||
+           current_node_name == "PointsTransformerFront" ||
+           current_node_name == "PointCloudFusion" ||
+           current_node_name == "RayGroundFilter" ||
+           current_node_name == "EuclideanClusterDetector"
+          ) {
+        hot_path_drops += sample->stats[idx].dropped_samples;
+      }
+    }
+  }
+
   // behavior planner cycle time
   bool does_contain_behavior_planner = false;
   for(uint64_t i = 0; i < sample->size; ++i) {
@@ -293,13 +315,16 @@ void print_sample_path(
   std::cout << "  latency:                  " << advanced_statistics[node_name].latency << std::endl;
 
   if (does_contain_hot_path) {
+    dropped_samples[node_name]["hotpath"].set(hot_path_drops);
     advanced_statistics[node_name].hot_path_latency.set(hot_path_latency_in_ns);
     std::cout << "  hot path:                 FrontLidarDriver -> ObjectCollisionEstimator" << std::endl;
     std::cout << "  hot path latency:         " << advanced_statistics[node_name].hot_path_latency << std::endl;
+    std::cout << "  hot path drops:           " << dropped_samples[node_name]["hotpath"] << std::endl;
   }
 
   if (does_contain_behavior_planner) {
     std::cout << "  behavior planner period:  " << advanced_statistics[node_name].behavior_planner_period << std::endl;
+    std::cout << "  behavior planner drops:   " << dropped_samples[node_name]["BehaviorPlanner"] << std::endl;
   }
 
   std::cout << "----------------------------------------------------------" <<

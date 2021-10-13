@@ -31,13 +31,11 @@ int main(int argc, char * argv[])
 
   auto nodes = create_autoware_nodes<RclcppSystem, TimeConfig>();
 
-#if 0
   rclcpp::executors::StaticSingleThreadedExecutor executor;
   for (auto & node : nodes) {
     executor.add_node(node);
   }
   executor.spin();
-#endif
 
   nodes.clear();
   rclcpp::shutdown();

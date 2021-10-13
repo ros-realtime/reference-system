@@ -39,27 +39,27 @@ struct Default
   // to figure out what values to place here corresponding to the run_time
   // you would like to run each node for
   // processing
-  static constexpr uint64_t POINTS_TRANSFORMER_FRONT = 655360;
-  static constexpr uint64_t POINTS_TRANSFORMER_REAR = 655360;
-  static constexpr uint64_t VOXEL_GRID_DOWNSAMPLER = 655360;
-  static constexpr uint64_t POINT_CLOUD_MAP_LOADER = 655360;
-  static constexpr uint64_t RAY_GROUND_FILTER = 655360;
-  static constexpr uint64_t EUCLIDEAN_CLUSTER_DETECTOR = 655360;
-  static constexpr uint64_t EUCLIDEAN_INTERSECTION = 655360;
-  static constexpr uint64_t OBJECT_COLLISION_ESTIMATOR = 655360;
-  static constexpr uint64_t MPC_CONTROLLER = 655360;
-  static constexpr uint64_t PARKING_PLANNER = 655360;
-  static constexpr uint64_t LANE_PLANNER = 655360;
+  static constexpr uint64_t POINTS_TRANSFORMER_FRONT = 65536;
+  static constexpr uint64_t POINTS_TRANSFORMER_REAR = 65536;
+  static constexpr uint64_t VOXEL_GRID_DOWNSAMPLER = 65536;
+  static constexpr uint64_t POINT_CLOUD_MAP_LOADER = 65536;
+  static constexpr uint64_t RAY_GROUND_FILTER = 65536;
+  static constexpr uint64_t EUCLIDEAN_CLUSTER_DETECTOR = 65536;
+  static constexpr uint64_t EUCLIDEAN_INTERSECTION = 65536;
+  static constexpr uint64_t OBJECT_COLLISION_ESTIMATOR = 65536;
+  static constexpr uint64_t MPC_CONTROLLER = 65536;
+  static constexpr uint64_t PARKING_PLANNER = 65536;
+  static constexpr uint64_t LANE_PLANNER = 65536;
 
   // fusion
-  static constexpr uint64_t POINT_CLOUD_FUSION = 655360;
-  static constexpr uint64_t NDT_LOCALIZER = 655360;
-  static constexpr uint64_t VEHICLE_INTERFACE = 655360;
-  static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 655360;
-  static constexpr uint64_t LANELET_2_MAP_LOADER = 655360;
+  static constexpr uint64_t POINT_CLOUD_FUSION = 65536;
+  static constexpr uint64_t NDT_LOCALIZER = 65536;
+  static constexpr uint64_t VEHICLE_INTERFACE = 65536;
+  static constexpr uint64_t LANELET_2_GLOBAL_PLANNER = 65536;
+  static constexpr uint64_t LANELET_2_MAP_LOADER = 65536;
 
   // cyclic
-  static constexpr uint64_t BEHAVIOR_PLANNER = 655360;
+  static constexpr uint64_t BEHAVIOR_PLANNER = 65536;
   static constexpr time_t BEHAVIOR_PLANNER_CYCLE = milliseconds(100);
 };
 
