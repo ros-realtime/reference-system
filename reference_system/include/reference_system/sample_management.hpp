@@ -18,6 +18,8 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <vector>
+#include <limits>
 
 #include "reference_system/msg_types.hpp"
 
@@ -33,16 +35,18 @@ bool is_in_benchmark_mode()
   return set_benchmark_mode(false, false);
 }
 
-uint64_t now_as_int() {
-  return  static_cast<uint64_t>(
+uint64_t now_as_int()
+{
+  return static_cast<uint64_t>(
     std::chrono::duration_cast<std::chrono::nanoseconds>(
       std::chrono::system_clock::now().time_since_epoch())
     .count());
 }
 
 template<typename SampleTypePointer>
-void set_sample(const std::string & node_name, const uint32_t sequence_number, const uint32_t dropped_samples,
-    const uint64_t timestamp, SampleTypePointer & sample)
+void set_sample(
+  const std::string & node_name, const uint32_t sequence_number, const uint32_t dropped_samples,
+  const uint64_t timestamp, SampleTypePointer & sample)
 {
   if (is_in_benchmark_mode() ) {return;}
 
@@ -76,7 +80,8 @@ uint64_t get_sample_timestamp(SampleTypePointer & sample)
 }
 
 template<typename SampleTypePointer>
-uint32_t get_sample_sequence_number(SampleTypePointer & sample) {
+uint32_t get_sample_sequence_number(SampleTypePointer & sample)
+{
   if (is_in_benchmark_mode() || sample->size == 0) {
     return 0;
   } else {
@@ -85,38 +90,43 @@ uint32_t get_sample_sequence_number(SampleTypePointer & sample) {
 }
 
 template<typename SampleTypePointer>
-uint32_t get_missed_samples_and_update_seq_nr(SampleTypePointer & sample, uint32_t& sequence_number) {
-    uint32_t updated_seq_nr = get_sample_sequence_number(sample);
-    uint32_t missed_samples = (updated_seq_nr > sequence_number) ? updated_seq_nr - sequence_number - 1 : 0;
-    sequence_number = updated_seq_nr;
-    return missed_samples;
+uint32_t get_missed_samples_and_update_seq_nr(
+  SampleTypePointer & sample,
+  uint32_t & sequence_number)
+{
+  uint32_t updated_seq_nr = get_sample_sequence_number(sample);
+  uint32_t missed_samples =
+    (updated_seq_nr > sequence_number) ? updated_seq_nr - sequence_number - 1 : 0;
+  sequence_number = updated_seq_nr;
+  return missed_samples;
 }
 
 template<typename SampleTypePointer, typename SourceType>
-void merge_history_into_sample(SampleTypePointer & sample, const SourceType& source ) 
+void merge_history_into_sample(SampleTypePointer & sample, const SourceType & source)
 {
-  if (is_in_benchmark_mode()) return;
+  if (is_in_benchmark_mode()) {return;}
 
   std::vector<uint64_t> entries_to_add;
 
-  for(uint64_t i = 0; i < source->size; ++i) {
+  for (uint64_t i = 0; i < source->size; ++i) {
     bool entry_found = false;
-    std::string source_name((const char*)source->stats[i].node_name.data());
+    std::string source_name((const char *)source->stats[i].node_name.data());
 
-    for(uint64_t k = 0; k < sample.size; ++k) {
-      std::string sample_name((const char*)sample.stats[k].node_name.data());
-      if ( source_name == sample_name ) {
+    for (uint64_t k = 0; k < sample.size; ++k) {
+      std::string sample_name((const char *)sample.stats[k].node_name.data());
+      if (source_name == sample_name) {
         entry_found = true;
         break;
       }
     }
 
-    if ( !entry_found ) entries_to_add.emplace_back(i);
+    if (!entry_found) {entries_to_add.emplace_back(i);}
   }
 
-  for(auto i : entries_to_add) {
-    memcpy(sample.stats.data() + sample.size, source->stats.data() + i, 
-           sizeof(reference_interfaces::msg::TransmissionStats));
+  for (auto i : entries_to_add) {
+    memcpy(
+      sample.stats.data() + sample.size, source->stats.data() + i,
+      sizeof(reference_interfaces::msg::TransmissionStats));
     ++sample.size;
   }
 }
@@ -137,11 +147,13 @@ struct statistic_value_t
     ++total_number;
     current = value;
     average = ((total_number - 1) * average + value) / total_number;
-    deviation = std::sqrt((deviation * deviation * (total_number - 1) + (average - value) * (average - value)) / total_number);
+    deviation =
+      std::sqrt(
+      (deviation * deviation * (total_number - 1) + (average - value) * (average - value)) /
+      total_number);
     min = std::min(min, value);
     max = std::max(max, value);
   }
-
 };
 
 struct sample_statistic_t
@@ -155,17 +167,18 @@ struct sample_statistic_t
   statistic_value_t behavior_planner_period;
 };
 
-std::ostream &operator<<(std::ostream & output, const statistic_value_t & v) {
-  if ( v.adjustment == 0.0 ) {
-    output << v.current << v.suffix << " [min=" << v.min << v.suffix
-           << ", max=" << v.max << v.suffix << ", average=" << v.average
-           << v.suffix << ", deviation=" << v.deviation << "]";
+std::ostream & operator<<(std::ostream & output, const statistic_value_t & v)
+{
+  if (v.adjustment == 0.0) {
+    output << v.current << v.suffix << " [min=" << v.min << v.suffix <<
+      ", max=" << v.max << v.suffix << ", average=" << v.average <<
+      v.suffix << ", deviation=" << v.deviation << "]";
   } else {
-    output << static_cast<double>(v.current)/v.adjustment << v.suffix 
-            << " [min=" << static_cast<double>(v.min)/v.adjustment  << v.suffix
-           << ", max=" << static_cast<double>(v.max)/v.adjustment  << v.suffix
-           << ", average=" << v.average/v.adjustment << v.suffix 
-           << ", deviation=" << v.deviation/v.adjustment << v.suffix << "]";
+    output << static_cast<double>(v.current) / v.adjustment << v.suffix <<
+      " [min=" << static_cast<double>(v.min) / v.adjustment << v.suffix <<
+      ", max=" << static_cast<double>(v.max) / v.adjustment << v.suffix <<
+      ", average=" << v.average / v.adjustment << v.suffix <<
+      ", deviation=" << v.deviation / v.adjustment << v.suffix << "]";
   }
   return output;
 }
@@ -202,7 +215,9 @@ void print_sample_path(
   std::cout << "----------------------------------------------------------" <<
     std::endl;
   std::cout << "sample path: " << std::endl;
-  std::cout << "  order timepoint           sequence nr.   dropped samples                 node name" << std::endl;
+  std::cout <<
+    "  order timepoint           sequence nr.   dropped samples                 node name" <<
+    std::endl;
 
   std::map<uint64_t, uint64_t> timestamp2Order;
   uint64_t min_time_stamp = std::numeric_limits<uint64_t>::max();
@@ -219,7 +234,7 @@ void print_sample_path(
   }
 
   for (uint64_t i = 0; i < sample->size; ++i) {
-    std::string name((const char*)sample->stats[i].node_name.data());
+    std::string name((const char *)sample->stats[i].node_name.data());
     std::cout << "  [";
     std::cout.width(2);
     std::cout << timestamp2Order[sample->stats[i].timestamp];
@@ -259,9 +274,7 @@ void print_sample_path(
 
     if (current_node_name == "ObjectCollisionEstimator") {
       hot_path_latency_in_ns = sample->stats[idx].timestamp;
-    } else if (current_node_name == "FrontLidarDriver" &&
-      hot_path_latency_in_ns != 0)
-    {
+    } else if (current_node_name == "FrontLidarDriver" && hot_path_latency_in_ns != 0) {
       hot_path_latency_in_ns = hot_path_latency_in_ns - sample->stats[idx].timestamp;
       does_contain_hot_path = true;
       break;
@@ -270,18 +283,18 @@ void print_sample_path(
 
   // hot path drops
   uint64_t hot_path_drops = 0;
-  if ( does_contain_hot_path ) {
-    for(uint64_t i = 0; i < sample->size; ++i) {
+  if (does_contain_hot_path) {
+    for (uint64_t i = 0; i < sample->size; ++i) {
       uint64_t idx = sample->size - i - 1;
       std::string current_node_name(
         reinterpret_cast<const char *>(sample->stats[idx].node_name.data()));
-      if ( current_node_name == "ObjectCollisionEstimator" || 
-           current_node_name == "FrontLidarDriver" ||
-           current_node_name == "PointsTransformerFront" ||
-           current_node_name == "PointCloudFusion" ||
-           current_node_name == "RayGroundFilter" ||
-           current_node_name == "EuclideanClusterDetector"
-          ) {
+      if (current_node_name == "ObjectCollisionEstimator" ||
+        current_node_name == "FrontLidarDriver" ||
+        current_node_name == "PointsTransformerFront" ||
+        current_node_name == "PointCloudFusion" ||
+        current_node_name == "RayGroundFilter" ||
+        current_node_name == "EuclideanClusterDetector")
+      {
         hot_path_drops += sample->stats[idx].dropped_samples;
       }
     }
@@ -289,19 +302,19 @@ void print_sample_path(
 
   // behavior planner cycle time
   bool does_contain_behavior_planner = false;
-  for(uint64_t i = 0; i < sample->size; ++i) {
+  for (uint64_t i = 0; i < sample->size; ++i) {
     std::string current_node_name(
       reinterpret_cast<const char *>(sample->stats[i].node_name.data()));
-    if ( current_node_name == "BehaviorPlanner" ) {
+    if (current_node_name == "BehaviorPlanner") {
       does_contain_behavior_planner = true;
       auto seq_nr = sample->stats[i].sequence_number;
       auto timestamp = sample->stats[i].timestamp;
       auto prev_seq_nr = advanced_statistics[node_name].previous_behavior_planner_sequence;
       auto prev_timestamp = advanced_statistics[node_name].previous_behavior_planner_time_stamp;
-      if ( prev_timestamp != 0 ) {
+      if (prev_timestamp != 0) {
         advanced_statistics[node_name].behavior_planner_period.set(
-            static_cast<double>(timestamp - prev_timestamp)/
-            static_cast<double>(seq_nr - prev_seq_nr));
+          static_cast<double>(timestamp - prev_timestamp) /
+          static_cast<double>(seq_nr - prev_seq_nr));
       }
       advanced_statistics[node_name].previous_behavior_planner_sequence = seq_nr;
       advanced_statistics[node_name].previous_behavior_planner_time_stamp = timestamp;
@@ -312,19 +325,25 @@ void print_sample_path(
 
   std::cout << std::endl;
   std::cout << "Statistics:" << std::endl;
-  std::cout << "  latency:                  " << advanced_statistics[node_name].latency << std::endl;
+  std::cout << "  latency:                  " << advanced_statistics[node_name].latency <<
+    std::endl;
 
   if (does_contain_hot_path) {
     dropped_samples[node_name]["hotpath"].set(hot_path_drops);
     advanced_statistics[node_name].hot_path_latency.set(hot_path_latency_in_ns);
-    std::cout << "  hot path:                 FrontLidarDriver -> ObjectCollisionEstimator" << std::endl;
-    std::cout << "  hot path latency:         " << advanced_statistics[node_name].hot_path_latency << std::endl;
-    std::cout << "  hot path drops:           " << dropped_samples[node_name]["hotpath"] << std::endl;
+    std::cout << "  hot path:                 FrontLidarDriver -> ObjectCollisionEstimator" <<
+      std::endl;
+    std::cout << "  hot path latency:         " <<
+      advanced_statistics[node_name].hot_path_latency << std::endl;
+    std::cout << "  hot path drops:           " << dropped_samples[node_name]["hotpath"] <<
+      std::endl;
   }
 
   if (does_contain_behavior_planner) {
-    std::cout << "  behavior planner period:  " << advanced_statistics[node_name].behavior_planner_period << std::endl;
-    std::cout << "  behavior planner drops:   " << dropped_samples[node_name]["BehaviorPlanner"] << std::endl;
+    std::cout << "  behavior planner period:  " <<
+      advanced_statistics[node_name].behavior_planner_period << std::endl;
+    std::cout << "  behavior planner drops:   " << dropped_samples[node_name]["BehaviorPlanner"] <<
+      std::endl;
   }
 
   std::cout << "----------------------------------------------------------" <<

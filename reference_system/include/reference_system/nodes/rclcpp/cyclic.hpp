@@ -38,8 +38,9 @@ public:
   {
     uint64_t input_number = 0U;
     for (const auto & input_topic : settings.inputs) {
-      subscriptions_.emplace_back(subscription_t{
-          this->create_subscription<message_t>(
+      subscriptions_.emplace_back(
+        subscription_t{
+            this->create_subscription<message_t>(
               input_topic, 1,
               [this, input_number](const message_t::SharedPtr msg) {
                 input_callback(input_number, msg);
@@ -77,7 +78,9 @@ private:
       merge_history_into_sample(output_message.get(), s.cache);
       s.cache.reset();
     }
-    set_sample(this->get_name(), sequence_number_++, missed_samples, timestamp, output_message.get());
+    set_sample(
+      this->get_name(), sequence_number_++, missed_samples, timestamp,
+      output_message.get());
 
     output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
@@ -87,7 +90,8 @@ private:
   rclcpp::Publisher<message_t>::SharedPtr publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 
-  struct subscription_t {
+  struct subscription_t
+  {
     rclcpp::Subscription<message_t>::SharedPtr subscription;
     uint32_t sequence_number = 0;
     message_t::SharedPtr cache;

@@ -59,9 +59,13 @@ private:
     output_message.get().size = 0;
     merge_history_into_sample(output_message.get(), input_message);
 
-    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(input_message, connections_[id].input_sequence_number);
+    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(
+      input_message,
+      connections_[id].input_sequence_number);
 
-    set_sample(this->get_name(), connections_[id].sequence_number++, missed_samples, timestamp, output_message.get());
+    set_sample(
+      this->get_name(), connections_[id].sequence_number++, missed_samples, timestamp,
+      output_message.get());
 
     // use result so that it is not optimizied away by some clever compiler
     output_message.get().data[0] = number_cruncher_result;

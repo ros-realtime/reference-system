@@ -63,13 +63,20 @@ private:
 
     auto output_message = publisher_->borrow_loaned_message();
 
-    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(subscriptions_[0].cache, subscriptions_[0].sequence_number)
-      + get_missed_samples_and_update_seq_nr(subscriptions_[1].cache, subscriptions_[1].sequence_number);
+    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(
+      subscriptions_[0].cache,
+      subscriptions_[0].sequence_number)
+      +
+      get_missed_samples_and_update_seq_nr(
+      subscriptions_[1].cache,
+      subscriptions_[1].sequence_number);
 
     output_message.get().size = 0;
     merge_history_into_sample(output_message.get(), subscriptions_[0].cache);
     merge_history_into_sample(output_message.get(), subscriptions_[1].cache);
-    set_sample(this->get_name(), sequence_number_++, missed_samples, timestamp, output_message.get());
+    set_sample(
+      this->get_name(), sequence_number_++, missed_samples, timestamp,
+      output_message.get());
 
     output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
@@ -79,7 +86,8 @@ private:
   }
 
 private:
-  struct subscription_t {
+  struct subscription_t
+  {
     rclcpp::Subscription<message_t>::SharedPtr subscription;
     uint32_t sequence_number = 0;
     message_t::SharedPtr cache;
