@@ -189,7 +189,11 @@ void print_sample_path(
   const uint32_t lost_samples,
   const SampleTypePointer & sample)
 {
-  if (is_in_benchmark_mode() || sample->size <= 0) {return;}
+  static int benchmark_counter = 0;
+  ++benchmark_counter;
+
+  // benchmark_counter = dismissing first 100 samples to get rid of startup jitter
+  if (is_in_benchmark_mode() || sample->size <= 0 || benchmark_counter < 10) {return;}
 
   static std::map<std::string, sample_statistic_t> advanced_statistics;
   static std::map<std::string, std::map<std::string, statistic_value_t>> dropped_samples;
@@ -216,17 +220,15 @@ void print_sample_path(
     std::endl;
   std::cout << "sample path: " << std::endl;
   std::cout <<
-    "  order timepoint           sequence nr.   dropped samples                 node name" <<
+    "  order timepoint           sequence nr.                  node name     dropped samples" <<
     std::endl;
 
   std::map<uint64_t, uint64_t> timestamp2Order;
   uint64_t min_time_stamp = std::numeric_limits<uint64_t>::max();
-  uint64_t max_time_stamp = 0;
 
   for (uint64_t i = 0; i < sample->size; ++i) {
     timestamp2Order[sample->stats[i].timestamp] = 0;
     min_time_stamp = std::min(min_time_stamp, sample->stats[i].timestamp);
-    max_time_stamp = std::max(max_time_stamp, sample->stats[i].timestamp);
   }
   uint64_t i = 0;
   for (auto & e : timestamp2Order) {
@@ -267,6 +269,7 @@ void print_sample_path(
   // hot path latency
   uint64_t hot_path_latency_in_ns = 0;
   bool does_contain_hot_path = false;
+  uint64_t lidar_timestamp = 0;
   for (uint64_t i = 0; i < sample->size; ++i) {
     uint64_t idx = sample->size - i - 1;
     std::string current_node_name(
@@ -274,12 +277,14 @@ void print_sample_path(
 
     if (current_node_name == "ObjectCollisionEstimator") {
       hot_path_latency_in_ns = sample->stats[idx].timestamp;
-    } else if (current_node_name == "FrontLidarDriver" && hot_path_latency_in_ns != 0) {
-      hot_path_latency_in_ns = hot_path_latency_in_ns - sample->stats[idx].timestamp;
       does_contain_hot_path = true;
-      break;
+    } else if (current_node_name == "FrontLidarDriver") {
+      lidar_timestamp = std::max(lidar_timestamp, sample->stats[idx].timestamp);
+    } else if (current_node_name == "RearLidarDriver") {
+      lidar_timestamp = std::max(lidar_timestamp, sample->stats[idx].timestamp);
     }
   }
+  hot_path_latency_in_ns -= lidar_timestamp;
 
   // hot path drops
   uint64_t hot_path_drops = 0;
@@ -321,7 +326,7 @@ void print_sample_path(
     }
   }
 
-  advanced_statistics[node_name].latency.set(max_time_stamp - min_time_stamp);
+  advanced_statistics[node_name].latency.set(timestamp_in_ns - min_time_stamp);
 
   std::cout << std::endl;
   std::cout << "Statistics:" << std::endl;
@@ -331,7 +336,9 @@ void print_sample_path(
   if (does_contain_hot_path) {
     dropped_samples[node_name]["hotpath"].set(hot_path_drops);
     advanced_statistics[node_name].hot_path_latency.set(hot_path_latency_in_ns);
-    std::cout << "  hot path:                 FrontLidarDriver -> ObjectCollisionEstimator" <<
+    std::cout <<
+      "  hot path:                 FrontLidarDriver/RearLidarDriver (latest) -> ObjectCollisionEstimator"
+              <<
       std::endl;
     std::cout << "  hot path latency:         " <<
       advanced_statistics[node_name].hot_path_latency << std::endl;
@@ -342,8 +349,6 @@ void print_sample_path(
   if (does_contain_behavior_planner) {
     std::cout << "  behavior planner period:  " <<
       advanced_statistics[node_name].behavior_planner_period << std::endl;
-    std::cout << "  behavior planner drops:   " << dropped_samples[node_name]["BehaviorPlanner"] <<
-      std::endl;
   }
 
   std::cout << "----------------------------------------------------------" <<
