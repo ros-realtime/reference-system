@@ -36,14 +36,9 @@ def summary(path, duration, size):
         'top': [],
         'bottom': []
     }
-    exes = set()
-    rmws = set()
     for results in data:
         exe = results[0]
         rmw = results[1]
-        exes.add(exe)
-        rmws.add(rmw)
-        x.append((exe, rmw))
         for data_type in results[2]['hot_path']:
             all_data['exe'].append(exe)
             all_data['rmw'].append(rmw)
@@ -71,6 +66,18 @@ def summary(path, duration, size):
             'exe', 'rmw', 'type', 'low', 'mean', 'high', 'top', 'bottom', 'std_dev'])
     # sort by exe and rmw
     df = df.sort_values(['exe', 'rmw'], ascending=True)
+    exes = []
+    rmws = []
+    for exe in df.exe:
+        for rmw in df.rmw:
+            # add exe and rmw to list
+            if exe not in exes:
+                exes.append(exe)
+            if rmw not in rmws:
+                rmws.append(rmw)
+    for exe in exes:
+        for rmw in rmws:
+            x.append((exe, rmw))
     latency = df.type == 'latency'
     dropped = df.type == 'dropped'
     period = df.type == 'period'
