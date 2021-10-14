@@ -70,7 +70,7 @@ void set_sample(
 }
 
 template<typename SampleTypePointer>
-uint64_t get_sample_timestamp(SampleTypePointer & sample)
+uint64_t get_sample_timestamp(const SampleTypePointer & sample)
 {
   if (is_in_benchmark_mode() || sample->size == 0) {
     return 0;
@@ -80,7 +80,7 @@ uint64_t get_sample_timestamp(SampleTypePointer & sample)
 }
 
 template<typename SampleTypePointer>
-uint32_t get_sample_sequence_number(SampleTypePointer & sample)
+uint32_t get_sample_sequence_number(const SampleTypePointer & sample)
 {
   if (is_in_benchmark_mode() || sample->size == 0) {
     return 0;
@@ -91,7 +91,7 @@ uint32_t get_sample_sequence_number(SampleTypePointer & sample)
 
 template<typename SampleTypePointer>
 uint32_t get_missed_samples_and_update_seq_nr(
-  SampleTypePointer & sample,
+  const SampleTypePointer & sample,
   uint32_t & sequence_number)
 {
   uint32_t updated_seq_nr = get_sample_sequence_number(sample);
