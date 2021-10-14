@@ -14,6 +14,7 @@
 from bokeh.models import ColumnDataSource
 from bokeh.models.ranges import FactorRange
 from bokeh.models.tools import HoverTool
+from bokeh.models.widgets.markups import Div
 from bokeh.models.widgets.tables import DataTable, TableColumn
 from bokeh.palettes import cividis
 from bokeh.plotting import figure
@@ -55,18 +56,34 @@ def summary(path, size):
             all_data['top'].append(results[2]['hot_path'][data_type]['top'])
             all_data['bottom'].append(results[2]['hot_path'][data_type]['bottom'])
             count += 1
+        # add behavior planner data to dataframe
+        cyclic_node = 'behavior_planner'
+        data_type = 'period'
+        all_data['exe'].append(exe)
+        all_data['rmw'].append(rmw)
+        all_data['type'].append(data_type)
+        all_data['low'].append(results[2][cyclic_node][data_type]['low'])
+        all_data['mean'].append(results[2][cyclic_node][data_type]['mean'])
+        all_data['high'].append(results[2][cyclic_node][data_type]['high'])
+        all_data['std_dev'].append(results[2][cyclic_node][data_type]['std_dev'])
+        all_data['top'].append(results[2][cyclic_node][data_type]['top'])
+        all_data['bottom'].append(results[2][cyclic_node][data_type]['bottom'])
     df = pd.DataFrame.from_records(
         all_data, columns=[
             'exe', 'rmw', 'type', 'low', 'mean', 'high', 'top', 'bottom', 'std_dev'])
     latency = df.type == 'latency'
     dropped = df.type == 'dropped'
+    period = df.type == 'period'
     latency_source = ColumnDataSource(df[latency])
     dropped_source = ColumnDataSource(df[dropped])
+    period_source = ColumnDataSource(df[period])
+    # add exe and rmw list of tuples for x axis
     latency_source.data['x'] = x
     dropped_source.data['x'] = x
+    period_source.data['x'] = x
     # initialize list of figures
     std_figs = []
-    # initialize raw data figure
+    # initialize latency figure
     latency_fig = figure(
         title='Latency Summary [' + hot_path_name + ']',
         x_axis_label=f'Executors (with RMW)',
@@ -83,13 +100,16 @@ def summary(path, size):
         x='x',
         top='top',
         bottom='bottom',
-        line_color='white',
+        line_color='black',
+        line_width=1,
         source=latency_source,
         fill_color=factor_cmap(
             'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
     )
+    latency_fig.y_range.start = 0
+    latency_fig.x_range.range_padding = 0.1
 
-    # initialize raw data figure
+    # initialize dropped message figure
     dropped_fig = figure(
         title='Dropped Messages Summary [' + hot_path_name + ']',
         x_axis_label=f'Executors (with RMW)',
@@ -107,48 +127,109 @@ def summary(path, size):
         top='top',
         bottom='bottom',
         source=dropped_source,
-        line_color='white',
+        line_color='black',
+        line_width=1,
         fill_color=factor_cmap(
-            'x', palette=cividis(len(rmws)), factors=list(rmws), start=3, end=4)
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
     )
-
     dropped_fig.y_range.start = 0
     dropped_fig.x_range.range_padding = 0.1
 
-    # add hover tools
+    # initialize period figure
+    period_fig = figure(
+        title='Behavior Planner Jitter Summary',
+        x_axis_label=f'Executors (with RMW)',
+        y_axis_label='Period (ms)',
+        x_range=FactorRange(*x),
+        plot_width=int(size * 2.0),
+        plot_height=size,
+        margin=(10, 10, 10, 10)
+    )
+    period_fig.segment(
+        x, df.high[period].values, x, df.low[period].values, color='black', line_width=4)
+    period_fig.vbar(
+        width=0.2,
+        x='x',
+        top='top',
+        bottom='bottom',
+        source=period_source,
+        line_color='black',
+        line_width=1,
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    period_fig.y_range.start = 0
+    period_fig.x_range.range_padding = 0.1
+
+    # add latency hover tool
     latency_hover = HoverTool()
     latency_hover.tooltips = [
-        ('Average Latency (ms)', '@{mean}{0.00}'),
-        ('Minimum Latency (ms)', '@{low}{0.00}'),
-        ('Maximum Latency (ms)', '@{high}{0.00}'),
+        ('Average Latency', '@{mean}{0.00}ms'),
+        ('Minimum Latency', '@{low}{0.00}ms'),
+        ('Maximum Latency', '@{high}{0.00}ms'),
     ]
     latency_fig.add_tools(latency_hover)
-    hover = HoverTool()
-    hover.tooltips = [
+    # add dropped messages hover tool
+    dropped_hover = HoverTool()
+    dropped_hover.tooltips = [
         ('Dropped Messages Average', '@{mean}{0.00}'),
         ('Dropped Messages Min', '@{low}{0.00}'),
         ('Dropped Messages Max', '@{high}{0.00}'),
     ]
-    dropped_fig.add_tools(hover)
+    dropped_fig.add_tools(dropped_hover)
+    # add period hover tool
+    period_hover = HoverTool()
+    period_hover.tooltips = [
+        ('Period Average', '@{mean}{0.00}ms'),
+        ('Period Min', '@{low}{0.00}ms'),
+        ('Period Max', '@{high}{0.00}ms'),
+    ]
+    period_fig.add_tools(period_hover)
 
     # add tables
     # create tables
     columns = [TableColumn(field=col, title=col) for col in df[latency].columns]
-    latency_table = DataTable(
-        columns=columns,
-        source=ColumnDataSource(df[latency]),
-        margin=(10, 10, 10, 10),
-        height=200,
-        width=1000
-    )
-    dropped_table = DataTable(
-        columns=columns,
-        source=ColumnDataSource(df[dropped]),
-        margin=(10, 10, 10, 10),
-        height=200,
-        width=1000
-    )
-    std_figs = [[latency_table], [latency_fig], [dropped_table], [dropped_fig]]
+    latency_table_title = Div(
+        text='<b>Latency Summary Table [' + hot_path_name + ']</b>',
+        height=10,
+        width=1000)
+    latency_table = [
+        latency_table_title,
+        DataTable(
+            columns=columns,
+            source=ColumnDataSource(df[latency]),
+            margin=(10, 10, 10, 10),
+            height=200,
+            width=1000)]
+    dropped_table_title = Div(
+        text='<b>Dropped Messages Summary Table [' + hot_path_name + ']</b>',
+        height=10,
+        width=1000)
+    dropped_table = [
+        dropped_table_title,
+        DataTable(
+            columns=columns,
+            source=ColumnDataSource(df[dropped]),
+            margin=(10, 10, 10, 10),
+            height=200,
+            width=1000)]
+    period_table_title = Div(
+        text='<b>Behavior Planner Jitter Summary Table</b>',
+        height=10,
+        width=1000)
+    period_table = [
+        period_table_title,
+        DataTable(
+            columns=columns,
+            source=ColumnDataSource(df[period]),
+            margin=(10, 10, 10, 10),
+            height=200,
+            width=1000)]
+
+    std_figs = [
+        [latency_table], [latency_fig],
+        [dropped_table], [dropped_fig],
+        [period_table], [period_fig]]
     return std_figs
 
 
@@ -178,6 +259,9 @@ def parseLog(path):
                         'hot_path': {
                             'latency': {},
                             'dropped': {}
+                        },
+                        'behavior_planner': {
+                            'period': {}
                         }
                     }])
                 in_test = True
@@ -187,6 +271,9 @@ def parseLog(path):
         # if within a test, add parse current line to dataframe
         if in_test:
             if line.find('hot path') > 0:
+                if line.find('hot path:') > 0:
+                    indent = '                 '
+                    hot_path_name = line[line.find('hot path:') + len('hot path:' + indent):]
                 if line.find('latency') > 0:
                     end_time = line[line.find('[') + 1:line.find(']') - 1]
                     log_map[count][2]['end'] = end_time
@@ -195,6 +282,11 @@ def parseLog(path):
                     end_time = line[line.find('[') + 1:line.find(']') - 1]
                     log_map[count][2]['end'] = end_time
                     log_map[count][2]['hot_path']['dropped'] = parseStats(line)
+            elif line.find('period') > 0:
+                # behavior planner period
+                # log_map[count][2]['behavior_planner']['period'] = \
+                #    float(line[line.find('period') + len('period:  '):line.find('ms')])
+                log_map[count][2]['behavior_planner']['period'] = parseStats(line)
     return log_map, test_name, hot_path_name
 
 
