@@ -21,9 +21,6 @@ from launch_ros.actions import Node
 import launch_testing
 import launch_testing.actions
 
-from tracetools_launch.action import Trace
-from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS
-
 # Generate traces for specified executables and RMWs
 
 # this file has @variables@ that are meant to be automatically replaced

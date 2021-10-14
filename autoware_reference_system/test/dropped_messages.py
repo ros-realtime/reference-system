@@ -141,7 +141,6 @@ def parseData(data_model):
     earliest_date = None
     latest_date = None
     dropped_data = []
-    period_data = []
     front_lidar_data = pd.DataFrame()
     object_collision_data = pd.DataFrame()
     for obj, symbol in callback_symbols.items():
@@ -202,7 +201,8 @@ def parseData(data_model):
         front_lidar_data.drop(front_lidar_data.tail(extra).index, inplace=True)
     latency = object_collision_data['timestamp'] - front_lidar_data['timestamp']
     dropped_df = pd.DataFrame(
-        dropped_data, columns=['node', 'topic', 'count', 'period', 'dropped', 'expected_count', 'color'])
+        dropped_data,
+        columns=['node', 'topic', 'count', 'period', 'dropped', 'expected_count', 'color'])
     latency_df = pd.DataFrame(
         {'index': range(0, len(latency)),
          'latency': latency,
@@ -318,10 +318,10 @@ def countDropped(dataframe, node_graph):
             # to determine if a fusion node reduces the total expected
             count = expected_non_zero.expected_count.sum()
             print(count)
-            expected  = count - dataframe.loc[(
-            (dataframe.node == node) &
-            (dataframe.topic == '')),
-            'expected_count'].values[0]
+            expected = count - dataframe.loc[(
+                (dataframe.node == node) &
+                (dataframe.topic == '')),
+                'expected_count'].values[0]
             # subtract front lidar expected count due to fusion node
             # TODO(flynneva): figure out a better way to handle fusion nodes
             expected -= dataframe.loc[(
@@ -329,7 +329,7 @@ def countDropped(dataframe, node_graph):
                 (dataframe.topic == '')),
                 'expected_count'].values[0]
         else:
-            expected  = dataframe.loc[(
+            expected = dataframe.loc[(
                 (dataframe.node == node) &
                 (dataframe.topic == '')),
                 'expected_count'].values[0]

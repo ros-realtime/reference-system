@@ -24,7 +24,6 @@ function(generate_report target trace_type runtime)
     set_tests_properties(generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
       PROPERTIES TIMEOUT ${DEFAULT_TIMEOUT})
   elseif(${trace_type} MATCHES "std")
-    message(${ROS_LOG_DIR})
     add_test(
       NAME generate_${trace_type}_report_${target}_${rmw_implementation}_${runtime}s
       COMMAND bash -c "python3 ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/test/generate_reports.py ${ROS_LOG_DIR}"

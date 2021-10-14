@@ -22,7 +22,7 @@ from constants import SIZE_SUBPLOT, SIZE_SUMMARY
 from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_STD, TRACE_UNSUPPORTED
 import dropped_messages
 import memory_usage
-import std_latency
+# import std_latency
 
 from trace_utils import initDataModel
 from utils import checkPath, getDirPath, getFileName, getPWD, getTraceType
@@ -44,16 +44,16 @@ def memory_report(path):
 
 
 def std_report(path):
-    dirPath = getDirPath(path)
-    fname = dirPath + 'latency_and_dropped_messages_summary_report'
-    output_file(
-        filename=fname + '.html',
-        title='Latency and Dropped Messages Report')
-
-    print('Output report to ' + fname + '.html')
-    std_summary = std_latency.summary(dirPath + 'streams.log', size=SIZE_SUMMARY)
-    report = layout([[*std_summary]])
-    save(report)
+    print('std report called')
+    # dirPath = getDirPath(path)
+    # std_summary, test_name = std_latency.individual(dirPath + 'streams.log', size=SIZE_SUMMARY)
+    # fname = dirPath + test_name + '_latency_and_dropped_messages_report'
+    # output_file(
+    # filename=fname + '.html',
+    # title='Latency and Dropped Messages Report (' + test_name + ')')
+    # print('Output report to ' + fname + '.html')
+    # report = layout([[*std_summary]])
+    # save(report)
 
 
 def callback_report(path, ros2_data_model):

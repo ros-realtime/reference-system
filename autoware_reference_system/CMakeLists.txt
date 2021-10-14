@@ -79,7 +79,7 @@ if(${BUILD_TESTING})
   else()
     set(ROS_HOME $ENV{ROS_HOME})
   endif()
-  
+
   # std trace type uses LOG directory
   if(NOT DEFINED $ENV{ROS_LOG_DIR})
     set(ROS_LOG_DIR ${CMAKE_INSTALL_PREFIX}/../../log/latest_test/${PROJECT_NAME})

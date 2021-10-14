@@ -18,10 +18,11 @@ from bokeh.layouts import layout
 from bokeh.plotting import save
 
 from constants import SIZE_SUMMARY
-from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_UNSUPPORTED
+from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_STD, TRACE_UNSUPPORTED
 import dropped_messages
 import memory_usage
-from utils import checkPath, getTraceType
+import std_latency
+from utils import checkPath, getDirPath, getTraceType
 
 
 def memory_summary_report(path, duration):
@@ -35,6 +36,19 @@ def memory_summary_report(path, duration):
     report = layout([[*mem_summary]])
     save(report)
     # export_png(report, filename=fname + '.png')
+
+
+def std_summary_report(path):
+    dirPath = getDirPath(path)
+    fname = dirPath + 'latency_and_dropped_messages_summary_report'
+    output_file(
+        filename=fname + '.html',
+        title='Latency and Dropped Messages Report')
+
+    print('Output report to ' + fname + '.html')
+    std_summary = std_latency.summary(dirPath + 'streams.log', size=SIZE_SUMMARY)
+    report = layout([*std_summary])
+    save(report)
 
 
 def dropped_summary_report(path, duration):
@@ -62,6 +76,9 @@ def generate_summary_reports(path, duration):
     elif(trace_type == TRACE_MEMORY):
         print('memory summary report')
         memory_summary_report(path, duration)
+    elif(trace_type == TRACE_STD):
+        print('std latency summary report')
+        std_summary_report(path)
     elif(trace_type == TRACE_UNSUPPORTED):
         print('Trace type unsupported')
 
