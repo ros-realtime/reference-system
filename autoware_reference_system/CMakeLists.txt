@@ -80,6 +80,13 @@ if(${BUILD_TESTING})
     set(ROS_HOME $ENV{ROS_HOME})
   endif()
 
+  # std trace type uses LOG directory
+  if(NOT DEFINED $ENV{ROS_LOG_DIR})
+    set(ROS_LOG_DIR ${CMAKE_INSTALL_PREFIX}/../../log/latest_test/${PROJECT_NAME})
+  else()
+    set(ROS_LOG_DIR $ENV{ROS_LOG_DIR})
+  endif()
+
   set(DEFAULT_TIMEOUT 300)  # seconds, 300 = roughly 5min
 
   if(${TEST_PLATFORM})
@@ -102,9 +109,9 @@ if(${BUILD_TESTING})
     # Add more run times here (time to run traces for)
     set(RUN_TIMES
       5
-      # 10
-      # 30
-      # 60
+      10
+      30
+      60
     )
 
     # Add more trace types here
@@ -113,6 +120,7 @@ if(${BUILD_TESTING})
     set(TRACE_TYPES
       callback  # uses ros2_tracing, LTTng
       memory    # uses psrecord
+      std       # parses the log files that include the prints from std::cout
       # cpu     # built into memory tests using psrecord
     )
 

@@ -337,7 +337,8 @@ void print_sample_path(
     dropped_samples[node_name]["hotpath"].set(hot_path_drops);
     advanced_statistics[node_name].hot_path_latency.set(hot_path_latency_in_ns);
     std::cout <<
-      "  hot path:                 FrontLidarDriver/RearLidarDriver (latest) -> ObjectCollisionEstimator"
+      "  hot path:                 " << \
+      "FrontLidarDriver/RearLidarDriver (latest) -> ObjectCollisionEstimator"
               <<
       std::endl;
     std::cout << "  hot path latency:         " <<
