@@ -26,6 +26,7 @@ digraph G {
 
     node [fillcolor="#FF6961"];
     "Euclidean Cluster Settings" [shape=box];
+    "Intersection Output" [shape=box];
     "Euclidean Cluster Detector" [shape=octagon];
     
     node [fillcolor="#9D813B"];
@@ -80,12 +81,14 @@ digraph G {
     /* rank 3 */
     {
       rank = same;
+      "Euclidean Cluster Settings";
       "Point Cloud Fusion";
       "Voxel Grid Downsampler";
       "NDT Localizer";
       "Behavior Planner";
       "Lane Planner";
     };
+    "Euclidean Cluster Settings" -> "Euclidean Cluster Detector";
     "Point Cloud Fusion" -> "Ray Ground Filter";
     "Point Cloud Fusion" -> "Voxel Grid Downsampler";
     "Voxel Grid Downsampler" -> "NDT Localizer";
@@ -95,11 +98,23 @@ digraph G {
     "Behavior Planner" -> "MPC Controller";
     "Behavior Planner" -> "Vehicle Interface";
     "Lane Planner" -> "Behavior Planner" [constraint=false];
+    {
+      rank = same;
+      edge[style=invis];
+      "Euclidean Cluster Settings" -> "Point Cloud Fusion" -> "Voxel Grid Downsampler" -> "NDT Localizer";
+      rankdir = LR;
+    }
 
+    {
+      rank = same;
+      edge[style=invis];
+      "Intersection Output" -> "Ray Ground Filter" -> "Euclidean Cluster Detector" -> "Object Collision Estimator" -> "MPC Controller" -> "Vehicle Interface";
+      rankdir = LR;
+    }
     /* rank 4 */
     {
       rank = same;
-      "Euclidean Cluster Settings";
+      "Intersection Output";
       "Ray Ground Filter";
       "Euclidean Cluster Detector";
       "Object Collision Estimator";
@@ -107,18 +122,16 @@ digraph G {
       "Vehicle Interface";
       "Vehicle DBW System" [constraint=false];
     }
-    "Euclidean Cluster Settings" -> "Euclidean Cluster Detector";
+    "Euclidean Cluster Detector" -> "Intersection Output" [constraint=false];
     "Ray Ground Filter" -> "Euclidean Cluster Detector";
     "Euclidean Cluster Detector" -> "Object Collision Estimator";
     "Object Collision Estimator" -> "Behavior Planner";
     "MPC Controller" -> "Vehicle Interface";
     "Vehicle Interface" -> "Vehicle DBW System";
-    
-     {
-       rank = same;
-       edge[style=invis];
-       "Euclidean Cluster Settings" -> "Ray Ground Filter" -> "Euclidean Cluster Detector" -> "Object Collision Estimator" -> "MPC Controller" -> "Vehicle Interface";
-       rankdir = LR;
-     }
-    
+    {
+      rank = same;
+      edge[style=invis];
+      "Intersection Output" -> "Ray Ground Filter" -> "Euclidean Cluster Detector" -> "Object Collision Estimator" -> "MPC Controller" -> "Vehicle Interface";
+      rankdir = LR;
+    }
 }
