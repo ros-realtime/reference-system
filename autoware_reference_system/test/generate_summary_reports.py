@@ -33,20 +33,24 @@ def memory_summary_report(path, duration):
 
     mem_summary = memory_usage.summary(path, duration=duration, size=SIZE_SUMMARY)
 
-    report = layout([[*mem_summary]])
+    print('Output report to ' + fname + '.html')
+    report = layout([*mem_summary])
     save(report)
     # export_png(report, filename=fname + '.png')
 
 
-def std_summary_report(path):
+def std_summary_report(path, duration):
     dirPath = getDirPath(path)
-    fname = dirPath + 'latency_and_dropped_messages_summary_report'
+    fname = dirPath + 'executor_kpi_summary_report_' + duration + 's'
     output_file(
         filename=fname + '.html',
-        title='Latency and Dropped Messages Report')
+        title='Executor Key Performance Indicator (KPI) Report')
 
     print('Output report to ' + fname + '.html')
-    std_summary = std_latency.summary(dirPath + 'streams.log', size=SIZE_SUMMARY)
+    std_summary = std_latency.summary(
+        dirPath + 'streams.log',
+        duration=duration,
+        size=SIZE_SUMMARY)
     report = layout([*std_summary])
     save(report)
 
@@ -78,7 +82,7 @@ def generate_summary_reports(path, duration):
         memory_summary_report(path, duration)
     elif(trace_type == TRACE_STD):
         print('std latency summary report')
-        std_summary_report(path)
+        std_summary_report(path, duration)
     elif(trace_type == TRACE_UNSUPPORTED):
         print('Trace type unsupported')
 

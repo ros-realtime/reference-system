@@ -219,6 +219,22 @@ This directory should now hold tracing data and reports for all `ros2_tracing` t
 
 Additionally, CPU and Memory Usage tests generate data and reports and saves them to `$ROS_HOME/memory`.
 
+### Test Results and Reports
+
+Reports are automatically generated depending on which tests are run.  Below are the locations where each report is stored after successfully running the tests as described above.
+
+- CPU and Memory Tests
+    - results are stored in your `${ROS_HOME}/memory` directory
+    - if `${ROS_HOME}` is not set, it defaults to `${HOME}/.ros/memory`
+- Executor KPI tests (Latency, Dropped Messages and Jitter)
+    - results are generated directly to the tests `streams.log` file using `std::cout` prints
+    - reports are generated and stored in the `log/latest_test/autoware_reference_system` directory
+- `ros2_tracing` Tests
+    - results and reports are stored in your `${ROS_HOME}/tracing` directory
+    - if `${ROS_HOME}` is not set, it defaults to `${HOME}/.ros/tracing`
+
+More reports can be added going forward.
+
 ## Generating Node Graph Image
 
 To generate the image shown above you can take advantage of [a program called `graphviz`](https://graphviz.org/doc/info/command.html) that has a command line interface (CLI) command `dot`.

@@ -38,7 +38,7 @@ def memory_report(path):
 
     print('Output report to ' + fname + '.html')
     mem_individual = memory_usage.individual(dirPath + name + '.txt', size=SIZE_SUMMARY)
-    report = layout([[*mem_individual]])
+    report = layout([*mem_individual])
     save(report)
     # export_png(report, filename=fname + '.png')
 
@@ -113,7 +113,6 @@ if __name__ == '__main__':
         path = '/home/ubuntu/.ros/tracing/profile'
     path = checkPath(path)
     trace_type = getTraceType(path)
-    print(trace_type)
     if(trace_type == TRACE_CALLBACK):
         ros2_data_model = initDataModel(path)
     elif(trace_type == TRACE_MEMORY):

@@ -22,8 +22,8 @@ from bokeh.transform import factor_cmap
 import pandas as pd
 
 
-def summary(path, size):
-    data, test_name, hot_path_name = parseLog(path)
+def summary(path, duration, size):
+    data, test_name, hot_path_name = parseLogSummary(path, duration)
     x = []
     all_data = {
         'exe': [],
@@ -38,7 +38,6 @@ def summary(path, size):
     }
     exes = set()
     rmws = set()
-    count = 0
     for results in data:
         exe = results[0]
         rmw = results[1]
@@ -55,7 +54,6 @@ def summary(path, size):
             all_data['std_dev'].append(results[2]['hot_path'][data_type]['std_dev'])
             all_data['top'].append(results[2]['hot_path'][data_type]['top'])
             all_data['bottom'].append(results[2]['hot_path'][data_type]['bottom'])
-            count += 1
         # add behavior planner data to dataframe
         cyclic_node = 'behavior_planner'
         data_type = 'period'
@@ -71,6 +69,8 @@ def summary(path, size):
     df = pd.DataFrame.from_records(
         all_data, columns=[
             'exe', 'rmw', 'type', 'low', 'mean', 'high', 'top', 'bottom', 'std_dev'])
+    # sort by exe and rmw
+    df = df.sort_values(['exe', 'rmw'], ascending=True)
     latency = df.type == 'latency'
     dropped = df.type == 'dropped'
     period = df.type == 'period'
@@ -84,8 +84,9 @@ def summary(path, size):
     # initialize list of figures
     std_figs = []
     # initialize latency figure
+    test_info = str(duration) + 's [' + hot_path_name + ']'
     latency_fig = figure(
-        title='Latency Summary [' + hot_path_name + ']',
+        title='Latency Summary ' + test_info,
         x_axis_label=f'Executors (with RMW)',
         y_axis_label='Average Latency (ms)',
         x_range=FactorRange(*x),
@@ -94,7 +95,7 @@ def summary(path, size):
         margin=(10, 10, 10, 10)
     )
     latency_fig.segment(
-        x, df.high[latency].values, x, df.low[latency].values, color='black', line_width=4)
+        x, df.high[latency].values, x, df.low[latency].values, color='black', line_width=2)
     latency_fig.vbar(
         width=0.2,
         x='x',
@@ -106,12 +107,34 @@ def summary(path, size):
         fill_color=factor_cmap(
             'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
     )
+    latency_fig.scatter(
+        size=25,
+        x='x',
+        y='high',
+        source=latency_source,
+        line_color='black',
+        line_width=2,
+        marker='dash',
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    latency_fig.scatter(
+        size=25,
+        x='x',
+        y='low',
+        source=latency_source,
+        line_color='black',
+        line_width=2,
+        marker='dash',
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
     latency_fig.y_range.start = 0
     latency_fig.x_range.range_padding = 0.1
 
     # initialize dropped message figure
     dropped_fig = figure(
-        title='Dropped Messages Summary [' + hot_path_name + ']',
+        title='Dropped Messages Summary ' + test_info,
         x_axis_label=f'Executors (with RMW)',
         y_axis_label='Dropped Messages',
         x_range=FactorRange(*x),
@@ -120,15 +143,25 @@ def summary(path, size):
         margin=(10, 10, 10, 10)
     )
     dropped_fig.segment(
-        x, df.high[dropped].values, x, df.low[dropped].values, color='black', line_width=4)
+        x, df.high[dropped].values, x, df.low[dropped].values, color='black', line_width=2)
     dropped_fig.vbar(
         width=0.2,
         x='x',
-        top='top',
-        bottom='bottom',
+        top='mean',
         source=dropped_source,
         line_color='black',
         line_width=1,
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    dropped_fig.scatter(
+        size=25,
+        x='x',
+        y='high',
+        source=dropped_source,
+        line_color='black',
+        line_width=2,
+        marker='dash',
         fill_color=factor_cmap(
             'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
     )
@@ -137,7 +170,7 @@ def summary(path, size):
 
     # initialize period figure
     period_fig = figure(
-        title='Behavior Planner Jitter Summary',
+        title='Behavior Planner Jitter Summary ' + str(duration) + 's',
         x_axis_label=f'Executors (with RMW)',
         y_axis_label='Period (ms)',
         x_range=FactorRange(*x),
@@ -146,7 +179,7 @@ def summary(path, size):
         margin=(10, 10, 10, 10)
     )
     period_fig.segment(
-        x, df.high[period].values, x, df.low[period].values, color='black', line_width=4)
+        x, df.high[period].values, x, df.low[period].values, color='black', line_width=2)
     period_fig.vbar(
         width=0.2,
         x='x',
@@ -155,6 +188,28 @@ def summary(path, size):
         source=period_source,
         line_color='black',
         line_width=1,
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    period_fig.scatter(
+        size=25,
+        x='x',
+        y='high',
+        source=period_source,
+        line_color='black',
+        line_width=2,
+        marker='dash',
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    period_fig.scatter(
+        size=25,
+        x='x',
+        y='low',
+        source=period_source,
+        line_color='black',
+        line_width=2,
+        marker='dash',
         fill_color=factor_cmap(
             'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
     )
@@ -190,7 +245,7 @@ def summary(path, size):
     # create tables
     columns = [TableColumn(field=col, title=col) for col in df[latency].columns]
     latency_table_title = Div(
-        text='<b>Latency Summary Table [' + hot_path_name + ']</b>',
+        text='<b>Latency Summary Table ' + test_info + '</b>',
         height=10,
         width=1000)
     latency_table = [
@@ -199,10 +254,10 @@ def summary(path, size):
             columns=columns,
             source=ColumnDataSource(df[latency]),
             margin=(10, 10, 10, 10),
-            height=200,
+            height=(len(df[latency].exe.values.tolist()) * 33),
             width=1000)]
     dropped_table_title = Div(
-        text='<b>Dropped Messages Summary Table [' + hot_path_name + ']</b>',
+        text='<b>Dropped Messages Summary Table ' + test_info + '</b>',
         height=10,
         width=1000)
     dropped_table = [
@@ -211,10 +266,10 @@ def summary(path, size):
             columns=columns,
             source=ColumnDataSource(df[dropped]),
             margin=(10, 10, 10, 10),
-            height=200,
+            height=(len(df[dropped].exe.values.tolist()) * 33),
             width=1000)]
     period_table_title = Div(
-        text='<b>Behavior Planner Jitter Summary Table</b>',
+        text='<b>Behavior Planner Jitter Summary Table ' + str(duration) + 's</b>',
         height=10,
         width=1000)
     period_table = [
@@ -223,7 +278,7 @@ def summary(path, size):
             columns=columns,
             source=ColumnDataSource(df[period]),
             margin=(10, 10, 10, 10),
-            height=200,
+            height=(len(df[period].exe.values.tolist()) * 33),
             width=1000)]
 
     std_figs = [
@@ -233,7 +288,7 @@ def summary(path, size):
     return std_figs
 
 
-def parseLog(path):
+def parseLogSummary(path, duration):
     # open file
     data = open(path).read().splitlines()
     # hold info on each test (start line and end line)
@@ -245,29 +300,30 @@ def parseLog(path):
     count = 0
     for index, line in enumerate(data):
         if line.find('generate_std_trace') > 0:
-            if line.find('Start') > 0:
-                search = ': generate_std_traces_'
-                test_name = line[line.find(search) + len(search):line.find('.py')]
-                rmw_idx = test_name.find('_rmw')
-                exe = test_name[0:rmw_idx]
-                rmw = test_name[rmw_idx + 1:test_name.rfind('_')]
-                start_time = line[line.find('[') + 1:line.find(']') - 1]
-                log_map.append(
-                    [exe, rmw, {
-                        'start': start_time,
-                        'end': 0,
-                        'hot_path': {
-                            'latency': {},
-                            'dropped': {}
-                        },
-                        'behavior_planner': {
-                            'period': {}
-                        }
-                    }])
-                in_test = True
-            elif line.find('Passed') > 0:
-                in_test = False
-                count += 1
+            if line.find('_' + str(duration) + 's') > 0:
+                if line.find('Start') > 0:
+                    search = ': generate_std_traces_'
+                    test_name = line[line.find(search) + len(search):line.find('.py')]
+                    rmw_idx = test_name.find('_rmw')
+                    exe = test_name[0:rmw_idx]
+                    rmw = test_name[rmw_idx + 1:test_name.rfind('_')]
+                    start_time = line[line.find('[') + 1:line.find(']') - 1]
+                    log_map.append(
+                        [exe, rmw, {
+                            'start': start_time,
+                            'end': 0,
+                            'hot_path': {
+                                'latency': {},
+                                'dropped': {}
+                            },
+                            'behavior_planner': {
+                                'period': {}
+                            }
+                        }])
+                    in_test = True
+                elif line.find('Passed') > 0:
+                    in_test = False
+                    count += 1
         # if within a test, add parse current line to dataframe
         if in_test:
             if line.find('hot path') > 0:

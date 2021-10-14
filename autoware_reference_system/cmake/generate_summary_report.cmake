@@ -16,6 +16,8 @@
 function(generate_summary_report trace_type run_time)
   if(${trace_type} MATCHES "memory")
     set(TRACE_DIR "${ROS_HOME}/${trace_type}")
+  elseif(${trace_type} MATCHES "std")
+    set(TRACE_DIR "${ROS_LOG_DIR}")
   else()
     set(TRACE_DIR "${ROS_HOME}/tracing")
   endif()

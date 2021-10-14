@@ -18,9 +18,13 @@ from bokeh.io import output_file
 # from bokeh.layouts import layout
 from bokeh.models import ColumnDataSource
 from bokeh.models import DatetimeTickFormatter
+from bokeh.models.ranges import FactorRange
 from bokeh.models.tools import HoverTool
+from bokeh.models.widgets.markups import Div
 from bokeh.models.widgets.tables import DataTable, TableColumn
+from bokeh.palettes import cividis
 from bokeh.plotting import figure
+from bokeh.transform import factor_cmap
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -34,7 +38,7 @@ def summary(path, duration, size):
     print('Output report to ' + fname + '.html')
     output_file(
         filename=fname + '.html',
-        title='Dropped Messages and Latency Summary Report (' + duration + 's)')
+        title='Dropped Messages and Latency Summary Report ' + duration + 's')
     data_dict = {}
     for fname in os.listdir(path):
         fpath = path + fname
@@ -68,70 +72,105 @@ def individual(data_model, size):
     dropped_df = data_dict['dropped']
     latency_df = data_dict['latency']
     run_time = data_dict['run_time']
-    source = ColumnDataSource(dropped_df)
+
+    y = list(zip(dropped_df.node, dropped_df.topic))
+
+    latency_source = ColumnDataSource(latency_df)
+    dropped_source = ColumnDataSource(dropped_df)
+
+    dropped_source.data['y'] = y
     # use this for axis of figure ~0.25 of buffer
     max_dropped = max(dropped_df['dropped']) + 0.25
     # initialize figure
-    dropped = figure(
-        title='Dropped Messages Summary ({:.2f} s)'.format(float(run_time)),
-        y_axis_label='Node Name',
+    dropped_fig = figure(
+        title='Dropped Messages Summary ({:.2f} s) [UNDER DEVELOPMENT]'.format(float(run_time)),
+        y_axis_label='Callback by Node and Topic Name',
         x_axis_label='Dropped Messages',
-        y_range=dropped_df['node'],
+        y_range=FactorRange(*y),
         x_range=(0, max_dropped),
         plot_width=int(size * 2.0),
         plot_height=size,
         margin=(10, 10, 10, 10)
     )
     # add horizontal bar to figure
-    dropped.hbar(
-        y='node',
+    dropped_fig.hbar(
+        y='y',
         right='dropped',
         width=0.1,
-        fill_color='color',
-        source=source
+        source=dropped_source,
+        fill_color=factor_cmap(
+            'y',
+            palette=cividis(dropped_df['topic'].shape[0]),
+            factors=list(dropped_df['topic'].values.tolist()),
+            start=1, end=2)
     )
+    dropped_fig.yaxis.major_label_orientation = 'horizontal'
+    dropped_fig.yaxis.subgroup_label_orientation = 'horizontal'
+    dropped_fig.yaxis.group_label_orientation = 'horizontal'
     # add hover tool
     hover = HoverTool()
     hover.tooltips = [
-        ('Callback', '@node'),
+        ('Callback (Node and Topic)', '@node @topic'),
         ('Dropped', '@dropped'),
         ('Expected', '@expected_count'),
         ('Received', '@count')
     ]
-    dropped.add_tools(hover)
+    dropped_fig.add_tools(hover)
 
-    # add summary table
+    # add dropped messages table
     dropped_summary = dropped_df.describe().T.reset_index()
     columns = [TableColumn(field=col, title=col) for col in dropped_summary]
-    summary_table = DataTable(
-        columns=columns,
-        source=ColumnDataSource(dropped_summary),
-        margin=(10, 10, 10, 10),
-        height=75,
-        width=size
+    dropped_table_title = Div(
+        text='<b>Dropped Messages Summary Table [UNDER DEVELOPMENT]</b>',
+        width=1000,
+        height=10
     )
+    dropped_table = [
+        dropped_table_title,
+        DataTable(
+            columns=columns,
+            source=ColumnDataSource(dropped_summary),
+            margin=(10, 10, 10, 10),
+            height=150,
+            width=size)]
 
     # add latency plot
     latency_fig = figure(
-        title='Latency From Front Lidar to Collision Estimator',
+        title='Latency From Front Lidar to Collision Estimator [UNDER DEVELOPMENT]',
         x_axis_label='Time',
         y_axis_label='Latency to Object Collision Estimator (ms)',
         plot_width=int(size * 2.0),
         plot_height=size,
         margin=(10, 10, 10, 10)
     )
-
     latency_fig.line(
         x='timestamp',
         y='latency',
-        source=ColumnDataSource(latency_df),
-        legend_label='latency',
+        source=latency_source,
         line_width=2
     )
-
     latency_fig.xaxis[0].formatter = DatetimeTickFormatter(seconds=['%Ss'])
 
-    return [summary_table, dropped, latency_fig]
+    # add latency table
+    latency_summary = latency_df.describe().T.reset_index()
+    columns = [TableColumn(field=col, title=col) for col in latency_summary]
+    latency_table_title = Div(
+        text='<b>Latency Summary Table</b>',
+        width=1000,
+        height=10
+    )
+    latency_table = [
+        latency_table_title,
+        DataTable(
+            columns=columns,
+            source=ColumnDataSource(latency_summary),
+            margin=(10, 10, 10, 10),
+            height=75,
+            width=size)]
+    return [
+        [dropped_table], [dropped_fig],
+        [latency_table], [latency_fig]
+    ]
 
 
 def parseData(data_model):
@@ -298,7 +337,6 @@ def generateNodeGraph(dataframe):
 
 
 def countDropped(dataframe, node_graph):
-    print(dataframe)
     mask = (dataframe['expected_count'] != 0)
     expected_non_zero = dataframe[mask]
     # for every node that has a defined period
@@ -310,29 +348,33 @@ def countDropped(dataframe, node_graph):
         fork_topics = []
         sub_topics = []
         in_fork = False
-        pred = len(node_graph.pred[node])
-        print(pred)
-        if(pred > 0):
-            print('cyclic node')
-            # TODO(flynneva): figure out a way to trace up the node graph
-            # to determine if a fusion node reduces the total expected
-            count = expected_non_zero.expected_count.sum()
-            print(count)
-            expected = count - dataframe.loc[(
-                (dataframe.node == node) &
-                (dataframe.topic == '')),
-                'expected_count'].values[0]
-            # subtract front lidar expected count due to fusion node
-            # TODO(flynneva): figure out a better way to handle fusion nodes
-            expected -= dataframe.loc[(
-                (dataframe.node == 'FrontLidarDriver') &
-                (dataframe.topic == '')),
-                'expected_count'].values[0]
-        else:
-            expected = dataframe.loc[(
-                (dataframe.node == node) &
-                (dataframe.topic == '')),
-                'expected_count'].values[0]
+        # pred = len(node_graph.pred[node])
+        # if(pred > 0):
+        # TODO(flynneva): figure out a way to trace up the node graph
+        # to determine if a fusion node reduces the total expected
+        # count = expected_non_zero.expected_count.sum()
+        # expected = count - dataframe.loc[(
+        #     (dataframe.node == node) &
+        #     (dataframe.topic == '')),
+        #    'expected_count'].values[0]
+        # subtract front lidar expected count due to fusion node
+        # TODO(flynneva): figure out a better way to handle fusion nodes
+        # expected -= dataframe.loc[(
+        #    (dataframe.node == 'FrontLidarDriver') &
+        #    (dataframe.topic == '')),
+        #   'expected_count'].values[0]
+        # else:
+        # calculate dropped for current node
+        expected = dataframe.loc[(
+            (dataframe.node == node) &
+            (dataframe.topic == '')),
+            'expected_count'].values[0]
+        count = dataframe.loc[(
+            (dataframe.node == current_node) &
+            (dataframe.topic == '')), 'count'].values[0]
+        dataframe.loc[(
+            (dataframe.node == current_node) &
+            (dataframe.topic == '')), 'dropped'] = abs(expected - count)
         while sub_node_exists:
             if(len(fork_topics) != 0 and not in_fork):
                 # fork topic exists
@@ -358,8 +400,6 @@ def countDropped(dataframe, node_graph):
                     count = dataframe.loc[(
                         (dataframe.node == sub_node) &
                         (dataframe.topic == current_node)), 'count'].values[0]
-                    print('expected: ' + str(expected))
-                    print('count: ' + str(count))
                     dataframe.loc[(
                         (dataframe.node == sub_node) &
                         (dataframe.topic == current_node)), 'dropped'] = abs(expected - count)
@@ -378,5 +418,4 @@ def countDropped(dataframe, node_graph):
                     in_fork = False
                     continue
                 sub_node_exists = False
-    print(dataframe)
     return dataframe
