@@ -371,12 +371,14 @@ def parseStats(line):
         'bottom': 0.0
     }
     try:
-        stats['timestamp'] = float(line[line.find('[') + 1:line.find(']') - 1]) * 1000  # convert to ms
+        stats['timestamp'] = float(
+            line[line.find('[') + 1:line.find(']') - 1]) * 1000  # convert to ms
         parsed_stats = line.split(',')
         stats['low'] = parsed_stats[0][parsed_stats[0].find('min') + len('min='):]
         stats['high'] = parsed_stats[1][parsed_stats[1].find('max') + len('max='):]
         stats['mean'] = parsed_stats[2][parsed_stats[2].find('average') + len('average='):]
-        stats['std_dev'] = parsed_stats[3][parsed_stats[3].find('deviation') + len('deviation='):-1]
+        stats['std_dev'] = \
+            parsed_stats[3][parsed_stats[3].find('deviation') + len('deviation='):-1]
         for val in stats:
             if isinstance(stats[val], str):
                 if stats[val].endswith('ms'):
