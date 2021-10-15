@@ -395,4 +395,3 @@ def parseStats(line):
         print(e)
         stats = None
     return stats
-
