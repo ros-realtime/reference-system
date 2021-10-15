@@ -389,7 +389,7 @@ def parseStats(line):
     except IndexError as e:
         print('Line incomplete:')
         print('[line]: ' + line)
-        print('Returning no for this line')
+        print('Returning None for this line')
         print(e)
         stats = None
     return stats
