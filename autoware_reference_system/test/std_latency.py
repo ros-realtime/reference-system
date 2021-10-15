@@ -340,16 +340,22 @@ def parseLogSummary(path, duration):
                 if line.find('latency') > 0:
                     end_time = line[line.find('[') + 1:line.find(']') - 1]
                     log_map[count][2]['end'] = end_time
-                    log_map[count][2]['hot_path']['latency'] = parseStats(line)
+                    stats = parseStats(line)
+                    if stats is not None:
+                        log_map[count][2]['hot_path']['latency'] = stats
                 elif line.find('drops') > 0:
                     end_time = line[line.find('[') + 1:line.find(']') - 1]
                     log_map[count][2]['end'] = end_time
-                    log_map[count][2]['hot_path']['dropped'] = parseStats(line)
+                    stats = parseStats(line)
+                    if stats is not None:
+                        log_map[count][2]['hot_path']['dropped'] = stats
             elif line.find('period') > 0:
                 # behavior planner period
                 # log_map[count][2]['behavior_planner']['period'] = \
                 #    float(line[line.find('period') + len('period:  '):line.find('ms')])
-                log_map[count][2]['behavior_planner']['period'] = parseStats(line)
+                stats = parseStats(line)
+                if stats is not None:
+                    log_map[count][2]['behavior_planner']['period'] = stats
     return log_map, test_name, hot_path_name
 
 
@@ -364,19 +370,27 @@ def parseStats(line):
         'top': 0.0,
         'bottom': 0.0
     }
-    stats['timestamp'] = float(line[line.find('[') + 1:line.find(']') - 1]) * 1000  # convert to ms
-    parsed_stats = line.split(',')
-    stats['low'] = parsed_stats[0][parsed_stats[0].find('min') + len('min='):]
-    stats['high'] = parsed_stats[1][parsed_stats[1].find('max') + len('max='):]
-    stats['mean'] = parsed_stats[2][parsed_stats[2].find('average') + len('average='):]
-    stats['std_dev'] = parsed_stats[3][parsed_stats[3].find('deviation') + len('deviation='):-1]
-    for val in stats:
-        if isinstance(stats[val], str):
-            if stats[val].endswith('ms'):
-                stats[val] = stats[val][:-2]
-        stats[val] = float(stats[val])
-    stats['top'] = stats['mean'] + stats['std_dev']
-    stats['bottom'] = stats['mean'] - stats['std_dev']
-    if stats['bottom'] < 0:
-        stats['bottom'] = 0
+    try:
+        stats['timestamp'] = float(line[line.find('[') + 1:line.find(']') - 1]) * 1000  # convert to ms
+        parsed_stats = line.split(',')
+        stats['low'] = parsed_stats[0][parsed_stats[0].find('min') + len('min='):]
+        stats['high'] = parsed_stats[1][parsed_stats[1].find('max') + len('max='):]
+        stats['mean'] = parsed_stats[2][parsed_stats[2].find('average') + len('average='):]
+        stats['std_dev'] = parsed_stats[3][parsed_stats[3].find('deviation') + len('deviation='):-1]
+        for val in stats:
+            if isinstance(stats[val], str):
+                if stats[val].endswith('ms'):
+                    stats[val] = stats[val][:-2]
+            stats[val] = float(stats[val])
+        stats['top'] = stats['mean'] + stats['std_dev']
+        stats['bottom'] = stats['mean'] - stats['std_dev']
+        if stats['bottom'] < 0:
+            stats['bottom'] = 0
+    except IndexError as e:
+        print('Line incomplete:')
+        print('[line]: ' + line)
+        print('Returning no for this line')
+        print(e)
+        stats = None
     return stats
+
