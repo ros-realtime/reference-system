@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <limits>
+#include <mutex>
 
 #include "reference_system/msg_types.hpp"
 
@@ -215,6 +216,9 @@ void print_sample_path(
     std::chrono::duration_cast<std::chrono::nanoseconds>(
       std::chrono::system_clock::now().time_since_epoch())
     .count());
+
+  static std::mutex cout_mutex;
+  std::lock_guard<std::mutex> lock(cout_mutex);
 
   std::cout << "----------------------------------------------------------" <<
     std::endl;
