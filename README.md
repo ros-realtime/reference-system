@@ -170,6 +170,9 @@ dd if=/boot/firmware/boot.scr of=boot.script bs=72 skip=1
 ubuntu@ubuntu:~$ cat boot.script | grep "setenv bootargs" | head -1
 setenv bootargs " ${bootargs} rcu_nocbs=2,3 nohz_full=2,3 isolcpus=2,3 irqaffinity=0,1 audit=0 watchdog=0 skew_tick=1 quiet splash"
 
+# generate boot.scr
+mkimage -A arm64 -O linux -T script -C none -d boot.script boot.scr
+
 # replace boot.scr
 sudo cp boot.scr /boot/firmware/boot.scr
 
