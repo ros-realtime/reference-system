@@ -218,3 +218,7 @@ ps -aL | grep $RF_PID
    3835    3845 ttyS0    00:00:00 recvUC
    3835    3846 ttyS0    00:00:00 autoware_defaul
 ```
+
+## Hints
+
+* If you run `colcon build` on a Raspberry Pi 4 with little memory, use `export MAKEFLAGS="-j 1"` to inhibit parallelism. Otherwise, the system could hang due to memory swapping.
