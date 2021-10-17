@@ -1,11 +1,13 @@
 module reference_interfaces {
   module msg {
     module TransmissionStats_Constants {
-      const uint64 NODE_NAME_LENGTH = 56;
+      const uint64 NODE_NAME_LENGTH = 48;
     };
     struct TransmissionStats { // 64 bytes
       uint64 timestamp;
-      char  node_name[56];
+      uint32 sequence_number;
+      uint32 dropped_samples;
+      char  node_name[48];
     };
   };
 };

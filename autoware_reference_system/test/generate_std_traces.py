@@ -21,9 +21,6 @@ from launch_ros.actions import Node
 import launch_testing
 import launch_testing.actions
 
-from tracetools_launch.action import Trace
-from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS
-
 # Generate traces for specified executables and RMWs
 
 # this file has @variables@ that are meant to be automatically replaced
@@ -55,16 +52,9 @@ def generate_test_description():
         output='screen'
     )
 
-    trace_action = Trace(
-        session_name=trace_type + '_' + test_exe_name + '_' + str(RUNTIME) + 's',
-        events_ust=DEFAULT_EVENTS_ROS,
-        events_kernel=[],
-    )
-
     launch_description.add_action(envvar_rcutils_action)
     launch_description.add_action(envvar_rclassert_rmw_action)
     launch_description.add_action(envvar_rmw_action)
-    launch_description.add_action(trace_action)
     launch_description.add_action(node_under_test)
     launch_description.add_action(
         launch_testing.actions.ReadyToTest()

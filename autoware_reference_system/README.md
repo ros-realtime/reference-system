@@ -137,13 +137,15 @@ This section will go over how to clone, build and run the `autoware_reference_sy
 
 Before running the tests there are a few prerequisites to complete:
 
-- install LTTng and `ros2_tracing` [following the instructions in `ros2_tracing`](https://gitlab.com/ros-tracing/ros2_tracing#building)
+- Install python depedencies used during test runs and report generation
+    - `python3 -m pip install psrecord bokeh networkx numpy pandas`
+- Install dependencies using the following command from the `colcon_ws` directory:
+    - `rosdep install --from-paths src --ignore-src -y`
+- Install LTTng and `ros2_tracing` [following the instructions in `ros2_tracing`](https://gitlab.com/ros-tracing/ros2_tracing#building)
    - _Note:_ if you are setting up [ a realtime linux kernel for a raspberry pi using this docker file](https://github.com/ros-realtime/rt-kernel-docker-builder#raspberry-pi-4-rt-linux-kernel), it should [already include LTTng](https://github.com/ros-realtime/rt-kernel-docker-builder/pull/18)
    - _Note:_ make sure to clone `ros2_tracing` into **the same workspace as where you put the `reference-system`**, the tests will not properly run if they are not in the same directory.
-- install dependencies using the following command from the `colcon_ws` directory:
-    - `rosdep install --from-paths src --ignore-src -y`
-- install `psrecord`, used to record CPU and memory usage
-    - `python3 -m pip install psrecord`
+
+**Tests will fail** if any of the above dependencies are missing on the machine.
 
 Once the above steps are complete you sould be ready to configure the setup for your platform and run the tests to generate some results.
 
@@ -182,6 +184,8 @@ Run the above command on your system, select your desired `run_time` and place t
 
 Source your ROS distribution as well as your `ros2_tracing` overlay, compile this repository using the proper CMake arguments and generate some test results:
 
+**Make sure you've installed the required dependencies** as [outlined above](#dependencies) before trying to run these tests.
+
 ### Supported CMake Arguments
 
 - `RUN_BENCHMARK`
@@ -194,6 +198,8 @@ Source your ROS distribution as well as your `ros2_tracing` overlay, compile thi
     - Set this to `ON` if you'd like to run tests on all available RMWS as well
     - Otherwise use only default RMW (first one listed by CMake function `get_available_rmw_implementations`)
     - Defaults to `OFF`
+
+**Make sure you've installed the required dependencies** as [outlined above](#dependencies) before trying to run these tests.
 
 ```
 # source your ROS distribution
@@ -218,6 +224,22 @@ If the `$ROS_HOME/tracing` directory is missing the tests will automatically gen
 This directory should now hold tracing data and reports for all `ros2_tracing` tests performed.
 
 Additionally, CPU and Memory Usage tests generate data and reports and saves them to `$ROS_HOME/memory`.
+
+### Test Results and Reports
+
+Reports are automatically generated depending on which tests are run.  Below are the locations where each report is stored after successfully running the tests as described above.
+
+- CPU and Memory Tests
+    - results are stored in your `${ROS_HOME}/memory` directory
+    - if `${ROS_HOME}` is not set, it defaults to `${HOME}/.ros/memory`
+- Executor KPI tests (Latency, Dropped Messages and Jitter)
+    - results are generated directly to the tests `streams.log` file using `std::cout` prints
+    - reports are generated and stored in the `log/latest_test/autoware_reference_system` directory
+- `ros2_tracing` Tests
+    - results and reports are stored in your `${ROS_HOME}/tracing` directory
+    - if `${ROS_HOME}` is not set, it defaults to `${HOME}/.ros/tracing`
+
+More reports can be added going forward.
 
 ## Generating Node Graph Image
 
