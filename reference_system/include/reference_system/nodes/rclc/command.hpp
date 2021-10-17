@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__NODES__RCLCPP__COMMAND_HPP_
-#define REFERENCE_SYSTEM__NODES__RCLCPP__COMMAND_HPP_
+#ifndef REFERENCE_SYSTEM__NODES__RCLC__COMMAND_HPP_
+#define REFERENCE_SYSTEM__NODES__RCLC__COMMAND_HPP_
 
 #include <chrono>
 #include <string>
@@ -39,14 +39,16 @@ public:
   }
 
 private:
-  void input_callback(const message_t::SharedPtr input_message) const
+  void input_callback(const message_t::SharedPtr input_message)
   {
-    print_sample_path(this->get_name(), input_message);
+    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(input_message, sequence_number_);
+    print_sample_path(this->get_name(), missed_samples, input_message);
   }
 
 private:
   rclcpp::Subscription<message_t>::SharedPtr subscription_;
+  uint32_t sequence_number_ = 0;
 };
-}  // namespace rclc_system
+}  // namespace rclcpp_system
 }  // namespace nodes
-#endif  // REFERENCE_SYSTEM__NODES__RCLCPP__COMMAND_HPP_
+#endif  // REFERENCE_SYSTEM__NODES__RCLC__COMMAND_HPP_

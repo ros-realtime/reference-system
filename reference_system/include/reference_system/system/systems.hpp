@@ -16,5 +16,6 @@
 
 // Add available systems here
 #include "reference_system/system/type/rclcpp_system.hpp"
+#include "reference_system/system/type/rclc_system.hpp"
 
 #endif  // REFERENCE_SYSTEM__SYSTEM__SYSTEMS_HPP_

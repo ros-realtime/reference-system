@@ -16,9 +16,11 @@
 #include <chrono>
 #include <string>
 #include <utility>
+#include <stdio.h>
 
+#include <rclc/rclc.h>
 #include "rclcpp/rclcpp.hpp"
-#include "rclc/rclc.h"
+
 #include "reference_system/nodes/settings.hpp"
 #include "reference_system/number_cruncher.hpp"
 #include "reference_system/sample_management.hpp"
@@ -29,22 +31,45 @@ namespace nodes
 {
 namespace rclc_system
 {
-// TODO(jst3si) replace rclcpp::Node with rclc nodes, subscriptions, publishers ...
-// use example from pingpong.
 
-class Fusion : public rclcpp::Node
+class Fusion
 {
 public:
   explicit Fusion(const FusionSettings & settings)
-  : // Node(settings.node_name),
+  : node_name_(settings.node_name),
     number_crunch_limit_(settings.number_crunch_limit)
   {
-    // init rclc
+    rcl_ret_t rc;
 
-    // create node
+    context_ = rcl_get_zero_initialized_context();
+    init_options_ = rcl_get_zero_initialized_init_options();
+    allocator_ = rcl_get_default_allocator();
+
+    rc = rcl_init_options_init(&init_options_, allocator_);
+    if (rc != RCL_RET_OK) {
+      printf("Error rcl_init_options_init.\n");
+      return;
+    }
+    // init rclc - Note: will be done in main with rccpp::init()
+    // not sure this will work!
+    /*
+    rc = rcl_init(argc, argv, &init_options, &context);
+    if (rc != RCL_RET_OK) {
+      printf("Error in rcl_init.\n");
+      return -1;
+    }
+    */
     
+    // create rcl_node
+    rcl_node_t node_ = rcl_get_zero_initialized_node();
+    rcl_node_options_t node_ops_ = rcl_node_get_default_options();
+    rc = rcl_node_init(&node_, settings.node_name.c_str(), "", &context_, &node_ops_);
+    if (rc != RCL_RET_OK) {
+      printf("Error in rcl_node_init\n");
+      return;
+    }
     // create subscription A
-
+/*
     //handle local member variables with context variable.
     subscription_[0] = this->create_subscription<message_t>(
       settings.input_0, 10,
@@ -57,6 +82,20 @@ public:
     
     // create publisher
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
+  */
+  }
+
+  ~Fusion()
+  {
+    rcl_ret_t rc;
+    rc += rcl_publisher_fini(&publisher_, &node_);
+    rc += rcl_subscription_fini(&subscription0_, &node_);
+    rc += rcl_subscription_fini(&subscription1_, &node_);
+    rc += rcl_node_fini(&node_);
+    if (rc != RCL_RET_OK)
+    {
+      printf("Error calling rcl_*_fini methods\n"); 
+    }
   }
 
 private:
@@ -73,78 +112,34 @@ private:
     }
 
     auto number_cruncher_result = number_cruncher(number_crunch_limit_);
-
-    auto output_message = publisher_->borrow_loaned_message();
-    fuse_samples(
-      this->get_name(), output_message.get(), message_cache_[0],
-      message_cache_[1]);
-    output_message.get().data[0] = number_cruncher_result;
-    publisher_->publish(std::move(output_message));
-
-    message_cache_[0].reset();
-    message_cache_[1].reset();
-  }
-
-private:
-  message_t::SharedPtr message_cache_[2];
-  rclcpp::Publisher<message_t>::SharedPtr publisher_;
-  rclcpp::Subscription<message_t>::SharedPtr subscription_[2];
-
-  uint64_t number_crunch_limit_;
-};
-
 /*
-class Fusion : public rclcpp::Node
-{
-public:
-  explicit Fusion(const FusionSettings & settings)
-  : Node(settings.node_name),
-    number_crunch_limit_(settings.number_crunch_limit)
-  {
-    subscription_[0] = this->create_subscription<message_t>(
-      settings.input_0, 10,
-      [this](const message_t::SharedPtr msg) {input_callback(0U, msg);});
-
-    subscription_[1] = this->create_subscription<message_t>(
-      settings.input_1, 10,
-      [this](const message_t::SharedPtr msg) {input_callback(1U, msg);});
-    publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
-  }
-
-private:
-  void input_callback(
-    const uint64_t input_number,
-    const message_t::SharedPtr input_message)
-  {
-    message_cache_[input_number] = input_message;
-
-    // only process and publish when we can perform an actual fusion, this means
-    // we have received a sample from each subscription
-    if (!message_cache_[0] || !message_cache_[1]) {
-      return;
-    }
-
-    auto number_cruncher_result = number_cruncher(number_crunch_limit_);
-
     auto output_message = publisher_->borrow_loaned_message();
     fuse_samples(
       this->get_name(), output_message.get(), message_cache_[0],
       message_cache_[1]);
     output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
-
+*/
     message_cache_[0].reset();
     message_cache_[1].reset();
   }
 
 private:
+  std::string node_name_;
+
+  rcl_node_t node_;
+  rcl_context_t context_;
+  rcl_init_options_t init_options_;
+  rcl_allocator_t allocator_;
+
   message_t::SharedPtr message_cache_[2];
-  rclcpp::Publisher<message_t>::SharedPtr publisher_;
-  rclcpp::Subscription<message_t>::SharedPtr subscription_[2];
+  rcl_publisher_t publisher_;
+  rcl_subscription_t subscription0_;
+  rcl_subscription_t subscription1_;
 
   uint64_t number_crunch_limit_;
 };
-*/
+
 }  // namespace rclc_system
 }  // namespace nodes
 #endif  // REFERENCE_SYSTEM__NODES__RCLC__FUSION_HPP_
