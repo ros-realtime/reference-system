@@ -60,7 +60,6 @@ public:
     }
     */
     
-    // create rcl_node
     rcl_node_t node_ = rcl_get_zero_initialized_node();
     rcl_node_options_t node_ops_ = rcl_node_get_default_options();
     rc = rcl_node_init(&node_, settings.node_name.c_str(), "", &context_, &node_ops_);
@@ -68,7 +67,35 @@ public:
       printf("Error in rcl_node_init\n");
       return;
     }
-    // create subscription A
+
+    type_support_ = ROSIDL_GET_MSG_TYPE_SUPPORT(reference_interfaces, msg, MESSAGE_T_NAME);
+    rc = rclc_subscription_init_default(
+      &subscription0_,
+      &node_,
+      type_support_,
+      settings.input_0.c_str());
+    if (rc != RCL_RET_OK) {
+      printf("Failed to create subscription %s.\n", settings.input_0.c_str());
+      return;
+    } else {
+      printf("Created subscription %s:\n", settings.input_0.c_str());
+    }
+    MESSAGE_T_INIT(&msg_0_);
+
+    // TODO(JanStaschulat) set history buffer = 10
+    rc = rclc_subscription_init_default(
+      &subscription1_,
+      &node_,
+      type_support_,
+      settings.input_1.c_str());
+    if (rc != RCL_RET_OK) {
+      printf("Failed to create subscription %s.\n", settings.input_1.c_str());
+      return;
+    } else {
+      printf("Created subscription %s:\n", settings.input_1.c_str());
+    }
+    MESSAGE_T_INIT(&msg_1_);
+
 /*
     //handle local member variables with context variable.
     subscription_[0] = this->create_subscription<message_t>(
@@ -82,7 +109,25 @@ public:
     
     // create publisher
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
+*/;
+
+  MESSAGE_T_INIT(&pub_msg_);
+  /*
+  const unsigned int PUB_MSG_CAPACITY = 20;
+  pingNode_ping_msg.data.data = (char *) malloc(PUB_MSG_CAPACITY);
+  pingNode_ping_msg.data.capacity = PUB_MSG_CAPACITY;
+  snprintf(pingNode_ping_msg.data.data, pingNode_ping_msg.data.capacity, "AAAAAAAAAAAAAAAAAAA");
+  pingNode_ping_msg.data.size = strlen(pingNode_ping_msg.data.data);
   */
+  rc = rclc_publisher_init_default(
+    &publisher_,
+    &node_,
+    type_support_,
+    settings.output_topic.c_str());
+  if (RCL_RET_OK != rc) {
+    printf("Error in rclc_publisher_init_default %s.\n", settings.output_topic.c_str());
+    return;
+  }
   }
 
   ~Fusion()
@@ -92,6 +137,9 @@ public:
     rc += rcl_subscription_fini(&subscription0_, &node_);
     rc += rcl_subscription_fini(&subscription1_, &node_);
     rc += rcl_node_fini(&node_);
+    MESSAGE_T_FINI(&msg_0_);
+    MESSAGE_T_FINI(&msg_1_);
+    MESSAGE_T_FINI(&pub_msg_);
     if (rc != RCL_RET_OK)
     {
       printf("Error calling rcl_*_fini methods\n"); 
@@ -99,6 +147,18 @@ public:
   }
 
 private:
+  void intput_callback_0(const void * msgin, void * context){
+    const MESSAGE_T_FULL_NAME * msg = (const MESSAGE_T_FULL_NAME *) msgin;
+    Fusion * this_ptr = (Fusion *) context;
+    this_ptr->message_cache_[0] = msg; 
+  }
+
+  void intput_callback_1(const void * msgin, void * context){
+    const MESSAGE_T_FULL_NAME * msg = (const MESSAGE_T_FULL_NAME *) msgin;
+    Fusion * this_ptr = (Fusion *) context;
+    this_ptr->message_cache_[1] = msg; 
+  }
+/*
   void input_callback(
     const uint64_t input_number,
     const message_t::SharedPtr input_message)
@@ -112,18 +172,18 @@ private:
     }
 
     auto number_cruncher_result = number_cruncher(number_crunch_limit_);
-/*
+
     auto output_message = publisher_->borrow_loaned_message();
     fuse_samples(
       this->get_name(), output_message.get(), message_cache_[0],
       message_cache_[1]);
     output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
-*/
+
     message_cache_[0].reset();
     message_cache_[1].reset();
   }
-
+*/
 private:
   std::string node_name_;
 
@@ -132,7 +192,12 @@ private:
   rcl_init_options_t init_options_;
   rcl_allocator_t allocator_;
 
-  message_t::SharedPtr message_cache_[2];
+  //message_t::SharedPtr message_cache_[2];
+  const MESSAGE_T_FULL_NAME * message_cache_[2];
+  const rosidl_message_type_support_t * type_support_;
+  MESSAGE_T_FULL_NAME msg_0_;
+  MESSAGE_T_FULL_NAME msg_1_;
+  MESSAGE_T_FULL_NAME pub_msg_;
   rcl_publisher_t publisher_;
   rcl_subscription_t subscription0_;
   rcl_subscription_t subscription1_;
