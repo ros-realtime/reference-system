@@ -1,4 +1,4 @@
-// Copyright 2021.
+// Copyright 2021 Robert Bosch GmbH.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,9 @@
 #include <utility>
 #include <stdio.h>
 
-#include <rclc/rclc.h>
+#include "rclc/rclc.h"
+#include "rclc/executor.h"
+
 #include "rclcpp/rclcpp.hpp"
 
 #include "reference_system/nodes/settings.hpp"
@@ -32,7 +34,14 @@ namespace nodes
 namespace rclc_system
 {
 
-class Fusion
+class NodeBase
+{
+public:
+  explicit NodeBase() {}
+  ~NodeBase(){}
+};
+
+class Fusion : NodeBase
 {
 public:
   explicit Fusion(const FusionSettings & settings)
@@ -59,7 +68,7 @@ public:
       return -1;
     }
     */
-    
+
     rcl_node_t node_ = rcl_get_zero_initialized_node();
     rcl_node_options_t node_ops_ = rcl_node_get_default_options();
     rc = rcl_node_init(&node_, settings.node_name.c_str(), "", &context_, &node_ops_);
@@ -106,28 +115,28 @@ public:
     subscription_[1] = this->create_subscription<message_t>(
       settings.input_1, 10,
       [this](const message_t::SharedPtr msg) {input_callback(1U, msg);});
-    
+
     // create publisher
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
-*/;
+*/
 
-  MESSAGE_T_INIT(&pub_msg_);
-  /*
-  const unsigned int PUB_MSG_CAPACITY = 20;
-  pingNode_ping_msg.data.data = (char *) malloc(PUB_MSG_CAPACITY);
-  pingNode_ping_msg.data.capacity = PUB_MSG_CAPACITY;
-  snprintf(pingNode_ping_msg.data.data, pingNode_ping_msg.data.capacity, "AAAAAAAAAAAAAAAAAAA");
-  pingNode_ping_msg.data.size = strlen(pingNode_ping_msg.data.data);
-  */
-  rc = rclc_publisher_init_default(
-    &publisher_,
-    &node_,
-    type_support_,
-    settings.output_topic.c_str());
-  if (RCL_RET_OK != rc) {
-    printf("Error in rclc_publisher_init_default %s.\n", settings.output_topic.c_str());
-    return;
-  }
+    MESSAGE_T_INIT(&pub_msg_);
+    /*
+    const unsigned int PUB_MSG_CAPACITY = 20;
+    pingNode_ping_msg.data.data = (char *) malloc(PUB_MSG_CAPACITY);
+    pingNode_ping_msg.data.capacity = PUB_MSG_CAPACITY;
+    snprintf(pingNode_ping_msg.data.data, pingNode_ping_msg.data.capacity, "AAAAAAAAAAAAAAAAAAA");
+    pingNode_ping_msg.data.size = strlen(pingNode_ping_msg.data.data);
+    */
+    rc = rclc_publisher_init_default(
+      &publisher_,
+      &node_,
+      type_support_,
+      settings.output_topic.c_str());
+    if (RCL_RET_OK != rc) {
+      printf("Error in rclc_publisher_init_default %s.\n", settings.output_topic.c_str());
+      return;
+    }
   }
 
   ~Fusion()
@@ -140,23 +149,47 @@ public:
     MESSAGE_T_FINI(&msg_0_);
     MESSAGE_T_FINI(&msg_1_);
     MESSAGE_T_FINI(&pub_msg_);
-    if (rc != RCL_RET_OK)
-    {
-      printf("Error calling rcl_*_fini methods\n"); 
+    if (rc != RCL_RET_OK) {
+      printf("Error calling rcl_*_fini methods\n");
     }
   }
 
-private:
-  void intput_callback_0(const void * msgin, void * context){
-    const MESSAGE_T_FULL_NAME * msg = (const MESSAGE_T_FULL_NAME *) msgin;
-    Fusion * this_ptr = (Fusion *) context;
-    this_ptr->message_cache_[0] = msg; 
+  std::string get_name()
+  {
+    return node_name_;
+  }
+  void add_to_executor(rclc_executor_t * executor)
+  {
+    rcl_ret_t rc;
+    rc = rclc_executor_add_subscription_with_context(
+      executor, &subscription0_, &msg_0_, &input_callback_0, this,
+      ON_NEW_DATA);
+    if (rc != RCL_RET_OK) {
+      printf("Error add_to_executor: subscription0 \n");
+    }
+
+    rc = rclc_executor_add_subscription_with_context(
+      executor, &subscription1_, &msg_1_, &input_callback_1, this,
+      ON_NEW_DATA);
+    if (rc != RCL_RET_OK) {
+      printf("Error add_to_executor: subscription1 \n");
+    }
+
   }
 
-  void intput_callback_1(const void * msgin, void * context){
+private:
+  static void input_callback_0(const void * msgin, void * context)
+  {
     const MESSAGE_T_FULL_NAME * msg = (const MESSAGE_T_FULL_NAME *) msgin;
     Fusion * this_ptr = (Fusion *) context;
-    this_ptr->message_cache_[1] = msg; 
+    this_ptr->message_cache_[0] = msg;
+  }
+
+  static void input_callback_1(const void * msgin, void * context)
+  {
+    const MESSAGE_T_FULL_NAME * msg = (const MESSAGE_T_FULL_NAME *) msgin;
+    Fusion * this_ptr = (Fusion *) context;
+    this_ptr->message_cache_[1] = msg;
   }
 /*
   void input_callback(
@@ -184,6 +217,7 @@ private:
     message_cache_[1].reset();
   }
 */
+
 private:
   std::string node_name_;
 

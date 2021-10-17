@@ -20,9 +20,9 @@
 #include "reference_system/nodes/rclc/sensor.hpp"
 #include "reference_system/nodes/rclc/intersection.hpp"
 
-struct rclcSystem
+struct RclcSystem
 {
-  // using NodeBaseType = rclcpp::Node;
+  // using NodeBaseType = nodes::rclc_system::NodeBase;
 
   using Command = nodes::rclc_system::Command;
   using Cyclic = nodes::rclc_system::Cyclic;
