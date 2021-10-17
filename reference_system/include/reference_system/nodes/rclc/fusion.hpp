@@ -36,6 +36,68 @@ class Fusion : public rclcpp::Node
 {
 public:
   explicit Fusion(const FusionSettings & settings)
+  : // Node(settings.node_name),
+    number_crunch_limit_(settings.number_crunch_limit)
+  {
+    // init rclc
+
+    // create node
+    
+    // create subscription A
+
+    //handle local member variables with context variable.
+    subscription_[0] = this->create_subscription<message_t>(
+      settings.input_0, 10,
+      [this](const message_t::SharedPtr msg) {input_callback(0U, msg);});
+
+    // create subscription B
+    subscription_[1] = this->create_subscription<message_t>(
+      settings.input_1, 10,
+      [this](const message_t::SharedPtr msg) {input_callback(1U, msg);});
+    
+    // create publisher
+    publisher_ = this->create_publisher<message_t>(settings.output_topic, 10);
+  }
+
+private:
+  void input_callback(
+    const uint64_t input_number,
+    const message_t::SharedPtr input_message)
+  {
+    message_cache_[input_number] = input_message;
+
+    // only process and publish when we can perform an actual fusion, this means
+    // we have received a sample from each subscription
+    if (!message_cache_[0] || !message_cache_[1]) {
+      return;
+    }
+
+    auto number_cruncher_result = number_cruncher(number_crunch_limit_);
+
+    auto output_message = publisher_->borrow_loaned_message();
+    fuse_samples(
+      this->get_name(), output_message.get(), message_cache_[0],
+      message_cache_[1]);
+    output_message.get().data[0] = number_cruncher_result;
+    publisher_->publish(std::move(output_message));
+
+    message_cache_[0].reset();
+    message_cache_[1].reset();
+  }
+
+private:
+  message_t::SharedPtr message_cache_[2];
+  rclcpp::Publisher<message_t>::SharedPtr publisher_;
+  rclcpp::Subscription<message_t>::SharedPtr subscription_[2];
+
+  uint64_t number_crunch_limit_;
+};
+
+/*
+class Fusion : public rclcpp::Node
+{
+public:
+  explicit Fusion(const FusionSettings & settings)
   : Node(settings.node_name),
     number_crunch_limit_(settings.number_crunch_limit)
   {
@@ -82,6 +144,7 @@ private:
 
   uint64_t number_crunch_limit_;
 };
+*/
 }  // namespace rclc_system
 }  // namespace nodes
 #endif  // REFERENCE_SYSTEM__NODES__RCLC__FUSION_HPP_
