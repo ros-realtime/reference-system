@@ -131,58 +131,64 @@ public:
 private:
   static void input_callback_0(const void * msgin, void * context)
   {
+    printf("rclc-callback 0 ");
     Fusion * this_ptr = static_cast<Fusion *>(context);
     if (this_ptr != NULL){
       this_ptr->subscriptions_[0].cache = static_cast<const message_t *>(msgin);
+      printf(" called ");
     }
+    printf("\n");
   }
 
   static void input_callback_1(const void * msgin, void * context)
   {
     uint64_t timestamp = now_as_int();
-    
+    printf("rclc-callback 1 ");
     Fusion * this_ptr = (Fusion *) context;
     if (this_ptr != NULL){
       this_ptr->subscriptions_[1].cache = static_cast<const message_t *>(msgin);
+    
+      // only process and publish when we can perform an actual fusion, this means
+      // we have received a sample from each subscription
+      if ((this_ptr->subscriptions_[0].cache == NULL) || 
+          (this_ptr->subscriptions_[1].cache == NULL)) {
+        return;
+      }
+
+      auto number_cruncher_result = number_cruncher(this_ptr->number_crunch_limit_);
+
+      uint32_t missed_samples = get_missed_samples_and_update_seq_nr(
+        this_ptr->subscriptions_[0].cache,
+        this_ptr->subscriptions_[0].sequence_number)
+        +
+        get_missed_samples_and_update_seq_nr(
+        this_ptr->subscriptions_[1].cache,
+        this_ptr->subscriptions_[1].sequence_number);
+  /*
+      this_ptr->pub_msg_.size = 0;
+      merge_history_into_sample(this_ptr->pub_msg_, this_ptr->subscriptions_[0].cache);
+      merge_history_into_sample(this_ptr->pub_msg_, this_ptr->subscriptions_[1].cache);
+      set_sample(
+        this_ptr->get_name(), this_ptr->sequence_number_++, missed_samples, timestamp,
+        this_ptr->pub_msg_);
+      this_ptr->pub_msg_.data[0] = number_cruncher_result;
+      rcl_publish(&this_ptr->publisher_, &this_ptr->pub_msg_, NULL);
+  */
+      this_ptr->output_message_.size = 0;
+      merge_history_into_sample(this_ptr->output_message_, this_ptr->subscriptions_[0].cache);
+      merge_history_into_sample(this_ptr->output_message_, this_ptr->subscriptions_[1].cache);
+      set_sample(
+        this_ptr->get_name(), this_ptr->sequence_number_++, missed_samples, timestamp,
+        this_ptr->output_message_);
+      this_ptr->output_message_.data[0] = number_cruncher_result;
+      rcl_publish(&this_ptr->publisher_, &this_ptr->output_message_, NULL);
+
+      this_ptr->subscriptions_[0].cache = NULL;
+      this_ptr->subscriptions_[1].cache = NULL;
+    
+      printf(" called");
     }
-    // only process and publish when we can perform an actual fusion, this means
-    // we have received a sample from each subscription
-    if ((this_ptr->subscriptions_[0].cache == NULL) || 
-        (this_ptr->subscriptions_[1].cache == NULL)) {
-      return;
-    }
-
-    auto number_cruncher_result = number_cruncher(this_ptr->number_crunch_limit_);
-
-    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(
-      this_ptr->subscriptions_[0].cache,
-      this_ptr->subscriptions_[0].sequence_number)
-      +
-      get_missed_samples_and_update_seq_nr(
-      this_ptr->subscriptions_[1].cache,
-      this_ptr->subscriptions_[1].sequence_number);
-/*
-    this_ptr->pub_msg_.size = 0;
-    merge_history_into_sample(this_ptr->pub_msg_, this_ptr->subscriptions_[0].cache);
-    merge_history_into_sample(this_ptr->pub_msg_, this_ptr->subscriptions_[1].cache);
-    set_sample(
-      this_ptr->get_name(), this_ptr->sequence_number_++, missed_samples, timestamp,
-      this_ptr->pub_msg_);
-    this_ptr->pub_msg_.data[0] = number_cruncher_result;
-    rcl_publish(&this_ptr->publisher_, &this_ptr->pub_msg_, NULL);
-*/
-    this_ptr->output_message_.size = 0;
-    merge_history_into_sample(this_ptr->output_message_, this_ptr->subscriptions_[0].cache);
-    merge_history_into_sample(this_ptr->output_message_, this_ptr->subscriptions_[1].cache);
-    set_sample(
-      this_ptr->get_name(), this_ptr->sequence_number_++, missed_samples, timestamp,
-      this_ptr->output_message_);
-    this_ptr->output_message_.data[0] = number_cruncher_result;
-    rcl_publish(&this_ptr->publisher_, &this_ptr->output_message_, NULL);
-
-    this_ptr->subscriptions_[0].cache = NULL;
-    this_ptr->subscriptions_[1].cache = NULL;
-
+    printf("\n");
   }
 
 private:
