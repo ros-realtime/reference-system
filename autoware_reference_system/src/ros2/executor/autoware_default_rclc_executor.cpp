@@ -37,9 +37,9 @@ int main(int argc, char * argv[])
 
   rclc_executor_t rclcExecutor = rclc_executor_get_zero_initialized_executor();
   unsigned int num_handles = 2;
-  rcl_context_t context = rcl_get_zero_initialized_context();
+  rcl_context_t * context = rclcpp::contexts::get_global_default_context()->get_rcl_context().get();
   rcl_allocator_t allocator = rcl_get_default_allocator();
-  rclc_executor_init(&rclcExecutor, &context, num_handles, &allocator);
+  rclc_executor_init(&rclcExecutor, context, num_handles, &allocator);
 
   for (auto & node : nodes) {
     
@@ -54,7 +54,7 @@ int main(int argc, char * argv[])
 
   // TODO check ros context in while condition
   uint64_t timeout_ns = 1000000000; // 1s
-  while (1) {
+  while (rclcpp::ok(rclcpp::contexts::get_global_default_context())) {
     executor.spin_some();
     rclc_executor_spin_some(&rclcExecutor,timeout_ns);
   }
