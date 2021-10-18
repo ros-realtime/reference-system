@@ -15,6 +15,8 @@
 #define AUTOWARE_REFERENCE_SYSTEM__SYSTEM__TIMING__BENCHMARK_HPP_
 #include <chrono>
 
+#include "default.hpp"
+
 namespace nodes
 {
 namespace timing
@@ -96,12 +98,12 @@ struct BenchmarkCPUUsage
   using seconds = std::chrono::seconds;
 
   // sensors
-  static constexpr time_t FRONT_LIDAR_DRIVER = milliseconds(50);
-  static constexpr time_t REAR_LIDAR_DRIVER = milliseconds(50);
-  static constexpr time_t POINT_CLOUD_MAP = milliseconds(50);
-  static constexpr time_t VISUALIZER = milliseconds(50);
-  static constexpr time_t LANELET2MAP = milliseconds(50);
-  static constexpr time_t EUCLIDEAN_CLUSTER_SETTINGS = milliseconds(50);
+  static constexpr time_t FRONT_LIDAR_DRIVER = Default::FRONT_LIDAR_DRIVER;
+  static constexpr time_t REAR_LIDAR_DRIVER = Default::REAR_LIDAR_DRIVER;
+  static constexpr time_t POINT_CLOUD_MAP = Default::POINT_CLOUD_MAP;
+  static constexpr time_t VISUALIZER = Default::VISUALIZER;
+  static constexpr time_t LANELET2MAP = Default::LANELET2MAP;
+  static constexpr time_t EUCLIDEAN_CLUSTER_SETTINGS = Default::EUCLIDEAN_CLUSTER_SETTINGS;
 
   // the following values are used as the number_cruncher_limit
   // to search for primes up to starting at 3
@@ -130,7 +132,7 @@ struct BenchmarkCPUUsage
 
   // cyclic
   static constexpr uint64_t BEHAVIOR_PLANNER = 0;
-  static constexpr time_t BEHAVIOR_PLANNER_CYCLE = milliseconds(50);
+  static constexpr time_t BEHAVIOR_PLANNER_CYCLE = Default::BEHAVIOR_PLANNER_CYCLE;
 };
 
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::FRONT_LIDAR_DRIVER;
