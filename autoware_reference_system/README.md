@@ -190,10 +190,12 @@ Source your ROS distribution as well as your `ros2_tracing` overlay, compile thi
 
 - `RUN_BENCHMARK`
     - Tell CMake to build the benchmark tests that will check the reference system against its requirements before running a sweep of tests to generate trace files and reports
-    - Without the `RUN_BENCHMARK` variable set to `True` only the standard linter tests will be run
+    - Without the `RUN_BENCHMARK` variable set to `ON` only the standard linter tests will be run
 - `TEST_PLATFORM`
     - Test CMake to build the tests to check if the tests are being run from a [supported platform](../README.md#supported-platforms) or not
-    - This flag can be ommited if you would like to run the tests on a development system before running them on a supported platform.
+    - This flag can be ommited if you would like to run the tests on a development system before running them on a supported platform
+    - The platform tests themselves can and should be improved going forward and are only some simple checks today (architecture, number of CPUs, PREEMPT_RT flag, etc.)
+    - Set this to `ON` to check if the current platform is supported
 - `ALL_RMWS`
     - Set this to `ON` if you'd like to run tests on all available RMWS as well
     - Otherwise use only default RMW (first one listed by CMake function `get_available_rmw_implementations`)
