@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.5)
 project(autoware_reference_system)
 
 
-option(RUN_BENCHMARK "Run the full benchmark tests" ON)
-option(SKIP_TRACING "Skip the ros2_tracing (LTTng) tests" ON)
-option(TEST_PLATFORM "Test if running on a supported platform" OFF)
-option(ALL_RMWS "Run tests for all available RMWs" OFF)
+option(RUN_BENCHMARK "Run the full benchmark tests" OFF)  # default to off for CI purposes
+option(SKIP_TRACING "Skip the ros2_tracing (LTTng) tests" ON)  # default to off unitl #35 is closed
+option(TEST_PLATFORM "Test if running on a supported platform" OFF)  # default to off for development purposes
+option(ALL_RMWS "Run tests for all available RMWs" OFF)  # default to off so only one RMW is tested by default
 
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
