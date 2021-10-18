@@ -34,53 +34,19 @@ namespace nodes
 namespace rclc_system
 {
 
-class NodeBase
-{
-public:
-  explicit NodeBase() {}
-  ~NodeBase(){}
-};
-
-class Fusion : NodeBase
+class Fusion : public rclcpp::Node
 {
 public:
   explicit Fusion(const FusionSettings & settings)
-  : node_name_(settings.node_name),
+  : Node(settings.node_name),
     number_crunch_limit_(settings.number_crunch_limit)
   {
     rcl_ret_t rc;
 
-    context_ = rcl_get_zero_initialized_context();
-    init_options_ = rcl_get_zero_initialized_init_options();
-    allocator_ = rcl_get_default_allocator();
-
-    rc = rcl_init_options_init(&init_options_, allocator_);
-    if (rc != RCL_RET_OK) {
-      printf("Error rcl_init_options_init.\n");
-      return;
-    }
-    // init rclc - Note: will be done in main with rccpp::init()
-    // not sure this will work!
-    /*
-    rc = rcl_init(argc, argv, &init_options, &context);
-    if (rc != RCL_RET_OK) {
-      printf("Error in rcl_init.\n");
-      return -1;
-    }
-    */
-
-    rcl_node_t node_ = rcl_get_zero_initialized_node();
-    rcl_node_options_t node_ops_ = rcl_node_get_default_options();
-    rc = rcl_node_init(&node_, settings.node_name.c_str(), "", &context_, &node_ops_);
-    if (rc != RCL_RET_OK) {
-      printf("Error in rcl_node_init\n");
-      return;
-    }
-
     type_support_ = ROSIDL_GET_MSG_TYPE_SUPPORT(reference_interfaces, msg, MESSAGE_T_NAME);
     rc = rclc_subscription_init_default(
       &subscription0_,
-      &node_,
+      get_node_base_interface()->get_rcl_node_handle(),
       type_support_,
       settings.input_0.c_str());
     if (rc != RCL_RET_OK) {
@@ -94,7 +60,7 @@ public:
     // TODO(JanStaschulat) set history buffer = 10
     rc = rclc_subscription_init_default(
       &subscription1_,
-      &node_,
+      get_node_base_interface()->get_rcl_node_handle(),
       type_support_,
       settings.input_1.c_str());
     if (rc != RCL_RET_OK) {
@@ -130,7 +96,7 @@ public:
     */
     rc = rclc_publisher_init_default(
       &publisher_,
-      &node_,
+      get_node_base_interface()->get_rcl_node_handle(),
       type_support_,
       settings.output_topic.c_str());
     if (RCL_RET_OK != rc) {
@@ -142,10 +108,10 @@ public:
   ~Fusion()
   {
     rcl_ret_t rc;
-    rc += rcl_publisher_fini(&publisher_, &node_);
-    rc += rcl_subscription_fini(&subscription0_, &node_);
-    rc += rcl_subscription_fini(&subscription1_, &node_);
-    rc += rcl_node_fini(&node_);
+    rc += rcl_publisher_fini(&publisher_, get_node_base_interface()->get_rcl_node_handle());
+    rc += rcl_subscription_fini(&subscription0_, get_node_base_interface()->get_rcl_node_handle());
+    rc += rcl_subscription_fini(&subscription1_, get_node_base_interface()->get_rcl_node_handle());
+
     MESSAGE_T_FINI(&msg_0_);
     MESSAGE_T_FINI(&msg_1_);
     MESSAGE_T_FINI(&pub_msg_);
@@ -154,10 +120,6 @@ public:
     }
   }
 
-  std::string get_name()
-  {
-    return node_name_;
-  }
   void add_to_executor(rclc_executor_t * executor)
   {
     rcl_ret_t rc;
@@ -219,12 +181,6 @@ private:
 */
 
 private:
-  std::string node_name_;
-
-  rcl_node_t node_;
-  rcl_context_t context_;
-  rcl_init_options_t init_options_;
-  rcl_allocator_t allocator_;
 
   //message_t::SharedPtr message_cache_[2];
   const MESSAGE_T_FULL_NAME * message_cache_[2];

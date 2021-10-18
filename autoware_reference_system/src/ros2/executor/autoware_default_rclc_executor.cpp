@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "stdio.h"
+#include "string.h"
 #include "rclcpp/rclcpp.hpp"
 
 #include "reference_system/system/systems.hpp"
@@ -41,9 +42,11 @@ int main(int argc, char * argv[])
   rclc_executor_init(&rclcExecutor, &context, num_handles, &allocator);
 
   for (auto & node : nodes) {
-    if (node.get_name() == "PointCloudFusion") {
-      printf("... added PointCloudFusion to rclc-executor.\n");
-      node.add_to_executor(&rclcExecutor);
+    
+    if (strcmp(node->get_name(), "PointCloudFusion") == 0) {
+      printf("... add PointCloudFusion to rclc-executor.\n");
+      std::shared_ptr<nodes::rclc_system::Fusion> fusionNode = std::dynamic_pointer_cast<nodes::rclc_system::Fusion>(node);
+      fusionNode->add_to_executor(&rclcExecutor);
     } else {
       executor.add_node(node);
     }

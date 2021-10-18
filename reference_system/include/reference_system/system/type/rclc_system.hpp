@@ -22,7 +22,7 @@
 
 struct RclcSystem
 {
-  // using NodeBaseType = nodes::rclc_system::NodeBase;
+  using NodeBaseType = rclcpp::Node;
 
   using Command = nodes::rclc_system::Command;
   using Cyclic = nodes::rclc_system::Cyclic;
