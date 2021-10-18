@@ -28,14 +28,14 @@
 #include "reference_system/msg_types.hpp"
 
 /*
-alternative: 
-use rosidl types only in the publisher/subscription calls 
-store as message_t type in this class 
+alternative:
+use rosidl types only in the publisher/subscription calls
+store as message_t type in this class
 
-this make the code compatible 
+this make the code compatible
 
-need to look into rclcpp code, how the conversion between 
-x::msg::type to x__msg__type is done and apply it here 
+need to look into rclcpp code, how the conversion between
+x::msg::type to x__msg__type is done and apply it here
 function is not available in Galactic (only in Rolling)
 
 */
@@ -97,8 +97,12 @@ public:
   {
     rcl_ret_t rc;
     rc += rcl_publisher_fini(&publisher_, get_node_base_interface()->get_rcl_node_handle());
-    rc += rcl_subscription_fini(&subscriptions_[0].subscription, get_node_base_interface()->get_rcl_node_handle());
-    rc += rcl_subscription_fini(&subscriptions_[1].subscription, get_node_base_interface()->get_rcl_node_handle());
+    rc += rcl_subscription_fini(
+      &subscriptions_[0].subscription,
+      get_node_base_interface()->get_rcl_node_handle());
+    rc += rcl_subscription_fini(
+      &subscriptions_[1].subscription,
+      get_node_base_interface()->get_rcl_node_handle());
 
     MESSAGE_T_FINI(&msg_0_);
     MESSAGE_T_FINI(&msg_1_);
@@ -124,8 +128,8 @@ public:
     if (rc != RCL_RET_OK) {
       printf("Error add_to_executor: subscription1 \n");
     }
-  subscriptions_[0].cache = NULL;
-  subscriptions_[1].cache = NULL;
+    subscriptions_[0].cache = NULL;
+    subscriptions_[1].cache = NULL;
   }
 
 private:
@@ -133,7 +137,7 @@ private:
   {
     printf("rclc-callback 0 ");
     Fusion * this_ptr = static_cast<Fusion *>(context);
-    if (this_ptr != NULL){
+    if (this_ptr != NULL) {
       this_ptr->subscriptions_[0].cache = static_cast<const message_t *>(msgin);
       printf(" called ");
     }
@@ -145,13 +149,14 @@ private:
     uint64_t timestamp = now_as_int();
     printf("rclc-callback 1 ");
     Fusion * this_ptr = (Fusion *) context;
-    if (this_ptr != NULL){
+    if (this_ptr != NULL) {
       this_ptr->subscriptions_[1].cache = static_cast<const message_t *>(msgin);
-    
+
       // only process and publish when we can perform an actual fusion, this means
       // we have received a sample from each subscription
-      if ((this_ptr->subscriptions_[0].cache == NULL) || 
-          (this_ptr->subscriptions_[1].cache == NULL)) {
+      if ((this_ptr->subscriptions_[0].cache == NULL) ||
+        (this_ptr->subscriptions_[1].cache == NULL))
+      {
         return;
       }
 
@@ -164,16 +169,16 @@ private:
         get_missed_samples_and_update_seq_nr(
         this_ptr->subscriptions_[1].cache,
         this_ptr->subscriptions_[1].sequence_number);
-  /*
-      this_ptr->pub_msg_.size = 0;
-      merge_history_into_sample(this_ptr->pub_msg_, this_ptr->subscriptions_[0].cache);
-      merge_history_into_sample(this_ptr->pub_msg_, this_ptr->subscriptions_[1].cache);
-      set_sample(
-        this_ptr->get_name(), this_ptr->sequence_number_++, missed_samples, timestamp,
-        this_ptr->pub_msg_);
-      this_ptr->pub_msg_.data[0] = number_cruncher_result;
-      rcl_publish(&this_ptr->publisher_, &this_ptr->pub_msg_, NULL);
-  */
+      /*
+          this_ptr->pub_msg_.size = 0;
+          merge_history_into_sample(this_ptr->pub_msg_, this_ptr->subscriptions_[0].cache);
+          merge_history_into_sample(this_ptr->pub_msg_, this_ptr->subscriptions_[1].cache);
+          set_sample(
+            this_ptr->get_name(), this_ptr->sequence_number_++, missed_samples, timestamp,
+            this_ptr->pub_msg_);
+          this_ptr->pub_msg_.data[0] = number_cruncher_result;
+          rcl_publish(&this_ptr->publisher_, &this_ptr->pub_msg_, NULL);
+      */
       this_ptr->output_message_.size = 0;
       merge_history_into_sample(this_ptr->output_message_, this_ptr->subscriptions_[0].cache);
       merge_history_into_sample(this_ptr->output_message_, this_ptr->subscriptions_[1].cache);
@@ -185,7 +190,7 @@ private:
 
       this_ptr->subscriptions_[0].cache = NULL;
       this_ptr->subscriptions_[1].cache = NULL;
-    
+
       printf(" called");
     }
     printf("\n");
@@ -206,10 +211,10 @@ private:
   MESSAGE_T_FULL_NAME msg_1_;
   // MESSAGE_T_FULL_NAME pub_msg_;
   message_t output_message_;
-  rcl_publisher_t     publisher_;
+  rcl_publisher_t publisher_;
 
-  uint64_t            number_crunch_limit_;
-  uint32_t            sequence_number_ = 0;
+  uint64_t number_crunch_limit_;
+  uint32_t sequence_number_ = 0;
 };
 
 }  // namespace rclc_system
