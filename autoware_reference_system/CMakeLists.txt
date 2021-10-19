@@ -1,37 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 project(autoware_reference_system)
 
-# pass in via command line or set to True to test if platform is supported
-message(STATUS "TEST_PLATFORM=${TEST_PLATFORM}")
-if(${TEST_PLATFORM})
-  message(STATUS "Building platform test")
-else()
-  message(STATUS "Not building platform tests")
-endif()
 
-# pass in via command line or set to True to run full benchmark tests
-message(STATUS "RUN_BENCHMARK=${RUN_BENCHMARK}")
-if(${RUN_BENCHMARK})
-  # pass in via command line or set to True to skip ros2_tracing tests
-  message(STATUS "SKIP_TRACING=${SKIP_TRACING}")
-  if(${SKIP_TRACING})
-    message(STATUS "Only building memory and CPU usage benchmark tests")
-    message(STATUS "Skipping ros2_tracing (LTTng) tests")
-  else()
-    message(STATUS "Building full benchmark tests")
-  endif()
-else()
-  message(STATUS "Not building benchmark tests")
-endif()
-
-# pass in via command line or set to True to run for all available RMWs
-message(STATUS "ALL_RMWS=${ALL_RMWS}")
-if(${ALL_RMWS})
-  message(STATUS "Run tests on all available RMW's")
-else()
-  set(ALL_RMWS OFF)
-  message(STATUS "Using default RMW for tests")
-endif()
+option(RUN_BENCHMARK "Run the full benchmark tests" OFF)  # default to off for CI purposes
+option(SKIP_TRACING "Skip the ros2_tracing (LTTng) tests" ON)  # default to off unitl #35 is closed
+option(TEST_PLATFORM "Test if running on a supported platform" OFF)  # default to off for development purposes
+option(ALL_RMWS "Run tests for all available RMWs" OFF)  # default to off so only one RMW is tested by default
 
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
@@ -141,9 +115,8 @@ if(${BUILD_TESTING})
       # cpu     # built into memory tests using psrecord
     )
 
-    # remove ros2_tracing trace_types if SKIP_TRACING is TRUE
+    # remove ros2_tracing trace_types if SKIP_TRACING is ON
     if(${SKIP_TRACING})
-      message(STATUS "SKIP_TRACING is TRUE")
       message(STATUS "Removing callback trace tests")
       list(REMOVE_ITEM TRACE_TYPES "callback")
     endif()
