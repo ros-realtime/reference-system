@@ -13,7 +13,11 @@
 // limitations under the License.
 #ifndef REFERENCE_SYSTEM__NODES__RCLCPP__INTERSECTION_HPP_
 #define REFERENCE_SYSTEM__NODES__RCLCPP__INTERSECTION_HPP_
+
+#include <cstdlib>
+
 #include <chrono>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -36,6 +40,10 @@ public:
   : Node(settings.node_name)
   {
     for (auto & connection : settings.connections) {
+      rclcpp::SubscriptionOptionsWithAllocator<std::allocator<void>> options;
+      rclcpp::CallbackGroup::SharedPtr callback_group = this->create_callback_group(
+        rclcpp::CallbackGroupType::MutuallyExclusive);
+      options.callback_group = callback_group;
       connections_.emplace_back(
         Connection{
             this->create_publisher<message_t>(connection.output_topic, 1),
@@ -43,10 +51,23 @@ public:
               connection.input_topic, 1,
               [this, id = connections_.size()](const message_t::SharedPtr msg) {
                 input_callback(msg, id);
-              }),
+              }, options),
+            callback_group,
             connection.number_crunch_limit
           });
     }
+  }
+
+  rclcpp::CallbackGroup::SharedPtr get_callback_group_of_subscription(
+    const std::string & input_topic)
+  {
+    for (auto & connection : connections_) {
+      if (input_topic == connection.subscription->get_topic_name()) {
+        return connection.callback_group;
+      }
+    }
+    RCLCPP_FATAL(get_logger(), "Subscription for topic '%s' not found!", input_topic.c_str());
+    std::exit(1);
   }
 
 private:
@@ -77,6 +98,7 @@ private:
   {
     rclcpp::Publisher<message_t>::SharedPtr publisher;
     rclcpp::Subscription<message_t>::SharedPtr subscription;
+    rclcpp::CallbackGroup::SharedPtr callback_group;
     uint64_t number_crunch_limit;
     uint32_t sequence_number = 0;
     uint32_t input_sequence_number = 0;
