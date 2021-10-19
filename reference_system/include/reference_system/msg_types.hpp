@@ -15,7 +15,13 @@
 #define REFERENCE_SYSTEM__MSG_TYPES_HPP_
 
 #include "reference_interfaces/msg/message4kb.hpp"
+#include "reference_interfaces/msg/message4kb.h"
 
 using message_t = reference_interfaces::msg::Message4kb;
+
+#define MESSAGE_T_NAME Message4kb
+#define MESSAGE_T_FULL_NAME reference_interfaces__msg__Message4kb
+#define MESSAGE_T_INIT reference_interfaces__msg__Message4kb__init
+#define MESSAGE_T_FINI reference_interfaces__msg__Message4kb__fini
 
 #endif  // REFERENCE_SYSTEM__MSG_TYPES_HPP_

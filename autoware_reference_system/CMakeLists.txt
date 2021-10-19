@@ -59,6 +59,11 @@ ament_auto_add_executable(autoware_default_multithreaded
   src/ros2/executor/autoware_default_multithreaded.cpp
 )
 
+# Multi Threaded Executor
+ament_auto_add_executable(autoware_default_rclcexecutor
+  src/ros2/executor/autoware_default_rclc_executor.cpp
+)
+
 # Number Cruncher Benchmark
 ament_auto_add_executable(number_cruncher_benchmark
   src/ros2/number_cruncher_benchmark.cpp
@@ -103,6 +108,7 @@ if(${BUILD_TESTING})
       autoware_default_singlethreaded
       autoware_default_staticsinglethreaded
       autoware_default_multithreaded
+      autoware_default_rclcexecutor
       #autoware_default_custom
     )
 
