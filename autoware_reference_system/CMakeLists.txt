@@ -64,10 +64,21 @@ ament_auto_add_executable(number_cruncher_benchmark
   src/ros2/number_cruncher_benchmark.cpp
 )
 
+# Multiple executors with suitable prioritization of critical path.
+ament_auto_add_executable(autoware_default_prioritized
+  src/ros2/executor/autoware_default_prioritized.cpp
+)
+
+# Multiple executors on callback-group-level with suitable prioritization of critical path.
+ament_auto_add_executable(autoware_default_cbg
+  src/ros2/executor/autoware_default_cbg.cpp
+)
+
 # Add new executors to test here
 #ament_auto_add_executable(autoware_default_custom
 #  src/ros2/executor/autoware_default_custom.cpp
 #)
+
 
 if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
@@ -103,6 +114,8 @@ if(${BUILD_TESTING})
       autoware_default_singlethreaded
       autoware_default_staticsinglethreaded
       autoware_default_multithreaded
+      autoware_default_prioritized
+      autoware_default_cbg
       #autoware_default_custom
     )
 
