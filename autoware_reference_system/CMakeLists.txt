@@ -69,10 +69,12 @@ ament_auto_add_executable(autoware_default_prioritized
   src/ros2/executor/autoware_default_prioritized.cpp
 )
 
-# Multiple executors on callback-group-level with suitable prioritization of critical path.
-ament_auto_add_executable(autoware_default_cbg
-  src/ros2/executor/autoware_default_cbg.cpp
-)
+if("${rclcpp_VERSION}" VERSION_GREATER_EQUAL "9.0.0")  # i.e. from Galactic on
+  # Multiple executors on callback-group-level with suitable prioritization of critical path.
+  ament_auto_add_executable(autoware_default_cbg
+    src/ros2/executor/autoware_default_cbg.cpp
+  )
+endif()
 
 # Add new executors to test here
 #ament_auto_add_executable(autoware_default_custom
@@ -115,9 +117,11 @@ if(${BUILD_TESTING})
       autoware_default_staticsinglethreaded
       autoware_default_multithreaded
       autoware_default_prioritized
-      autoware_default_cbg
       #autoware_default_custom
     )
+    if("${rclcpp_VERSION}" VERSION_GREATER_EQUAL "9.0.0")  # i.e. from Galactic on
+      list(APPEND TEST_TARGETS autoware_default_cbg)
+    endif()
 
     # Add more run times here (time to run traces for)
     set(RUN_TIMES
