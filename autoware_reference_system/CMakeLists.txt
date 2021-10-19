@@ -41,6 +41,10 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+find_package(kpsr_ros2_executor REQUIRED)
+find_package(Klepsydra REQUIRED)
+find_package(KlepsydraAdmin REQUIRED)
+
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
@@ -65,9 +69,11 @@ ament_auto_add_executable(number_cruncher_benchmark
 )
 
 # Add new executors to test here
-#ament_auto_add_executable(autoware_default_custom
-#  src/ros2/executor/autoware_default_custom.cpp
-#)
+ament_auto_add_executable(autoware_default_custom
+  src/ros2/executor/autoware_default_klepsydrasinglethreaded.cpp
+)
+
+ament_target_dependencies(autoware_default_custom ${dependencies})
 
 if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
@@ -103,7 +109,7 @@ if(${BUILD_TESTING})
       autoware_default_singlethreaded
       autoware_default_staticsinglethreaded
       autoware_default_multithreaded
-      #autoware_default_custom
+      autoware_default_custom
     )
 
     # Add more run times here (time to run traces for)
