@@ -23,6 +23,7 @@ from bokeh.models.widgets.tables import DataTable, TableColumn
 from bokeh.palettes import cividis
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
+from constants import SIZE_AXIS_LABEL, SIZE_CATEGORY_LABEL, SIZE_MAJOR_LABEL, SIZE_TITLE
 import pandas as pd
 
 
@@ -138,6 +139,12 @@ def summary(path, duration, size):
     )
     cpu_fig.y_range.start = 0
     cpu_fig.x_range.range_padding = 0.1
+    cpu_fig.title.text_font_size = SIZE_TITLE
+    cpu_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    cpu_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    cpu_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+    cpu_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
+    cpu_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
 
     # initialize real memory figure
     real_fig = figure(
@@ -173,6 +180,12 @@ def summary(path, duration, size):
     )
     real_fig.y_range.start = 0
     real_fig.x_range.range_padding = 0.1
+    real_fig.title.text_font_size = SIZE_TITLE
+    real_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    real_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    real_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+    real_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
+    real_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
 
     # initialize virtual memory figure
     virtual_fig = figure(
@@ -208,6 +221,12 @@ def summary(path, duration, size):
     )
     virtual_fig.y_range.start = 0
     virtual_fig.x_range.range_padding = 0.1
+    virtual_fig.title.text_font_size = SIZE_TITLE
+    virtual_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    virtual_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    virtual_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+    virtual_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
+    virtual_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
 
     # add cpu hover tool
     cpu_hover = HoverTool()
