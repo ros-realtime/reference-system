@@ -19,6 +19,7 @@ from bokeh.models.widgets.tables import DataTable, TableColumn
 from bokeh.palettes import cividis
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
+from constants import SIZE_AXIS_LABEL, SIZE_CATEGORY_LABEL, SIZE_MAJOR_LABEL, SIZE_TITLE
 import pandas as pd
 
 
@@ -138,6 +139,12 @@ def summary(path, duration, size):
     )
     latency_fig.y_range.start = 0
     latency_fig.x_range.range_padding = 0.1
+    latency_fig.title.text_font_size = SIZE_TITLE
+    latency_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    latency_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    latency_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+    latency_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
+    latency_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
 
     # initialize dropped message figure
     dropped_fig = figure(
@@ -174,6 +181,12 @@ def summary(path, duration, size):
     )
     dropped_fig.y_range.start = 0
     dropped_fig.x_range.range_padding = 0.1
+    dropped_fig.title.text_font_size = SIZE_TITLE
+    dropped_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    dropped_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    dropped_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+    dropped_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
+    dropped_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
 
     # initialize period figure
     period_fig = figure(
@@ -222,6 +235,12 @@ def summary(path, duration, size):
     )
     period_fig.y_range.start = 0
     period_fig.x_range.range_padding = 0.1
+    period_fig.title.text_font_size = SIZE_TITLE
+    period_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    period_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    period_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+    period_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
+    period_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
 
     # add latency hover tool
     latency_hover = HoverTool()
