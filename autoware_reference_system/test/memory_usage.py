@@ -376,6 +376,12 @@ def individual(path, size):
         muted_color=colors[1],
         muted_alpha=0.2
     )
+    raw_data_fig.title.text_font_size = SIZE_TITLE
+    raw_data_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    raw_data_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    raw_data_fig.xaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+    raw_data_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+
     # add hover tool
     hover = HoverTool()
     hover.tooltips = [
@@ -389,7 +395,10 @@ def individual(path, size):
     table_title = Div(
         text='<b>Memory and CPU Usage Data: ' + basename + '</b>',
         width=1000,
-        height=10
+        height=20,
+        style={
+            'font-size': SIZE_MAJOR_LABEL
+        }
     )
     summary_fig = [
         table_title,
@@ -399,5 +408,5 @@ def individual(path, size):
             margin=(10, 10, 10, 10),
             height=140)]
     # add figure and table to output
-    memory.append([summary_fig, raw_data_fig])
+    memory = [[summary_fig], [raw_data_fig]]
     return memory
