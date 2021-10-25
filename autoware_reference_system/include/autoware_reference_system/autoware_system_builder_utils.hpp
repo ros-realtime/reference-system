@@ -96,7 +96,8 @@ void set_nice_level_of_current_thread(const int level)
   const auto tid = gettid();
   int rval = setpriority(PRIO_PROCESS, tid, level);
   if (rval != 0) {
-    RCLCPP_WARN(rclcpp::get_logger("main"), "Could not change nice level of thread %d! Are you super user?", tid);
+    auto logger = rclcpp::get_logger("main");
+    RCLCPP_WARN(logger, "Could not change nice level of thread %d! Are you super user?", tid);
   }
 }
 
