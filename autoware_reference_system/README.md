@@ -219,7 +219,9 @@ source install/local_setup.bash
 colcon test
 ```
 
-**Note:** during the testing _trace data_ generated from `LTTng` will be placed in `$ROS_HOME/tracing`.
+**Note 1:** some of the tests require super user privileges, to change thread priorities. If super user privileges are not available, these tests are excluded automatically. Run the above lines from a `sudo bash` or similar to include those tests.
+
+**Note 2:** during the testing _trace data_ generated from `LTTng` will be placed in `$ROS_HOME/tracing`.
 
 If the `$ROS_HOME/tracing` directory is missing the tests will automatically generate it for you.
 
