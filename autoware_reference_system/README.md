@@ -196,6 +196,9 @@ Source your ROS distribution as well as your `ros2_tracing` overlay, compile thi
     - This flag can be ommited if you would like to run the tests on a development system before running them on a supported platform
     - The platform tests themselves can and should be improved going forward and are only some simple checks today (architecture, number of CPUs, PREEMPT_RT flag, etc.)
     - Set this to `ON` to check if the current platform is supported
+- `SKIP_TRACING`
+    - Set to `ON` to skip the `ros2_tracing` tests, aka the `callback` tests
+    - This can greatly reduce the length of time the `colcon test` command takes to run
 - `ALL_RMWS`
     - Set this to `ON` if you'd like to run tests on all available RMWS as well
     - Otherwise use only default RMW (first one listed by CMake function `get_available_rmw_implementations`)
