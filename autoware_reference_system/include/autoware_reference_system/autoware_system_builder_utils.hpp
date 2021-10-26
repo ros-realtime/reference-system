@@ -89,15 +89,15 @@ void add_unassociated_nodes_to_executor(
   }
 }
 
-/// Changes the nice level of the current thread. If the operation fails, the function fails
-/// with `RCLCPP_FATAL`.
+/// Changes the nice level of the current thread. If the operation fails, the function prints
+/// a prominent warning.
 void set_nice_level_of_current_thread(const int level)
 {
-  int rval = setpriority(PRIO_PROCESS, gettid(), level);
+  const auto tid = gettid();
+  int rval = setpriority(PRIO_PROCESS, tid, level);
   if (rval != 0) {
-    RCLCPP_FATAL(rclcpp::get_logger("main"), "Could not change priority of thread!");
-    rclcpp::shutdown();
-    std::exit(1);
+    auto logger = rclcpp::get_logger("main");
+    RCLCPP_WARN(logger, "Could not change nice level of thread %d! Are you super user?", tid);
   }
 }
 

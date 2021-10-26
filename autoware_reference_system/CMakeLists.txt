@@ -90,12 +90,25 @@ if(${BUILD_TESTING})
       autoware_default_singlethreaded
       autoware_default_staticsinglethreaded
       autoware_default_multithreaded
-      autoware_default_prioritized
       #autoware_default_custom
     )
-    if("${rclcpp_VERSION}" VERSION_GREATER_EQUAL "9.0.0")  # i.e. from Galactic on
-      list(APPEND TEST_TARGETS autoware_default_cbg)
+
+    execute_process(COMMAND bash -c "id -u" OUTPUT_VARIABLE CURRENT_UID)
+    if(CURRENT_UID EQUAL "0")
+      list(APPEND TEST_TARGETS autoware_default_prioritized)
+      if("${rclcpp_VERSION}" VERSION_GREATER_EQUAL "9.0.0")  # i.e. from Galactic on
+        list(APPEND TEST_TARGETS autoware_default_cbg)
+      else()
+        message(WARNING, "Skipping autoware_default_cbg as it requires ROS "
+          "distro Galactic or later!")
+      endif()
+    else()
+      message(WARNING, "Skipping autoware_default_prioritized due to missing "
+        "super user right!")
+      message(WARNING, "Skipping autoware_default_cbg due to missing super "
+        "user right!")
     endif()
+
 
     # Add more run times here (time to run traces for)
     set(RUN_TIMES
