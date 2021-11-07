@@ -1,0 +1,683 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>autoware_reference_system/include/autoware_reference_system/autoware_system_builder.hpp - Reference System Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#autoware_reference_systemincludeautoware_reference_systemautoware_system_builderhpp" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Reference System Documentation" class="md-header__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reference System Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              autoware_reference_system/include/autoware_reference_system/autoware_system_builder.hpp
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Reference System Documentation" class="md-nav__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Reference System Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/Pages/md_README" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/Classes" class="md-nav__link">
+        Classes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/Namespaces" class="md-nav__link">
+        Namespaces
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/Modules" class="md-nav__link">
+        Modules
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/Files" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/Pages" class="md-nav__link">
+        Related Pages
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/Examples" class="md-nav__link">
+        Examples
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#namespaces" class="md-nav__link">
+    Namespaces
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions-documentation" class="md-nav__link">
+    Functions Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-create_autoware_nodes" class="md-nav__link">
+    function create_autoware_nodes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-code" class="md-nav__link">
+    Source code
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="autoware_reference_systemincludeautoware_reference_systemautoware_system_builderhpp">autoware_reference_system/include/autoware_reference_system/autoware_system_builder.hpp</h1>
+<h2 id="namespaces">Namespaces</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="Namespaces/namespacestd_1_1chrono__literals.md">std::chrono_literals</a></strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions">Functions</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>template &lt;typename SystemType ,typename TimingConfig > <br>auto</td>
+<td><strong><a href="Files/autoware__system__builder_8hpp.md#function-create-autoware-nodes">create_autoware_nodes</a></strong>()</td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions-documentation">Functions Documentation</h2>
+<h3 id="function-create_autoware_nodes">function create_autoware_nodes</h3>
+<pre><code class="language-cpp">template &lt;typename SystemType ,
+typename TimingConfig &gt;
+auto create_autoware_nodes()
+</code></pre>
+<h2 id="source-code">Source code</h2>
+<pre><code class="language-cpp">// Copyright 2021 Apex.AI, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#ifndef AUTOWARE_REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_
+#define AUTOWARE_REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_
+#include &lt;chrono&gt;
+#include &lt;memory&gt;
+#include &lt;vector&gt;
+
+#include &quot;reference_system/nodes/settings.hpp&quot;
+#include &quot;reference_system/system/systems.hpp&quot;
+
+using namespace std::chrono_literals;  // NOLINT
+
+template&lt;typename SystemType, typename TimingConfig&gt;
+auto create_autoware_nodes()
+-&gt;std::vector&lt;std::shared_ptr&lt;typename SystemType::NodeBaseType&gt;&gt;
+{
+  std::vector&lt;std::shared_ptr&lt;typename SystemType::NodeBaseType&gt;&gt; nodes;
+
+// ignore the warning about designated initializers - they make the code much
+// more readable
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored &quot;-Wpedantic&quot;
+
+  // setup communication graph
+  // sensor nodes
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Sensor&gt;(
+      nodes::SensorSettings{.node_name = &quot;FrontLidarDriver&quot;,
+        .topic_name = &quot;FrontLidarDriver&quot;,
+        .cycle_time = TimingConfig::FRONT_LIDAR_DRIVER}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Sensor&gt;(
+      nodes::SensorSettings{.node_name = &quot;RearLidarDriver&quot;,
+        .topic_name = &quot;RearLidarDriver&quot;,
+        .cycle_time = TimingConfig::REAR_LIDAR_DRIVER}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Sensor&gt;(
+      nodes::SensorSettings{.node_name = &quot;PointCloudMap&quot;,
+        .topic_name = &quot;PointCloudMap&quot;,
+        .cycle_time = TimingConfig::POINT_CLOUD_MAP}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Sensor&gt;(
+      nodes::SensorSettings{.node_name = &quot;Visualizer&quot;,
+        .topic_name = &quot;Visualizer&quot;,
+        .cycle_time = TimingConfig::VISUALIZER}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Sensor&gt;(
+      nodes::SensorSettings{.node_name = &quot;Lanelet2Map&quot;,
+        .topic_name = &quot;Lanelet2Map&quot;,
+        .cycle_time = TimingConfig::LANELET2MAP}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Sensor&gt;(
+      nodes::SensorSettings{.node_name = &quot;EuclideanClusterSettings&quot;,
+        .topic_name = &quot;EuclideanClusterSettings&quot;,
+        .cycle_time = TimingConfig::EUCLIDEAN_CLUSTER_SETTINGS}));
+
+  // transform nodes
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Transform&gt;(
+      nodes::TransformSettings{
+    .node_name = &quot;PointsTransformerFront&quot;,
+    .input_topic = &quot;FrontLidarDriver&quot;,
+    .output_topic = &quot;PointsTransformerFront&quot;,
+    .number_crunch_limit = TimingConfig::POINTS_TRANSFORMER_FRONT}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Transform&gt;(
+      nodes::TransformSettings{
+    .node_name = &quot;PointsTransformerRear&quot;,
+    .input_topic = &quot;RearLidarDriver&quot;,
+    .output_topic = &quot;PointsTransformerRear&quot;,
+    .number_crunch_limit = TimingConfig::POINTS_TRANSFORMER_REAR}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Transform&gt;(
+      nodes::TransformSettings{
+    .node_name = &quot;VoxelGridDownsampler&quot;,
+    .input_topic = &quot;PointCloudFusion&quot;,
+    .output_topic = &quot;VoxelGridDownsampler&quot;,
+    .number_crunch_limit = TimingConfig::VOXEL_GRID_DOWNSAMPLER}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Transform&gt;(
+      nodes::TransformSettings{
+    .node_name = &quot;PointCloudMapLoader&quot;,
+    .input_topic = &quot;PointCloudMap&quot;,
+    .output_topic = &quot;PointCloudMapLoader&quot;,
+    .number_crunch_limit = TimingConfig::POINT_CLOUD_MAP_LOADER}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Transform&gt;(
+      nodes::TransformSettings{
+    .node_name = &quot;RayGroundFilter&quot;,
+    .input_topic = &quot;PointCloudFusion&quot;,
+    .output_topic = &quot;RayGroundFilter&quot;,
+    .number_crunch_limit = TimingConfig::RAY_GROUND_FILTER}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Transform&gt;(
+      nodes::TransformSettings{
+    .node_name = &quot;ObjectCollisionEstimator&quot;,
+    .input_topic = &quot;EuclideanClusterDetector&quot;,
+    .output_topic = &quot;ObjectCollisionEstimator&quot;,
+    .number_crunch_limit = TimingConfig::OBJECT_COLLISION_ESTIMATOR}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Transform&gt;(
+      nodes::TransformSettings{
+    .node_name = &quot;MPCController&quot;,
+    .input_topic = &quot;BehaviorPlanner&quot;,
+    .output_topic = &quot;MPCController&quot;,
+    .number_crunch_limit = TimingConfig::MPC_CONTROLLER}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Transform&gt;(
+      nodes::TransformSettings{
+    .node_name = &quot;ParkingPlanner&quot;,
+    .input_topic = &quot;Lanelet2MapLoader&quot;,
+    .output_topic = &quot;ParkingPlanner&quot;,
+    .number_crunch_limit = TimingConfig::PARKING_PLANNER}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Transform&gt;(
+      nodes::TransformSettings{
+    .node_name = &quot;LanePlanner&quot;,
+    .input_topic = &quot;Lanelet2MapLoader&quot;,
+    .output_topic = &quot;LanePlanner&quot;,
+    .number_crunch_limit = TimingConfig::LANE_PLANNER}));
+
+  // fusion nodes
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Fusion&gt;(
+      nodes::FusionSettings{
+    .node_name = &quot;PointCloudFusion&quot;,
+    .input_0 = &quot;PointsTransformerFront&quot;,
+    .input_1 = &quot;PointsTransformerRear&quot;,
+    .output_topic = &quot;PointCloudFusion&quot;,
+    .number_crunch_limit = TimingConfig::POINT_CLOUD_FUSION}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Fusion&gt;(
+      nodes::FusionSettings{
+    .node_name = &quot;NDTLocalizer&quot;,
+    .input_0 = &quot;VoxelGridDownsampler&quot;,
+    .input_1 = &quot;PointCloudMapLoader&quot;,
+    .output_topic = &quot;NDTLocalizer&quot;,
+    .number_crunch_limit = TimingConfig::NDT_LOCALIZER}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Fusion&gt;(
+      nodes::FusionSettings{
+    .node_name = &quot;VehicleInterface&quot;,
+    .input_0 = &quot;MPCController&quot;,
+    .input_1 = &quot;BehaviorPlanner&quot;,
+    .output_topic = &quot;VehicleInterface&quot;,
+    .number_crunch_limit = TimingConfig::VEHICLE_INTERFACE}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Fusion&gt;(
+      nodes::FusionSettings{
+    .node_name = &quot;Lanelet2GlobalPlanner&quot;,
+    .input_0 = &quot;Visualizer&quot;,
+    .input_1 = &quot;NDTLocalizer&quot;,
+    .output_topic = &quot;Lanelet2GlobalPlanner&quot;,
+    .number_crunch_limit = TimingConfig::LANELET_2_GLOBAL_PLANNER}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Fusion&gt;(
+      nodes::FusionSettings{
+    .node_name = &quot;Lanelet2MapLoader&quot;,
+    .input_0 = &quot;Lanelet2Map&quot;,
+    .input_1 = &quot;Lanelet2GlobalPlanner&quot;,
+    .output_topic = &quot;Lanelet2MapLoader&quot;,
+    .number_crunch_limit = TimingConfig::LANELET_2_MAP_LOADER}));
+
+  // cyclic node
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Cyclic&gt;(
+      nodes::CyclicSettings{
+    .node_name = &quot;BehaviorPlanner&quot;,
+    .inputs = {&quot;ObjectCollisionEstimator&quot;, &quot;NDTLocalizer&quot;,
+      &quot;Lanelet2GlobalPlanner&quot;, &quot;Lanelet2MapLoader&quot;,
+      &quot;ParkingPlanner&quot;, &quot;LanePlanner&quot;},
+    .output_topic = &quot;BehaviorPlanner&quot;,
+    .number_crunch_limit = TimingConfig::BEHAVIOR_PLANNER,
+    .cycle_time = TimingConfig::BEHAVIOR_PLANNER_CYCLE}));
+
+  // intersection node
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Intersection&gt;(
+      nodes::IntersectionSettings{
+    .node_name = &quot;EuclideanClusterDetector&quot;,
+    .connections = {
+      {.input_topic = &quot;RayGroundFilter&quot;,
+        .output_topic = &quot;EuclideanClusterDetector&quot;,
+        .number_crunch_limit = TimingConfig::EUCLIDEAN_CLUSTER_DETECTOR},
+      {.input_topic = &quot;EuclideanClusterSettings&quot;,
+        .output_topic = &quot;EuclideanIntersection&quot;,
+        .number_crunch_limit = TimingConfig::EUCLIDEAN_INTERSECTION
+      }
+    }}
+  ));
+
+  // command node
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Command&gt;(
+      nodes::CommandSettings{
+    .node_name = &quot;VehicleDBWSystem&quot;, .input_topic = &quot;VehicleInterface&quot;}));
+
+  nodes.emplace_back(
+    std::make_shared&lt;typename SystemType::Command&gt;(
+      nodes::CommandSettings{
+    .node_name = &quot;IntersectionOutput&quot;,
+    .input_topic = &quot;EuclideanIntersection&quot;}));
+#pragma GCC diagnostic pop
+
+  return nodes;
+}
+
+#endif  // AUTOWARE_REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_
+</code></pre>
+<hr />
+<p>Updated on 2021-11-07 at 18:38:13 +0000</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>
