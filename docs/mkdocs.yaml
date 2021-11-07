@@ -5,10 +5,10 @@ theme:
 plugins:
   - search
 nav:
-  - Home: /Pages/md_README
-  - Classes: /Classes
-  - Namespaces: /Namespaces
-  - Modules: /Modules
-  - Files: /Files
-  - Related Pages: /Pages
-  - Examples: /Examples
+  - Home: reference-system/Pages/md_README
+  - Classes: reference-system/Classes
+  - Namespaces: reference-system/Namespaces
+  - Modules: reference-system/Modules
+  - Files: reference-system/Files
+  - Related Pages: reference-system/Pages
+  - Examples: reference-system/Examples
