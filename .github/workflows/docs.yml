@@ -6,7 +6,6 @@ on:
   push:
     branches: 
       - main
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -33,6 +32,7 @@ jobs:
           doxyfile-path: '.doxygen/Doxyfile'
       - name: build doxybook2
         run: |
+          mkdir ros2_ws/src/reference_system/docs/markdown
           wget https://github.com/matusnovak/doxybook2/releases/download/v1.4.0/doxybook2-linux-amd64-v1.4.0.zip
           apt-get install unzip
           unzip doxybook2-linux-amd64-v1.4.0.zip
@@ -43,7 +43,7 @@ jobs:
         run: |
           cd ros2_ws/src/reference_system/docs
           apt-get update -y
-          pip3 install mkdocs mkdocs-material doxygen
+          pip3 install mkdocs mkdocs-material
           mkdocs build
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
