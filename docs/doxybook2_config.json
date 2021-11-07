@@ -1,5 +1,5 @@
 {
-  "baseUrl": "",
+  "baseUrl": "reference-system/",
   "copyImages": true,
   "fileExt": "md",
   "filesFilter": [],
