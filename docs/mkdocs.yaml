@@ -1,0 +1,14 @@
+site_name: Reference System Documentation
+docs_dir: markdown
+theme:
+  name: 'material'
+plugins:
+  - search
+nav:
+  - Home: /Pages/md_README
+  - Classes: /Classes
+  - Namespaces: /Namespaces
+  - Modules: /Modules
+  - Files: /Files
+  - Related Pages: /Pages
+  - Examples: /Examples

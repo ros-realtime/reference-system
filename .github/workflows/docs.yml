@@ -1,0 +1,52 @@
+name: Generate Documentation
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the main branch
+  push:
+    branches: 
+      - main
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  generate_docs:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    container:
+      image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: setup workspace
+        run: mkdir -p ros2_ws/src/reference_system
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          path: ros2_ws/src/reference_system
+      - name: build doxygen
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+          working-directory: 'ros2_ws/src/reference_system'
+          doxyfile-path: '.doxygen/Doxyfile'
+      - name: build doxybook2
+        run: |
+          wget https://github.com/matusnovak/doxybook2/releases/download/v1.4.0/doxybook2-linux-amd64-v1.4.0.zip
+          apt-get install unzip
+          unzip doxybook2-linux-amd64-v1.4.0.zip
+          ./bin/doxybook2 --input ros2_ws/src/reference_system/docs/xml \
+            --output ros2_ws/src/reference_system/docs/markdown \
+            --config ros2_ws/src/reference_system/docs/doxybook2_config.json
+      - name: build mkdocs site
+        run: |
+          cd ros2_ws/src/reference_system/docs
+          apt-get update -y
+          pip3 install mkdocs mkdocs-material doxygen
+          mkdocs build
+      - name: deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ros_ws/src/reference_system/docs/site
