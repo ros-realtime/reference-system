@@ -20,6 +20,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: setup workspace
+        # TODO(flynneva): make this a variable and use it at every step
         run: mkdir -p ros2_ws/src/reference_system
       - name: checkout
         uses: actions/checkout@v2
@@ -49,4 +50,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ros_ws/src/reference_system/docs/site/
+          publish_dir: ros2_ws/src/reference_system/docs/site/
