@@ -49,6 +49,6 @@ jobs:
       - name: build and test
         uses: ros-tooling/action-ros-ci@v0.2
         with:
-          package-name: autoware_reference_system
+          package-name: autoware_reference_system reference_system reference_interfaces
           target-ros2-distro: ${{ matrix.ros_distribution }}
           vcs-repo-file-url: ""
