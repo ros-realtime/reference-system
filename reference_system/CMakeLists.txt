@@ -25,6 +25,25 @@ target_include_directories(${PROJECT_NAME} INTERFACE
 if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
+
+  find_package(ament_cmake_gtest)
+
+  # unit tests
+  ament_add_gtest(test_sample_management
+    test/test_sample_management.cpp)
+  target_link_libraries(test_sample_management ${PROJECT_NAME})
+  ament_target_dependencies(test_sample_management reference_interfaces)
+
+  ament_add_gtest(test_number_cruncher
+    test/test_number_cruncher.cpp)
+  target_link_libraries(test_number_cruncher ${PROJECT_NAME})
+
+  # integration tests
+  ament_add_gtest(test_reference_system_rclcpp
+        test/test_fixtures.hpp
+        test/test_reference_system_rclcpp.cpp)
+  target_link_libraries(test_reference_system_rclcpp ${PROJECT_NAME})
+  ament_target_dependencies(test_reference_system_rclcpp reference_interfaces rclcpp)
 endif()
 
 # Install
