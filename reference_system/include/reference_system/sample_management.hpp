@@ -143,8 +143,6 @@ struct statistic_value_t
   uint64_t total_number = 0;
   std::string suffix;
   double adjustment = 0.0;
-  double delta = 0.0;
-  double delta2 = 0.0;
   double m2 = 0.0;
 
   void set(const uint64_t value)
@@ -152,10 +150,10 @@ struct statistic_value_t
     // Use Welford's online algorithm to calculate deviation
     ++total_number;
     current = value;
-    delta = value - average;
-    average += delta / total_number;
-    delta2 = value - average;
-    m2 += (delta * delta2);
+    auto previous_delta = value - average;
+    average += previous_delta / total_number;
+    auto new_delta = value - average;
+    m2 += (previous_delta * new_delta);
     deviation = sqrt(m2 / (total_number - 1));
     min = std::min(min, value);
     max = std::max(max, value);
