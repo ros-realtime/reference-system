@@ -1,0 +1,887 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>CMakeLists.txt - Reference System Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cmakeliststxt" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Reference System Documentation" class="md-header__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reference System Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CMakeLists.txt
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Reference System Documentation" class="md-nav__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Reference System Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pages/md_README" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Reports" class="md-nav__link">
+        Reports
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes" class="md-nav__link">
+        Classes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Namespaces" class="md-nav__link">
+        Namespaces
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Modules" class="md-nav__link">
+        Modules
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pages" class="md-nav__link">
+        Related Pages
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions-documentation" class="md-nav__link">
+    Functions Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-cmake_minimum_required" class="md-nav__link">
+    function cmake_minimum_required
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-ament_auto_add_executable" class="md-nav__link">
+    function ament_auto_add_executable
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-find_package" class="md-nav__link">
+    function find_package
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-set" class="md-nav__link">
+    function set
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-endif" class="md-nav__link">
+    function endif
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-set_1" class="md-nav__link">
+    function set
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-ament_add_pytest_test" class="md-nav__link">
+    function ament_add_pytest_test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-set_2" class="md-nav__link">
+    function set
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-list" class="md-nav__link">
+    function list
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-message" class="md-nav__link">
+    function message
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-message_1" class="md-nav__link">
+    function message
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-list_1" class="md-nav__link">
+    function list
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-list_2" class="md-nav__link">
+    function list
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-include" class="md-nav__link">
+    function include
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-test_requirements" class="md-nav__link">
+    function test_requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-foreach" class="md-nav__link">
+    function foreach
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-foreach_1" class="md-nav__link">
+    function foreach
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_traces" class="md-nav__link">
+    function generate_traces
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-code" class="md-nav__link">
+    Source code
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="cmakeliststxt">CMakeLists.txt</h1>
+<h2 id="functions">Functions</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-cmake-minimum-required">cmake_minimum_required</a></strong>(VERSION 3. 5)</td>
+</tr>
+<tr>
+<td>VERSION_GREATER_EQUAL</td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-ament-auto-add-executable">ament_auto_add_executable</a></strong>(autoware_default_cbg src/ros2/executor/autoware_default_cbg. cpp)</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-find-package">find_package</a></strong>(ament_lint_auto REQUIRED)</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-set">set</a></strong>(ROS_HOME $ENV{HOME}/. ros)</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-endif">endif</a></strong>()</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-set">set</a></strong>(ROS_LOG_DIR ${CMAKE_INSTALL_PREFIX}/../../log/latest_test/${PROJECT_NAME} )</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-ament-add-pytest-test">ament_add_pytest_test</a></strong>( ${PROJECT_NAME} test/test_platform.py TIMEOUT)</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-set">set</a></strong>(TEST_TARGETS autoware_default_singlethreaded autoware_default_staticsinglethreaded autoware_default_multithreaded)</td>
+</tr>
+<tr>
+<td>VERSION_GREATER_EQUAL</td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-list">list</a></strong>(APPEND TEST_TARGETS autoware_default_cbg)</td>
+</tr>
+<tr>
+<td>VERSION_GREATER_EQUAL Skipping autoware_default_cbg as it requires ROS distro Galactic or later Skipping autoware_default_prioritized due to missing super user right</td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-message">message</a></strong>(WARNING , "Skipping autoware_default_cbg due to missing super " "user right!" )</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-message">message</a></strong>(STATUS "Removing callback trace tests" )</td>
+</tr>
+<tr>
+<td>MATCHES OFF</td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-list">list</a></strong>(REVERSE rmws_available)</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-list">list</a></strong>(LENGTH rmws_available COUNT)</td>
+</tr>
+<tr>
+<td>cmake test_requirements cmake</td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-include">include</a></strong>( ${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_traces.)</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-test-requirements">test_requirements</a></strong>( ${exe})</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-foreach">foreach</a></strong>(rmw_implementation ${rmws_available} )</td>
+</tr>
+<tr>
+<td>REQUIRED</td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-foreach">foreach</a></strong>(time ${RUN_TIMES} )</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#function-generate-traces">generate_traces</a></strong>( ${exe} ${type} ${time})</td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions-documentation">Functions Documentation</h2>
+<h3 id="function-cmake_minimum_required">function cmake_minimum_required</h3>
+<pre><code class="language-cpp">cmake_minimum_required(
+    VERSION 3. 5
+)
+</code></pre>
+<h3 id="function-ament_auto_add_executable">function ament_auto_add_executable</h3>
+<pre><code class="language-cpp">VERSION_GREATER_EQUAL ament_auto_add_executable(
+    autoware_default_cbg src/ros2/executor/autoware_default_cbg. cpp
+)
+</code></pre>
+<h3 id="function-find_package">function find_package</h3>
+<pre><code class="language-cpp">find_package(
+    ament_lint_auto REQUIRED
+)
+</code></pre>
+<h3 id="function-set">function set</h3>
+<pre><code class="language-cpp">set(
+    ROS_HOME $ENV{HOME}/. ros
+)
+</code></pre>
+<h3 id="function-endif">function endif</h3>
+<pre><code class="language-cpp">endif()
+</code></pre>
+<h3 id="function-set_1">function set</h3>
+<pre><code class="language-cpp">set(
+    ROS_LOG_DIR ${CMAKE_INSTALL_PREFIX}/../../log/latest_test/${PROJECT_NAME} 
+)
+</code></pre>
+<h3 id="function-ament_add_pytest_test">function ament_add_pytest_test</h3>
+<pre><code class="language-cpp">ament_add_pytest_test(
+     ${PROJECT_NAME} test/test_platform.py TIMEOUT
+)
+</code></pre>
+<h3 id="function-set_2">function set</h3>
+<pre><code class="language-cpp">set(
+    TEST_TARGETS autoware_default_singlethreaded autoware_default_staticsinglethreaded autoware_default_multithreaded
+)
+</code></pre>
+<h3 id="function-list">function list</h3>
+<pre><code class="language-cpp">VERSION_GREATER_EQUAL list(
+    APPEND TEST_TARGETS autoware_default_cbg
+)
+</code></pre>
+<h3 id="function-message">function message</h3>
+<pre><code class="language-cpp">VERSION_GREATER_EQUAL Skipping autoware_default_cbg as it requires ROS distro Galactic or later Skipping autoware_default_prioritized due to missing super user right message(
+    WARNING ,
+    &quot;Skipping autoware_default_cbg due to missing super &quot; &quot;user right!&quot; 
+)
+</code></pre>
+<h3 id="function-message_1">function message</h3>
+<pre><code class="language-cpp">message(
+    STATUS &quot;Removing callback trace tests&quot; 
+)
+</code></pre>
+<h3 id="function-list_1">function list</h3>
+<pre><code class="language-cpp">MATCHES OFF list(
+    REVERSE rmws_available
+)
+</code></pre>
+<h3 id="function-list_2">function list</h3>
+<pre><code class="language-cpp">list(
+    LENGTH rmws_available COUNT
+)
+</code></pre>
+<h3 id="function-include">function include</h3>
+<pre><code class="language-cpp">cmake test_requirements cmake include(
+     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_traces.
+)
+</code></pre>
+<h3 id="function-test_requirements">function test_requirements</h3>
+<pre><code class="language-cpp">test_requirements(
+     ${exe}
+)
+</code></pre>
+<h3 id="function-foreach">function foreach</h3>
+<pre><code class="language-cpp">foreach(
+    rmw_implementation ${rmws_available} 
+)
+</code></pre>
+<h3 id="function-foreach_1">function foreach</h3>
+<pre><code class="language-cpp">REQUIRED foreach(
+    time ${RUN_TIMES} 
+)
+</code></pre>
+<h3 id="function-generate_traces">function generate_traces</h3>
+<pre><code class="language-cpp">generate_traces(
+     ${exe} ${type} ${time}
+)
+</code></pre>
+<h2 id="source-code">Source code</h2>
+<pre><code class="language-cpp">cmake_minimum_required(VERSION 3.5)
+project(autoware_reference_system)
+
+
+option(RUN_BENCHMARK &quot;Run the full benchmark tests&quot; OFF)  # default to off for CI purposes
+option(SKIP_TRACING &quot;Skip the ros2_tracing (LTTng) tests&quot; ON)  # default to off unitl #35 is closed
+option(TEST_PLATFORM &quot;Test if running on a supported platform&quot; OFF)  # default to off for development purposes
+option(ALL_RMWS &quot;Run tests for all available RMWs&quot; OFF)  # default to off so only one RMW is tested by default
+
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES &quot;Clang&quot;)
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+find_package(ament_cmake_auto REQUIRED)
+ament_auto_find_build_dependencies()
+
+# Single Threaded Executor
+ament_auto_add_executable(autoware_default_singlethreaded
+  src/ros2/executor/autoware_default_singlethreaded.cpp
+)
+
+# Static Single Threaded Executor
+ament_auto_add_executable(autoware_default_staticsinglethreaded
+  src/ros2/executor/autoware_default_staticsinglethreaded.cpp
+)
+
+# Multi Threaded Executor
+ament_auto_add_executable(autoware_default_multithreaded
+  src/ros2/executor/autoware_default_multithreaded.cpp
+)
+
+# Number Cruncher Benchmark
+ament_auto_add_executable(number_cruncher_benchmark
+  src/ros2/number_cruncher_benchmark.cpp
+)
+
+# Multiple executors with suitable prioritization of critical path.
+ament_auto_add_executable(autoware_default_prioritized
+  src/ros2/executor/autoware_default_prioritized.cpp
+)
+
+if(&quot;${rclcpp_VERSION}&quot; VERSION_GREATER_EQUAL &quot;9.0.0&quot;)  # i.e. from Galactic on
+  # Multiple executors on callback-group-level with suitable prioritization of critical path.
+  ament_auto_add_executable(autoware_default_cbg
+    src/ros2/executor/autoware_default_cbg.cpp
+  )
+endif()
+
+# Add new executors to test here
+#ament_auto_add_executable(autoware_default_custom
+#  src/ros2/executor/autoware_default_custom.cpp
+#)
+
+
+if(${BUILD_TESTING})
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+
+  # tracetools uses ROS_HOME to place tracing data
+  if(NOT DEFINED $ENV{ROS_HOME})
+    set(ROS_HOME $ENV{HOME}/.ros)
+  else()
+    set(ROS_HOME $ENV{ROS_HOME})
+  endif()
+
+  # std trace type uses LOG directory
+  if(NOT DEFINED $ENV{ROS_LOG_DIR})
+    set(ROS_LOG_DIR ${CMAKE_INSTALL_PREFIX}/../../log/latest_test/${PROJECT_NAME})
+  else()
+    set(ROS_LOG_DIR $ENV{ROS_LOG_DIR})
+  endif()
+
+  set(DEFAULT_TIMEOUT 300)  # seconds, 300 = roughly 5min
+
+  if(${TEST_PLATFORM})
+    # check current platform
+    ament_add_pytest_test(${PROJECT_NAME}
+      test/test_platform.py
+      TIMEOUT 5
+    )
+  endif()
+
+  if(${RUN_BENCHMARK})
+    # Add executables here to test
+    set(TEST_TARGETS
+      autoware_default_singlethreaded
+      autoware_default_staticsinglethreaded
+      autoware_default_multithreaded
+      #autoware_default_custom
+    )
+
+    execute_process(COMMAND bash -c &quot;id -u&quot; OUTPUT_VARIABLE CURRENT_UID)
+    if(CURRENT_UID EQUAL &quot;0&quot;)
+      list(APPEND TEST_TARGETS autoware_default_prioritized)
+      if(&quot;${rclcpp_VERSION}&quot; VERSION_GREATER_EQUAL &quot;9.0.0&quot;)  # i.e. from Galactic on
+        list(APPEND TEST_TARGETS autoware_default_cbg)
+      else()
+        message(WARNING, &quot;Skipping autoware_default_cbg as it requires ROS &quot;
+          &quot;distro Galactic or later!&quot;)
+      endif()
+    else()
+      message(WARNING, &quot;Skipping autoware_default_prioritized due to missing &quot;
+        &quot;super user right!&quot;)
+      message(WARNING, &quot;Skipping autoware_default_cbg due to missing super &quot;
+        &quot;user right!&quot;)
+    endif()
+
+
+    # Add more run times here (time to run traces for)
+    set(RUN_TIMES
+      5
+      # 10
+      # 30
+      # 60
+    )
+
+    # Add more trace types here
+    # had to seperate out traces due to dropped events
+    # see https://github.com/ros-realtime/reference-system/pull/33#issuecomment-928264240
+    set(TRACE_TYPES
+      callback  # uses ros2_tracing, LTTng
+      memory    # uses psrecord
+      std       # parses the log files that include the prints from std::cout
+      # cpu     # built into memory tests using psrecord
+    )
+
+    # remove ros2_tracing trace_types if SKIP_TRACING is ON
+    if(${SKIP_TRACING})
+      message(STATUS &quot;Removing callback trace tests&quot;)
+      list(REMOVE_ITEM TRACE_TYPES &quot;callback&quot;)
+    endif()
+
+    find_package(ros_testing REQUIRED)
+
+    # get available rmw implementations
+    find_package(rmw_implementation_cmake REQUIRED)
+    get_available_rmw_implementations(rmws_available)
+
+    # only use default RMW by default
+    if(${ALL_RMWS} MATCHES OFF)
+      list(REVERSE rmws_available)
+      foreach(rmw ${rmws_available})
+        list(LENGTH rmws_available COUNT)
+        if(NOT COUNT MATCHES 1)
+          # message(&quot;Removing ${rmw} from tests&quot;)
+          list(REMOVE_AT rmws_available COUNT)
+        endif()
+      endforeach()
+    endif()
+
+    # include cmake functions to use later on
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/test_requirements.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_traces.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_report.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_summary_report.cmake)
+
+    # check each executable matches the system requirements
+    foreach(exe ${TEST_TARGETS})
+      test_requirements(${exe} 3)
+    endforeach()
+
+    # generate traces for each executable
+    foreach(exe ${TEST_TARGETS})
+      # loop over each rmw implmentation
+      foreach(rmw_implementation ${rmws_available})
+        find_package(&quot;${rmw_implementation}&quot; REQUIRED)
+        foreach(time ${RUN_TIMES})
+          foreach(type ${TRACE_TYPES})
+              generate_traces(${exe} ${type} ${time})
+              generate_report(${exe} ${type} ${time})
+          endforeach()
+        endforeach()
+      endforeach()
+    endforeach()
+
+    foreach(trace_type ${TRACE_TYPES})
+      foreach(time ${RUN_TIMES})
+        generate_summary_report(${trace_type} ${time})
+      endforeach()
+    endforeach()
+  endif()
+endif()
+
+ament_auto_package(
+  INSTALL_TO_SHARE test scripts
+)
+</code></pre>
+<hr />
+<p>Updated on 2021-12-24 at 10:47:52 -0800</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike", "default": "stable"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,818 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>autoware_reference_system/test/std_latency.py - Reference System Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#autoware_reference_systemteststd_latencypy" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Reference System Documentation" class="md-header__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reference System Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              autoware_reference_system/test/std_latency.py
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Reference System Documentation" class="md-nav__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Reference System Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pages/md_README" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Reports" class="md-nav__link">
+        Reports
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes" class="md-nav__link">
+        Classes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Namespaces" class="md-nav__link">
+        Namespaces
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Modules" class="md-nav__link">
+        Modules
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pages" class="md-nav__link">
+        Related Pages
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#namespaces" class="md-nav__link">
+    Namespaces
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-code" class="md-nav__link">
+    Source code
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="autoware_reference_systemteststd_latencypy">autoware_reference_system/test/std_latency.py</h1>
+<h2 id="namespaces">Namespaces</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="/reference-system/Namespaces/namespacestd__latency/">std_latency</a></strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="source-code">Source code</h2>
+<pre><code class="language-python"># Copyright 2021 Apex.AI, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+from bokeh.models import ColumnDataSource
+from bokeh.models.ranges import FactorRange
+from bokeh.models.tools import HoverTool
+from bokeh.models.widgets.markups import Div
+from bokeh.models.widgets.tables import DataTable, TableColumn
+from bokeh.palettes import cividis
+from bokeh.plotting import figure
+from bokeh.transform import factor_cmap
+from constants import SIZE_AXIS_LABEL, SIZE_CATEGORY_LABEL, SIZE_MAJOR_LABEL, SIZE_TITLE
+from constants import SIZE_TABLE_ROW, SIZE_TABLE_WIDTH
+import pandas as pd
+
+
+def summary(path, duration, size):
+    data, test_name, hot_path_name = parseLogSummary(path, duration)
+    x = []
+    all_data = {
+        'exe': [],
+        'rmw': [],
+        'type': [],
+        'low': [],
+        'mean': [],
+        'high': [],
+        'std_dev': [],
+        'top': [],
+        'bottom': []
+    }
+    for results in data:
+        exe = results[0]
+        rmw = results[1]
+        for data_type in results[2]['hot_path']:
+            all_data['exe'].append(exe)
+            all_data['rmw'].append(rmw)
+            all_data['type'].append(data_type)
+            all_data['low'].append(results[2]['hot_path'][data_type]['low'])
+            all_data['mean'].append(results[2]['hot_path'][data_type]['mean'])
+            all_data['high'].append(results[2]['hot_path'][data_type]['high'])
+            all_data['std_dev'].append(results[2]['hot_path'][data_type]['std_dev'])
+            all_data['top'].append(results[2]['hot_path'][data_type]['top'])
+            all_data['bottom'].append(results[2]['hot_path'][data_type]['bottom'])
+        # add behavior planner data to dataframe
+        cyclic_node = 'behavior_planner'
+        data_type = 'period'
+        all_data['exe'].append(exe)
+        all_data['rmw'].append(rmw)
+        all_data['type'].append(data_type)
+        all_data['low'].append(results[2][cyclic_node][data_type]['low'])
+        all_data['mean'].append(results[2][cyclic_node][data_type]['mean'])
+        all_data['high'].append(results[2][cyclic_node][data_type]['high'])
+        all_data['std_dev'].append(results[2][cyclic_node][data_type]['std_dev'])
+        all_data['top'].append(results[2][cyclic_node][data_type]['top'])
+        all_data['bottom'].append(results[2][cyclic_node][data_type]['bottom'])
+    df = pd.DataFrame.from_records(
+        all_data, columns=[
+            'exe', 'rmw', 'type', 'low', 'mean', 'high', 'top', 'bottom', 'std_dev'])
+    # sort by exe and rmw
+    df = df.sort_values(['exe', 'rmw'], ascending=True)
+    exes = []
+    rmws = []
+    for exe in df.exe:
+        for rmw in df.rmw:
+            # add exe and rmw to list
+            if exe not in exes:
+                exes.append(exe)
+            if rmw not in rmws:
+                rmws.append(rmw)
+    for exe in exes:
+        for rmw in rmws:
+            x.append((exe, rmw))
+    latency = df.type == 'latency'
+    dropped = df.type == 'dropped'
+    period = df.type == 'period'
+    latency_source = ColumnDataSource(df[latency])
+    dropped_source = ColumnDataSource(df[dropped])
+    period_source = ColumnDataSource(df[period])
+    # add exe and rmw list of tuples for x axis
+    latency_source.data['x'] = x
+    dropped_source.data['x'] = x
+    period_source.data['x'] = x
+    # initialize list of figures
+    std_figs = []
+    # initialize latency figure
+    test_info = str(duration) + 's [' + hot_path_name + ']'
+    latency_fig = figure(
+        title='Latency Summary ' + test_info,
+        x_axis_label=f'Executors (with RMW)',
+        y_axis_label='Average Latency (ms)',
+        x_range=FactorRange(*x),
+        plot_width=int(size * 2.0),
+        plot_height=size,
+        margin=(10, 10, 10, 10)
+    )
+    latency_fig.segment(
+        x, df.high[latency].values, x, df.low[latency].values, color='black', line_width=2)
+    latency_fig.vbar(
+        width=0.2,
+        x='x',
+        top='top',
+        bottom='bottom',
+        line_color='black',
+        line_width=1,
+        source=latency_source,
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    latency_fig.scatter(
+        size=25,
+        x='x',
+        y='high',
+        source=latency_source,
+        line_color='black',
+        line_width=2,
+        marker='dash',
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    latency_fig.scatter(
+        size=25,
+        x='x',
+        y='low',
+        source=latency_source,
+        line_color='black',
+        line_width=2,
+        marker='dash',
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    latency_fig.y_range.start = 0
+    latency_fig.x_range.range_padding = 0.1
+    latency_fig.title.text_font_size = SIZE_TITLE
+    latency_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    latency_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    latency_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+    latency_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
+    latency_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
+
+    # initialize dropped message figure
+    dropped_fig = figure(
+        title='Dropped Messages Summary ' + test_info,
+        x_axis_label=f'Executors (with RMW)',
+        y_axis_label='Dropped Messages',
+        x_range=FactorRange(*x),
+        plot_width=int(size * 2.0),
+        plot_height=size,
+        margin=(10, 10, 10, 10)
+    )
+    dropped_fig.segment(
+        x, df.high[dropped].values, x, df.low[dropped].values, color='black', line_width=2)
+    dropped_fig.vbar(
+        width=0.2,
+        x='x',
+        top='mean',
+        source=dropped_source,
+        line_color='black',
+        line_width=1,
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    dropped_fig.scatter(
+        size=25,
+        x='x',
+        y='high',
+        source=dropped_source,
+        line_color='black',
+        line_width=2,
+        marker='dash',
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    dropped_fig.y_range.start = 0
+    dropped_fig.x_range.range_padding = 0.1
+    dropped_fig.title.text_font_size = SIZE_TITLE
+    dropped_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    dropped_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    dropped_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+    dropped_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
+    dropped_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
+
+    # initialize period figure
+    period_fig = figure(
+        title='Behavior Planner Jitter Summary ' + str(duration) + 's',
+        x_axis_label=f'Executors (with RMW)',
+        y_axis_label='Period (ms)',
+        x_range=FactorRange(*x),
+        plot_width=int(size * 2.0),
+        plot_height=size,
+        margin=(10, 10, 10, 10)
+    )
+    period_fig.segment(
+        x, df.high[period].values, x, df.low[period].values, color='black', line_width=2)
+    period_fig.vbar(
+        width=0.2,
+        x='x',
+        top='top',
+        bottom='bottom',
+        source=period_source,
+        line_color='black',
+        line_width=1,
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    period_fig.scatter(
+        size=25,
+        x='x',
+        y='high',
+        source=period_source,
+        line_color='black',
+        line_width=2,
+        marker='dash',
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    period_fig.scatter(
+        size=25,
+        x='x',
+        y='low',
+        source=period_source,
+        line_color='black',
+        line_width=2,
+        marker='dash',
+        fill_color=factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
+    )
+    period_fig.y_range.start = 0
+    period_fig.x_range.range_padding = 0.1
+    period_fig.title.text_font_size = SIZE_TITLE
+    period_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    period_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
+    period_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
+    period_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
+    period_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
+
+    # add latency hover tool
+    latency_hover = HoverTool()
+    latency_hover.tooltips = [
+        ('Average Latency', '@{mean}{0.00}ms'),
+        ('Minimum Latency', '@{low}{0.00}ms'),
+        ('Maximum Latency', '@{high}{0.00}ms'),
+    ]
+    latency_fig.add_tools(latency_hover)
+    # add dropped messages hover tool
+    dropped_hover = HoverTool()
+    dropped_hover.tooltips = [
+        ('Dropped Messages Average', '@{mean}{0.00}'),
+        ('Dropped Messages Min', '@{low}{0.00}'),
+        ('Dropped Messages Max', '@{high}{0.00}'),
+    ]
+    dropped_fig.add_tools(dropped_hover)
+    # add period hover tool
+    period_hover = HoverTool()
+    period_hover.tooltips = [
+        ('Period Average', '@{mean}{0.00}ms'),
+        ('Period Min', '@{low}{0.00}ms'),
+        ('Period Max', '@{high}{0.00}ms'),
+    ]
+    period_fig.add_tools(period_hover)
+
+    # add tables
+    # create tables
+    columns = [TableColumn(field=col, title=col) for col in df[latency].columns]
+    latency_table_title = Div(
+        text='&lt;b&gt;Latency Summary Table ' + test_info + '&lt;/b&gt;',
+        width=SIZE_TABLE_WIDTH,
+        height=SIZE_TABLE_ROW)
+    latency_table = [
+        latency_table_title,
+        DataTable(
+            columns=columns,
+            source=ColumnDataSource(df[latency].round(decimals=3)),
+            autosize_mode='fit_viewport',
+            margin=(0, 10, 10, 10),
+            height=(len(df[latency].exe.values.tolist()) * SIZE_TABLE_ROW),
+            width=SIZE_TABLE_WIDTH)]
+    dropped_table_title = Div(
+        text='&lt;b&gt;Dropped Messages Summary Table ' + test_info + '&lt;/b&gt;',
+        width=SIZE_TABLE_WIDTH,
+        height=SIZE_TABLE_ROW)
+    dropped_table = [
+        dropped_table_title,
+        DataTable(
+            columns=columns,
+            source=ColumnDataSource(df[dropped].round(decimals=1)),
+            autosize_mode='fit_viewport',
+            margin=(0, 10, 10, 10),
+            height=(len(df[dropped].exe.values.tolist()) * SIZE_TABLE_ROW),
+            width=SIZE_TABLE_WIDTH)]
+    period_table_title = Div(
+        text='&lt;b&gt;Behavior Planner Jitter Summary Table ' + str(duration) + 's&lt;/b&gt;',
+        width=SIZE_TABLE_WIDTH,
+        height=SIZE_TABLE_ROW)
+    period_table = [
+        period_table_title,
+        DataTable(
+            columns=columns,
+            source=ColumnDataSource(df[period].round(decimals=3)),
+            autosize_mode='fit_viewport',
+            margin=(0, 10, 10, 10),
+            height=(len(df[period].exe.values.tolist()) * SIZE_TABLE_ROW),
+            width=SIZE_TABLE_WIDTH)]
+
+    std_figs = [
+        [latency_table], [latency_fig],
+        [dropped_table], [dropped_fig],
+        [period_table], [period_fig]]
+    return std_figs
+
+
+def parseLogSummary(path, duration):
+    # open file
+    data = open(path).read().splitlines()
+    # hold info on each test (start line and end line)
+    log_map = {}
+    in_test = False
+    test_name = ''
+    hot_path_name = ''
+    log_map = []
+    count = 0
+    for index, line in enumerate(data):
+        if 'generate_std_trace' in line:
+            if str(duration) in line:
+                if 'Start' in line:
+                    search = ': generate_std_traces_'
+                    test_name = line[line.find(search) + len(search):line.find('.py')]
+                    rmw_idx = test_name.find('_rmw')
+                    exe = test_name[0:rmw_idx]
+                    rmw = test_name[rmw_idx + 1:test_name.rfind('_')]
+                    start_time = line[line.find('[') + 1:line.find(']') - 1]
+                    log_map.append(
+                        [exe, rmw, {
+                            'start': start_time,
+                            'end': 0,
+                            'hot_path': {
+                                'latency': {},
+                                'dropped': {}
+                            },
+                            'behavior_planner': {
+                                'period': {}
+                            }
+                        }])
+                    in_test = True
+                elif 'Passed' in line:
+                    in_test = False
+                    count += 1
+        # if within a test, add parse current line to dataframe
+        if in_test:
+            if 'hot path' in line:
+                if 'hot path:' in line:
+                    indent = '                 '
+                    hot_path_name = line[line.find('hot path:') + len('hot path:' + indent):]
+                if 'latency' in line:
+                    end_time = line[line.find('[') + 1:line.find(']') - 1]
+                    log_map[count][2]['end'] = end_time
+                    stats = parseStats(line)
+                    if stats is not None:
+                        log_map[count][2]['hot_path']['latency'] = stats
+                elif 'drops' in line:
+                    end_time = line[line.find('[') + 1:line.find(']') - 1]
+                    log_map[count][2]['end'] = end_time
+                    stats = parseStats(line)
+                    if stats is not None:
+                        log_map[count][2]['hot_path']['dropped'] = stats
+            elif 'period' in line:
+                # behavior planner period
+                # log_map[count][2]['behavior_planner']['period'] = \
+                #    float(line[line.find('period') + len('period:  '):line.find('ms')])
+                stats = parseStats(line)
+                if stats is not None:
+                    log_map[count][2]['behavior_planner']['period'] = stats
+    return log_map, test_name, hot_path_name
+
+
+def parseStats(line):
+    # assume all stats in milliseconds
+    stats = {
+        'timestamp': 0.0,
+        'low': 0.0,
+        'high': 0.0,
+        'mean': 0.0,
+        'std_dev': 0.0,
+        'top': 0.0,
+        'bottom': 0.0
+    }
+    try:
+        stats['timestamp'] = float(
+            line[line.find('[') + 1:line.find(']') - 1]) * 1000  # convert to ms
+        parsed_stats = line.split(',')
+        stats['low'] = parsed_stats[0][parsed_stats[0].find('min') + len('min='):]
+        stats['high'] = parsed_stats[1][parsed_stats[1].find('max') + len('max='):]
+        stats['mean'] = parsed_stats[2][parsed_stats[2].find('average') + len('average='):]
+        stats['std_dev'] = \
+            parsed_stats[3][parsed_stats[3].find('deviation') + len('deviation='):-1]
+        for val in stats:
+            if isinstance(stats[val], str):
+                if stats[val].endswith('ms'):
+                    stats[val] = stats[val][:-2]
+            stats[val] = float(stats[val])
+        stats['top'] = stats['mean'] + stats['std_dev']
+        stats['bottom'] = stats['mean'] - stats['std_dev']
+        if stats['bottom'] &lt; 0:
+            stats['bottom'] = 0
+    except IndexError as e:
+        print('Line incomplete:')
+        print('[line]: ' + line)
+        print('Returning None for this line')
+        print(e)
+        stats = None
+    return stats
+</code></pre>
+<hr />
+<p>Updated on 2021-12-24 at 10:47:52 -0800</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike", "default": "stable"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>

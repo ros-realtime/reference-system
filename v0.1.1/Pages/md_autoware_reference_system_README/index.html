@@ -1,0 +1,638 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>autoware_reference_system - Reference System Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#autoware_reference_system" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Reference System Documentation" class="md-header__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reference System Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              autoware_reference_system
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Reference System Documentation" class="md-nav__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Reference System Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../md_README" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Reports" class="md-nav__link">
+        Reports
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes" class="md-nav__link">
+        Classes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Namespaces" class="md-nav__link">
+        Namespaces
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Modules" class="md-nav__link">
+        Modules
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Files" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Related Pages
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="autoware_reference_system">autoware_reference_system</h1>
+<p>This file is meant to define the Autoware Reference System and all of its nodes, topics and message types.</p>
+<p><img alt="autoware_reference_system.svg" src="/reference-system/images/autoware_reference_system.svg" /></p>
+<p>To get started and test this system yourself, head down to <a href="#quick-start">the <em>Quick Start section</em></a> and follow the instructions there.</p>
+<p><em>See the <a href="#generate-node-graph">generating a node graph</a> using graphviz section on how to generate the above image</em></p>
+<h1 id="evaluation-criteria">Evaluation Criteria</h1>
+<p>The <em>autoware reference system</em> was made with a few goals in mind. See the list below to get the complete picture of why certian tests are run and why this system was chosen as a good system to benchmark different executors.</p>
+<p>Each item below should have a corresponding test report with it or be able to be extracted from an existing test report. See the <a href="#running-the-tests">testing</a> section for more details on how to generate your own test reports.</p>
+<p>If you believe we are missing another metric to measure executors by, please create an issue and let us know!</p>
+<h2 id="key-performance-indicators-kpis"><strong>Key Performance Indicators (KPIs)</strong></h2>
+<ul>
+<li><strong>CPU utilization</strong><ul>
+<li>In general a lower CPU utilization is better since it enables you to choose a smaller CPU or have more functionality on a larger CPU for other things.</li>
+<li><strong>The lower CPU utilization the better</strong></li>
+</ul>
+</li>
+<li><strong>Memory utilization</strong><ul>
+<li>In general a lower memory utilization is better since it enables you to choose a smaller memory or have more space for other things</li>
+<li><strong>The lower memory utilization the better</strong></li>
+</ul>
+</li>
+<li><strong>Use latest samples, count dropped samples</strong><ul>
+<li>This is representative of the real-world where old sensor data is much less valuable than new sensor data<ul>
+<li>For example an image from 30 seconds ago wont help you to drive down the road as much as an image from 0.1 seconds ago)</li>
+</ul>
+</li>
+<li>If there is more than one new sample, the old ones will be dropped in favor of the newest sample</li>
+<li>As a result, dropped messages may mean that information was lost<ul>
+<li>Fusion Nodes may drop messages by design if their inputs have different frequencies, do not count dropped messages for these nodes</li>
+<li>Transform nodes should not drop messages though, and these should be counted</li>
+</ul>
+</li>
+<li><strong>The lower number of dropped samples the better</strong></li>
+</ul>
+</li>
+<li><strong>Every Front Lidar sample should cause update in Object Collision Estimator</strong><ul>
+<li>The Front and Rear Lidars have the same publishing frequency</li>
+<li>This means Object Collision Estimator should run for every lidar sample</li>
+<li>Count number of executions of Object Collision Estimator and Front Lidar and report any difference</li>
+<li><strong>The smaller the difference in executions, the better</strong></li>
+</ul>
+</li>
+<li><strong>Lowest possible latency from Front Lidar to Object Collision Estimator</strong><ul>
+<li>As in the real world, we want to know as soon as possible if the reference system will collide with something</li>
+<li>Measure the mean and max latency for this chain of nodes</li>
+<li><strong>The lower latency of the signal chain the better</strong></li>
+</ul>
+</li>
+<li><strong>The Behavior Planner should be as cyclical as possible</strong><ul>
+<li>The desired behavior of the Behavior Planner is to be as cyclical as possible, meaning it should be executed as close to its set frequency of <em>100ms</em> as possible</li>
+<li>Measure the jitter and drift over time of the timer callback</li>
+<li><strong>The lower the jitter and drift of the Behavior Node timer callback the better</strong></li>
+</ul>
+</li>
+</ul>
+<h1 id="message-types">Message Types</h1>
+<p>A <strong>single message type</strong> is used for the entire <em>reference system</em> when generating results in order to simplify the setup as well as make it more repeatible and extensible.</p>
+<p>This means <strong>only one <em>message type</em></strong> from the list below is used during any given experimental run for every node in the reference system.</p>
+<ol>
+<li><a href="../reference_interfaces/msg/Message4kb.idl"><strong>Message4kB</strong></a><ul>
+<li>reference message with a fixed size of 4 kilobytes (kB)
+Other messages with different fixed sizes could be added here in the future.</li>
+</ul>
+</li>
+</ol>
+<p>When reporting results it will be important to include the <em>message type</em> used duing the experiement so that comparisons can be done "apples to apples" and not "apples to pears".</p>
+<h1 id="autoware-reference-system">Autoware Reference System</h1>
+<p>Built from <a href="../README.md#concept-overview">a handful of building-block node types</a>, each one of these nodes are meant to simulate a real-world node from the Autoware.Auto project lidar data pipeline.</p>
+<p>Under each node type are the requirements used for <em>this specific reference system</em>, <code>autoware_reference_system</code>. Future reference systems could have slightly different requirements and still use the same building-block node types.</p>
+<p>For simplicity's sake, every node except for the <em>command nodes</em> only ever publishes one topic and this topic has the same name as the node that publishes it. However, each topic can be subscribed to by multiple different nodes.</p>
+<ol>
+<li><a href="#message-types"><strong>Message Type</strong></a><ul>
+<li>all nodes use the same message type during any single test run</li>
+<li>default <em>message type</em>:<ul>
+<li><a href="../reference_system/include/reference_system/msg_types.hpp#L21">Message4kB</a></li>
+</ul>
+</li>
+<li>to be implemented:<ul>
+<li>Message64kB</li>
+<li>Message256kB</li>
+<li>Message512kB</li>
+<li>Message1024kB</li>
+<li>Message5120kB</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../reference_system/include/reference_system/nodes/rclcpp/sensor.hpp"><strong>Sensor Nodes</strong></a><ul>
+<li>all <em>sensor nodes</em> have a publishing rate (cycle time) of <a href="include/reference_system/system/timing/default.hpp#L26"><strong>100 milliseconds</strong></a></li>
+<li>all <em>sensor_nodes</em> publish the same <em>message type</em></li>
+<li>total of <strong>5 <em>sensor nodes</em></strong>:<ul>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L38">Front Lidar Driver</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L44">Rear Lidar Driver</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L50">Point Cloud Map</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L56">Visualizer</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#62">Lanelet2Map</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../reference_system/include/reference_system/nodes/rclcpp/transform.hpp"><strong>Transform Nodes</strong></a><ul>
+<li>all <em>transform nodes</em> have one subscriber and one publisher</li>
+<li>all <em>transform nodes</em> start processing for <a href="include/autoware_reference_system/system/timing/default.hpp#L28"><strong>50 milliseconds</strong></a> after a message is received</li>
+<li>publishes message after processing is complete</li>
+<li>total of <strong>10 <em>transform nodes</em>:</strong><ul>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L69">Front Points Transformer</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L78">Rear Points Transformer</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L87">Voxel Grid Downsampler</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L96">Point Cloud Map Loader</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L105">Ray Ground Filter</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L123">Object Collision Estimator</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L132">MPC Controller</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L141">Parking Planner</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L150">Lane Planner</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../reference_system/include/reference_system/nodes/rclcpp/fusion.hpp"><strong>Fusion Nodes</strong></a><ul>
+<li>all <em>fusion nodes</em> have <strong>two subscribers</strong> and one publisher for this <em>reference system</em></li>
+<li>all <em>fusion nodes</em> start processing for <a href="include/autoware_reference_system/system/timing/default.hpp#L30"><strong>25 milliseconds</strong></a> after a message is received <strong>from all</strong> subscriptions</li>
+<li>all <em>fusion nodes</em> have a max input time difference between the first input received and last input received before publishing of <a href="include/autoware_reference_system/system/timing/benchmark.hpp"><strong>9999</strong> seconds</a></li>
+<li>publishes message after processing is complete</li>
+<li>total of <strong>5 <em>fusion nodes</em>:</strong><ul>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L160">Point Cloud Fusion</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L169">NDT Localizer</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L178">Vehicle Interface</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L187">Lanelet2 Global Planner</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L196">Lanelet 2 Map Loader</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../reference_system/include/reference_system/nodes/rclcpp/cyclic.hpp"><strong>Cyclic Nodes</strong></a><ul>
+<li>for this <em>reference system</em> there is only <a href="include/autoware_reference_system/autoware_system_builder.hpp#L206"><strong>1 <em>cyclic node</em></strong></a></li>
+<li>this <em>cyclic node</em> has <strong>6 subscribers</strong>and one publisher**</li>
+<li><strong>this <em>cyclic node</em> starts processing for <a href="[include/autoware_reference_system/system/timing/default.hpp]#L32"><strong>1 millisecond</strong></a> after a message is received </strong>from any** single subscription</li>
+<li>publishes message after processing is complete</li>
+</ul>
+</li>
+<li><a href="../reference_system/include/reference_system/nodes/rclcpp/command.hpp"><strong>Command Nodes</strong></a><ul>
+<li>all <em>command nodes</em> have <strong>1 subscriber</strong> and zero publishers</li>
+<li>all <em>command nodes</em> prints out the final latency statistics after a message is received on the specified topic</li>
+<li>total of <strong>2 <em>command nodes</em>:</strong><ul>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L222">VehicleDBWSystem</a></li>
+<li><a href="include/autoware_reference_system/autoware_system_builder.hpp#L227">IntersectionOutput</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="../reference_system/include/reference_system/nodes/rclcpp/intersection.hpp"><strong>Intersection Nodes</strong></a><ul>
+<li>for this <em>reference system</em> there is only <a href="include/autoware_reference_system/autoware_system_builder.hpp#L206">EuclideanClusterDetector</a></li>
+<li>this <em>intersection node</em> has <strong>2 subscribers</strong> and <strong>2 publishers</strong></li>
+<li>publishes message after processing is complete on the correspoding publisher</li>
+</ul>
+</li>
+</ol>
+<h1 id="quick-start">Quick Start</h1>
+<p>This section will go over how to clone, build and run the <code>autoware_reference_system</code> in order to generate your own test reports.</p>
+<h2 id="dependencies">Dependencies</h2>
+<p>Before running the tests there are a few prerequisites to complete:</p>
+<ul>
+<li>Install python depedencies used during test runs and report generation<ul>
+<li><code>python3 -m pip install psrecord bokeh networkx numpy pandas</code></li>
+</ul>
+</li>
+<li>Install dependencies using the following command from the <code>colcon_ws</code> directory:<ul>
+<li><code>rosdep install --from-paths src --ignore-src -y</code></li>
+</ul>
+</li>
+<li>Install LTTng and <code>ros2_tracing</code><a href="https://gitlab.com/ros-tracing/ros2_tracing#building">following the instructions in <code>ros2_tracing</code></a><ul>
+<li><em>Note:</em> if you are setting up <a href="https://github.com/ros-realtime/rt-kernel-docker-builder#raspberry-pi-4-rt-linux-kernel">a realtime linux kernel for a raspberry pi using this docker file</a>, it should <a href="https://github.com/ros-realtime/rt-kernel-docker-builder/pull/18">already include LTTng</a></li>
+<li><em>Note:</em> make sure to clone <code>ros2_tracing</code> into <strong>the same workspace as where you put the <code>reference-system</code></strong>, the tests will not properly run if they are not in the same directory.
+<strong>Tests will fail</strong> if any of the above dependencies are missing on the machine.</li>
+</ul>
+</li>
+</ul>
+<p>Once the above steps are complete you sould be ready to configure the setup for your platform and run the tests to generate some results.</p>
+<h1 id="configure-processing-time">Configure Processing Time</h1>
+<p>Many nodes in the reference system are actually performing some <em>psuedo work</em> by finding prime numbers up until some <em>maximum value</em>. Depending on the platform, this <em>maximum value</em> will need to be changed so that these nodes do not take an absurd amount of time. This <em>maximum value</em> should be chosen on a platform-by-platform basis so that the total <em>run time</em> of this work takes some desired length of time.</p>
+<p>In order to make finding this <em>maximum value</em> a bit easier across many different platforms a simple <a href="src/ros2/number_cruncher_benchmark.cpp"><strong>number_cruncher_benchmark</strong></a> is provided that will loop over various <em>maximum values</em> and spit out how long each one takes to run. After running this executable on your platform you should have a good idea what <em>maximum value</em> you should use in your <a href="include/autoware_reference_system/system/timing/default.hpp">timing configuration</a> so that each node does some measurable work for some desired amount of time.</p>
+<p>Here is an example output of the <code>number_cruncher_benchmark</code> run on a typical development platform (Intel 9i7):</p>
+<pre><code class="language-cpp">ros2 run autoware_reference_system number_cruncher_benchmark 
+maximum_number     run time
+          64       0.001609ms
+         128       0.002896ms
+         256       0.006614ms
+         512       0.035036ms
+        1024       0.050957ms
+        2048       0.092732ms
+        4096       0.22837ms
+        8192       0.566779ms
+       16384       1.48837ms
+       32768       3.64588ms
+       65536       9.6687ms
+      131072       24.1154ms
+      262144       62.3475ms
+      524288       162.762ms
+     1048576       429.882ms
+     2097152       1149.79ms
+</code></pre>
+<p>Run the above command on your system, select your desired <code>run_time</code> and place the corresponding <code>maximum_number</code> in the <a href="include/autoware_reference_system/system/timing/default.hpp">timing configuration file</a> for the desired nodes.</p>
+<h1 id="running-the-tests">Running the Tests</h1>
+<p>Source your ROS distribution as well as your <code>ros2_tracing</code> overlay, compile this repository using the proper CMake arguments and generate some test results:</p>
+<p><strong>Make sure you've installed the required dependencies</strong> as <a href="#dependencies">outlined above</a> before trying to run these tests.</p>
+<h2 id="supported-cmake-arguments">Supported CMake Arguments</h2>
+<ul>
+<li><code>RUN_BENCHMARK</code><ul>
+<li>Tell CMake to build the benchmark tests that will check the reference system against its requirements before running a sweep of tests to generate trace files and reports</li>
+<li>Without the <code>RUN_BENCHMARK</code> variable set to <code>ON</code> only the standard linter tests will be run</li>
+</ul>
+</li>
+<li><code>TEST_PLATFORM</code><ul>
+<li>Test CMake to build the tests to check if the tests are being run from a <a href="../README.md#supported-platforms">supported platform</a> or not</li>
+<li>This flag can be ommited if you would like to run the tests on a development system before running them on a supported platform</li>
+<li>The platform tests themselves can and should be improved going forward and are only some simple checks today (architecture, number of CPUs, PREEMPT_RT flag, etc.)</li>
+<li>Set this to <code>ON</code> to check if the current platform is supported</li>
+</ul>
+</li>
+<li><code>SKIP_TRACING</code><ul>
+<li>Set to <code>ON</code> to skip the <code>ros2_tracing</code> tests, aka the <code>callback</code> tests</li>
+<li>This can greatly reduce the length of time the <code>colcon test</code> command takes to run</li>
+</ul>
+</li>
+<li><code>ALL_RMWS</code><ul>
+<li>Set this to <code>ON</code> if you'd like to run tests on all available RMWS as well</li>
+<li>Otherwise use only default RMW (first one listed by CMake function <code>get_available_rmw_implementations</code>)</li>
+<li>Defaults to <code>OFF</code>
+<strong>Make sure you've installed the required dependencies</strong> as <a href="#dependencies">outlined above</a> before trying to run these tests.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-cpp"># source your ROS distribution
+source /opt/ros/galactic/setup.bash
+
+# cd to your colcon_ws with this repo and `ros2_tracing` inside
+cd /path/to/colcon_ws
+# build packages with benchmark tests enabled
+colcon build --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
+
+# IMPORTANT
+# source the newly built workspace to make sure to use the updated tracetools package
+source install/local_setup.bash
+# run tests, generate traces and reports
+colcon test
+</code></pre>
+<p><strong>Note 1:</strong> some of the tests require super user privileges, to change thread priorities. If super user privileges are not available, these tests are excluded automatically. Run the above lines from a <code>sudo bash</code> or similar to include those tests.</p>
+<p><strong>Note 2:</strong> during the testing <em>trace data</em> generated from <code>LTTng</code> will be placed in <code>$ROS_HOME/tracing</code>.</p>
+<p>If the <code>$ROS_HOME/tracing</code> directory is missing the tests will automatically generate it for you.</p>
+<p>This directory should now hold tracing data and reports for all <code>ros2_tracing</code> tests performed.</p>
+<p>Additionally, CPU and Memory Usage tests generate data and reports and saves them to <code>$ROS_HOME/memory</code>.</p>
+<h2 id="test-results-and-reports">Test Results and Reports</h2>
+<p>Reports are automatically generated depending on which tests are run. Below are the locations where each report is stored after successfully running the tests as described above.</p>
+<ul>
+<li>CPU and Memory Tests<ul>
+<li>results are stored in your <code>${ROS_HOME}/memory</code> directory</li>
+<li>if <code>${ROS_HOME}</code> is not set, it defaults to <code>${HOME}/.ros/memory</code></li>
+</ul>
+</li>
+<li>Executor KPI tests (Latency, Dropped Messages and Jitter)<ul>
+<li>results are generated directly to the tests <code>streams.log</code> file using <code>std::cout</code> prints</li>
+<li>reports are generated and stored in the <code>log/latest_test/autoware_reference_system</code> directory</li>
+</ul>
+</li>
+<li><code>ros2_tracing</code> Tests<ul>
+<li>results and reports are stored in your <code>${ROS_HOME}/tracing</code> directory</li>
+<li>if <code>${ROS_HOME}</code> is not set, it defaults to <code>${HOME}/.ros/tracing</code>
+More reports can be added going forward.</li>
+</ul>
+</li>
+</ul>
+<h1 id="generating-node-graph-image">Generating Node Graph Image</h1>
+<p>To generate the image shown above you can take advantage of <a href="https://graphviz.org/doc/info/command.html">a program called <code>graphviz</code></a> that has a command line interface (CLI) command <code>dot</code>.</p>
+<p>First, check out the provided <code>.dot</code> file <a href="autoware_reference_system.dot">within this directory</a> to get an idea of how the <code>dot</code> syntax works (feel free to modify it for your use case or future <em>reference systems</em>).</p>
+<p>To generate the <code>.dot</code> file into an <code>.svg</code> image, run the following command:</p>
+<pre><code class="language-cpp">dot -Tsvg autoware_reference_system.dot
+</code></pre>
+<p><em>Note:</em> you can change the generated image type to any of <a href="https://graphviz.org/docs/outputs/">the supported type parameters</a> if you would like a different filetype. </p>
+<hr />
+<p>Updated on 2021-12-24 at 10:47:52 -0800</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike", "default": "stable"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,976 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>reference_system/include/reference_system/sample_management.hpp - Reference System Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reference_systemincludereference_systemsample_managementhpp" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Reference System Documentation" class="md-header__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reference System Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              reference_system/include/reference_system/sample_management.hpp
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Reference System Documentation" class="md-nav__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Reference System Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pages/md_README" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Reports" class="md-nav__link">
+        Reports
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes" class="md-nav__link">
+        Classes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Namespaces" class="md-nav__link">
+        Namespaces
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Modules" class="md-nav__link">
+        Modules
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pages" class="md-nav__link">
+        Related Pages
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions-documentation" class="md-nav__link">
+    Functions Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-set_benchmark_mode" class="md-nav__link">
+    function set_benchmark_mode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-is_in_benchmark_mode" class="md-nav__link">
+    function is_in_benchmark_mode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-now_as_int" class="md-nav__link">
+    function now_as_int
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-set_sample" class="md-nav__link">
+    function set_sample
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-get_sample_timestamp" class="md-nav__link">
+    function get_sample_timestamp
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-get_sample_sequence_number" class="md-nav__link">
+    function get_sample_sequence_number
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-get_missed_samples_and_update_seq_nr" class="md-nav__link">
+    function get_missed_samples_and_update_seq_nr
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-merge_history_into_sample" class="md-nav__link">
+    function merge_history_into_sample
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-operator" class="md-nav__link">
+    function operator&lt;&lt;
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-print_sample_path" class="md-nav__link">
+    function print_sample_path
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-code" class="md-nav__link">
+    Source code
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="reference_systemincludereference_systemsample_managementhpp">reference_system/include/reference_system/sample_management.hpp</h1>
+<h2 id="classes">Classes</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>struct</td>
+<td><strong><a href="/reference-system/Classes/structstatistic__value__t/">statistic_value_t</a></strong></td>
+</tr>
+<tr>
+<td>struct</td>
+<td><strong><a href="/reference-system/Classes/structsample__statistic__t/">sample_statistic_t</a></strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions">Functions</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+<td><strong><a href="/reference-system/Files/sample__management_8hpp/#function-set-benchmark-mode">set_benchmark_mode</a></strong>(const bool has_benchmark_mode, const bool set_value =true)</td>
+</tr>
+<tr>
+<td>bool</td>
+<td><strong><a href="/reference-system/Files/sample__management_8hpp/#function-is-in-benchmark-mode">is_in_benchmark_mode</a></strong>()</td>
+</tr>
+<tr>
+<td>uint64_t</td>
+<td><strong><a href="/reference-system/Files/sample__management_8hpp/#function-now-as-int">now_as_int</a></strong>()</td>
+</tr>
+<tr>
+<td>template &lt;typename SampleTypePointer > <br>void</td>
+<td><strong><a href="/reference-system/Files/sample__management_8hpp/#function-set-sample">set_sample</a></strong>(const std::string &amp; node_name, const uint32_t sequence_number, const uint32_t dropped_samples, const uint64_t timestamp, SampleTypePointer &amp; sample)</td>
+</tr>
+<tr>
+<td>template &lt;typename SampleTypePointer > <br>uint64_t</td>
+<td><strong><a href="/reference-system/Files/sample__management_8hpp/#function-get-sample-timestamp">get_sample_timestamp</a></strong>(const SampleTypePointer &amp; sample)</td>
+</tr>
+<tr>
+<td>template &lt;typename SampleTypePointer > <br>uint32_t</td>
+<td><strong><a href="/reference-system/Files/sample__management_8hpp/#function-get-sample-sequence-number">get_sample_sequence_number</a></strong>(const SampleTypePointer &amp; sample)</td>
+</tr>
+<tr>
+<td>template &lt;typename SampleTypePointer > <br>uint32_t</td>
+<td><strong><a href="/reference-system/Files/sample__management_8hpp/#function-get-missed-samples-and-update-seq-nr">get_missed_samples_and_update_seq_nr</a></strong>(const SampleTypePointer &amp; sample, uint32_t &amp; sequence_number)</td>
+</tr>
+<tr>
+<td>template &lt;typename SampleTypePointer ,typename SourceType > <br>void</td>
+<td><strong><a href="/reference-system/Files/sample__management_8hpp/#function-merge-history-into-sample">merge_history_into_sample</a></strong>(SampleTypePointer &amp; sample, const SourceType &amp; source)</td>
+</tr>
+<tr>
+<td>std::ostream &amp;</td>
+<td><strong><a href="/reference-system/Files/sample__management_8hpp/#function-operator&lt;&lt;">operator&lt;&lt;</a></strong>(std::ostream &amp; output, const <a href="/reference-system/Classes/structstatistic__value__t/">statistic_value_t</a> &amp; v)</td>
+</tr>
+<tr>
+<td>template &lt;typename SampleTypePointer > <br>void</td>
+<td><strong><a href="/reference-system/Files/sample__management_8hpp/#function-print-sample-path">print_sample_path</a></strong>(const std::string &amp; node_name, const uint32_t lost_samples, const SampleTypePointer &amp; sample)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions-documentation">Functions Documentation</h2>
+<h3 id="function-set_benchmark_mode">function set_benchmark_mode</h3>
+<pre><code class="language-cpp">bool set_benchmark_mode(
+    const bool has_benchmark_mode,
+    const bool set_value =true
+)
+</code></pre>
+<h3 id="function-is_in_benchmark_mode">function is_in_benchmark_mode</h3>
+<pre><code class="language-cpp">bool is_in_benchmark_mode()
+</code></pre>
+<h3 id="function-now_as_int">function now_as_int</h3>
+<pre><code class="language-cpp">uint64_t now_as_int()
+</code></pre>
+<h3 id="function-set_sample">function set_sample</h3>
+<pre><code class="language-cpp">template &lt;typename SampleTypePointer &gt;
+void set_sample(
+    const std::string &amp; node_name,
+    const uint32_t sequence_number,
+    const uint32_t dropped_samples,
+    const uint64_t timestamp,
+    SampleTypePointer &amp; sample
+)
+</code></pre>
+<h3 id="function-get_sample_timestamp">function get_sample_timestamp</h3>
+<pre><code class="language-cpp">template &lt;typename SampleTypePointer &gt;
+uint64_t get_sample_timestamp(
+    const SampleTypePointer &amp; sample
+)
+</code></pre>
+<h3 id="function-get_sample_sequence_number">function get_sample_sequence_number</h3>
+<pre><code class="language-cpp">template &lt;typename SampleTypePointer &gt;
+uint32_t get_sample_sequence_number(
+    const SampleTypePointer &amp; sample
+)
+</code></pre>
+<h3 id="function-get_missed_samples_and_update_seq_nr">function get_missed_samples_and_update_seq_nr</h3>
+<pre><code class="language-cpp">template &lt;typename SampleTypePointer &gt;
+uint32_t get_missed_samples_and_update_seq_nr(
+    const SampleTypePointer &amp; sample,
+    uint32_t &amp; sequence_number
+)
+</code></pre>
+<h3 id="function-merge_history_into_sample">function merge_history_into_sample</h3>
+<pre><code class="language-cpp">template &lt;typename SampleTypePointer ,
+typename SourceType &gt;
+void merge_history_into_sample(
+    SampleTypePointer &amp; sample,
+    const SourceType &amp; source
+)
+</code></pre>
+<h3 id="function-operator">function operator&lt;&lt;</h3>
+<pre><code class="language-cpp">std::ostream &amp; operator&lt;&lt;(
+    std::ostream &amp; output,
+    const statistic_value_t &amp; v
+)
+</code></pre>
+<h3 id="function-print_sample_path">function print_sample_path</h3>
+<pre><code class="language-cpp">template &lt;typename SampleTypePointer &gt;
+void print_sample_path(
+    const std::string &amp; node_name,
+    const uint32_t lost_samples,
+    const SampleTypePointer &amp; sample
+)
+</code></pre>
+<h2 id="source-code">Source code</h2>
+<pre><code class="language-cpp">// Copyright 2021 Apex.AI, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#ifndef REFERENCE_SYSTEM__SAMPLE_MANAGEMENT_HPP_
+#define REFERENCE_SYSTEM__SAMPLE_MANAGEMENT_HPP_
+#include &lt;algorithm&gt;
+#include &lt;chrono&gt;
+#include &lt;cmath&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;limits&gt;
+#include &lt;mutex&gt;
+
+#include &quot;reference_system/msg_types.hpp&quot;
+
+bool set_benchmark_mode(const bool has_benchmark_mode, const bool set_value = true)
+{
+  static bool value{false};
+  if (set_value) {value = has_benchmark_mode;}
+  return value;
+}
+
+bool is_in_benchmark_mode()
+{
+  return set_benchmark_mode(false, false);
+}
+
+uint64_t now_as_int()
+{
+  return static_cast&lt;uint64_t&gt;(
+    std::chrono::duration_cast&lt;std::chrono::nanoseconds&gt;(
+      std::chrono::system_clock::now().time_since_epoch())
+    .count());
+}
+
+template&lt;typename SampleTypePointer&gt;
+void set_sample(
+  const std::string &amp; node_name, const uint32_t sequence_number, const uint32_t dropped_samples,
+  const uint64_t timestamp, SampleTypePointer &amp; sample)
+{
+  if (is_in_benchmark_mode() ) {return;}
+
+  if (sample.size &gt;= message_t::STATS_CAPACITY) {
+    return;
+  }
+
+  uint64_t idx = sample.size;
+  ++sample.size;
+
+  memcpy(
+    sample.stats[idx].node_name.data(), node_name.data(),
+    std::min(
+      node_name.size(),
+      reference_interfaces::msg::TransmissionStats::NODE_NAME_LENGTH));
+
+  sample.stats[idx].timestamp = timestamp;
+
+  sample.stats[idx].sequence_number = sequence_number;
+  sample.stats[idx].dropped_samples = dropped_samples;
+}
+
+template&lt;typename SampleTypePointer&gt;
+uint64_t get_sample_timestamp(const SampleTypePointer &amp; sample)
+{
+  if (is_in_benchmark_mode() || sample-&gt;size == 0) {
+    return 0;
+  } else {
+    return sample-&gt;stats[sample-&gt;size - 1].timestamp;
+  }
+}
+
+template&lt;typename SampleTypePointer&gt;
+uint32_t get_sample_sequence_number(const SampleTypePointer &amp; sample)
+{
+  if (is_in_benchmark_mode() || sample-&gt;size == 0) {
+    return 0;
+  } else {
+    return sample-&gt;stats[sample-&gt;size - 1].sequence_number;
+  }
+}
+
+template&lt;typename SampleTypePointer&gt;
+uint32_t get_missed_samples_and_update_seq_nr(
+  const SampleTypePointer &amp; sample,
+  uint32_t &amp; sequence_number)
+{
+  uint32_t updated_seq_nr = get_sample_sequence_number(sample);
+  uint32_t missed_samples =
+    (updated_seq_nr &gt; sequence_number) ? updated_seq_nr - sequence_number - 1 : 0;
+  sequence_number = updated_seq_nr;
+  return missed_samples;
+}
+
+template&lt;typename SampleTypePointer, typename SourceType&gt;
+void merge_history_into_sample(SampleTypePointer &amp; sample, const SourceType &amp; source)
+{
+  if (is_in_benchmark_mode()) {return;}
+
+  std::vector&lt;uint64_t&gt; entries_to_add;
+
+  for (uint64_t i = 0; i &lt; source-&gt;size; ++i) {
+    bool entry_found = false;
+    std::string source_name((const char *)source-&gt;stats[i].node_name.data());
+
+    for (uint64_t k = 0; k &lt; sample.size; ++k) {
+      std::string sample_name((const char *)sample.stats[k].node_name.data());
+      if (source_name == sample_name) {
+        entry_found = true;
+        break;
+      }
+    }
+
+    if (!entry_found) {entries_to_add.emplace_back(i);}
+  }
+
+  for (auto i : entries_to_add) {
+    memcpy(
+      sample.stats.data() + sample.size, source-&gt;stats.data() + i,
+      sizeof(reference_interfaces::msg::TransmissionStats));
+    ++sample.size;
+  }
+}
+
+struct statistic_value_t
+{
+  double average = 0.0;
+  double deviation = 0.0;
+  uint64_t min = std::numeric_limits&lt;uint64_t&gt;::max();
+  uint64_t max = 0;
+  uint64_t current = 0;
+  uint64_t total_number = 0;
+  std::string suffix;
+  double adjustment = 0.0;
+  double m2 = 0.0;
+
+  void set(const uint64_t value)
+  {
+    // Use Welford's online algorithm to calculate deviation
+    ++total_number;
+    current = value;
+    auto previous_delta = value - average;
+    average += previous_delta / total_number;
+    auto new_delta = value - average;
+    m2 += (previous_delta * new_delta);
+    deviation = sqrt(m2 / (total_number - 1));
+    min = std::min(min, value);
+    max = std::max(max, value);
+  }
+};
+
+struct sample_statistic_t
+{
+  uint64_t timepoint_of_first_received_sample = 0;
+  uint32_t previous_behavior_planner_sequence = 0;
+  uint64_t previous_behavior_planner_time_stamp = 0;
+
+  statistic_value_t latency;
+  statistic_value_t hot_path_latency;
+  statistic_value_t behavior_planner_period;
+};
+
+std::ostream &amp; operator&lt;&lt;(std::ostream &amp; output, const statistic_value_t &amp; v)
+{
+  if (v.adjustment == 0.0) {
+    output &lt;&lt; v.current &lt;&lt; v.suffix &lt;&lt; &quot; [min=&quot; &lt;&lt; v.min &lt;&lt; v.suffix &lt;&lt;
+      &quot;, max=&quot; &lt;&lt; v.max &lt;&lt; v.suffix &lt;&lt; &quot;, average=&quot; &lt;&lt; v.average &lt;&lt;
+      v.suffix &lt;&lt; &quot;, deviation=&quot; &lt;&lt; v.deviation &lt;&lt; &quot;]&quot;;
+  } else {
+    output &lt;&lt; static_cast&lt;double&gt;(v.current) / v.adjustment &lt;&lt; v.suffix &lt;&lt;
+      &quot; [min=&quot; &lt;&lt; static_cast&lt;double&gt;(v.min) / v.adjustment &lt;&lt; v.suffix &lt;&lt;
+      &quot;, max=&quot; &lt;&lt; static_cast&lt;double&gt;(v.max) / v.adjustment &lt;&lt; v.suffix &lt;&lt;
+      &quot;, average=&quot; &lt;&lt; v.average / v.adjustment &lt;&lt; v.suffix &lt;&lt;
+      &quot;, deviation=&quot; &lt;&lt; v.deviation / v.adjustment &lt;&lt; v.suffix &lt;&lt; &quot;]&quot;;
+  }
+  return output;
+}
+
+template&lt;typename SampleTypePointer&gt;
+void print_sample_path(
+  const std::string &amp; node_name,
+  const uint32_t lost_samples,
+  const SampleTypePointer &amp; sample)
+{
+  static int benchmark_counter = 0;
+  ++benchmark_counter;
+
+  // benchmark_counter = dismissing first 100 samples to get rid of startup jitter
+  if (is_in_benchmark_mode() || sample-&gt;size &lt;= 0 || benchmark_counter &lt; 10) {return;}
+
+  static std::map&lt;std::string, sample_statistic_t&gt; advanced_statistics;
+  static std::map&lt;std::string, std::map&lt;std::string, statistic_value_t&gt;&gt; dropped_samples;
+
+  auto iter = advanced_statistics.find(node_name);
+  if (iter == advanced_statistics.end() ) {
+    advanced_statistics[node_name].timepoint_of_first_received_sample =
+      std::chrono::duration_cast&lt;std::chrono::nanoseconds&gt;(
+      std::chrono::system_clock::now().time_since_epoch()).count();
+    advanced_statistics[node_name].latency.suffix = &quot;ms&quot;;
+    advanced_statistics[node_name].latency.adjustment = 1000000.0;
+    advanced_statistics[node_name].hot_path_latency.suffix = &quot;ms&quot;;
+    advanced_statistics[node_name].hot_path_latency.adjustment = 1000000.0;
+    advanced_statistics[node_name].behavior_planner_period.suffix = &quot;ms&quot;;
+    advanced_statistics[node_name].behavior_planner_period.adjustment = 1000000.0;
+  }
+
+  const uint64_t timestamp_in_ns = static_cast&lt;uint64_t&gt;(
+    std::chrono::duration_cast&lt;std::chrono::nanoseconds&gt;(
+      std::chrono::system_clock::now().time_since_epoch())
+    .count());
+
+  static std::mutex cout_mutex;
+  std::lock_guard&lt;std::mutex&gt; lock(cout_mutex);
+
+  std::cout &lt;&lt; &quot;----------------------------------------------------------&quot; &lt;&lt;
+    std::endl;
+  std::cout &lt;&lt; &quot;sample path: &quot; &lt;&lt; std::endl;
+  std::cout &lt;&lt;
+    &quot;  order timepoint           sequence nr.                  node name     dropped samples&quot; &lt;&lt;
+    std::endl;
+
+  std::map&lt;uint64_t, uint64_t&gt; timestamp2Order;
+  uint64_t min_time_stamp = std::numeric_limits&lt;uint64_t&gt;::max();
+
+  for (uint64_t i = 0; i &lt; sample-&gt;size; ++i) {
+    timestamp2Order[sample-&gt;stats[i].timestamp] = 0;
+    min_time_stamp = std::min(min_time_stamp, sample-&gt;stats[i].timestamp);
+  }
+  uint64_t i = 0;
+  for (auto &amp; e : timestamp2Order) {
+    e.second = i++;
+  }
+
+  for (uint64_t i = 0; i &lt; sample-&gt;size; ++i) {
+    std::string name((const char *)sample-&gt;stats[i].node_name.data());
+    std::cout &lt;&lt; &quot;  [&quot;;
+    std::cout.width(2);
+    std::cout &lt;&lt; timestamp2Order[sample-&gt;stats[i].timestamp];
+    std::cout &lt;&lt; &quot;]  &quot; &lt;&lt; sample-&gt;stats[i].timestamp &lt;&lt; &quot;  &quot;;
+    std::cout.width(10);
+    std::cout &lt;&lt; sample-&gt;stats[i].sequence_number;
+    std::cout &lt;&lt; &quot;    &quot;;
+    std::cout.width(24);
+    std::cout &lt;&lt; name;
+    std::cout &lt;&lt; &quot;     &quot;;
+    dropped_samples[node_name][name].set(sample-&gt;stats[i].dropped_samples);
+    std::cout &lt;&lt; dropped_samples[node_name][name];
+    std::cout &lt;&lt; std::endl;
+  }
+
+  std::cout &lt;&lt; &quot;  [&quot;;
+  std::cout.width(2);
+  std::cout &lt;&lt; timestamp2Order.size();
+  std::cout &lt;&lt; &quot;]  &quot; &lt;&lt; timestamp_in_ns &lt;&lt; &quot;  &quot;;
+  std::cout.width(10);
+  std::cout &lt;&lt; &quot;endpoint&quot;;
+  std::cout &lt;&lt; &quot;    &quot;;
+  std::cout.width(24);
+  std::cout &lt;&lt; node_name;
+  std::cout &lt;&lt; &quot;     &quot;;
+  dropped_samples[node_name][node_name].set(lost_samples);
+  std::cout &lt;&lt; dropped_samples[node_name][node_name];
+  std::cout &lt;&lt; std::endl;
+
+  // hot path latency
+  uint64_t hot_path_latency_in_ns = 0;
+  bool does_contain_hot_path = false;
+  uint64_t lidar_timestamp = 0;
+  for (uint64_t i = 0; i &lt; sample-&gt;size; ++i) {
+    uint64_t idx = sample-&gt;size - i - 1;
+    std::string current_node_name(
+      reinterpret_cast&lt;const char *&gt;(sample-&gt;stats[idx].node_name.data()));
+
+    if (current_node_name == &quot;ObjectCollisionEstimator&quot;) {
+      hot_path_latency_in_ns = sample-&gt;stats[idx].timestamp;
+      does_contain_hot_path = true;
+    } else if (current_node_name == &quot;FrontLidarDriver&quot;) {
+      lidar_timestamp = std::max(lidar_timestamp, sample-&gt;stats[idx].timestamp);
+    } else if (current_node_name == &quot;RearLidarDriver&quot;) {
+      lidar_timestamp = std::max(lidar_timestamp, sample-&gt;stats[idx].timestamp);
+    }
+  }
+  hot_path_latency_in_ns -= lidar_timestamp;
+
+  // hot path drops
+  uint64_t hot_path_drops = 0;
+  if (does_contain_hot_path) {
+    for (uint64_t i = 0; i &lt; sample-&gt;size; ++i) {
+      uint64_t idx = sample-&gt;size - i - 1;
+      std::string current_node_name(
+        reinterpret_cast&lt;const char *&gt;(sample-&gt;stats[idx].node_name.data()));
+      if (current_node_name == &quot;ObjectCollisionEstimator&quot; ||
+        current_node_name == &quot;FrontLidarDriver&quot; ||
+        current_node_name == &quot;PointsTransformerFront&quot; ||
+        current_node_name == &quot;PointCloudFusion&quot; ||
+        current_node_name == &quot;RayGroundFilter&quot; ||
+        current_node_name == &quot;EuclideanClusterDetector&quot;)
+      {
+        hot_path_drops += sample-&gt;stats[idx].dropped_samples;
+      }
+    }
+  }
+
+  // behavior planner cycle time
+  bool does_contain_behavior_planner = false;
+  for (uint64_t i = 0; i &lt; sample-&gt;size; ++i) {
+    std::string current_node_name(
+      reinterpret_cast&lt;const char *&gt;(sample-&gt;stats[i].node_name.data()));
+    if (current_node_name == &quot;BehaviorPlanner&quot;) {
+      does_contain_behavior_planner = true;
+      auto seq_nr = sample-&gt;stats[i].sequence_number;
+      auto timestamp = sample-&gt;stats[i].timestamp;
+      auto prev_seq_nr = advanced_statistics[node_name].previous_behavior_planner_sequence;
+      auto prev_timestamp = advanced_statistics[node_name].previous_behavior_planner_time_stamp;
+      if (prev_timestamp != 0) {
+        advanced_statistics[node_name].behavior_planner_period.set(
+          static_cast&lt;double&gt;(timestamp - prev_timestamp) /
+          static_cast&lt;double&gt;(seq_nr - prev_seq_nr));
+      }
+      advanced_statistics[node_name].previous_behavior_planner_sequence = seq_nr;
+      advanced_statistics[node_name].previous_behavior_planner_time_stamp = timestamp;
+    }
+  }
+
+  advanced_statistics[node_name].latency.set(timestamp_in_ns - min_time_stamp);
+
+  std::cout &lt;&lt; std::endl;
+  std::cout &lt;&lt; &quot;Statistics:&quot; &lt;&lt; std::endl;
+  std::cout &lt;&lt; &quot;  latency:                  &quot; &lt;&lt; advanced_statistics[node_name].latency &lt;&lt;
+    std::endl;
+
+  if (does_contain_hot_path) {
+    dropped_samples[node_name][&quot;hotpath&quot;].set(hot_path_drops);
+    advanced_statistics[node_name].hot_path_latency.set(hot_path_latency_in_ns);
+    std::cout &lt;&lt;
+      &quot;  hot path:                 &quot; &lt;&lt; \
+      &quot;FrontLidarDriver/RearLidarDriver (latest) -&gt; ObjectCollisionEstimator&quot;
+              &lt;&lt;
+      std::endl;
+    std::cout &lt;&lt; &quot;  hot path latency:         &quot; &lt;&lt;
+      advanced_statistics[node_name].hot_path_latency &lt;&lt; std::endl;
+    std::cout &lt;&lt; &quot;  hot path drops:           &quot; &lt;&lt; dropped_samples[node_name][&quot;hotpath&quot;] &lt;&lt;
+      std::endl;
+  }
+
+  if (does_contain_behavior_planner) {
+    std::cout &lt;&lt; &quot;  behavior planner period:  &quot; &lt;&lt;
+      advanced_statistics[node_name].behavior_planner_period &lt;&lt; std::endl;
+  }
+
+  std::cout &lt;&lt; &quot;----------------------------------------------------------&quot; &lt;&lt;
+    std::endl;
+  std::cout &lt;&lt; std::endl;
+}
+
+#endif  // REFERENCE_SYSTEM__SAMPLE_MANAGEMENT_HPP_
+</code></pre>
+<hr />
+<p>Updated on 2021-12-24 at 10:47:52 -0800</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike", "default": "stable"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>
