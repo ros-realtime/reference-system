@@ -1,0 +1,720 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.3">
+    
+    
+      
+        <title>reference_system/test/test_reference_system_rclcpp.cpp - Reference System Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.edf004c2.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reference_systemtesttest_reference_system_rclcppcpp" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Reference System Documentation" class="md-header__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reference System Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              reference_system/test/test_reference_system_rclcpp.cpp
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Reference System Documentation" class="md-nav__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Reference System Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pages/md_README" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes" class="md-nav__link">
+        Classes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Namespaces" class="md-nav__link">
+        Namespaces
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Modules" class="md-nav__link">
+        Modules
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Pages" class="md-nav__link">
+        Related Pages
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Examples" class="md-nav__link">
+        Examples
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#types" class="md-nav__link">
+    Types
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types-documentation" class="md-nav__link">
+    Types Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Types Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-systemtype" class="md-nav__link">
+    using SystemType
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions-documentation" class="md-nav__link">
+    Functions Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-test_f" class="md-nav__link">
+    function TEST_F
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-test_f_1" class="md-nav__link">
+    function TEST_F
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-test_f_2" class="md-nav__link">
+    function TEST_F
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-test_f_3" class="md-nav__link">
+    function TEST_F
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-test_f_4" class="md-nav__link">
+    function TEST_F
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-test_f_5" class="md-nav__link">
+    function TEST_F
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-code" class="md-nav__link">
+    Source code
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+<h1 id="reference_systemtesttest_reference_system_rclcppcpp">reference_system/test/test_reference_system_rclcpp.cpp</h1>
+<h2 id="types">Types</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>using <a href="/reference-system/Classes/structRclcppSystem/">RclcppSystem</a></td>
+<td><strong><a href="/reference-system/Files/test__reference__system__rclcpp_8cpp/#using-systemtype">SystemType</a></strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions">Functions</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/test__reference__system__rclcpp_8cpp/#function-test-f">TEST_F</a></strong>(<a href="/reference-system/Classes/classTestNodeGraph/">TestNodeGraph</a> , rclcpp_sensor_node )</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/test__reference__system__rclcpp_8cpp/#function-test-f">TEST_F</a></strong>(<a href="/reference-system/Classes/classTestNodeGraph/">TestNodeGraph</a> , rclcpp_transform_node )</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/test__reference__system__rclcpp_8cpp/#function-test-f">TEST_F</a></strong>(<a href="/reference-system/Classes/classTestNodeGraph/">TestNodeGraph</a> , rclcpp_intersection_node )</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/test__reference__system__rclcpp_8cpp/#function-test-f">TEST_F</a></strong>(<a href="/reference-system/Classes/classTestNodeGraph/">TestNodeGraph</a> , rclcpp_fusion_node )</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/test__reference__system__rclcpp_8cpp/#function-test-f">TEST_F</a></strong>(<a href="/reference-system/Classes/classTestNodeGraph/">TestNodeGraph</a> , rclcpp_cyclic_node )</td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Files/test__reference__system__rclcpp_8cpp/#function-test-f">TEST_F</a></strong>(<a href="/reference-system/Classes/classTestNodeGraph/">TestNodeGraph</a> , rclcpp_command_node )</td>
+</tr>
+</tbody>
+</table>
+<h2 id="types-documentation">Types Documentation</h2>
+<h3 id="using-systemtype">using SystemType</h3>
+<pre><code class="language-cpp">using SystemType =  RclcppSystem;
+</code></pre>
+<h2 id="functions-documentation">Functions Documentation</h2>
+<h3 id="function-test_f">function TEST_F</h3>
+<pre><code class="language-cpp">TEST_F(
+    TestNodeGraph ,
+    rclcpp_sensor_node 
+)
+</code></pre>
+<h3 id="function-test_f_1">function TEST_F</h3>
+<pre><code class="language-cpp">TEST_F(
+    TestNodeGraph ,
+    rclcpp_transform_node 
+)
+</code></pre>
+<h3 id="function-test_f_2">function TEST_F</h3>
+<pre><code class="language-cpp">TEST_F(
+    TestNodeGraph ,
+    rclcpp_intersection_node 
+)
+</code></pre>
+<h3 id="function-test_f_3">function TEST_F</h3>
+<pre><code class="language-cpp">TEST_F(
+    TestNodeGraph ,
+    rclcpp_fusion_node 
+)
+</code></pre>
+<h3 id="function-test_f_4">function TEST_F</h3>
+<pre><code class="language-cpp">TEST_F(
+    TestNodeGraph ,
+    rclcpp_cyclic_node 
+)
+</code></pre>
+<h3 id="function-test_f_5">function TEST_F</h3>
+<pre><code class="language-cpp">TEST_F(
+    TestNodeGraph ,
+    rclcpp_command_node 
+)
+</code></pre>
+<h2 id="source-code">Source code</h2>
+<pre><code class="language-cpp">// Copyright 2021 Apex.AI, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#include &lt;gtest/gtest.h&gt;
+
+#include &lt;string&gt;
+
+#include &quot;test_fixtures.hpp&quot;
+#include &quot;rclcpp/node_interfaces/node_graph.hpp&quot;
+#include &quot;reference_system/system/systems.hpp&quot;
+
+// set the system to use
+using SystemType = RclcppSystem;
+
+TEST_F(TestNodeGraph, rclcpp_sensor_node) {
+  auto settings = nodes::SensorSettings();
+  settings.node_name = &quot;SensorNode&quot;;
+  settings.topic_name = settings.node_name;
+  settings.cycle_time = milliseconds(100);
+  // create node
+  auto node =
+    create_node&lt;SystemType, SystemType::Sensor, nodes::SensorSettings&gt;(settings);
+  // confirm node was initialized with settings
+  EXPECT_EQ(node-&gt;get_name(), settings.node_name);
+  // TODO(flynneva): update node graph API for galactic and rolling
+  // get node graph of node
+  // auto * node_graph = node-&gt;get_node_graph_interface().get();
+  // ASSERT_NE(nullptr, node_graph);
+  // auto topic_names_and_types = node_graph-&gt;get_topic_names_and_types(false);
+  // // sensor nodes should publish one topic
+  // EXPECT_EQ(size_t(3), topic_names_and_types.size());
+  // EXPECT_EQ(size_t(1), node_graph-&gt;count_publishers(settings.topic_name));
+}
+
+TEST_F(TestNodeGraph, rclcpp_transform_node) {
+  auto settings = nodes::TransformSettings();
+  settings.node_name = &quot;TransformNode&quot;;
+  settings.input_topic = settings.node_name + &quot;1&quot;;
+  settings.output_topic = settings.node_name;
+  settings.number_crunch_limit = CRUNCH;
+  // create node
+  auto node =
+    create_node&lt;SystemType, SystemType::Transform, nodes::TransformSettings&gt;(settings);
+  // confirm node was initialized with settings
+  EXPECT_EQ(node-&gt;get_name(), settings.node_name);
+  // get node graph of node
+  // auto * node_graph = node-&gt;get_node_graph_interface().get();
+  // ASSERT_NE(nullptr, node_graph);
+  // auto topic_names_and_types = node_graph-&gt;get_topic_names_and_types(false);
+  // // transform nodes should publish one topic and subscribe to one topic
+  // size_t pubs = 1;
+  // size_t subs = 1;
+  // size_t total_pubs_and_subs = pubs + subs + size_t(2);  // 2 for rosout and parameter_events
+  // EXPECT_EQ(total_pubs_and_subs, topic_names_and_types.size());
+  // EXPECT_EQ(pubs, node_graph-&gt;count_publishers(settings.output_topic));
+  // EXPECT_EQ(subs, node_graph-&gt;count_subscribers(settings.input_topic));
+}
+
+TEST_F(TestNodeGraph, rclcpp_intersection_node) {
+  auto settings = nodes::IntersectionSettings();
+  settings.node_name = &quot;IntersectionNode&quot;;
+  std::string input_topic = settings.node_name + &quot;_in_&quot;;
+  settings.connections.emplace_back(nodes::IntersectionSettings::Connection());
+  settings.connections.emplace_back(nodes::IntersectionSettings::Connection());
+  settings.connections[0].input_topic = input_topic + &quot;1&quot;;
+  settings.connections[0].output_topic = settings.node_name + &quot;1&quot;;
+  settings.connections[0].number_crunch_limit = CRUNCH;
+  settings.connections[1].input_topic = input_topic + &quot;2&quot;;
+  settings.connections[1].output_topic = settings.node_name + &quot;2&quot;;
+  settings.connections[1].number_crunch_limit = CRUNCH;
+  // create node
+  auto node =
+    create_node&lt;SystemType, SystemType::Intersection, nodes::IntersectionSettings&gt;(settings);
+  // confirm node was initialized with settings
+  EXPECT_EQ(node-&gt;get_name(), settings.node_name);
+  // get node graph of node
+  //  auto * node_graph = node-&gt;get_node_graph_interface().get();
+  //  ASSERT_NE(nullptr, node_graph);
+  //  auto topic_names_and_types = node_graph-&gt;get_topic_names_and_types(false);
+  //  // intersection nodes should publish two topics and subscribe to two topics
+  //  auto pubs = settings.connections.size();
+  //  auto subs = settings.connections.size();
+  //  auto total_pubs_and_subs = pubs + subs + 2;  // 2 for rosout and parameter_events
+  //  EXPECT_EQ(total_pubs_and_subs, topic_names_and_types.size());
+  //  for (auto connection : settings.connections) {
+  //    EXPECT_EQ(size_t(1), node_graph-&gt;count_publishers(connection.output_topic));
+  //    EXPECT_EQ(size_t(1), node_graph-&gt;count_subscribers(connection.input_topic));
+  //  }
+}
+
+TEST_F(TestNodeGraph, rclcpp_fusion_node) {
+  auto settings = nodes::FusionSettings();
+  settings.node_name = &quot;FusionNode&quot;;
+  settings.input_0 = settings.node_name + &quot;1&quot;;
+  settings.input_1 = settings.node_name + &quot;2&quot;;
+  settings.number_crunch_limit = CRUNCH;
+  settings.output_topic = settings.node_name;
+  // create node
+  auto node =
+    create_node&lt;SystemType, SystemType::Fusion, nodes::FusionSettings&gt;(settings);
+  // confirm node was initialized with settings
+  EXPECT_EQ(node-&gt;get_name(), settings.node_name);
+  // get node graph of node
+  // auto * node_graph = node-&gt;get_node_graph_interface().get();
+  // ASSERT_NE(nullptr, node_graph);
+  // auto topic_names_and_types = node_graph-&gt;get_topic_names_and_types(false);
+  // intersection nodes should publish two topics and subscribe to two topics
+  // size_t pubs = 1;
+  // size_t subs = 2;
+  // size_t total_pubs_and_subs = pubs + subs + 2;  // 2 for rosout and parameter_events
+  // EXPECT_EQ(total_pubs_and_subs, topic_names_and_types.size());
+  // EXPECT_EQ(size_t(1), node_graph-&gt;count_publishers(settings.node_name));
+  // EXPECT_EQ(size_t(1), node_graph-&gt;count_subscribers(settings.input_0));
+  // EXPECT_EQ(size_t(1), node_graph-&gt;count_subscribers(settings.input_1));
+}
+
+TEST_F(TestNodeGraph, rclcpp_cyclic_node) {
+  auto settings = nodes::CyclicSettings();
+  settings.node_name = &quot;CyclicNode&quot;;
+  settings.inputs.emplace_back(settings.node_name + &quot;1&quot;);
+  settings.inputs.emplace_back(settings.node_name + &quot;2&quot;);
+  settings.inputs.emplace_back(settings.node_name + &quot;3&quot;);
+  settings.number_crunch_limit = CRUNCH;
+  settings.output_topic = settings.node_name;
+  // create node
+  auto node =
+    create_node&lt;SystemType, SystemType::Cyclic, nodes::CyclicSettings&gt;(settings);
+  // confirm node was initialized with settings
+  EXPECT_EQ(node-&gt;get_name(), settings.node_name);
+  // get node graph of node
+  // auto * node_graph = node-&gt;get_node_graph_interface().get();
+  // ASSERT_NE(nullptr, node_graph);
+  // auto topic_names_and_types = node_graph-&gt;get_topic_names_and_types(false);
+  // // intersection nodes should publish two topics and subscribe to two topics
+  // size_t pubs = 1;
+  // size_t subs = 3;
+  // auto total_pubs_and_subs = pubs + subs + 2;  // 2 for rosout and parameter_events
+  // EXPECT_EQ(total_pubs_and_subs, topic_names_and_types.size());
+  // EXPECT_EQ(size_t(1), node_graph-&gt;count_publishers(settings.node_name));
+  // EXPECT_EQ(size_t(1), node_graph-&gt;count_subscribers(settings.inputs[0]));
+  // EXPECT_EQ(size_t(1), node_graph-&gt;count_subscribers(settings.inputs[1]));
+  // EXPECT_EQ(size_t(1), node_graph-&gt;count_subscribers(settings.inputs[2]));
+}
+
+TEST_F(TestNodeGraph, rclcpp_command_node) {
+  auto settings = nodes::CommandSettings();
+  settings.node_name = &quot;CommandNode&quot;;
+  settings.input_topic = settings.node_name + &quot;_in&quot;;
+  // create node
+  auto node =
+    create_node&lt;SystemType, SystemType::Command, nodes::CommandSettings&gt;(settings);
+  // confirm node was initialized with settings
+  EXPECT_EQ(node-&gt;get_name(), settings.node_name);
+  // get node graph of node
+  // auto * node_graph = node-&gt;get_node_graph_interface().get();
+  // ASSERT_NE(nullptr, node_graph);
+  // auto topic_names_and_types = node_graph-&gt;get_topic_names_and_types(false);
+  // // intersection nodes should publish two topics and subscribe to two topics
+  // size_t pubs = 0;
+  // size_t subs = 1;
+  // auto total_pubs_and_subs = pubs + subs + 2;  // 2 for rosout and parameter_events
+  // EXPECT_EQ(total_pubs_and_subs, topic_names_and_types.size());
+  // EXPECT_EQ(size_t(0), node_graph-&gt;count_publishers(settings.node_name));
+  // EXPECT_EQ(size_t(1), node_graph-&gt;count_subscribers(settings.input_topic));
+}
+</code></pre>
+<hr />
+<p>Updated on 2021-12-24 at 17:00:46 +0000</p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e1a181d9.min.js"></script>
+      
+    
+  </body>
+</html>
