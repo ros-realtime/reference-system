@@ -15,6 +15,7 @@
 #define REFERENCE_SYSTEM__SAMPLE_MANAGEMENT_HPP_
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <map>
 #include <string>
 #include <iostream>
@@ -142,16 +143,18 @@ struct statistic_value_t
   uint64_t total_number = 0;
   std::string suffix;
   double adjustment = 0.0;
+  double m2 = 0.0;
 
   void set(const uint64_t value)
   {
+    // Use Welford's online algorithm to calculate deviation
     ++total_number;
     current = value;
-    average = ((total_number - 1) * average + value) / total_number;
-    deviation =
-      std::sqrt(
-      (deviation * deviation * (total_number - 1) + (average - value) * (average - value)) /
-      total_number);
+    auto previous_delta = value - average;
+    average += previous_delta / total_number;
+    auto new_delta = value - average;
+    m2 += (previous_delta * new_delta);
+    deviation = sqrt(m2 / (total_number - 1));
     min = std::min(min, value);
     max = std::max(max, value);
   }

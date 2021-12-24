@@ -11,20 +11,30 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+#include <gtest/gtest.h>
+
+#include <string>
+
 #include "reference_system/number_cruncher.hpp"
 
-#include <iostream>
-#include <iomanip>
 
+TEST(test_number_cruncher, number_cruncher) {
+  auto primes = number_cruncher(10);
+  // 2, 3, 5, 7
+  EXPECT_EQ(primes, 4);
 
-int main()
-{
-  long double crunch_time = 0.0;
-  std::cout << "maximum_number     run time" << std::endl;
-  for (uint64_t i = 64; crunch_time < 1000.0; i *= 2) {
-    crunch_time = get_crunch_time_in_ms(i);
-    std::cout << std::setfill(' ') << std::setw(12) << i << "       " <<
-      crunch_time << "ms" << std::endl;
-  }
+  primes = number_cruncher(20);
+  // 11, 13, 17, 19
+  EXPECT_EQ(primes, 8);
+
+  primes = number_cruncher(30);
+  // 23, 29
+  EXPECT_EQ(primes, 10);
+}
+
+TEST(test_number_cruncher, crunch_time) {
+  auto expected_fast = get_crunch_time_in_ms(100);
+  auto expected_slow = get_crunch_time_in_ms(65536);
+  // lower maximum number should result in faster crunch times
+  EXPECT_LT(expected_fast, expected_slow);
 }
