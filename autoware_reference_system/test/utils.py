@@ -11,45 +11,35 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import errno
 import os
-import sys
 
-from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_STD, TRACE_UNSUPPORTED
+from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_STD
+from errors import UnsupportedTraceTypeError
 
 
-def checkPath(path: str):
-    # make sure directory exists
+def checkDirPath(path: str):
+    # Check if directory exists, raise error directory does not exist
     if not os.path.isdir(path):
-        # make sure given path isnt a file
-        if not os.path.isfile(path):
-            print('Given path does not exist: ' + path)
-            sys.exit()
-    # make sure path ends in a `/`
-    if (path[-1] != '/'):
-        if not (path.find('.txt') >= 0):
-            path += '/'
-    return path
+        raise NotADirectoryError(errno.ENOENT, os.strerror(errno.ENOENT), path)
+    return
 
 
 def getTraceType(path):
-    # check if given path is a callback trace
-    if path.find(TRACE_CALLBACK) >= 0:
+    # Return the trace type based on the given path
+    if TRACE_CALLBACK in path:
         return TRACE_CALLBACK
-    elif path.find(TRACE_MEMORY) >= 0:
+    elif TRACE_MEMORY in path:
         return TRACE_MEMORY
-    elif path.find(TRACE_STD) >= 0:
+    elif TRACE_STD in path:
         return TRACE_STD
     else:
-        return TRACE_UNSUPPORTED
-
-
-def getPWD(path):
-    return os.path.basename(os.path.normpath(path))
+        raise UnsupportedTraceTypeError(
+            'The given path is not from a supported trace type: ' + path)
 
 
 def getDirPath(path):
-    # given path is a filename, remove filename but keep rest of path
+    # Remove filename from given path and return with trailing `/`
     return os.path.dirname(path) + '/'
 
 

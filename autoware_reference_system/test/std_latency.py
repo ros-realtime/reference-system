@@ -20,6 +20,7 @@ from bokeh.palettes import cividis
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
 from constants import SIZE_AXIS_LABEL, SIZE_CATEGORY_LABEL, SIZE_MAJOR_LABEL, SIZE_TITLE
+from constants import SIZE_TABLE_ROW, SIZE_TABLE_WIDTH
 import pandas as pd
 
 
@@ -272,40 +273,43 @@ def summary(path, duration, size):
     columns = [TableColumn(field=col, title=col) for col in df[latency].columns]
     latency_table_title = Div(
         text='<b>Latency Summary Table ' + test_info + '</b>',
-        height=10,
-        width=1000)
+        width=SIZE_TABLE_WIDTH,
+        height=SIZE_TABLE_ROW)
     latency_table = [
         latency_table_title,
         DataTable(
             columns=columns,
-            source=ColumnDataSource(df[latency]),
-            margin=(10, 10, 10, 10),
-            height=(len(df[latency].exe.values.tolist()) * 33),
-            width=1000)]
+            source=ColumnDataSource(df[latency].round(decimals=3)),
+            autosize_mode='fit_viewport',
+            margin=(0, 10, 10, 10),
+            height=(len(df[latency].exe.values.tolist()) * SIZE_TABLE_ROW),
+            width=SIZE_TABLE_WIDTH)]
     dropped_table_title = Div(
         text='<b>Dropped Messages Summary Table ' + test_info + '</b>',
-        height=10,
-        width=1000)
+        width=SIZE_TABLE_WIDTH,
+        height=SIZE_TABLE_ROW)
     dropped_table = [
         dropped_table_title,
         DataTable(
             columns=columns,
-            source=ColumnDataSource(df[dropped]),
-            margin=(10, 10, 10, 10),
-            height=(len(df[dropped].exe.values.tolist()) * 33),
-            width=1000)]
+            source=ColumnDataSource(df[dropped].round(decimals=1)),
+            autosize_mode='fit_viewport',
+            margin=(0, 10, 10, 10),
+            height=(len(df[dropped].exe.values.tolist()) * SIZE_TABLE_ROW),
+            width=SIZE_TABLE_WIDTH)]
     period_table_title = Div(
         text='<b>Behavior Planner Jitter Summary Table ' + str(duration) + 's</b>',
-        height=10,
-        width=1000)
+        width=SIZE_TABLE_WIDTH,
+        height=SIZE_TABLE_ROW)
     period_table = [
         period_table_title,
         DataTable(
             columns=columns,
-            source=ColumnDataSource(df[period]),
-            margin=(10, 10, 10, 10),
-            height=(len(df[period].exe.values.tolist()) * 33),
-            width=1000)]
+            source=ColumnDataSource(df[period].round(decimals=3)),
+            autosize_mode='fit_viewport',
+            margin=(0, 10, 10, 10),
+            height=(len(df[period].exe.values.tolist()) * SIZE_TABLE_ROW),
+            width=SIZE_TABLE_WIDTH)]
 
     std_figs = [
         [latency_table], [latency_fig],
@@ -325,9 +329,9 @@ def parseLogSummary(path, duration):
     log_map = []
     count = 0
     for index, line in enumerate(data):
-        if line.find('generate_std_trace') > 0:
-            if line.find('_' + str(duration) + 's') > 0:
-                if line.find('Start') > 0:
+        if 'generate_std_trace' in line:
+            if str(duration) in line:
+                if 'Start' in line:
                     search = ': generate_std_traces_'
                     test_name = line[line.find(search) + len(search):line.find('.py')]
                     rmw_idx = test_name.find('_rmw')
@@ -347,28 +351,28 @@ def parseLogSummary(path, duration):
                             }
                         }])
                     in_test = True
-                elif line.find('Passed') > 0:
+                elif 'Passed' in line:
                     in_test = False
                     count += 1
         # if within a test, add parse current line to dataframe
         if in_test:
-            if line.find('hot path') > 0:
-                if line.find('hot path:') > 0:
+            if 'hot path' in line:
+                if 'hot path:' in line:
                     indent = '                 '
                     hot_path_name = line[line.find('hot path:') + len('hot path:' + indent):]
-                if line.find('latency') > 0:
+                if 'latency' in line:
                     end_time = line[line.find('[') + 1:line.find(']') - 1]
                     log_map[count][2]['end'] = end_time
                     stats = parseStats(line)
                     if stats is not None:
                         log_map[count][2]['hot_path']['latency'] = stats
-                elif line.find('drops') > 0:
+                elif 'drops' in line:
                     end_time = line[line.find('[') + 1:line.find(']') - 1]
                     log_map[count][2]['end'] = end_time
                     stats = parseStats(line)
                     if stats is not None:
                         log_map[count][2]['hot_path']['dropped'] = stats
-            elif line.find('period') > 0:
+            elif 'period' in line:
                 # behavior planner period
                 # log_map[count][2]['behavior_planner']['period'] = \
                 #    float(line[line.find('period') + len('period:  '):line.find('ms')])

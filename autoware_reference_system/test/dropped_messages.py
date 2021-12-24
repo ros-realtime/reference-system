@@ -30,7 +30,7 @@ import numpy as np
 import pandas as pd
 
 from trace_utils import initDataModel
-from utils import getPWD
+from utils import getDirPath
 
 
 def summary(path, duration, size):
@@ -44,9 +44,9 @@ def summary(path, duration, size):
         fpath = path + fname
         # load tracing data
         data_model = initDataModel(fpath)
-        pwd = getPWD(fpath)
+        wd = getDirPath(fpath)
 
-        tmp_name = pwd.find('_rmw')
+        tmp_name = wd.find('_rmw')
         exe = fname[0:tmp_name]
         rmw = fname[tmp_name + 1:-(len(duration) + 2)]
 

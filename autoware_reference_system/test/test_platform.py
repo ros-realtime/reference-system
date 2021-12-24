@@ -33,8 +33,9 @@ platforms['rpi4-linux-rt'] = {
 }
 
 
-def test_platform():
+def test_platform(record_property):
     # get current system information
+    record_property('TEST_ID', '9ad8a388-b674-4706-991d-56654dc734e1')
     system, node, release, version, machine, processor = platform.uname()
     platform_supported = False
     for pform in platforms:
@@ -43,7 +44,7 @@ def test_platform():
                 platform_supported = True
                 assert multiprocessing.cpu_count() == platforms[pform]['cores']
                 if(platforms[pform]['realtime']):
-                    assert version.find('PREEMPT_RT') != -1
+                    assert 'PREEMPT_RT' in version
     if platform_supported:
         print('platform supported')
         assert True
