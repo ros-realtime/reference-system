@@ -368,6 +368,7 @@ from bokeh.palettes import cividis
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
 from constants import SIZE_AXIS_LABEL, SIZE_CATEGORY_LABEL, SIZE_MAJOR_LABEL, SIZE_TITLE
+from constants import SIZE_TABLE_ROW, SIZE_TABLE_WIDTH
 import pandas as pd
 
 
@@ -388,7 +389,7 @@ def summary(path, duration, size):
     }
     for idx, fpath in enumerate(glob.glob(path + '*' + duration + '*.txt')):
         fname = os.path.basename(fpath)
-        if (fname.find('.txt') &gt;= 0):
+        if '.txt' in fname:
             fname = fname[:-4]
         # extract exe and rmw name
         tmp_name = fname.find('_rmw')
@@ -603,47 +604,48 @@ def summary(path, duration, size):
     columns = [TableColumn(field=col, title=col) for col in df]
     cpu_table_title = Div(
         text='&lt;b&gt;CPU Usage Statistics ' + str(duration) + 's&lt;/b&gt;',
-        width=1000,
-        height=10
+        width=SIZE_TABLE_WIDTH,
+        height=SIZE_TABLE_ROW
     )
     cpu_table = [
         cpu_table_title,
         DataTable(
             columns=columns,
-            source=ColumnDataSource(df[cpu]),
-            margin=(10, 10, 10, 10),
-            height=(len(df[cpu].exe.values.tolist()) * 33),
-            width=1000)]
+            source=ColumnDataSource(df[cpu].round(decimals=2)),
+            autosize_mode='fit_viewport',
+            margin=(0, 10, 10, 10),
+            height=(len(df[cpu].exe.values.tolist()) * SIZE_TABLE_ROW),
+            width=SIZE_TABLE_WIDTH)]
 
     # add real table
     real_table_title = Div(
         text='&lt;b&gt;Real Memory Usage Statistics ' + str(duration) + 's&lt;/b&gt;',
-        width=1000,
-        height=10
+        width=SIZE_TABLE_WIDTH,
+        height=SIZE_TABLE_ROW
     )
     real_table = [
         real_table_title,
         DataTable(
             columns=columns,
             source=ColumnDataSource(df[real]),
-            margin=(10, 10, 10, 10),
-            height=(len(df[real].exe.values.tolist()) * 33),
-            width=1000)]
+            margin=(0, 10, 10, 10),
+            height=(len(df[real].exe.values.tolist()) * SIZE_TABLE_ROW),
+            width=SIZE_TABLE_WIDTH)]
 
     # add virtual table
     virtual_table_title = Div(
         text='&lt;b&gt;Virtual Memory Usage Statistics ' + str(duration) + 's&lt;/b&gt;',
-        width=1000,
-        height=10
+        width=SIZE_TABLE_WIDTH,
+        height=SIZE_TABLE_ROW
     )
     virtual_table = [
         virtual_table_title,
         DataTable(
             columns=columns,
             source=ColumnDataSource(df[virtual]),
-            margin=(10, 10, 10, 10),
-            height=(len(df[virtual].exe.values.tolist()) * 33),
-            width=1000)]
+            margin=(0, 10, 10, 10),
+            height=(len(df[virtual].exe.values.tolist()) * SIZE_TABLE_ROW),
+            width=SIZE_TABLE_WIDTH)]
     # add figures and tables to output
     memory_figs = [
         [cpu_table], [cpu_fig],
@@ -756,7 +758,7 @@ def individual(path, size):
     return memory
 </code></pre>
 <hr />
-<p>Updated on 2021-12-24 at 17:00:46 +0000</p>
+<p>Updated on 2021-12-24 at 17:45:36 +0000</p>
 
               
             </article>

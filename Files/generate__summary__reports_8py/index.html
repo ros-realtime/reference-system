@@ -362,11 +362,12 @@ from bokeh.layouts import layout
 from bokeh.plotting import save
 
 from constants import SIZE_SUMMARY
-from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_STD, TRACE_UNSUPPORTED
+from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_STD
 import dropped_messages
+from errors import UnsupportedTraceTypeError
 import memory_usage
 import std_latency
-from utils import checkPath, getDirPath, getTraceType
+from utils import checkDirPath, getDirPath, getFileName, getTraceType
 
 
 def memory_summary_report(path, duration):
@@ -427,8 +428,8 @@ def generate_summary_reports(path, duration):
     elif(trace_type == TRACE_STD):
         print('std latency summary report')
         std_summary_report(path, duration)
-    elif(trace_type == TRACE_UNSUPPORTED):
-        print('Trace type unsupported')
+    else:
+        raise UnsupportedTraceTypeError
 
 
 if __name__ == '__main__':
@@ -437,12 +438,17 @@ if __name__ == '__main__':
         duration = sys.argv[2]
     else:
         path = '/home/ubuntu/.ros/tracing/profile'
-    path = checkPath(path)
+    # remove filename from path
+    wd = getDirPath(path)
+    # confirm directory exists
+    checkDirPath(wd)
+    # get trace type, aka filename if path was given without a trailing `/`
+    tracetype = getFileName(path)
 
-    generate_summary_reports(path, duration)
+    generate_summary_reports(wd + tracetype + '/', duration)
 </code></pre>
 <hr />
-<p>Updated on 2021-12-24 at 17:00:46 +0000</p>
+<p>Updated on 2021-12-24 at 17:45:36 +0000</p>
 
               
             </article>

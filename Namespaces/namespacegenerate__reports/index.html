@@ -378,6 +378,20 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#variable-wd" class="md-nav__link">
+    variable wd
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-fname" class="md-nav__link">
+    variable fname
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variable-trace_type" class="md-nav__link">
     variable trace_type
   </a>
@@ -421,23 +435,23 @@
 <tbody>
 <tr>
 <td>def</td>
-<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#function-memory-report">memory_report</a></strong>(path path)</td>
+<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#function-memory-report">memory_report</a></strong>(wd wd, filename filename)</td>
 </tr>
 <tr>
 <td>def</td>
-<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#function-std-report">std_report</a></strong>(path path)</td>
+<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#function-std-report">std_report</a></strong>(wd wd, filename filename)</td>
 </tr>
 <tr>
 <td>def</td>
-<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#function-callback-report">callback_report</a></strong>(path path, ros2_data_model ros2_data_model)</td>
+<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#function-callback-report">callback_report</a></strong>(wd wd, filename filename, ros2_data_model ros2_data_model)</td>
 </tr>
 <tr>
 <td>def</td>
-<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#function-dropped-messages-report">dropped_messages_report</a></strong>(path path, ros2_data_model ros2_data_model)</td>
+<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#function-dropped-messages-report">dropped_messages_report</a></strong>(wd wd, filename filename, ros2_data_model ros2_data_model)</td>
 </tr>
 <tr>
 <td>def</td>
-<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#function-generate-reports">generate_reports</a></strong>(path path, ros2_data_model ros2_data_model)</td>
+<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#function-generate-reports">generate_reports</a></strong>(wd wd, fname fname, trace_type trace_type, ros2_data_model ros2_data_model)</td>
 </tr>
 </tbody>
 </table>
@@ -456,6 +470,14 @@
 </tr>
 <tr>
 <td></td>
+<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#variable-wd">wd</a></strong></td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#variable-fname">fname</a></strong></td>
+</tr>
+<tr>
+<td></td>
 <td><strong><a href="/reference-system/Namespaces/namespacegenerate__reports/#variable-trace-type">trace_type</a></strong></td>
 </tr>
 <tr>
@@ -467,29 +489,35 @@
 <h2 id="functions-documentation">Functions Documentation</h2>
 <h3 id="function-memory_report">function memory_report</h3>
 <pre><code class="language-python">def memory_report(
-    path path
+    wd wd,
+    filename filename
 )
 </code></pre>
 <h3 id="function-std_report">function std_report</h3>
 <pre><code class="language-python">def std_report(
-    path path
+    wd wd,
+    filename filename
 )
 </code></pre>
 <h3 id="function-callback_report">function callback_report</h3>
 <pre><code class="language-python">def callback_report(
-    path path,
+    wd wd,
+    filename filename,
     ros2_data_model ros2_data_model
 )
 </code></pre>
 <h3 id="function-dropped_messages_report">function dropped_messages_report</h3>
 <pre><code class="language-python">def dropped_messages_report(
-    path path,
+    wd wd,
+    filename filename,
     ros2_data_model ros2_data_model
 )
 </code></pre>
 <h3 id="function-generate_reports">function generate_reports</h3>
 <pre><code class="language-python">def generate_reports(
-    path path,
+    wd wd,
+    fname fname,
+    trace_type trace_type,
     ros2_data_model ros2_data_model
 )
 </code></pre>
@@ -497,14 +525,20 @@
 <h3 id="variable-path">variable path</h3>
 <pre><code class="language-python">string path =  'path';
 </code></pre>
+<h3 id="variable-wd">variable wd</h3>
+<pre><code class="language-python">wd =  getDirPath(path);
+</code></pre>
+<h3 id="variable-fname">variable fname</h3>
+<pre><code class="language-python">fname =  getFileName(path);
+</code></pre>
 <h3 id="variable-trace_type">variable trace_type</h3>
-<pre><code class="language-python">trace_type =  getTraceType(path);
+<pre><code class="language-python">trace_type =  getTraceType(wd);
 </code></pre>
 <h3 id="variable-ros2_data_model">variable ros2_data_model</h3>
 <pre><code class="language-python">ros2_data_model =  initDataModel(path);
 </code></pre>
 <hr />
-<p>Updated on 2021-12-24 at 17:00:46 +0000</p>
+<p>Updated on 2021-12-24 at 17:45:36 +0000</p>
 
               
             </article>

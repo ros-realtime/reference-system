@@ -374,7 +374,7 @@ import numpy as np
 import pandas as pd
 
 from trace_utils import initDataModel
-from utils import getPWD
+from utils import getDirPath
 
 
 def summary(path, duration, size):
@@ -388,9 +388,9 @@ def summary(path, duration, size):
         fpath = path + fname
         # load tracing data
         data_model = initDataModel(fpath)
-        pwd = getPWD(fpath)
+        wd = getDirPath(fpath)
 
-        tmp_name = pwd.find('_rmw')
+        tmp_name = wd.find('_rmw')
         exe = fname[0:tmp_name]
         rmw = fname[tmp_name + 1:-(len(duration) + 2)]
 
@@ -765,7 +765,7 @@ def countDropped(dataframe, node_graph):
     return dataframe
 </code></pre>
 <hr />
-<p>Updated on 2021-12-24 at 17:00:46 +0000</p>
+<p>Updated on 2021-12-24 at 17:45:36 +0000</p>
 
               
             </article>
