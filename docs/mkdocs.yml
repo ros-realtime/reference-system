@@ -4,11 +4,15 @@ theme:
   name: 'material'
 plugins:
   - search
+extra:
+  version:
+    provider: mike
+    default: stable
 nav:
   - Home: Pages/md_README
+  - Reports: Reports
   - Classes: Classes
   - Namespaces: Namespaces
   - Modules: Modules
   - Files: Files
   - Related Pages: Pages
-  - Examples: Examples

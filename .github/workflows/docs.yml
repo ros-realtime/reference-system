@@ -44,10 +44,7 @@ jobs:
         run: |
           cd ros2_ws/src/reference_system/docs
           apt-get update -y
-          pip3 install mkdocs mkdocs-material
-          mkdocs build
-      - name: deploy
-        uses: peaceiris/actions-gh-pages@v3
+          pip3 install mkdocs mkdocs-material mike
+          mike deploy main latest
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ros2_ws/src/reference_system/docs/site/
