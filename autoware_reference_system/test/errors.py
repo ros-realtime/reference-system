@@ -12,21 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TRACE_CALLBACK = 'tracing'
-TRACE_MEMORY = 'memory'
-TRACE_STD = 'log'
 
-# TODO(flynneva): support path as just the `tracing` directory and loop over
-# all subdirectories that have tracing data in them
-TRACE_DIRECTORY = 'tracing'
-
-SIZE_SUMMARY = 800
-SIZE_SUBPLOT = 500
-
-SIZE_TABLE_ROW = 50
-SIZE_TABLE_WIDTH = 1250
-
-SIZE_TITLE = '22px'
-SIZE_AXIS_LABEL = '20px'
-SIZE_CATEGORY_LABEL = '15px'
-SIZE_MAJOR_LABEL = '14px'
+class UnsupportedTraceTypeError(Exception):
+    pass

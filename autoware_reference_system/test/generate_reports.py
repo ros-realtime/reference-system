@@ -19,31 +19,29 @@ from bokeh.plotting import save
 
 import callback_duration
 from constants import SIZE_SUBPLOT, SIZE_SUMMARY
-from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_STD, TRACE_UNSUPPORTED
+from constants import TRACE_CALLBACK, TRACE_MEMORY, TRACE_STD
 import dropped_messages
 import memory_usage
 # import std_latency
 
 from trace_utils import initDataModel
-from utils import checkPath, getDirPath, getFileName, getPWD, getTraceType
+from utils import checkDirPath, getDirPath, getFileName, getTraceType
 
 
-def memory_report(path):
-    dirPath = getDirPath(path)
-    name = getFileName(path)
-    fname = dirPath + name + '_memory_and_cpu_usage_report'
+def memory_report(wd, filename):
+    fname = wd + filename + '_memory_and_cpu_usage_report'
     output_file(
         filename=fname + '.html',
         title='Memory Usage Report')
 
     print('Output report to ' + fname + '.html')
-    mem_individual = memory_usage.individual(dirPath + name + '.txt', size=SIZE_SUMMARY)
+    mem_individual = memory_usage.individual(wd + filename + '.txt', size=SIZE_SUMMARY)
     report = layout([*mem_individual])
     save(report)
     # export_png(report, filename=fname + '.png')
 
 
-def std_report(path):
+def std_report(wd, filename):
     print('std report called')
     # dirPath = getDirPath(path)
     # std_summary, test_name = std_latency.individual(dirPath + 'streams.log', size=SIZE_SUMMARY)
@@ -56,9 +54,8 @@ def std_report(path):
     # save(report)
 
 
-def callback_report(path, ros2_data_model):
-    pwd = getPWD(path)
-    fname = path + pwd + '_callback_duration_report'
+def callback_report(wd, filename, ros2_data_model):
+    fname = wd + filename + '_callback_duration_report'
     output_file(
         filename=fname + '.html',
         title='Callback Duration Report')
@@ -77,9 +74,8 @@ def callback_report(path, ros2_data_model):
     # export_png(report, filename=fname + '.png')
 
 
-def dropped_messages_report(path, ros2_data_model):
-    pwd = getPWD(path)
-    fname = path + pwd + '_tracing_latency_and_dropped_messages_report'
+def dropped_messages_report(wd, filename, ros2_data_model):
+    fname = wd + filename + '_tracing_latency_and_dropped_messages_report'
     output_file(
         filename=fname + '.html',
         title='ROS 2 Tracing Latency and Dropped Messages Report')
@@ -95,14 +91,14 @@ def dropped_messages_report(path, ros2_data_model):
     # export_png(report, filename=fname + '.png')
 
 
-def generate_reports(path, ros2_data_model):
+def generate_reports(wd, fname, trace_type, ros2_data_model):
     if(trace_type == TRACE_CALLBACK):
-        callback_report(path, ros2_data_model)
-        dropped_messages_report(path, ros2_data_model)
+        callback_report(wd, fname, ros2_data_model)
+        dropped_messages_report(wd, fname, ros2_data_model)
     elif(trace_type == TRACE_MEMORY):
-        memory_report(path)
+        memory_report(wd, fname)
     elif(trace_type == TRACE_STD):
-        std_report(path)
+        std_report(wd, fname)
 
 
 if __name__ == '__main__':
@@ -111,17 +107,19 @@ if __name__ == '__main__':
         path = sys.argv[1]
     else:
         path = '/home/ubuntu/.ros/tracing/profile'
-    path = checkPath(path)
-    trace_type = getTraceType(path)
+    # remove filename from path
+    wd = getDirPath(path)
+    # confirm directory exists
+    checkDirPath(wd)
+    # get filename
+    fname = getFileName(path)
+    # get trace type based on working directory path
+    trace_type = getTraceType(wd)
     if(trace_type == TRACE_CALLBACK):
         ros2_data_model = initDataModel(path)
     elif(trace_type == TRACE_MEMORY):
         ros2_data_model = None
     elif(trace_type == TRACE_STD):
         ros2_data_model = None
-    elif(trace_type == TRACE_UNSUPPORTED):
-        print('Input path not supported')
-        print('Double check supplied path has either memory, tracing or log in it')
-        sys.exit()
 
-    generate_reports(path, ros2_data_model)
+    generate_reports(wd, fname, trace_type, ros2_data_model)
