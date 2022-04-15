@@ -32,15 +32,3 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 )
 
 ament_auto_package()
-
-# fix rosidl_generator_py bug #143
-# https://github.com/ros2/rosidl_python/issues/143
-set(GENERATED_FILE "${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_py/${PROJECT_NAME}/msg/_transmission_stats.py")
-
-message(STATUS "checking generated file: ${GENERATED_FILE}")
-add_custom_command(
-  TARGET ${PROJECT_NAME}__python
-  POST_BUILD
-  COMMAND sed -i "s/all(val >= 0 and val) < 256/all(ord(val) >= 0 and ord(val) < 256/" ${GENERATED_FILE}
-  COMMENT "Check generated IDL files for extra parenthesis..."
-  VERBATIM)
