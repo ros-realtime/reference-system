@@ -144,6 +144,7 @@ Before running the tests there are a few prerequisites to complete:
 - Install LTTng and `ros2_tracing` [following the instructions in `ros2_tracing`](https://gitlab.com/ros-tracing/ros2_tracing#building)
    - _Note:_ if you are setting up [ a realtime linux kernel for a raspberry pi using this docker file](https://github.com/ros-realtime/rt-kernel-docker-builder#raspberry-pi-4-rt-linux-kernel), it should [already include LTTng](https://github.com/ros-realtime/rt-kernel-docker-builder/pull/18)
    - _Note:_ make sure to clone `ros2_tracing` into **the same workspace as where you put the `reference-system`**, the tests will not properly run if they are not in the same directory.
+   - _Note:_ be sure to clone the correct branch of `ros2_tracing`. As of press time, this repo doesn't support the rolling release, so check out galactic with `git clone -b galactic https://gitlab.com/ros-tracing/ros2_tracing.git`
 
 **Tests will fail** if any of the above dependencies are missing on the machine.
 
