@@ -39,7 +39,7 @@ set(GENERATED_FILE "${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_py/${PROJECT_NA
 
 message(STATUS "checking generated file: ${GENERATED_FILE}")
 add_custom_command(
-  TARGET ${PROJECT_NAME}__python
+  TARGET ${PROJECT_NAME}__rosidl_generator_py
   POST_BUILD
   COMMAND sed -i "s/all(val >= 0 and val) < 256/all(ord(val) >= 0 and ord(val) < 256/" ${GENERATED_FILE}
   COMMENT "Check generated IDL files for extra parenthesis..."
