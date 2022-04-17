@@ -23,7 +23,6 @@ import rclpy.context
 
 from ros2cli.node.direct import DirectNode
 import ros2topic.api
-import pytest
 
 # Tests to check if executable complies with the requirements for
 # the autoware_reference_system by checking number of nodes, publishers,

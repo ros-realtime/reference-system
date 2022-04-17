@@ -18,9 +18,9 @@
 #include <string>
 
 #include "rclcpp/rclcpp.hpp"
+#include "reference_system/msg_types.hpp"
 #include "reference_system/nodes/settings.hpp"
 #include "reference_system/sample_management.hpp"
-#include "reference_system/msg_types.hpp"
 
 namespace nodes
 {
@@ -41,7 +41,8 @@ public:
 private:
   void input_callback(const message_t::SharedPtr input_message)
   {
-    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(input_message, sequence_number_);
+    uint32_t missed_samples =
+      get_missed_samples_and_update_seq_nr(input_message, sequence_number_);
     print_sample_path(this->get_name(), missed_samples, input_message);
   }
 

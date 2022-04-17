@@ -13,8 +13,10 @@
 // limitations under the License.
 #include <gtest/gtest.h>
 
+#include <chrono>
 #include <map>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "test_fixtures.hpp"
@@ -24,6 +26,11 @@
 
 // set the system to use
 using SystemType = RclcppSystem;
+
+void sleep_for_sec(uint32_t secs)
+{
+  std::this_thread::sleep_for(std::chrono::seconds(secs));
+}
 
 // remove /rosout and /parameter_events topics from map if they exist
 auto remove_default_topics(std::map<std::string, std::vector<std::string>> topic_map)
@@ -36,6 +43,7 @@ auto remove_default_topics(std::map<std::string, std::vector<std::string>> topic
   for (auto topic : topics_to_remove) {
     auto topic_iter = topic_map.find(topic);
     if (topic_iter != topic_map.end()) {
+      std::cout << "Removing default topic: " << topic << std::endl;
       topic_map.erase(topic_iter);
     }
   }
@@ -52,13 +60,13 @@ TEST_F(TestNodeGraph, rclcpp_sensor_node) {
   // create node
   auto node =
     create_node<SystemType, SystemType::Sensor, nodes::SensorSettings>(settings);
+  sleep_for_sec(1);
   // confirm node was initialized with settings
   EXPECT_EQ(node->get_name(), settings.node_name);
   // get node graph of node
   auto * node_graph = node->get_node_graph_interface().get();
   ASSERT_NE(nullptr, node_graph);
   auto topic_names_and_types = remove_default_topics(node_graph->get_topic_names_and_types(false));
-  std::cout << "here" << std::endl;
   // sensor nodes should publish one topic
   EXPECT_EQ(1, topic_names_and_types.size());
   EXPECT_EQ(1, node_graph->count_publishers(settings.topic_name));
@@ -74,6 +82,7 @@ TEST_F(TestNodeGraph, rclcpp_transform_node) {
   // create node
   auto node =
     create_node<SystemType, SystemType::Transform, nodes::TransformSettings>(settings);
+  sleep_for_sec(1);
   // confirm node was initialized with settings
   EXPECT_EQ(node->get_name(), settings.node_name);
   // get node graph of node
@@ -105,6 +114,7 @@ TEST_F(TestNodeGraph, rclcpp_intersection_node) {
   // create node
   auto node =
     create_node<SystemType, SystemType::Intersection, nodes::IntersectionSettings>(settings);
+  sleep_for_sec(1);
   // confirm node was initialized with settings
   EXPECT_EQ(node->get_name(), settings.node_name);
   // get node graph of node
@@ -133,6 +143,7 @@ TEST_F(TestNodeGraph, rclcpp_fusion_node) {
   // create node
   auto node =
     create_node<SystemType, SystemType::Fusion, nodes::FusionSettings>(settings);
+  sleep_for_sec(1);
   // confirm node was initialized with settings
   EXPECT_EQ(node->get_name(), settings.node_name);
   // get node graph of node
@@ -161,6 +172,7 @@ TEST_F(TestNodeGraph, rclcpp_cyclic_node) {
   // create node
   auto node =
     create_node<SystemType, SystemType::Cyclic, nodes::CyclicSettings>(settings);
+  sleep_for_sec(1);
   // confirm node was initialized with settings
   EXPECT_EQ(node->get_name(), settings.node_name);
   // get node graph of node
@@ -186,6 +198,7 @@ TEST_F(TestNodeGraph, rclcpp_command_node) {
   // create node
   auto node =
     create_node<SystemType, SystemType::Command, nodes::CommandSettings>(settings);
+  sleep_for_sec(1);
   // confirm node was initialized with settings
   EXPECT_EQ(node->get_name(), settings.node_name);
   // get node graph of node

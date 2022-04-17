@@ -13,20 +13,17 @@
 // limitations under the License.
 #ifndef REFERENCE_SYSTEM__NODES__RCLCPP__INTERSECTION_HPP_
 #define REFERENCE_SYSTEM__NODES__RCLCPP__INTERSECTION_HPP_
-
-#include <cstdlib>
-
 #include <chrono>
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
+#include <memory>
 
 #include "rclcpp/rclcpp.hpp"
+#include "reference_system/msg_types.hpp"
 #include "reference_system/nodes/settings.hpp"
 #include "reference_system/number_cruncher.hpp"
 #include "reference_system/sample_management.hpp"
-#include "reference_system/msg_types.hpp"
 
 namespace nodes
 {
@@ -51,13 +48,11 @@ public:
               connection.input_topic, 1,
               [this, id = connections_.size()](const message_t::SharedPtr msg) {
                 input_callback(msg, id);
-              }, options),
+              }),
             callback_group,
-            connection.number_crunch_limit
-          });
+            connection.number_crunch_limit});
     }
   }
-
   rclcpp::CallbackGroup::SharedPtr get_callback_group_of_subscription(
     const std::string & input_topic)
   {
@@ -71,22 +66,24 @@ public:
   }
 
 private:
-  void input_callback(const message_t::SharedPtr input_message, const uint64_t id)
+  void input_callback(
+    const message_t::SharedPtr input_message,
+    const uint64_t id)
   {
     uint64_t timestamp = now_as_int();
-    auto number_cruncher_result = number_cruncher(connections_[id].number_crunch_limit);
+    auto number_cruncher_result =
+      number_cruncher(connections_[id].number_crunch_limit);
 
     auto output_message = connections_[id].publisher->borrow_loaned_message();
     output_message.get().size = 0;
     merge_history_into_sample(output_message.get(), input_message);
 
     uint32_t missed_samples = get_missed_samples_and_update_seq_nr(
-      input_message,
-      connections_[id].input_sequence_number);
+      input_message, connections_[id].input_sequence_number);
 
     set_sample(
-      this->get_name(), connections_[id].sequence_number++, missed_samples, timestamp,
-      output_message.get());
+      this->get_name(), connections_[id].sequence_number++,
+      missed_samples, timestamp, output_message.get());
 
     // use result so that it is not optimizied away by some clever compiler
     output_message.get().data[0] = number_cruncher_result;

@@ -19,10 +19,10 @@
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
+#include "reference_system/msg_types.hpp"
 #include "reference_system/nodes/settings.hpp"
 #include "reference_system/number_cruncher.hpp"
 #include "reference_system/sample_management.hpp"
-#include "reference_system/msg_types.hpp"
 
 namespace nodes
 {
@@ -44,7 +44,8 @@ public:
               input_topic, 1,
               [this, input_number](const message_t::SharedPtr msg) {
                 input_callback(input_number, msg);
-              }), 0, message_t::SharedPtr()});
+              }),
+            0, message_t::SharedPtr()});
       ++input_number;
     }
     publisher_ = this->create_publisher<message_t>(settings.output_topic, 1);
@@ -71,9 +72,12 @@ private:
 
     uint32_t missed_samples = 0;
     for (auto & s : subscriptions_) {
-      if (!s.cache) {continue;}
+      if (!s.cache) {
+        continue;
+      }
 
-      missed_samples += get_missed_samples_and_update_seq_nr(s.cache, s.sequence_number);
+      missed_samples +=
+        get_missed_samples_and_update_seq_nr(s.cache, s.sequence_number);
 
       merge_history_into_sample(output_message.get(), s.cache);
       s.cache.reset();
