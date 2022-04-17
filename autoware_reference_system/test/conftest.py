@@ -13,5 +13,13 @@
 # limitations under the License.
 
 
-class UnsupportedTraceTypeError(Exception):
-    pass
+def pytest_configure(config):
+    """Document pytest.mark.TEST_ID to avoid pytest warning."""
+    config.addinivalue_line('markers', 'TEST_ID: Append a test ID to a test case')
+
+
+def pytest_collection_modifyitems(items):
+    for item in items:
+        for marker in item.iter_markers(name='TEST_ID'):
+            test_id = marker.args[0]
+            item.user_properties.append(('TEST_ID', test_id))

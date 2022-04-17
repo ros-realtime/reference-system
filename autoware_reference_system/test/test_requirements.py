@@ -15,14 +15,15 @@ import os
 import time
 import unittest
 
+import launch
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess
 
-import launch_testing
-import launch_testing.actions
+import rclpy.context
 
 from ros2cli.node.direct import DirectNode
 import ros2topic.api
+import pytest
 
 # Tests to check if executable complies with the requirements for
 # the autoware_reference_system by checking number of nodes, publishers,
@@ -61,11 +62,17 @@ reference_system = {
 }
 
 
-def generate_test_description():
+def generate_test_description(ready_fn):
     env = os.environ.copy()
     env['RCUTILS_CONSOLE_OUTPUT_FORMAT'] = '[{severity}] [{name}]: {message}'
 
     launch_description = LaunchDescription()
+
+    context = rclpy.context.Context()
+    rclpy.init(context=context)
+    launch_description.add_action(
+        launch.actions.OpaqueFunction(function=lambda context: ready_fn()))
+
     proc_under_test = ExecuteProcess(
         cmd=['@TEST_EXECUTABLE@'],
         name='@TEST_EXECUTABLE_NAME@',
@@ -73,9 +80,6 @@ def generate_test_description():
         env=env,
     )
     launch_description.add_action(proc_under_test)
-    launch_description.add_action(
-        launch_testing.actions.ReadyToTest()
-    )
     return launch_description, locals()
 
 

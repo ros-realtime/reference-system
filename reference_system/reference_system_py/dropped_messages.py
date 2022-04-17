@@ -11,10 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import os
 import random
 
-from bokeh.io import output_file
 # from bokeh.layouts import layout
 from bokeh.models import ColumnDataSource
 from bokeh.models import DatetimeTickFormatter
@@ -25,46 +23,14 @@ from bokeh.models.widgets.tables import DataTable, TableColumn
 from bokeh.palettes import cividis
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
-import networkx as nx
+try:
+    import networkx as nx
+    nx_available = True
+except ImportError:
+    nx_available = False
+
 import numpy as np
 import pandas as pd
-
-from trace_utils import initDataModel
-from utils import getDirPath
-
-
-def summary(path, duration, size):
-    fname = path + 'dropped_messages_and_latency_summary_' + duration + 's'
-    print('Output report to ' + fname + '.html')
-    output_file(
-        filename=fname + '.html',
-        title='Dropped Messages and Latency Summary Report ' + duration + 's')
-    data_dict = {}
-    for fname in os.listdir(path):
-        fpath = path + fname
-        # load tracing data
-        data_model = initDataModel(fpath)
-        wd = getDirPath(fpath)
-
-        tmp_name = wd.find('_rmw')
-        exe = fname[0:tmp_name]
-        rmw = fname[tmp_name + 1:-(len(duration) + 2)]
-
-        try:
-            data_dict[exe]
-        except KeyError:
-            data_dict[exe] = {}
-        try:
-            data_dict[exe][rmw]
-        except KeyError:
-            data_dict[exe][rmw] = {}
-
-        data_dict[exe][rmw] = parseData(data_model)
-    x = []
-    for exe in data_dict:
-        for rmw in data_dict[exe]:
-            x.append((exe, rmw))
-            # print(data_dict[exe][rmw]['dropped'])
 
 
 def individual(data_model, size):
@@ -248,16 +214,18 @@ def parseData(data_model):
          'timestamp': front_lidar_data['timestamp']})
     # sort values by node and topic
     dropped_df = dropped_df.sort_values(by=['node', 'topic'])
-    # generate node graph
-    node_graph = generateNodeGraph(dropped_df)
     # calculate run time
     approx_run_time = None
     if earliest_date is not None and latest_date is not None:
         approx_run_time = getRunTime(earliest_date, latest_date)
     # calculate estimated count and received count
     dropped_df = calcTotals(approx_run_time, dropped_df)
-    # count expected and dropped messages
-    dropped_df = countDropped(dropped_df, node_graph)
+    node_graph = None
+    if(nx_available):
+        # generate node graph
+        node_graph = generateNodeGraph(dropped_df)
+        # count expected and dropped messages
+        dropped_df = countDropped(dropped_df, node_graph)
     # prepare output
     data_dict = {
         'dropped': dropped_df,

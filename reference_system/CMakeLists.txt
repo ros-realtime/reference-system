@@ -3,6 +3,13 @@ project(reference_system
   VERSION 0.0.1
 )
 
+set(FRAMEWORK ros CACHE STRING "The framework to build for. Currently supported values are ROS 2 (\"ros\").")
+set(AVAILABLE_FRAMEWORKS ros)
+
+if(NOT ${FRAMEWORK} IN_LIST AVAILABLE_FRAMEWORKS)
+  message(FATAL_ERROR "Unsupported framework: ${FRAMEWORK}")
+endif()
+
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
 endif()
@@ -30,20 +37,22 @@ if(${BUILD_TESTING})
 
   # unit tests
   ament_add_gtest(test_sample_management
-    test/test_sample_management.cpp)
+      test/test_sample_management.cpp)
   target_link_libraries(test_sample_management ${PROJECT_NAME})
   ament_target_dependencies(test_sample_management reference_interfaces)
 
   ament_add_gtest(test_number_cruncher
-    test/test_number_cruncher.cpp)
+      test/test_number_cruncher.cpp)
   target_link_libraries(test_number_cruncher ${PROJECT_NAME})
 
   # integration tests
-  ament_add_gtest(test_reference_system_rclcpp
+  if(${FRAMEWORK} STREQUAL ros)
+    ament_add_gtest(test_reference_system_rclcpp
         test/test_fixtures.hpp
         test/test_reference_system_rclcpp.cpp)
-  target_link_libraries(test_reference_system_rclcpp ${PROJECT_NAME})
-  ament_target_dependencies(test_reference_system_rclcpp reference_interfaces rclcpp)
+    target_link_libraries(test_reference_system_rclcpp ${PROJECT_NAME})
+    ament_target_dependencies(test_reference_system_rclcpp reference_interfaces rclcpp)
+  endif()
 endif()
 
 # Install
@@ -55,6 +64,6 @@ install(TARGETS ${PROJECT_NAME}
         INCLUDES DESTINATION include
 )
 
-ament_export_targets("export_${PROJECT_NAME}")
-ament_auto_package()
+ament_python_install_package(reference_system_py)
 
+ament_auto_package()
