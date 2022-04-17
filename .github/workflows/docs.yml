@@ -42,9 +42,11 @@ jobs:
             --config ros2_ws/src/reference_system/docs/doxybook2_config.json
       - name: build mkdocs site
         run: |
-          cd ros2_ws/src/reference_system/docs
+          cd ros2_ws/src/reference_system/
+          # ensure gh-pages git history is fetched
+          git fetch origin gh-pages --depth=1
+          cd docs
           apt-get update -y
+          # install mkdocs dependencies
           pip3 install mkdocs mkdocs-material mike
           mike deploy main latest
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
