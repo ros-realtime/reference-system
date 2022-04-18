@@ -49,9 +49,12 @@ if(${FRAMEWORK} STREQUAL ros)
   add_benchmark_executable(autoware_default_prioritized
     src/ros2/executor/autoware_default_prioritized.cpp)
 
-  # Multiple executors on callback-group-level with suitable prioritization of critical path.
-  add_benchmark_executable(autoware_default_cbg
-    src/ros2/executor/autoware_default_cbg.cpp)
+  # API `add_callback_group` not available in Foxy
+  if(NOT $ENV{ROS_DISTRO} MATCHES "foxy")
+    # Multiple executors on callback-group-level with suitable prioritization of critical path.
+    add_benchmark_executable(autoware_default_cbg
+      src/ros2/executor/autoware_default_cbg.cpp)
+  endif()
 endif()
 
 # Add new executors to test here
