@@ -1,4 +1,4 @@
-// Copyright 2021 Apex.AI, Inc.
+// Copyright 2022 Apex.AI, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,10 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef REFERENCE_SYSTEM__SYSTEM__SYSTEMS_HPP_
-#define REFERENCE_SYSTEM__SYSTEM__SYSTEMS_HPP_
 
-// Add available systems here
-#include "reference_system/system/type/rclcpp_system.hpp"
+#ifndef AUTOWARE_REFERENCE_SYSTEM__PRIORITIES_HPP_
+#define AUTOWARE_REFERENCE_SYSTEM__PRIORITIES_HPP_
 
-#endif  // REFERENCE_SYSTEM__SYSTEM__SYSTEMS_HPP_
+#include <sched.h>
+#include <string>
+#include <set>
+#include <unordered_set>
+
+
+extern const std::set<std::string> hotpath_nodes;
+extern const std::set<std::string> planner_nodes;
+
+constexpr int hotpath_prio = 1;
+#define HOTPATH_AFFINITY {1, 2, 3}
+
+
+constexpr int planner_prio = 30;
+#define PLANNER_AFFINITY {0}
+
+#endif  // AUTOWARE_REFERENCE_SYSTEM__PRIORITIES_HPP_

@@ -18,9 +18,9 @@
 #include <utility>
 
 #include "rclcpp/rclcpp.hpp"
+#include "reference_system/msg_types.hpp"
 #include "reference_system/nodes/settings.hpp"
 #include "reference_system/sample_management.hpp"
-#include "reference_system/msg_types.hpp"
 
 namespace nodes
 {
@@ -46,7 +46,9 @@ private:
     auto message = publisher_->borrow_loaned_message();
     message.get().size = 0;
 
-    set_sample(this->get_name(), sequence_number_++, 0, timestamp, message.get());
+    set_sample(
+      this->get_name(), sequence_number_++, 0, timestamp,
+      message.get());
 
     publisher_->publish(std::move(message));
   }

@@ -11,8 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import glob
 import os
+import re
 
 from bokeh.models import ColumnDataSource
 from bokeh.models.axes import LinearAxis
@@ -23,12 +23,15 @@ from bokeh.models.widgets.tables import DataTable, TableColumn
 from bokeh.palettes import cividis
 from bokeh.plotting import figure
 from bokeh.transform import factor_cmap
-from constants import SIZE_AXIS_LABEL, SIZE_CATEGORY_LABEL, SIZE_MAJOR_LABEL, SIZE_TITLE
-from constants import SIZE_TABLE_ROW, SIZE_TABLE_WIDTH
+
 import pandas as pd
 
+from .constants import SIZE_AXIS_LABEL, SIZE_MAJOR_LABEL, SIZE_TITLE
+from .constants import SIZE_TABLE_ROW, SIZE_TABLE_WIDTH
+from .plot_utils import plot_barplot
 
-def summary(path, duration, size):
+
+def summary_from_directories(dirs, duration, size):
     data = []
     x = []
     raw_df = []
@@ -40,17 +43,19 @@ def summary(path, duration, size):
         'mean': [],
         'high': [],
         'std_dev': [],
-        'top': [],
-        'bottom': []
+        'box_top': [],
+        'box_bottom': []
     }
-    for idx, fpath in enumerate(glob.glob(path + '*' + duration + '*.txt')):
-        fname = os.path.basename(fpath)
-        if '.txt' in fname:
-            fname = fname[:-4]
-        # extract exe and rmw name
-        tmp_name = fname.find('_rmw')
-        exe = fname[0:tmp_name]
-        rmw = fname[tmp_name + 1:-(len(duration) + 2)]
+    dir_re = re.compile('([0-9]+)s/(rmw_.*)/([^/]+)$')
+    for idx, directory in enumerate(dirs):
+        match = dir_re.search(directory)
+        if not match:
+            raise ValueError(f'Given directory {directory} does not match naming requirements')
+        extracted_duration, rmw, exe = match.groups()
+        if int(extracted_duration) != duration:
+            raise ValueError(
+                f'Given directory {directory} does not have expected duration {duration}')
+        fpath = directory + '/memory_log.txt'
         # open datafile and parse it into a usable structure
         data.append(open(fpath).read().splitlines()[1:])
         data[idx] = [[float(element) for element in line.split()] for line in data[idx]]
@@ -65,6 +70,7 @@ def summary(path, duration, size):
                     'virtual']))
         # calculate statics from raw data
         df_summary = raw_df[idx].describe().T.reset_index()
+
         # add data to dictionary
         for index, row in df_summary.iterrows():
             summary_data['exe'].append(exe)
@@ -73,28 +79,19 @@ def summary(path, duration, size):
             summary_data['low'].append(row['min'])
             summary_data['mean'].append(row['mean'])
             summary_data['high'].append(row['max'])
-            summary_data['top'].append(row['75%'])
-            summary_data['bottom'].append(row['25%'])
+            summary_data['box_top'].append(row['mean'] + row['std'])
+            summary_data['box_bottom'].append(row['mean'] - row['std'])
             summary_data['std_dev'].append(row['std'])
 
     df = pd.DataFrame.from_records(
         summary_data, columns=[
-            'exe', 'rmw', 'type', 'low', 'mean', 'high', 'top', 'bottom', 'std_dev'])
+            'exe', 'rmw', 'type', 'low', 'mean', 'high', 'box_top', 'box_bottom', 'std_dev'])
     # sort by exe and rmw
     df = df.sort_values(['exe', 'rmw'], ascending=True)
 
-    exes = []
-    rmws = []
-    for exe in df.exe:
-        for rmw in df.rmw:
-            # add exe and rmw to list
-            if exe not in exes:
-                exes.append(exe)
-            if rmw not in rmws:
-                rmws.append(rmw)
-    for exe in exes:
-        for rmw in rmws:
-            x.append((exe, rmw))
+    rmws = list(df.rmw.drop_duplicates())
+    x = [tuple(x) for x in df[['rmw', 'exe']].drop_duplicates().to_records(index=False)]
+
     cpu = df.type == 'cpu'
     real = df.type == 'real'
     virtual = df.type == 'virtual'
@@ -106,9 +103,12 @@ def summary(path, duration, size):
     cpu_source.data['x'] = x
     real_source.data['x'] = x
     virtual_source.data['x'] = x
+    fill_color = factor_cmap(
+            'x', palette=cividis(len(rmws)), factors=list(rmws), start=0, end=1)
+
     # initialize cpu figure
     cpu_fig = figure(
-        title='CPU Usage Summary ' + str(duration) + 's',
+        title='CPU Usage Over Time ' + str(duration) + 's',
         x_axis_label=f'Executors (with RMW)',
         y_axis_label='CPU (%)',
         x_range=FactorRange(*x),
@@ -116,40 +116,11 @@ def summary(path, duration, size):
         plot_height=size,
         margin=(10, 10, 10, 10)
     )
-    cpu_fig.segment(
-        x, df.high[cpu].values, x, df.low[cpu].values, color='black', line_width=2)
-    cpu_fig.vbar(
-        width=0.2,
-        x='x',
-        top='mean',
-        source=cpu_source,
-        line_color='black',
-        fill_color=factor_cmap(
-            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
-    )
-    cpu_fig.scatter(
-        size=25,
-        x='x',
-        y='high',
-        source=cpu_source,
-        line_color='black',
-        line_width=2,
-        marker='dash',
-        fill_color=factor_cmap(
-            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
-    )
-    cpu_fig.y_range.start = 0
-    cpu_fig.x_range.range_padding = 0.1
-    cpu_fig.title.text_font_size = SIZE_TITLE
-    cpu_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
-    cpu_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
-    cpu_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
-    cpu_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
-    cpu_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
+    plot_barplot(cpu_fig, cpu_source, fill_color=fill_color)
 
     # initialize real memory figure
     real_fig = figure(
-        title='Real Memory Usage Summary ' + str(duration) + 's',
+        title='Real Memory Usage Over Time ' + str(duration) + 's',
         x_axis_label=f'Executors (with RMW)',
         y_axis_label='Real Memory Usage (MB)',
         x_range=FactorRange(*x),
@@ -157,40 +128,11 @@ def summary(path, duration, size):
         plot_height=size,
         margin=(10, 10, 10, 10)
     )
-    real_fig.segment(
-        x, df.high[real].values, x, df.low[real].values, color='black', line_width=2)
-    real_fig.vbar(
-        width=0.2,
-        x='x',
-        top='mean',
-        source=real_source,
-        line_color='black',
-        fill_color=factor_cmap(
-            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
-    )
-    real_fig.scatter(
-        size=25,
-        x='x',
-        y='high',
-        source=real_source,
-        line_color='black',
-        line_width=2,
-        marker='dash',
-        fill_color=factor_cmap(
-            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
-    )
-    real_fig.y_range.start = 0
-    real_fig.x_range.range_padding = 0.1
-    real_fig.title.text_font_size = SIZE_TITLE
-    real_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
-    real_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
-    real_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
-    real_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
-    real_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
+    plot_barplot(real_fig, real_source, fill_color=fill_color)
 
     # initialize virtual memory figure
     virtual_fig = figure(
-        title='Virtual Memory Usage Summary ' + str(duration) + 's',
+        title='Virtual Memory Usage Over Time ' + str(duration) + 's',
         x_axis_label=f'Executors (with RMW)',
         y_axis_label='Virtual Memory Usage (MB)',
         x_range=FactorRange(*x),
@@ -198,66 +140,17 @@ def summary(path, duration, size):
         plot_height=size,
         margin=(10, 10, 10, 10)
     )
-    virtual_fig.segment(
-        x, df.high[virtual].values, x, df.low[virtual].values, color='black', line_width=2)
-    virtual_fig.vbar(
-        width=0.2,
-        x='x',
-        top='mean',
-        source=virtual_source,
-        line_color='black',
-        fill_color=factor_cmap(
-            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
-    )
-    virtual_fig.scatter(
-        size=25,
-        x='x',
-        y='high',
-        source=virtual_source,
-        line_color='black',
-        line_width=2,
-        marker='dash',
-        fill_color=factor_cmap(
-            'x', palette=cividis(len(rmws)), factors=list(rmws), start=1, end=2)
-    )
-    virtual_fig.y_range.start = 0
-    virtual_fig.x_range.range_padding = 0.1
-    virtual_fig.title.text_font_size = SIZE_TITLE
-    virtual_fig.xaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
-    virtual_fig.yaxis.axis_label_text_font_size = SIZE_AXIS_LABEL
-    virtual_fig.yaxis.major_label_text_font_size = SIZE_MAJOR_LABEL
-    virtual_fig.below[0].group_text_font_size = SIZE_CATEGORY_LABEL
-    virtual_fig.below[0].major_label_text_font_size = SIZE_MAJOR_LABEL
-
-    # add cpu hover tool
-    cpu_hover = HoverTool()
-    cpu_hover.tooltips = [
-        ('Average CPU Usage (%)', '@{mean}{0.00}'),
-        ('Minimum CPU Usage (%)', '@{low}{0.00}'),
-        ('Maximum CPU Usage (%)', '@{high}{0.00}')
-    ]
-    cpu_fig.add_tools(cpu_hover)
-
-    # add real hover tool
-    real_hover = HoverTool()
-    real_hover.tooltips = [
-        ('Average Real Memory Used (MB)', '@{mean}{0.00}'),
-        ('Minimum Real Memory Used (MB)', '@{low}{0.00}'),
-        ('Maximum Real Memory Used (MB)', '@{high}{0.00}')
-    ]
-    real_fig.add_tools(real_hover)
-
-    # add virtual hover tool
-    virtual_hover = HoverTool()
-    virtual_hover.tooltips = [
-        ('Average Virtual Memory Used (MB)', '@{mean}{0.00}'),
-        ('Minimum Virtual Memory Used (MB)', '@{low}{0.00}'),
-        ('Maximum Virtual Memory Used (MB)', '@{high}{0.00}')
-    ]
-    virtual_fig.add_tools(virtual_hover)
+    plot_barplot(virtual_fig, virtual_source, fill_color=fill_color)
 
     # add cpu usage table
-    columns = [TableColumn(field=col, title=col) for col in df]
+    columns = [TableColumn(field=field, title=title)
+               for field, title in [('exe', 'Benchmark'),
+                                    ('rmw', 'RMW'),
+                                    ('low', 'Min'),
+                                    ('mean', 'Mean'),
+                                    ('high', 'Max'),
+                                    ('std_dev', 'Std. Dev.')]]
+
     cpu_table_title = Div(
         text='<b>CPU Usage Statistics ' + str(duration) + 's</b>',
         width=SIZE_TABLE_WIDTH,

@@ -1,4 +1,4 @@
-// Copyright 2021 Apex.AI, Inc.
+// Copyright 2022 Apex.AI, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,10 +13,12 @@
 // limitations under the License.
 #ifndef TEST_FIXTURES_HPP_
 #define TEST_FIXTURES_HPP_
-#include <rclcpp/rclcpp.hpp>
+
 #include <gtest/gtest.h>
 
 #include <memory>
+
+#include "rclcpp/rclcpp.hpp"
 
 
 class TestNodeGraph : public ::testing::Test

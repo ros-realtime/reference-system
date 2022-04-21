@@ -16,9 +16,10 @@
 #include <chrono>
 #include <memory>
 #include <vector>
+#include <string>
 
 #include "reference_system/nodes/settings.hpp"
-#include "reference_system/system/systems.hpp"
+#include "reference_system/sample_management.hpp"
 
 using namespace std::chrono_literals;  // NOLINT
 
@@ -27,6 +28,18 @@ auto create_autoware_nodes()
 ->std::vector<std::shared_ptr<typename SystemType::NodeBaseType>>
 {
   std::vector<std::shared_ptr<typename SystemType::NodeBaseType>> nodes;
+
+  SampleManagementSettings::get().set_hot_path(
+    {"FrontLidarDriver",
+      "RearLidarDriver",
+      "PointsTransformerFront",
+      "PointsTransformerRear",
+      "PointCloudFusion",
+      "RayGroundFilter",
+      "EuclideanClusterDetector",
+      "ObjectCollisionEstimator"},
+    {"FrontLidarDriver", "RearLidarDriver"},
+    "ObjectCollisionEstimator");
 
 // ignore the warning about designated initializers - they make the code much
 // more readable
@@ -67,9 +80,10 @@ auto create_autoware_nodes()
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Sensor>(
-      nodes::SensorSettings{.node_name = "EuclideanClusterSettings",
-        .topic_name = "EuclideanClusterSettings",
-        .cycle_time = TimingConfig::EUCLIDEAN_CLUSTER_SETTINGS}));
+      nodes::SensorSettings{
+    .node_name = "EuclideanClusterSettings",
+    .topic_name = "EuclideanClusterSettings",
+    .cycle_time = TimingConfig::EUCLIDEAN_CLUSTER_SETTINGS}));
 
   // transform nodes
   nodes.emplace_back(
@@ -213,10 +227,7 @@ auto create_autoware_nodes()
         .number_crunch_limit = TimingConfig::EUCLIDEAN_CLUSTER_DETECTOR},
       {.input_topic = "EuclideanClusterSettings",
         .output_topic = "EuclideanIntersection",
-        .number_crunch_limit = TimingConfig::EUCLIDEAN_INTERSECTION
-      }
-    }}
-  ));
+        .number_crunch_limit = TimingConfig::EUCLIDEAN_INTERSECTION}}}));
 
   // command node
   nodes.emplace_back(
@@ -226,12 +237,25 @@ auto create_autoware_nodes()
 
   nodes.emplace_back(
     std::make_shared<typename SystemType::Command>(
-      nodes::CommandSettings{
-    .node_name = "IntersectionOutput",
-    .input_topic = "EuclideanIntersection"}));
+      nodes::CommandSettings{.node_name = "IntersectionOutput",
+        .input_topic = "EuclideanIntersection"}));
 #pragma GCC diagnostic pop
 
   return nodes;
+}
+
+template<typename NodeType>
+std::shared_ptr<NodeType> get_node(
+  const std::string & name,
+  const std::vector<std::shared_ptr<NodeType>> & v)
+{
+  for (const auto & n : v) {
+    if (n->get_name() == std::string(name)) {
+      return n;
+    }
+  }
+
+  return std::shared_ptr<NodeType>();
 }
 
 #endif  // AUTOWARE_REFERENCE_SYSTEM__AUTOWARE_SYSTEM_BUILDER_HPP_

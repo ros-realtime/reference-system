@@ -1,4 +1,4 @@
-// Copyright 2022 Apex.AI, Inc.
+// Copyright 2021 Apex.AI, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,12 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include "gtest/gtest.h"
-#include <rclcpp/rclcpp.hpp>
 
+#include "autoware_reference_system/priorities.hpp"
+#include <string>
+#include <set>
 
-int main(int argc, char * argv[])
-{
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
+const std::set<std::string> hotpath_nodes = {"FrontLidarDriver", "PointsTransformerFront",
+  "RearLidarDriver", "PointsTransformerRear",
+  "PointCloudFusion", "RayGroundFilter",
+  "EuclideanClusterDetector", "ObjectCollisionEstimator"};
+const std::set<std::string> planner_nodes {"BehaviorPlanner"};
