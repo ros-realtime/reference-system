@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(reference_system
-  VERSION 0.0.1
-)
+project(reference_system)
 
 set(FRAMEWORK ros CACHE STRING "The framework to build for. Currently supported values are ROS 2 (\"ros\").")
 set(AVAILABLE_FRAMEWORKS ros)
