@@ -229,7 +229,7 @@ def generate_memory_trace(executable, pkg, directory, runtime_sec, rmw):
                                          shell=True)
 
         time.sleep(runtime_sec+0.5)
-    tracerprocess.wait(2)
+    tracerprocess.wait(20)
 
 
 def generate_trace(trace_type, *args, **kwargs):
