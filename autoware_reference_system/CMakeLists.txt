@@ -84,7 +84,8 @@ if(${BUILD_TESTING})
       5
       # 10
       # 30
-      # 60
+      60
+      120
     )
 
     # Add more trace types here

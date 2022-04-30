@@ -1,0 +1,60 @@
+name: Run reference_system benchmark
+
+on:
+  push:
+    tags:
+      - '**'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ros_distribution:
+          - foxy
+          - galactic
+          - rolling
+        include:
+          # Foxy Fitzroy (June 2020 - May 2023)
+          - ros_distribution: foxy
+            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-foxy-ros-base-latest
+          # Galactic Geochelone (May 2021 - November 2022)
+          - ros_distribution: galactic
+            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
+          # Rolling Ridley  (June 2020 - Present)
+          - ros_distribution: rolling
+            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-rolling-ros-base-latest
+    container:
+      image: ${{ matrix.docker_image }}
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: setup workspace
+        run: mkdir -p ros2_ws/src
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          path: ros2_ws/src
+      - name: build and test
+        uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          package-name: autoware_reference_system reference_system reference_interfaces
+          target-ros2-distro: ${{ matrix.ros_distribution }}
+          vcs-repo-file-url: ""
+          colcon-defaults: |
+            {
+              "build": {
+                "cmake-args": [
+                  "-DRUN_BENCHMARK=ON",
+                  "-DALL_RMWS=ON"
+                ]
+              }
+            }
+      - name: Upload Benchmark Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: benchmark_reports
+          path: '~/.ros/benchmark_autoware_reference_system'
+          retention-days: 60
