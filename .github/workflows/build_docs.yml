@@ -64,7 +64,7 @@ jobs:
           name: doxybook_markdown
           path: 'ros2_ws/src/reference_system/docs/markdown'
           retention-days: 30
-  build-and-deploy-mkdocs:
+  build-mkdocs:
     runs-on: ubuntu-latest
     # Only run if doxybook was generated
     needs: generate-doxybook2
@@ -87,7 +87,7 @@ jobs:
           # ensure gh-pages git history is fetched
           git fetch origin gh-pages --depth=1
           cd docs
-          apt-get update -y
+          sudo apt-get update -y
           # install mkdocs dependencies
           pip3 install mkdocs mkdocs-material
           # build site

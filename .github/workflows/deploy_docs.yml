@@ -16,23 +16,27 @@ jobs:
     # Only run job if docs build workflow succeeds
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Download built mkdocs site
-        uses: actions/download-artifact@v3
+      - name: Setup workspace
+        # TODO(flynneva): make this a variable and use it at every step
+        run: mkdir -p ros2_ws/src/reference_system
+      - name: checkout
+        uses: actions/checkout@v2
         with:
-          name: reference_system_site
+          path: ros2_ws/src/reference_system
+      - name: Download Doxybook2 markdown
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: doxybook_markdown
+          path: 'ros2_ws/src/reference_system/docs/markdown'
+          workflow: ${{ github.event.workflow_run.workflow_id }}
       - name: Deploy mkdocs site
         run: |
-          cd ros2_ws/src/reference_system/
+          cd ros2_ws/src/reference_system/docs
           # ensure gh-pages git history is fetched
           git fetch origin gh-pages --depth=1
-          cd docs
-          apt-get update -y
+          sudo apt-get update -y
           # install mkdocs dependencies
-          pip3 install mkdocs mkdocs-material
-          # build site
-          mkdocs build
-      - name: Upload docs site
-        uses: actions/upload-artifact@v3
-        with:
-          name: reference_system_site
-          path: ros2_ws/src/reference_system/docs/site
+          pip3 install mkdocs mkdocs-material mike
+          # TODO: mike rebuilds entire site, instead we should
+          # skip the build and download site artifact from previous workflow
+          mike deploy --push --update-aliases
