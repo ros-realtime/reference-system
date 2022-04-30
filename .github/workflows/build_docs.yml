@@ -80,9 +80,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: doxybook_markdown
+          path: 'ros2_ws/src/reference_system/docs/markdown'
       - name: Build mkdocs site
         run: |
-          cd doxybook_markdown
+          cd ros2_ws/src/reference_system
           # ensure gh-pages git history is fetched
           git fetch origin gh-pages --depth=1
           cd docs
