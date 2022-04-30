@@ -1,0 +1,502 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Evan Flynn">
+      
+      
+        <link rel="canonical" href="https://ros-realtime.github.io/reference-system/main/Files/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.12">
+    
+    
+      
+        <title>Files - Reference System Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.27ad92d8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#files" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        <aside class="md-banner md-banner--warning">
+          
+        </aside>
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Reference System Documentation" class="md-header__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reference System Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Files
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ros-realtime/reference-system.git" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Reference System Documentation" class="md-nav__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Reference System Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ros-realtime/reference-system.git" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pages/md_README" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Reports" class="md-nav__link">
+        Reports
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Classes" class="md-nav__link">
+        Classes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Namespaces" class="md-nav__link">
+        Namespaces
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Modules" class="md-nav__link">
+        Modules
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="." class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pages" class="md-nav__link">
+        Related Pages
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/ros-realtime/reference-system.git/edit/master/docs/Files/index.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<h1 id="files">Files</h1>
+<ul>
+<li><strong>file <a href="/reference-system/Files/reference__system_2CMakeLists_8txt/#file-cmakelists.txt">CMakeLists.txt</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/reference__interfaces_2CMakeLists_8txt/#file-cmakelists.txt">CMakeLists.txt</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/autoware__reference__system_2CMakeLists_8txt/#file-cmakelists.txt">CMakeLists.txt</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/reference__system_2README_8md/#file-readme.md">README.md</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/autoware__reference__system_2README_8md/#file-readme.md">README.md</a></strong> </li>
+<li><strong>dir <a href="/reference-system/Files/dir_b0fed25fe70402f2c9879f17b24b63ba/#dir-autoware-reference-system">autoware_reference_system</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_5fa14cd5f63f76c2b01ef334fb51ab9e/#dir-autoware-reference-system/include">autoware_reference_system/include</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_42b63979f223277f39dc3319aa9a7a65/#dir-autoware-reference-system/include/autoware-reference-system">autoware_reference_system/include/autoware_reference_system</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_0346bc0d6d902878a4b20af926e2b688/#dir-autoware-reference-system/include/autoware-reference-system/system">autoware_reference_system/include/autoware_reference_system/system</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_e241d6a2048a09ddb4361fd2440aad67/#dir-autoware-reference-system/include/autoware-reference-system/system/timing">autoware_reference_system/include/autoware_reference_system/system/timing</a></strong> <ul>
+<li><strong>file <a href="/reference-system/Files/benchmark_8hpp/#file-benchmark.hpp">autoware_reference_system/include/autoware_reference_system/system/timing/benchmark.hpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/default_8hpp/#file-default.hpp">autoware_reference_system/include/autoware_reference_system/system/timing/default.hpp</a></strong> </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>file <a href="/reference-system/Files/autoware__system__builder_8hpp/#file-autoware-system-builder.hpp">autoware_reference_system/include/autoware_reference_system/autoware_system_builder.hpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/priorities_8hpp/#file-priorities.hpp">autoware_reference_system/include/autoware_reference_system/priorities.hpp</a></strong> </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>dir <a href="/reference-system/Files/dir_b6644976b427258346d4b4ecded5ae41/#dir-autoware-reference-system/scripts">autoware_reference_system/scripts</a></strong> <ul>
+<li><strong>file <a href="/reference-system/Files/autoware__reference__system_2scripts_2benchmark_8py/#file-benchmark.py">autoware_reference_system/scripts/benchmark.py</a></strong> </li>
+</ul>
+</li>
+<li><strong>dir <a href="/reference-system/Files/dir_09addd1cc25865acff9e93b8c10e91f0/#dir-autoware-reference-system/src">autoware_reference_system/src</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_9fb2e5fa41f453476f53652aa901bc10/#dir-autoware-reference-system/src/ros2">autoware_reference_system/src/ros2</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_433aa5f1c128af3100645ac07e20746d/#dir-autoware-reference-system/src/ros2/executor">autoware_reference_system/src/ros2/executor</a></strong> <ul>
+<li><strong>file <a href="/reference-system/Files/autoware__default__cbg_8cpp/#file-autoware-default-cbg.cpp">autoware_reference_system/src/ros2/executor/autoware_default_cbg.cpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/autoware__default__multithreaded_8cpp/#file-autoware-default-multithreaded.cpp">autoware_reference_system/src/ros2/executor/autoware_default_multithreaded.cpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/autoware__default__prioritized_8cpp/#file-autoware-default-prioritized.cpp">autoware_reference_system/src/ros2/executor/autoware_default_prioritized.cpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/autoware__default__singlethreaded_8cpp/#file-autoware-default-singlethreaded.cpp">autoware_reference_system/src/ros2/executor/autoware_default_singlethreaded.cpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/autoware__default__staticsinglethreaded_8cpp/#file-autoware-default-staticsinglethreaded.cpp">autoware_reference_system/src/ros2/executor/autoware_default_staticsinglethreaded.cpp</a></strong> </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>file <a href="/reference-system/Files/number__cruncher__benchmark_8cpp/#file-number-cruncher-benchmark.cpp">autoware_reference_system/src/number_cruncher_benchmark.cpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/priorities_8cpp/#file-priorities.cpp">autoware_reference_system/src/priorities.cpp</a></strong> </li>
+</ul>
+</li>
+<li><strong>dir <a href="/reference-system/Files/dir_c179573033c64836cec4bb0cc3550ee6/#dir-autoware-reference-system/test">autoware_reference_system/test</a></strong> <ul>
+<li><strong>file <a href="/reference-system/Files/conftest_8py/#file-conftest.py">autoware_reference_system/test/conftest.py</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/test__autoware__reference__system_8cpp/#file-test-autoware-reference-system.cpp">autoware_reference_system/test/test_autoware_reference_system.cpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/test__platform_8py/#file-test-platform.py">autoware_reference_system/test/test_platform.py</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/test__requirements_8py/#file-test-requirements.py">autoware_reference_system/test/test_requirements.py</a></strong> </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>dir <a href="/reference-system/Files/dir_ade77feecc6fc14930bc6f4956def00c/#dir-reference-interfaces">reference_interfaces</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_f7c5390633b5b32c3d651a98285f1453/#dir-reference-interfaces/msg">reference_interfaces/msg</a></strong> <ul>
+<li><strong>file <a href="/reference-system/Files/Message4kb_8idl/#file-message4kb.idl">reference_interfaces/msg/Message4kb.idl</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/TransmissionStats_8idl/#file-transmissionstats.idl">reference_interfaces/msg/TransmissionStats.idl</a></strong> </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>dir <a href="/reference-system/Files/dir_127c7cc0ffcbc3e61877c07b26af2fa0/#dir-reference-system">reference_system</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_97ee88642b4fc0175cf5ceed72dfc69e/#dir-reference-system/include">reference_system/include</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_9868580a2d8949ba20aec737ffd74109/#dir-reference-system/include/reference-system">reference_system/include/reference_system</a></strong> <ul>
+<li><strong>file <a href="/reference-system/Files/msg__types_8hpp/#file-msg-types.hpp">reference_system/include/reference_system/msg_types.hpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/number__cruncher_8hpp/#file-number-cruncher.hpp">reference_system/include/reference_system/number_cruncher.hpp</a></strong> </li>
+<li><strong>dir <a href="/reference-system/Files/dir_e1d1d57603c7889177b30ad98e438429/#dir-reference-system/include/reference-system/nodes">reference_system/include/reference_system/nodes</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_a9b47c5ee89e1161970d1296c923485c/#dir-reference-system/include/reference-system/nodes/rclcpp">reference_system/include/reference_system/nodes/rclcpp</a></strong> <ul>
+<li><strong>file <a href="/reference-system/Files/command_8hpp/#file-command.hpp">reference_system/include/reference_system/nodes/rclcpp/command.hpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/cyclic_8hpp/#file-cyclic.hpp">reference_system/include/reference_system/nodes/rclcpp/cyclic.hpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/fusion_8hpp/#file-fusion.hpp">reference_system/include/reference_system/nodes/rclcpp/fusion.hpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/intersection_8hpp/#file-intersection.hpp">reference_system/include/reference_system/nodes/rclcpp/intersection.hpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/sensor_8hpp/#file-sensor.hpp">reference_system/include/reference_system/nodes/rclcpp/sensor.hpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/transform_8hpp/#file-transform.hpp">reference_system/include/reference_system/nodes/rclcpp/transform.hpp</a></strong> </li>
+</ul>
+</li>
+<li><strong>file <a href="/reference-system/Files/settings_8hpp/#file-settings.hpp">reference_system/include/reference_system/nodes/settings.hpp</a></strong> </li>
+</ul>
+</li>
+<li><strong>dir <a href="/reference-system/Files/dir_91b0f55ce06907c9ebdd60f53551d65e/#dir-reference-system/include/reference-system/system">reference_system/include/reference_system/system</a></strong> <ul>
+<li><strong>dir <a href="/reference-system/Files/dir_246fa732e08bce0b2fe7c308221868df/#dir-reference-system/include/reference-system/system/type">reference_system/include/reference_system/system/type</a></strong> <ul>
+<li><strong>file <a href="/reference-system/Files/rclcpp__system_8hpp/#file-rclcpp-system.hpp">reference_system/include/reference_system/system/type/rclcpp_system.hpp</a></strong> </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>file <a href="/reference-system/Files/sample__management_8hpp/#file-sample-management.hpp">reference_system/include/reference_system/sample_management.hpp</a></strong> </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>dir <a href="/reference-system/Files/dir_5d82fd324745b35a7fd627934e1c3db8/#dir-reference-system/reference-system-py">reference_system/reference_system_py</a></strong> <ul>
+<li><strong>file <a href="/reference-system/Files/____init_____8py/#file---init--.py">reference_system/reference_system_py/<strong>init</strong>.py</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/reference__system_2reference__system__py_2benchmark_8py/#file-benchmark.py">reference_system/reference_system_py/benchmark.py</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/callback__duration_8py/#file-callback-duration.py">reference_system/reference_system_py/callback_duration.py</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/constants_8py/#file-constants.py">reference_system/reference_system_py/constants.py</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/dropped__messages_8py/#file-dropped-messages.py">reference_system/reference_system_py/dropped_messages.py</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/memory__usage_8py/#file-memory-usage.py">reference_system/reference_system_py/memory_usage.py</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/plot__utils_8py/#file-plot-utils.py">reference_system/reference_system_py/plot_utils.py</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/std__latency_8py/#file-std-latency.py">reference_system/reference_system_py/std_latency.py</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/trace__utils_8py/#file-trace-utils.py">reference_system/reference_system_py/trace_utils.py</a></strong> </li>
+</ul>
+</li>
+<li><strong>dir <a href="/reference-system/Files/dir_c3a592c969eb740d8a64341e6b9a3579/#dir-reference-system/test">reference_system/test</a></strong> <ul>
+<li><strong>file <a href="/reference-system/Files/gtest__main_8cpp/#file-gtest-main.cpp">reference_system/test/gtest_main.cpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/test__fixtures_8hpp/#file-test-fixtures.hpp">reference_system/test/test_fixtures.hpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/test__number__cruncher_8cpp/#file-test-number-cruncher.cpp">reference_system/test/test_number_cruncher.cpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/test__reference__system__rclcpp_8cpp/#file-test-reference-system-rclcpp.cpp">reference_system/test/test_reference_system_rclcpp.cpp</a></strong> </li>
+<li><strong>file <a href="/reference-system/Files/test__sample__management_8cpp/#file-test-sample-management.cpp">reference_system/test/test_sample_management.cpp</a></strong> </li>
+</ul>
+</li>
+<li><strong>file <a href="/reference-system/Files/setup_8py/#file-setup.py">reference_system/setup.py</a></strong> </li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>Updated on 2022-04-30 at 21:32:33 +0000</p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ed9748b7.min.js"></script>
+      
+    
+  </body>
+</html>
