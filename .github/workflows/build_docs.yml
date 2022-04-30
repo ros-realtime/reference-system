@@ -1,0 +1,84 @@
+name: Build Documentation
+
+on:
+  workflow_run:
+    workflows: [Build and test]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  generate-doxygen:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Only run job if build and test workflow succeeds
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    container:
+      image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Setup workspace
+        # TODO(flynneva): make this a variable and use it at every step
+        run: mkdir -p ros2_ws/src/reference_system
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          path: ros2_ws/src/reference_system
+      - name: Run Doxygen on source
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+          working-directory: 'ros2_ws/src/reference_system'
+          doxyfile-path: '.doxygen/Doxyfile'
+      - name: Upload Doxygen XML
+        uses: actions/upload-artifact@v3
+        with:
+          name: doxygen_xml
+          path: 'ros2_ws/src/reference_system/docs/xml'
+          retention-days: 30
+  generate-doxybook2:
+    runs-on: ubuntu-latest
+    needs: generate-doxygen
+    steps:
+      - name: Download Doxygen XML
+        uses: actions/download-artifact@v3
+        with:
+          name: doxygen_xml
+      - name: Build Doxybook2
+        run: |
+          mkdir ros2_ws/src/reference_system/docs/markdown
+          wget https://github.com/matusnovak/doxybook2/releases/download/v1.4.0/doxybook2-linux-amd64-v1.4.0.zip
+          apt-get install unzip
+          unzip doxybook2-linux-amd64-v1.4.0.zip
+          ./bin/doxybook2 --input ros2_ws/src/reference_system/docs/xml \
+            --output ros2_ws/src/reference_system/docs/markdown \
+            --config ros2_ws/src/reference_system/docs/doxybook2_config.json
+      - name: Upload Doxybook2 markdown
+        uses: actions/upload-artifact@v3
+        with:
+          name: doxybook_markdown
+          path: 'ros2_ws/src/reference_system/docs/markdown'
+          retention-days: 30
+  build-and-deploy-mkdocs:
+    runs-on: ubuntu-latest
+    # Only run if doxybook was generated
+    needs: generate-doxybook2
+    steps:
+      - name: Download Doxybook2 markdown
+        uses: actions/download-artifact@v3
+        with:
+          name: doxybook_markdown
+      - name: Build mkdocs site
+        run: |
+          cd ros2_ws/src/reference_system/
+          # ensure gh-pages git history is fetched
+          git fetch origin gh-pages --depth=1
+          cd docs
+          apt-get update -y
+          # install mkdocs dependencies
+          pip3 install mkdocs mkdocs-material
+          # build site
+          mkdocs build
+      - name: Upload docs site
+        uses: actions/upload-artifact@v3
+        with:
+          name: reference_system_site
+          path: ros2_ws/src/reference_system/docs/site

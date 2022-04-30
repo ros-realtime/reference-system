@@ -1,0 +1,38 @@
+name: Deploy Documentation
+on:
+  # Only deploy docs if build docs workflow passes
+  workflow_run:
+    workflows: ["Build Documentation"]
+    types:
+      - completed
+    branches:
+      - main  # only deploy if docs built are from main (do not deploy pr doc builds)
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy-mkdocs:
+    runs-on: ubuntu-latest
+    # Only run job if docs build workflow succeeds
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Download built mkdocs site
+        uses: actions/download-artifact@v3
+        with:
+          name: reference_system_site
+      - name: Deploy mkdocs site
+        run: |
+          cd ros2_ws/src/reference_system/
+          # ensure gh-pages git history is fetched
+          git fetch origin gh-pages --depth=1
+          cd docs
+          apt-get update -y
+          # install mkdocs dependencies
+          pip3 install mkdocs mkdocs-material
+          # build site
+          mkdocs build
+      - name: Upload docs site
+        uses: actions/upload-artifact@v3
+        with:
+          name: reference_system_site
+          path: ros2_ws/src/reference_system/docs/site
