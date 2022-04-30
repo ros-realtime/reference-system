@@ -1,4 +1,4 @@
-name: Build reference_system packages
+name: Build and test
 
 on:
   push:
