@@ -32,16 +32,23 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: doxygen_xml
-          path: 'ros2_ws/src/reference_system/docs/xml'
+          path: ros2_ws/src/reference_system/docs/xml
           retention-days: 30
   generate-doxybook2:
     runs-on: ubuntu-latest
     needs: generate-doxygen
     steps:
+      - name: Setup workspace
+        run: mkdir -p ros2_ws/src/reference_system
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          path: ros2_ws/src/reference_system
       - name: Download Doxygen XML
         uses: actions/download-artifact@v3
         with:
           name: doxygen_xml
+          path: ros2_ws/src/reference_system/docs/xml
       - name: Build Doxybook2
         run: |
           mkdir ros2_ws/src/reference_system/docs/markdown
@@ -62,13 +69,20 @@ jobs:
     # Only run if doxybook was generated
     needs: generate-doxybook2
     steps:
+      - name: Setup workspace
+        # TODO(flynneva): make this a variable and use it at every step
+        run: mkdir -p ros2_ws/src/reference_system
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          path: ros2_ws/src/reference_system
       - name: Download Doxybook2 markdown
         uses: actions/download-artifact@v3
         with:
           name: doxybook_markdown
       - name: Build mkdocs site
         run: |
-          cd ros2_ws/src/reference_system/
+          cd doxybook_markdown
           # ensure gh-pages git history is fetched
           git fetch origin gh-pages --depth=1
           cd docs
