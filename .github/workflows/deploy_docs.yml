@@ -44,4 +44,6 @@ jobs:
           else
             export NEW_VERSION=${{ github.event.release.tag_name }}
           fi
+          git config user.name doc-bot
+          git config user.email doc-bot@flynnlabs.com
           mike deploy --push --update-aliases $NEW_VERSION latest
