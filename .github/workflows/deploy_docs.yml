@@ -1,12 +1,12 @@
-name: Deploy documentation site
+name: Deploy Documentation
 on:
   # Only deploy docs if build docs workflow passes
   workflow_run:
-    workflows: ["Generate documentation site"]
+    workflows: ["Build Documentation"]
     types:
       - completed
     branches:
-      - main
+      - main  # only deploy if docs built are from main (do not deploy pr doc builds)
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 

@@ -1,4 +1,4 @@
-name: Generate documentation site
+name: Build Documentation
 on:
   # Only generate docs if build and test workflow completed
   workflow_run:
