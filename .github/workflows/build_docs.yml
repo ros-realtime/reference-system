@@ -1,12 +1,10 @@
 name: Generate documentation site
 on:
-  # Only generate docs if build and test workflow passes
+  # Only generate docs if build and test workflow completed
   workflow_run:
     workflows: ["Build and test"]
     types:
       - completed
-    branches:
-      - main
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -14,6 +12,8 @@ jobs:
   generate-doxygen:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    # Only run job if build and test workflow succeeds
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     container:
       image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -68,7 +68,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: doxybook_markdown
-      - name: build mkdocs site
+      - name: Build mkdocs site
         run: |
           cd ros2_ws/src/reference_system/
           # ensure gh-pages git history is fetched
@@ -76,6 +76,11 @@ jobs:
           cd docs
           apt-get update -y
           # install mkdocs dependencies
-          pip3 install mkdocs mkdocs-material mike
-          # since this workflow is triggered by a push to main, set to `latest` alias
-          mike deploy --push --update-aliases main latest
+          pip3 install mkdocs mkdocs-material
+          # build site
+          mkdocs build
+      - name: Upload docs site
+        uses: actions/upload-artifact@v3
+        with:
+          name: reference_system_site
+          path: ros2_ws/src/reference_system/docs/site
