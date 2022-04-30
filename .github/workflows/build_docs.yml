@@ -53,7 +53,7 @@ jobs:
         run: |
           mkdir ros2_ws/src/reference_system/docs/markdown
           wget https://github.com/matusnovak/doxybook2/releases/download/v1.4.0/doxybook2-linux-amd64-v1.4.0.zip
-          apt-get install unzip
+          sudo apt-get install unzip
           unzip doxybook2-linux-amd64-v1.4.0.zip
           ./bin/doxybook2 --input ros2_ws/src/reference_system/docs/xml \
             --output ros2_ws/src/reference_system/docs/markdown \
