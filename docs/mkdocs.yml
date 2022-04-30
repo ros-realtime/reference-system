@@ -7,7 +7,6 @@ plugins:
 extra:
   version:
     provider: mike
-    default: stable
 nav:
   - Home: Pages/md_README
   - Reports: Reports
