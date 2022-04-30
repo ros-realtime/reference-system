@@ -1,4 +1,7 @@
 site_name: Reference System Documentation
+site_url: https://ros-realtime.github.io/reference-system/
+site_author: Evan Flynn
+repo_url: https://github.com/ros-realtime/reference-system.git
 docs_dir: markdown
 theme:
   name: 'material'
