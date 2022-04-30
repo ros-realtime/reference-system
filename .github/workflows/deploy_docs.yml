@@ -39,4 +39,9 @@ jobs:
           pip3 install mkdocs mkdocs-material mike
           # TODO: mike rebuilds entire site, instead we should
           # skip the build and download site artifact from previous workflow
-          mike deploy --push --update-aliases
+          if [ -z ${{ github.event.release.tag_name }}]; then
+            export NEW_VERSION=main
+          else
+            export NEW_VERSION=${{ github.event.release.tag_name }}
+          fi
+          mike deploy --push --update-aliases $NEW_VERSION latest
