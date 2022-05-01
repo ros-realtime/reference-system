@@ -1,6 +1,6 @@
 **__pycache__
 docs/xml
-docs/markdown
+docs/api-reference
 docs/site
 
 # ignore the doxybook2 stuff if installed
