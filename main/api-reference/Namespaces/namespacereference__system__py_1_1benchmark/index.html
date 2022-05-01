@@ -1,0 +1,1973 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <meta name="author" content="Evan Flynn">
+      
+      
+        <link rel="canonical" href="https://ros-realtime.github.io/reference-system/main/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>reference_system_py::benchmark - Reference System Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reference_system_pybenchmark" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Reference System Documentation" class="md-header__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reference System Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              reference_system_py::benchmark
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ros-realtime/reference-system.git/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Reference System Documentation" class="md-nav__button md-logo" aria-label="Reference System Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Reference System Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ros-realtime/reference-system.git/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../the-reference-system/" class="md-nav__link">
+        Reference System
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../the-autoware-reference-system/" class="md-nav__link">
+        Autoware Reference System
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../../reports/">Reports</a>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Reports" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Reports
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1" type="checkbox" id="__nav_5_1" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../Classes/">Classes</a>
+          
+            <label for="__nav_5_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Classes" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Classes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/classSampleManagementSettings/" class="md-nav__link">
+        SampleManagementSettings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/classTestNodeGraph/" class="md-nav__link">
+        TestNodeGraph
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/classnodes_1_1rclcpp__system_1_1Command/" class="md-nav__link">
+        nodes::rclcpp_system::Command
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/classnodes_1_1rclcpp__system_1_1Cyclic/" class="md-nav__link">
+        nodes::rclcpp_system::Cyclic
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/classnodes_1_1rclcpp__system_1_1Fusion/" class="md-nav__link">
+        nodes::rclcpp_system::Fusion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/classnodes_1_1rclcpp__system_1_1Intersection/" class="md-nav__link">
+        nodes::rclcpp_system::Intersection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/classnodes_1_1rclcpp__system_1_1Sensor/" class="md-nav__link">
+        nodes::rclcpp_system::Sensor
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/classnodes_1_1rclcpp__system_1_1Transform/" class="md-nav__link">
+        nodes::rclcpp_system::Transform
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/classtest__requirements_1_1TestRequirementsAutowareReferenceSystem/" class="md-nav__link">
+        test_requirements::TestRequirementsAutowareReferenceSystem
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structRclcppSystem/" class="md-nav__link">
+        RclcppSystem
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1CommandSettings/" class="md-nav__link">
+        nodes::CommandSettings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1CyclicSettings/" class="md-nav__link">
+        nodes::CyclicSettings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1FusionSettings/" class="md-nav__link">
+        nodes::FusionSettings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1IntersectionSettings/" class="md-nav__link">
+        nodes::IntersectionSettings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1IntersectionSettings_1_1Connection/" class="md-nav__link">
+        nodes::IntersectionSettings::Connection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1SensorSettings/" class="md-nav__link">
+        nodes::SensorSettings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1TransformSettings/" class="md-nav__link">
+        nodes::TransformSettings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1rclcpp__system_1_1Cyclic_1_1subscription__t/" class="md-nav__link">
+        nodes::rclcpp_system::Cyclic::subscription_t
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1rclcpp__system_1_1Fusion_1_1subscription__t/" class="md-nav__link">
+        nodes::rclcpp_system::Fusion::subscription_t
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1rclcpp__system_1_1Intersection_1_1Connection/" class="md-nav__link">
+        nodes::rclcpp_system::Intersection::Connection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1timing_1_1BenchmarkCPUUsage/" class="md-nav__link">
+        nodes::timing::BenchmarkCPUUsage
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1timing_1_1BenchmarkThroughput/" class="md-nav__link">
+        nodes::timing::BenchmarkThroughput
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structnodes_1_1timing_1_1Default/" class="md-nav__link">
+        nodes::timing::Default
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structreference__interfaces_1_1msg_1_1Message4kb/" class="md-nav__link">
+        reference_interfaces::msg::Message4kb
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structreference__interfaces_1_1msg_1_1TransmissionStats/" class="md-nav__link">
+        reference_interfaces::msg::TransmissionStats
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structsample__statistic__t/" class="md-nav__link">
+        sample_statistic_t
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Classes/structstatistic__value__t/" class="md-nav__link">
+        statistic_value_t
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_2" type="checkbox" id="__nav_5_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../Modules/">Modules</a>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Modules" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          Modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_3" type="checkbox" id="__nav_5_3" checked>
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../">Namespaces</a>
+          
+            <label for="__nav_5_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Namespaces" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Namespaces
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacebenchmark/" class="md-nav__link">
+        benchmark
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespaceconftest/" class="md-nav__link">
+        conftest
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacenodes/" class="md-nav__link">
+        nodes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacenodes_1_1rclcpp__system/" class="md-nav__link">
+        nodes::rclcpp_system
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacenodes_1_1timing/" class="md-nav__link">
+        nodes::timing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacerclcpp/" class="md-nav__link">
+        rclcpp
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__interfaces/" class="md-nav__link">
+        reference_interfaces
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__interfaces_1_1msg/" class="md-nav__link">
+        reference_interfaces::msg
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__interfaces_1_1msg_1_1Message4kb__Constants/" class="md-nav__link">
+        reference_interfaces::msg::Message4kb_Constants
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__interfaces_1_1msg_1_1TransmissionStats__Constants/" class="md-nav__link">
+        reference_interfaces::msg::TransmissionStats_Constants
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__system__py/" class="md-nav__link">
+        reference_system_py
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          reference_system_py::benchmark
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        reference_system_py::benchmark
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions-documentation" class="md-nav__link">
+    Functions Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-terminatingros2run" class="md-nav__link">
+    function terminatingRos2Run
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-setup_benchmark_directory" class="md-nav__link">
+    function setup_benchmark_directory
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-roudi_daemon" class="md-nav__link">
+    function roudi_daemon
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-get_benchmark_directory" class="md-nav__link">
+    function get_benchmark_directory
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-get_benchmark_directories_below" class="md-nav__link">
+    function get_benchmark_directories_below
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_summary_report" class="md-nav__link">
+    function generate_summary_report
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_report" class="md-nav__link">
+    function generate_report
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_memory_trace" class="md-nav__link">
+    function generate_memory_trace
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_memory_report" class="md-nav__link">
+    function generate_memory_report
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_callback_report" class="md-nav__link">
+    function generate_callback_report
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes-documentation" class="md-nav__link">
+    Attributes Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-tracetools_available" class="md-nav__link">
+    variable tracetools_available
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-ros_home" class="md-nav__link">
+    variable ROS_HOME
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__system__py_1_1callback__duration/" class="md-nav__link">
+        reference_system_py::callback_duration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__system__py_1_1constants/" class="md-nav__link">
+        reference_system_py::constants
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__system__py_1_1dropped__messages/" class="md-nav__link">
+        reference_system_py::dropped_messages
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__system__py_1_1memory__usage/" class="md-nav__link">
+        reference_system_py::memory_usage
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__system__py_1_1plot__utils/" class="md-nav__link">
+        reference_system_py::plot_utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__system__py_1_1std__latency/" class="md-nav__link">
+        reference_system_py::std_latency
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__system__py_1_1trace__utils/" class="md-nav__link">
+        reference_system_py::trace_utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacesetup/" class="md-nav__link">
+        setup
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacestd_1_1chrono__literals/" class="md-nav__link">
+        std::chrono_literals
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacetest__platform/" class="md-nav__link">
+        test_platform
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacetest__requirements/" class="md-nav__link">
+        test_requirements
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacetesting/" class="md-nav__link">
+        testing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespaceunittest/" class="md-nav__link">
+        unittest
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions-documentation" class="md-nav__link">
+    Functions Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#function-terminatingros2run" class="md-nav__link">
+    function terminatingRos2Run
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-setup_benchmark_directory" class="md-nav__link">
+    function setup_benchmark_directory
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-roudi_daemon" class="md-nav__link">
+    function roudi_daemon
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-get_benchmark_directory" class="md-nav__link">
+    function get_benchmark_directory
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-get_benchmark_directories_below" class="md-nav__link">
+    function get_benchmark_directories_below
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_summary_report" class="md-nav__link">
+    function generate_summary_report
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_report" class="md-nav__link">
+    function generate_report
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_memory_trace" class="md-nav__link">
+    function generate_memory_trace
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_memory_report" class="md-nav__link">
+    function generate_memory_report
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-generate_callback_report" class="md-nav__link">
+    function generate_callback_report
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes-documentation" class="md-nav__link">
+    Attributes Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-tracetools_available" class="md-nav__link">
+    variable tracetools_available
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-ros_home" class="md-nav__link">
+    variable ROS_HOME
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ros-realtime/reference-system.git/edit/master/docs/api-reference/Namespaces/namespacereference__system__py_1_1benchmark.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="reference_system_pybenchmark">reference_system_py::benchmark</h1>
+<h2 id="functions">Functions</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-terminatingros2run">terminatingRos2Run</a></strong>(pkg pkg, executable executable, rmw rmw, env env =os.environ, args args =[], ** kwargs)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-setup-benchmark-directory">setup_benchmark_directory</a></strong>(pkg pkg, create create =False)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-roudi-daemon">roudi_daemon</a></strong>(env env =os.environ, roudi_config_path roudi_config_path =None)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-get-benchmark-directory">get_benchmark_directory</a></strong>(base_directory base_directory, executable executable, runtime_sec runtime_sec, rmw rmw, create create =False)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-get-benchmark-directories-below">get_benchmark_directories_below</a></strong>(base_directory base_directory, runtime_sec runtime_sec =None)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-generate-trace">generate_trace</a></strong>(trace_type trace_type, * args, ** kwargs)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-generate-summary-report">generate_summary_report</a></strong>(trace_type trace_type, pkg pkg, directory directory, runtime_sec runtime_sec)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-generate-std-trace">generate_std_trace</a></strong>(executable executable, pkg pkg, directory directory, runtime_sec runtime_sec, rmw rmw)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-generate-report">generate_report</a></strong>(trace_type trace_type, * args, ** kwargs)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-generate-memory-trace">generate_memory_trace</a></strong>(executable executable, pkg pkg, directory directory, runtime_sec runtime_sec, rmw rmw)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-generate-memory-report">generate_memory_report</a></strong>(executable executable, pkg pkg, directory directory, runtime_sec runtime_sec, rmw rmw)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-generate-callback-trace">generate_callback_trace</a></strong>(executable executable, pkg pkg, directory directory, runtime_sec runtime_sec, rmw rmw)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-generate-callback-report">generate_callback_report</a></strong>(executable executable, pkg pkg, directory directory, runtime_sec runtime_sec, rmw rmw)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#function-available-executables">available_executables</a></strong>(pkg pkg, pattern pattern =' *')</td>
+</tr>
+</tbody>
+</table>
+<h2 id="attributes">Attributes</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#variable-tracetools-available">tracetools_available</a></strong></td>
+</tr>
+<tr>
+<td></td>
+<td><strong><a href="/reference-system/api-reference/Namespaces/namespacereference__system__py_1_1benchmark/#variable-ros-home">ROS_HOME</a></strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions-documentation">Functions Documentation</h2>
+<h3 id="function-terminatingros2run">function terminatingRos2Run</h3>
+<pre><code class="language-python">def terminatingRos2Run(
+    pkg pkg,
+    executable executable,
+    rmw rmw,
+    env env =os.environ,
+    args args =[],
+    ** kwargs
+)
+</code></pre>
+<pre><code>Run the given executable (part of the given package) under the given rmw.
+
+The executable is automatically terminated upon exit from the context
+</code></pre>
+<h3 id="function-setup_benchmark_directory">function setup_benchmark_directory</h3>
+<pre><code class="language-python">def setup_benchmark_directory(
+    pkg pkg,
+    create create =False
+)
+</code></pre>
+<h3 id="function-roudi_daemon">function roudi_daemon</h3>
+<pre><code class="language-python">def roudi_daemon(
+    env env =os.environ,
+    roudi_config_path roudi_config_path =None
+)
+</code></pre>
+<pre><code>Context manager that runs a RouDi instance for the duration of the context.
+
+The `env` parameter specifies environment variables for the RouDi process.
+The `roudi_config_path` parameter can be used to provide a RouDi toml configuration file.
+</code></pre>
+<h3 id="function-get_benchmark_directory">function get_benchmark_directory</h3>
+<pre><code class="language-python">def get_benchmark_directory(
+    base_directory base_directory,
+    executable executable,
+    runtime_sec runtime_sec,
+    rmw rmw,
+    create create =False
+)
+</code></pre>
+<pre><code>Return the directory to place measurements and reports for the given experiment.
+
+If `create` is True, the directory is created if it does not exist yet.
+</code></pre>
+<h3 id="function-get_benchmark_directories_below">function get_benchmark_directories_below</h3>
+<pre><code class="language-python">def get_benchmark_directories_below(
+    base_directory base_directory,
+    runtime_sec runtime_sec =None
+)
+</code></pre>
+<pre><code>Return all benchmark directories found below `base_directory`.```
+
+
+### function generate_trace
+
+```python
+def generate_trace(
+    trace_type trace_type,
+    * args,
+    ** kwargs
+)
+</code></pre>
+<h3 id="function-generate_summary_report">function generate_summary_report</h3>
+<pre><code class="language-python">def generate_summary_report(
+    trace_type trace_type,
+    pkg pkg,
+    directory directory,
+    runtime_sec runtime_sec
+)
+</code></pre>
+<pre><code>Generate a summary report for the given `trace_type`, using all traces under `directory`.```
+
+
+### function generate_std_trace
+
+```python
+def generate_std_trace(
+    executable executable,
+    pkg pkg,
+    directory directory,
+    runtime_sec runtime_sec,
+    rmw rmw
+)
+</code></pre>
+<pre><code>Generate a tracefile for the given executable using the 'std' method.
+
+The 'std' method logs stdout of the executable.
+</code></pre>
+<h3 id="function-generate_report">function generate_report</h3>
+<pre><code class="language-python">def generate_report(
+    trace_type trace_type,
+    * args,
+    ** kwargs
+)
+</code></pre>
+<h3 id="function-generate_memory_trace">function generate_memory_trace</h3>
+<pre><code class="language-python">def generate_memory_trace(
+    executable executable,
+    pkg pkg,
+    directory directory,
+    runtime_sec runtime_sec,
+    rmw rmw
+)
+</code></pre>
+<pre><code>Generate a tracefile for the given executable using the 'memory' method.
+
+The 'memory' method uses `psrecord` to profile memory and CPU usage.
+</code></pre>
+<h3 id="function-generate_memory_report">function generate_memory_report</h3>
+<pre><code class="language-python">def generate_memory_report(
+    executable executable,
+    pkg pkg,
+    directory directory,
+    runtime_sec runtime_sec,
+    rmw rmw
+)
+</code></pre>
+<pre><code>Generate a per-executable report from the 'memory' trace file.```
+
+
+### function generate_callback_trace
+
+```python
+def generate_callback_trace(
+    executable executable,
+    pkg pkg,
+    directory directory,
+    runtime_sec runtime_sec,
+    rmw rmw
+)
+</code></pre>
+<pre><code>Generate a tracefile for the given executable using the 'callback' method.
+
+The 'callback' method measures the executable using 'ros2 trace'
+</code></pre>
+<h3 id="function-generate_callback_report">function generate_callback_report</h3>
+<pre><code class="language-python">def generate_callback_report(
+    executable executable,
+    pkg pkg,
+    directory directory,
+    runtime_sec runtime_sec,
+    rmw rmw
+)
+</code></pre>
+<pre><code>Generate a per-executable report from the 'callback' trace file.```
+
+
+### function available_executables
+
+```python
+def available_executables(
+    pkg pkg,
+    pattern pattern =' *'
+)
+</code></pre>
+<h2 id="attributes-documentation">Attributes Documentation</h2>
+<h3 id="variable-tracetools_available">variable tracetools_available</h3>
+<pre><code class="language-python">bool tracetools_available =  True;
+</code></pre>
+<h3 id="variable-ros_home">variable ROS_HOME</h3>
+<pre><code class="language-python">ROS_HOME =  Path(os.environ.get('ROS_HOME', os.environ['HOME']+'/.ros'));
+</code></pre>
+<hr />
+<p>Updated on 2022-05-01 at 21:17:27 +0000</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../namespacereference__system__py/" class="md-footer__link md-footer__link--prev" aria-label="Previous: reference_system_py" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              reference_system_py
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../namespacereference__system__py_1_1callback__duration/" class="md-footer__link md-footer__link--next" aria-label="Next: reference_system_py::callback_duration" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              reference_system_py::callback_duration
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes", "navigation.tracking"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>
