@@ -4,16 +4,12 @@ site_author: Evan Flynn
 repo_url: https://github.com/ros-realtime/reference-system.git
 theme:
   name: 'material'
+  features:
+    - navigation.indexes
+    - navigation.tracking
 plugins:
   - search
+  - awesome-pages
 extra:
   version:
     provider: mike
-nav:
-  - Home: index.md
-  - Reports: Reports
-  - Classes: Classes
-  - Namespaces: Namespaces
-  - Modules: Modules
-  - Files: Files
-  - Related Pages: Pages

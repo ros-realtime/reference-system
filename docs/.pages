@@ -1,0 +1,7 @@
+nav:
+  - Home: index.md
+  - Reference System: the-reference-system.md
+  - Autoware Reference System: the-autoware-reference-system.md
+  - Reports: reports
+  - API Reference: api-reference
+  - ...
