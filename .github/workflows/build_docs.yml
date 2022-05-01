@@ -97,4 +97,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: reference_system_site
-          path: ros2_ws/src/reference_system/docs/site
+          path: ros2_ws/src/reference_system/site
