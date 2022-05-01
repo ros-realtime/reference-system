@@ -86,7 +86,6 @@ jobs:
           cd ros2_ws/src/reference_system
           # ensure gh-pages git history is fetched
           git fetch origin gh-pages --depth=1
-          cd docs
           sudo apt-get update -y
           # install mkdocs dependencies
           pip3 install mkdocs mkdocs-material

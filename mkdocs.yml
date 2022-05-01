@@ -2,7 +2,6 @@ site_name: Reference System Documentation
 site_url: https://ros-realtime.github.io/reference-system/
 site_author: Evan Flynn
 repo_url: https://github.com/ros-realtime/reference-system.git
-docs_dir: markdown
 theme:
   name: 'material'
 plugins:
@@ -11,7 +10,7 @@ extra:
   version:
     provider: mike
 nav:
-  - Home: Pages/md_README
+  - Home: index.md
   - Reports: Reports
   - Classes: Classes
   - Namespaces: Namespaces

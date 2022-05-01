@@ -31,7 +31,7 @@ jobs:
           workflow: ${{ github.event.workflow_run.workflow_id }}
       - name: Deploy mkdocs site
         run: |
-          cd ros2_ws/src/reference_system/docs
+          cd ros2_ws/src/reference_system
           # ensure gh-pages git history is fetched
           git fetch origin gh-pages --depth=1
           sudo apt-get update -y
