@@ -14,8 +14,6 @@ jobs:
   generate-doxygen:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # Only run job if build and test workflow succeeds
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     container:
       image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
