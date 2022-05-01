@@ -31,13 +31,15 @@ jobs:
       image: ${{ matrix.docker_image }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: setup workspace
+      - name: Setup workspace
         run: mkdir -p ros2_ws/src
-      - name: checkout
+      - name: Checkout repository
         uses: actions/checkout@v2
         with:
           path: ros2_ws/src
-      - name: build and test
+      - name: Install benchmark dependencies
+        run: python3 -m pip install -r ros2_ws/src/reference_system/requirements.txt
+      - name: Build and run benchmarks
         uses: ros-tooling/action-ros-ci@v0.2
         with:
           package-name: autoware_reference_system reference_system reference_interfaces

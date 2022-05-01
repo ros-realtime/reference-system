@@ -23,11 +23,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: ros2_ws/src/reference_system
-      - name: Download Doxybook2 markdown
+      - name: Download API reference
         uses: dawidd6/action-download-artifact@v2
         with:
-          name: doxybook_markdown
-          path: 'ros2_ws/src/reference_system/docs/markdown'
+          name: api_reference
+          path: 'ros2_ws/src/reference_system/docs/api-reference'
           workflow: ${{ github.event.workflow_run.workflow_id }}
       - name: Deploy mkdocs site
         run: |
@@ -35,8 +35,8 @@ jobs:
           # ensure gh-pages git history is fetched
           git fetch origin gh-pages --depth=1
           sudo apt-get update -y
-          # install mkdocs dependencies
-          pip3 install mkdocs mkdocs-material mike
+          # install docs dependencies
+          python3 -m pip install -r docs/requirements.txt
           # TODO: mike rebuilds entire site, instead we should
           # skip the build and download site artifact from previous workflow
           if [ -z ${{ github.event.release.tag_name }}]; then
