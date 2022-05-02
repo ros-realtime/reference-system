@@ -32,18 +32,21 @@ jobs:
           path: 'ros2_ws/src/reference_system/docs/api-reference'
           workflow: ${{ github.event.workflow_run.workflow_id }}
       - name: Download Foxy reports
+        continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
           name: benchmark_reports_foxy  # TODO: make this a list and iterate over it
           path: 'ros2_ws/src/reference_system/docs/reports/foxy'
           workflow: ${{ github.event.workflow_run.workflow_id }}
       - name: Download Galactic reports
+        continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
           name: benchmark_reports_galactic  # TODO: make this a list and iterate over it
           path: 'ros2_ws/src/reference_system/docs/reports/galactic'
           workflow: ${{ github.event.workflow_run.workflow_id }}
       - name: Download Rolling reports
+        continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
           name: benchmark_reports_rolling  # TODO: make this a list and iterate over it

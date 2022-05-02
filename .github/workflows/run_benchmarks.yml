@@ -44,6 +44,7 @@ jobs:
           python3 -m pip install -r ros2_ws/src/reference_system/requirements.txt
       - name: Build and run benchmarks
         uses: ros-tooling/action-ros-ci@v0.2
+        continue-on-error: true  # continue even if report gen failsS
         with:
           package-name: autoware_reference_system reference_system reference_interfaces
           target-ros2-distro: ${{ matrix.ros_distribution }}
@@ -58,6 +59,7 @@ jobs:
               }
             }
       - name: Upload Benchmark Reports
+        continue-on-error: true  # continue even if report gen failsS 
         uses: actions/upload-artifact@v3
         with:
           name: benchmark_reports_${{ matrix.ros_distribution }}
