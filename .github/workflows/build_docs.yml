@@ -91,7 +91,7 @@ jobs:
           git fetch origin gh-pages --depth=1
           sudo apt-get update -y
           # install mkdocs dependencies
-          pip3 install -r docs/requirements.txt
+          python3 -m pip install -r docs/requirements.txt
           # build site
           mkdocs build
       - name: Upload docs site
