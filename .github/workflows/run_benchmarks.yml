@@ -1,9 +1,10 @@
-name: Run reference_system benchmark
+name: Run Benchmarks
 
 on:
-  push:
-    tags:
-      - '**'
+  workflow_run:
+    workflows: [Build and test]
+    types: [completed]
+    branches: [main]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -57,6 +58,6 @@ jobs:
       - name: Upload Benchmark Reports
         uses: actions/upload-artifact@v3
         with:
-          name: benchmark_reports
+          name: benchmark_reports_${{ matrix.ros_distribution }}
           path: '~/.ros/benchmark_autoware_reference_system'
           retention-days: 60
