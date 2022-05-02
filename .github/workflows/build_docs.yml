@@ -59,7 +59,8 @@ jobs:
           unzip doxybook2-linux-amd64-v1.4.0.zip
           ./bin/doxybook2 --input ros2_ws/src/reference_system/docs/xml \
             --output ros2_ws/src/reference_system/docs/api-reference \
-            --config ros2_ws/src/reference_system/docs/doxybook2_config.json
+            --config ros2_ws/src/reference_system/docs/doxybook2_config.json \
+            --config-data '{"baseUrl": "/reference-system/latest/api-reference/"}'
       - name: Upload API Reference
         uses: actions/upload-artifact@v3
         with:
