@@ -39,7 +39,9 @@ jobs:
         with:
           path: ros2_ws/src
       - name: Install benchmark dependencies
-        run: pip3 install -r ros2_ws/src/reference_system/requirements.txt
+        run: |
+        sudo apt-get update -y
+        python3 -m pip install -r ros2_ws/src/reference_system/requirements.txt
       - name: Build and run benchmarks
         uses: ros-tooling/action-ros-ci@v0.2
         with:
