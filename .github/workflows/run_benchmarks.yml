@@ -33,15 +33,15 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Setup workspace
-        run: mkdir -p ros2_ws/src
+        run: mkdir -p ros2_ws/src/reference_system
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          path: ros2_ws/src
+          path: ros2_ws/src/reference_system
       - name: Install benchmark dependencies
         run: |
           sudo apt-get update -y
-          python3 -m pip install -r ros2_ws/src/reference-system/requirements.txt
+          python3 -m pip install -r ros2_ws/src/reference_system/requirements.txt
       - name: Build and run benchmarks
         uses: ros-tooling/action-ros-ci@v0.2
         with:
