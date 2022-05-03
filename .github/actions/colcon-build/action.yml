@@ -1,0 +1,15 @@
+name: Build with colcon
+description: Checks out the repository to given directory
+inputs:
+  output-path:
+    required: true
+    description: The path to checkout the given repository too
+runs:
+  using: composite
+  steps:
+    - name: Make sure output directory exists
+      run: mkdir -p ${{ inputs.output-path }}
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        path: ${{ inputs.output-path }}

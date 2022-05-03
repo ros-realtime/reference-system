@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows:
       - "Build Documentation"
-      - "Run Benchmarks"
+      # - "Run Benchmarks"
     types:
       - completed
     branches:

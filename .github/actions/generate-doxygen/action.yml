@@ -1,0 +1,14 @@
+name: Generate doxygen documentation
+description: Build doxygen documentation with given configuration
+inputs:
+  doxyfile-path:
+    required: true
+    description: The path to checkout the given repository too
+runs:
+  using: composite
+  steps:
+    - name: Run doxygen on source
+      uses: mattnotmitt/doxygen-action@v1
+      with:
+        working-directory: 'ros2_ws/src/reference_system'
+        doxyfile-path: '.doxygen/Doxyfile'
