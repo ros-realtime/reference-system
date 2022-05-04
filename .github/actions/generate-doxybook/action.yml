@@ -19,6 +19,15 @@ inputs:
   base-url:
     required: true  # TODO: make this optional by adding logic below
     description: Base URL to overwrite the default with
+  artifact-path:
+    required: true
+    description: Path to directory to upload as artifact
+  artifact-name:
+    required: true
+    description: Name of the artifact to upload
+  artifact-retention-days:
+    required: true
+    description: Number of days to keep the artifact for
 runs:
   using: composite
   steps:
@@ -42,3 +51,9 @@ runs:
           --output ${{ inputs.output-path }} \
           --config ${{ inputs.doxybook2-config-path }} \
           --config-data '{"baseUrl": "${{ inputs.base-url }}"}'
+    - name: Upload API reference
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.artifact-path }}
+        retention-days: ${{ inputs.artifact-retention-days }}
