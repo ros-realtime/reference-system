@@ -31,7 +31,7 @@ jobs:
             docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
           # Rolling Ridley  (June 2020 - Present)
           - ros_distribution: rolling
-            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-rolling-ros-base-latest
+            docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-rolling-ros-base-latest
     container:
       image: ${{ matrix.docker_image }}
     # Steps represent a sequence of tasks that will be executed as part of the job
