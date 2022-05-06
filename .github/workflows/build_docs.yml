@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  WORKSPACE_PATH: ros2_ws/src/reference_system
+  WORKSPACE_PATH: ros_ws/src/reference_system
   DOXYGEN_ARTIFACT: doxygen_xml
   DOXYBOOK_ARTIFACT: api_reference
   DOXYBOOK_VERSION: v1.4.0
@@ -30,7 +30,7 @@ jobs:
           path: ${{ env.WORKSPACE_PATH }}
       - name: Generate doxygen and upload as artifact
         # TODO: figure out way to use WORKSPACE_PATH var here
-        uses: ./ros2_ws/src/reference_system/.github/actions/generate-doxygen
+        uses: ./ros_ws/src/reference_system/.github/actions/generate-doxygen
         with:
           working-directory: ${{ env.WORKSPACE_PATH }}
           doxyfile-path: '.doxygen/Doxyfile'
@@ -49,7 +49,7 @@ jobs:
           path: ${{ env.WORKSPACE_PATH }}
       - name: Generate API reference and upload as artifact
         # TODO: figure out way to use WORKSPACE_PATH var here
-        uses: ./ros2_ws/src/reference_system/.github/actions/generate-doxybook
+        uses: ./ros_ws/src/reference_system/.github/actions/generate-doxybook
         with:
           input-doxygen-artifact: ${{ env.DOXYGEN_ARTIFACT }}
           doxygen-artifact-extraction-path: ${{ env.WORKSPACE_PATH }}/docs/xml

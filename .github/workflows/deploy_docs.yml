@@ -15,7 +15,7 @@ on:
 # TODO: reusing envs across workflows is not supported yet for gh actions
 # re-evaluate once available (something like `include` or `import` another yaml would work)
 env:
-  WORKSPACE_PATH: ros2_ws/src/reference_system
+  WORKSPACE_PATH: ros_ws/src/reference_system
 
 jobs:
   deploy-mkdocs:
