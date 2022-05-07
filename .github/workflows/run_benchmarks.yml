@@ -8,6 +8,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  WORKSPACE_PATH: ros_ws/src/reference_system
+
 jobs:
   run-benchmarks:
     runs-on: ubuntu-latest
@@ -33,15 +36,15 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Setup workspace
-        run: mkdir -p ros2_ws/src/reference_system
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          path: ros2_ws/src/reference_system
+          path: ${{ env.WORKSPACE_PATH }}
       - name: Install benchmark dependencies
         run: |
           sudo apt-get update -y
-          python3 -m pip install -r ros2_ws/src/reference_system/requirements.txt
+          python3 -m pip install -r ${{ env.WORKSPACE_PATH }}/requirements.txt
       - name: Build and run benchmarks
         uses: ros-tooling/action-ros-ci@v0.2
         continue-on-error: true  # continue even if report gen failsS

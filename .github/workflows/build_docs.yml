@@ -10,83 +10,74 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  WORKSPACE_PATH: ros_ws/src/reference_system
+  DOXYGEN_ARTIFACT: doxygen_xml
+  DOXYBOOK_ARTIFACT: api_reference
+  DOXYBOOK_VERSION: v1.4.0
+
 jobs:
   generate-doxygen:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     container:
       image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Setup workspace
-        # TODO(flynneva): make this a variable and use it at every step
-        run: mkdir -p ros2_ws/src/reference_system
-      - name: checkout
+      - name: Make sure output directory exists
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
+      - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          path: ros2_ws/src/reference_system
-      - name: Run Doxygen on source
-        uses: mattnotmitt/doxygen-action@v1
+          path: ${{ env.WORKSPACE_PATH }}
+      - name: Generate doxygen and upload as artifact
+        # TODO: figure out way to use WORKSPACE_PATH var here
+        uses: ./ros_ws/src/reference_system/.github/actions/generate-doxygen
         with:
-          working-directory: 'ros2_ws/src/reference_system'
+          working-directory: ${{ env.WORKSPACE_PATH }}
           doxyfile-path: '.doxygen/Doxyfile'
-      - name: Upload Doxygen XML
-        uses: actions/upload-artifact@v3
-        with:
-          name: doxygen_xml
-          path: ros2_ws/src/reference_system/docs/xml
-          retention-days: 30
+          artifact-path: ${{ env.WORKSPACE_PATH }}/docs/xml
+          artifact-name: ${{ env.DOXYGEN_ARTIFACT }}
+          artifact-retention-days: 30
   generate-doxybook2:
     runs-on: ubuntu-latest
     needs: generate-doxygen
     steps:
-      - name: Setup workspace
-        run: mkdir -p ros2_ws/src/reference_system
-      - name: checkout
+      - name: Make sure output directory exists
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
+      - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          path: ros2_ws/src/reference_system
-      - name: Download Doxygen XML
-        uses: actions/download-artifact@v3
+          path: ${{ env.WORKSPACE_PATH }}
+      - name: Generate API reference and upload as artifact
+        # TODO: figure out way to use WORKSPACE_PATH var here
+        uses: ./ros_ws/src/reference_system/.github/actions/generate-doxybook
         with:
-          name: doxygen_xml
-          path: ros2_ws/src/reference_system/docs/xml
-      - name: Build API Reference
-        run: |
-          mkdir ros2_ws/src/reference_system/docs/api-reference
-          wget https://github.com/matusnovak/doxybook2/releases/download/v1.4.0/doxybook2-linux-amd64-v1.4.0.zip
-          sudo apt-get install unzip
-          unzip doxybook2-linux-amd64-v1.4.0.zip
-          ./bin/doxybook2 --input ros2_ws/src/reference_system/docs/xml \
-            --output ros2_ws/src/reference_system/docs/api-reference \
-            --config ros2_ws/src/reference_system/docs/doxybook2_config.json \
-            --config-data '{"baseUrl": "/reference-system/latest/api-reference/"}'
-      - name: Upload API Reference
-        uses: actions/upload-artifact@v3
-        with:
-          name: api_reference
-          path: 'ros2_ws/src/reference_system/docs/api-reference'
-          retention-days: 30
+          input-doxygen-artifact: ${{ env.DOXYGEN_ARTIFACT }}
+          doxygen-artifact-extraction-path: ${{ env.WORKSPACE_PATH }}/docs/xml
+          doxybook2-version: ${{ env.DOXYBOOK_VERSION }}
+          doxybook2-config-path: ${{ env.WORKSPACE_PATH }}/docs/doxybook2_config.json
+          output-path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
+          base-url: /reference-system/latest/api-reference/
+          artifact-path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
+          artifact-name: ${{ env.DOXYBOOK_ARTIFACT }}
+          artifact-retention-days: 30
   build-mkdocs:
     runs-on: ubuntu-latest
-    # Only run if doxybook was generated
     needs: generate-doxybook2
     steps:
-      - name: Setup workspace
-        # TODO(flynneva): make this a variable and use it at every step
-        run: mkdir -p ros2_ws/src/reference_system
-      - name: checkout
+      - name: Make sure output directory exists
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
+      - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          path: ros2_ws/src/reference_system
+          path: ${{ env.WORKSPACE_PATH }}
       - name: Download API Reference
         uses: actions/download-artifact@v3
         with:
           name: api_reference
-          path: 'ros2_ws/src/reference_system/docs/api-reference'
+          path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
       - name: Build mkdocs site
         run: |
-          cd ros2_ws/src/reference_system
+          cd ${{ env.WORKSPACE_PATH }}
           # ensure gh-pages git history is fetched
           git fetch origin gh-pages --depth=1
           sudo apt-get update -y
@@ -98,4 +89,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: reference_system_site
-          path: ros2_ws/src/reference_system/site
+          path: ${{ env.WORKSPACE_PATH }}/site
