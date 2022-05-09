@@ -12,7 +12,7 @@ the performance of the executor. To this end, the example comes with built-in pe
 measurements that make it easy to compare the performance between executor implementations
 in a repeatable way.
 
-![The Autoware reference system](autoware-reference-system.png)
+![The Autoware reference system](../content/img/autoware_reference_system.svg)
 
 ## Quick Start
 
