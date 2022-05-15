@@ -64,4 +64,6 @@ install(TARGETS ${PROJECT_NAME}
 
 ament_python_install_package(reference_system_py)
 
-ament_auto_package()
+ament_auto_package(
+  INSTALL_TO_SHARE cfg
+)
