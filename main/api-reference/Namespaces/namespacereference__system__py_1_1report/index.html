@@ -11,14 +11,14 @@
         <meta name="author" content="Evan Flynn">
       
       
-        <link rel="canonical" href="https://ros-realtime.github.io/reference-system/main/api-reference/Namespaces/namespacereference__system__py_1_1memory__usage/">
+        <link rel="canonical" href="https://ros-realtime.github.io/reference-system/main/api-reference/Namespaces/namespacereference__system__py_1_1report/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
     
     
       
-        <title>reference_system_py::memory_usage - Reference System Documentation</title>
+        <title>reference_system_py::report - Reference System Documentation</title>
       
     
     
@@ -65,7 +65,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#reference_system_pymemory_usage" class="md-skip">
+        <a href="#reference_system_pyreport" class="md-skip">
           Skip to content
         </a>
       
@@ -97,7 +97,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              reference_system_py::memory_usage
+              reference_system_py::report
             
           </span>
         </div>
@@ -1163,6 +1163,34 @@
               
   
   
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__system__py_1_1memory__usage/" class="md-nav__link">
+        reference_system_py::memory_usage
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../namespacereference__system__py_1_1plot__utils/" class="md-nav__link">
+        reference_system_py::plot_utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
     
   
   
@@ -1175,12 +1203,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          reference_system_py::memory_usage
+          reference_system_py::report
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        reference_system_py::memory_usage
+        reference_system_py::report
       </a>
       
         
@@ -1207,6 +1235,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#functions-documentation" class="md-nav__link">
     Functions Documentation
   </a>
@@ -1215,15 +1250,35 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#function-summary_from_directories" class="md-nav__link">
-    function summary_from_directories
+  <a href="#function-generate_summary_report" class="md-nav__link">
+    function generate_summary_report
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#function-individual" class="md-nav__link">
-    function individual
+  <a href="#function-generate_memory_report" class="md-nav__link">
+    function generate_memory_report
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes-documentation" class="md-nav__link">
+    Attributes Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-tracetools_available" class="md-nav__link">
+    variable tracetools_available
   </a>
   
 </li>
@@ -1237,34 +1292,6 @@
   
 </nav>
       
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../namespacereference__system__py_1_1plot__utils/" class="md-nav__link">
-        reference_system_py::plot_utils
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../namespacereference__system__py_1_1report/" class="md-nav__link">
-        reference_system_py::report
-      </a>
     </li>
   
 
@@ -1430,6 +1457,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#functions-documentation" class="md-nav__link">
     Functions Documentation
   </a>
@@ -1438,15 +1472,35 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#function-summary_from_directories" class="md-nav__link">
-    function summary_from_directories
+  <a href="#function-generate_summary_report" class="md-nav__link">
+    function generate_summary_report
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#function-individual" class="md-nav__link">
-    function individual
+  <a href="#function-generate_memory_report" class="md-nav__link">
+    function generate_memory_report
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes-documentation" class="md-nav__link">
+    Attributes Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-tracetools_available" class="md-nav__link">
+    variable tracetools_available
   </a>
   
 </li>
@@ -1468,12 +1522,12 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/ros-realtime/reference-system.git/edit/master/docs/api-reference/Namespaces/namespacereference__system__py_1_1memory__usage.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/ros-realtime/reference-system.git/edit/master/docs/api-reference/Namespaces/namespacereference__system__py_1_1report.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="reference_system_pymemory_usage">reference_system_py::memory_usage</h1>
+                <h1 id="reference_system_pyreport">reference_system_py::report</h1>
 <h2 id="functions">Functions</h2>
 <table>
 <thead>
@@ -1485,27 +1539,107 @@
 <tbody>
 <tr>
 <td>def</td>
-<td><strong><a href="/reference-system/latest/api-reference/Namespaces/namespacereference__system__py_1_1memory__usage/#function-summary-from-directories">summary_from_directories</a></strong>(dirs dirs, duration duration, size size)</td>
+<td><strong><a href="/reference-system/latest/api-reference/Namespaces/namespacereference__system__py_1_1report/#function-generate-summary-report">generate_summary_report</a></strong>(trace_type trace_type, pkg pkg, directory directory, runtime_sec runtime_sec, template_file template_file)</td>
 </tr>
 <tr>
 <td>def</td>
-<td><strong><a href="/reference-system/latest/api-reference/Namespaces/namespacereference__system__py_1_1memory__usage/#function-individual">individual</a></strong>(path path, size size)</td>
+<td><strong><a href="/reference-system/latest/api-reference/Namespaces/namespacereference__system__py_1_1report/#function-generate-report">generate_report</a></strong>(trace_type trace_type, * args, ** kwargs)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/latest/api-reference/Namespaces/namespacereference__system__py_1_1report/#function-generate-memory-report">generate_memory_report</a></strong>(executable executable, pkg pkg, directory directory, runtime_sec runtime_sec, rmw rmw)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/latest/api-reference/Namespaces/namespacereference__system__py_1_1report/#function-generate-callback-report">generate_callback_report</a></strong>(executable executable, pkg pkg, directory directory, runtime_sec runtime_sec, rmw rmw)</td>
+</tr>
+<tr>
+<td>def</td>
+<td><strong><a href="/reference-system/latest/api-reference/Namespaces/namespacereference__system__py_1_1report/#function-fill-in-template">fill_in_template</a></strong>(Path template_file, str report_title, dict() figures)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="attributes">Attributes</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bool</td>
+<td><strong><a href="/reference-system/latest/api-reference/Namespaces/namespacereference__system__py_1_1report/#variable-tracetools-available">tracetools_available</a></strong></td>
 </tr>
 </tbody>
 </table>
 <h2 id="functions-documentation">Functions Documentation</h2>
-<h3 id="function-summary_from_directories">function summary_from_directories</h3>
-<pre><code class="language-python">def summary_from_directories(
-    dirs dirs,
-    duration duration,
-    size size
+<h3 id="function-generate_summary_report">function generate_summary_report</h3>
+<pre><code class="language-python">def generate_summary_report(
+    trace_type trace_type,
+    pkg pkg,
+    directory directory,
+    runtime_sec runtime_sec,
+    template_file template_file
 )
 </code></pre>
-<h3 id="function-individual">function individual</h3>
-<pre><code class="language-python">def individual(
-    path path,
-    size size
+<pre><code>Generate a summary report for the given `trace_type`, using all traces under `directory`.```
+
+
+### function generate_report
+
+```python
+def generate_report(
+    trace_type trace_type,
+    * args,
+    ** kwargs
 )
+</code></pre>
+<h3 id="function-generate_memory_report">function generate_memory_report</h3>
+<pre><code class="language-python">def generate_memory_report(
+    executable executable,
+    pkg pkg,
+    directory directory,
+    runtime_sec runtime_sec,
+    rmw rmw
+)
+</code></pre>
+<pre><code>Generate a per-executable report from the 'memory' trace file.```
+
+
+### function generate_callback_report
+
+```python
+def generate_callback_report(
+    executable executable,
+    pkg pkg,
+    directory directory,
+    runtime_sec runtime_sec,
+    rmw rmw
+)
+</code></pre>
+<pre><code>Generate a per-executable report from the 'callback' trace file.```
+
+
+### function fill_in_template
+
+```python
+def fill_in_template(
+    Path template_file,
+    str report_title,
+    dict() figures
+)
+</code></pre>
+<pre><code>Fills in the given tempalte file with the supplied figures
+
+template_file: Full path to template file, including template file name
+report_title: Title of report
+figures: Figures to insert into report
+</code></pre>
+<h2 id="attributes-documentation">Attributes Documentation</h2>
+<h3 id="variable-tracetools_available">variable tracetools_available</h3>
+<pre><code class="language-python">bool tracetools_available =  True;
 </code></pre>
 <hr />
 <p>Updated on 2022-05-15 at 19:16:08 +0000</p>
@@ -1530,7 +1664,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../namespacereference__system__py_1_1dropped__messages/" class="md-footer__link md-footer__link--prev" aria-label="Previous: reference_system_py::dropped_messages" rel="prev">
+        <a href="../namespacereference__system__py_1_1plot__utils/" class="md-footer__link md-footer__link--prev" aria-label="Previous: reference_system_py::plot_utils" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1539,20 +1673,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              reference_system_py::dropped_messages
+              reference_system_py::plot_utils
             </div>
           </div>
         </a>
       
       
         
-        <a href="../namespacereference__system__py_1_1plot__utils/" class="md-footer__link md-footer__link--next" aria-label="Next: reference_system_py::plot_utils" rel="next">
+        <a href="../namespacereference__system__py_1_1std__latency/" class="md-footer__link md-footer__link--next" aria-label="Next: reference_system_py::std_latency" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              reference_system_py::plot_utils
+              reference_system_py::std_latency
             </div>
           </div>
           <div class="md-footer__button md-icon">
