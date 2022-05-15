@@ -81,8 +81,8 @@ def summary_from_directories(dirs, duration, size):
     latency_source.data['x'] = x
     dropped_source.data['x'] = x
     period_source.data['x'] = x
-    # initialize list of figures
-    std_figs = []
+    # initialize dict of figures
+    std_figs = {}
     # initialize latency figure
     test_info = str(duration) + 's [' + hot_path_name + ']'
     columns = [TableColumn(field=field, title=title)
@@ -105,20 +105,15 @@ def summary_from_directories(dirs, duration, size):
         )
         plot_barplot(latency_fig, latency_source, fill_color=fill_color)
 
-        latency_table_title = Div(
-            text='<b>Latency Summary Table ' + test_info + '</b>',
-            width=SIZE_TABLE_WIDTH,
-            height=SIZE_TABLE_ROW)
-        latency_table = [
-            latency_table_title,
-            DataTable(
+        latency_table = DataTable(
                 columns=columns,
                 source=ColumnDataSource(latency.round(decimals=3)),
                 autosize_mode='fit_viewport',
                 margin=(0, 10, 10, 10),
                 height=(len(latency.exe.values.tolist()) * SIZE_TABLE_ROW),
-                width=SIZE_TABLE_WIDTH)]
-        std_figs += [[latency_table], [latency_fig]]
+                width=SIZE_TABLE_WIDTH)
+        std_figs['latency_table'] = latency_table
+        std_figs['latency_fig'] = latency_fig
 
     if not dropped.empty:
         dropped_fig = figure(
@@ -132,20 +127,15 @@ def summary_from_directories(dirs, duration, size):
         )
         plot_barplot(dropped_fig, dropped_source, fill_color=fill_color)
 
-        dropped_table_title = Div(
-            text='<b>Dropped Messages Summary Table ' + test_info + '</b>',
-            width=SIZE_TABLE_WIDTH,
-            height=SIZE_TABLE_ROW)
-        dropped_table = [
-            dropped_table_title,
-            DataTable(
+        dropped_table = DataTable(
                 columns=columns,
                 source=ColumnDataSource(dropped.round(decimals=1)),
                 autosize_mode='fit_viewport',
                 margin=(0, 10, 10, 10),
                 height=(len(dropped.exe.values.tolist()) * SIZE_TABLE_ROW),
-                width=SIZE_TABLE_WIDTH)]
-        std_figs += [[dropped_table], [dropped_fig]]
+                width=SIZE_TABLE_WIDTH)
+        std_figs['dropped_table'] = dropped_table
+        std_figs['dropped_fig'] = dropped_fig
 
     if not period.empty:
         period_fig = figure(
@@ -159,20 +149,15 @@ def summary_from_directories(dirs, duration, size):
         )
         plot_barplot(period_fig, period_source, fill_color=fill_color)
 
-        period_table_title = Div(
-            text='<b>Behavior Planner Jitter Summary Table ' + str(duration) + 's</b>',
-            width=SIZE_TABLE_WIDTH,
-            height=SIZE_TABLE_ROW)
-        period_table = [
-            period_table_title,
-            DataTable(
+        period_table = DataTable(
                 columns=columns,
                 source=ColumnDataSource(period.round(decimals=3)),
                 autosize_mode='fit_viewport',
                 margin=(0, 10, 10, 10),
                 height=(len(period.exe.values.tolist()) * SIZE_TABLE_ROW),
-                width=SIZE_TABLE_WIDTH)]
-        std_figs += [[period_table], [period_fig]]
+                width=SIZE_TABLE_WIDTH)
+        std_figs['period_table'] = period_table
+        std_figs['period_fig'] = period_fig
 
     return std_figs
 
