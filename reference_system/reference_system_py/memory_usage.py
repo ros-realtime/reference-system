@@ -142,7 +142,7 @@ def summary_from_directories(dirs, duration, size):
     )
     plot_barplot(virtual_fig, virtual_source, fill_color=fill_color)
 
-    # add cpu usage table
+    # columns to use in all the tables below
     columns = [TableColumn(field=field, title=title)
                for field, title in [('exe', 'Benchmark'),
                                     ('rmw', 'RMW'),
@@ -151,56 +151,39 @@ def summary_from_directories(dirs, duration, size):
                                     ('high', 'Max'),
                                     ('std_dev', 'Std. Dev.')]]
 
-    cpu_table_title = Div(
-        text='<b>CPU Usage Statistics ' + str(duration) + 's</b>',
-        width=SIZE_TABLE_WIDTH,
-        height=SIZE_TABLE_ROW
-    )
-    cpu_table = [
-        cpu_table_title,
-        DataTable(
+    # create CPU table
+    cpu_table = DataTable(
             columns=columns,
             source=ColumnDataSource(df[cpu].round(decimals=2)),
             autosize_mode='fit_viewport',
             margin=(0, 10, 10, 10),
             height=(len(df[cpu].exe.values.tolist()) * SIZE_TABLE_ROW),
-            width=SIZE_TABLE_WIDTH)]
+            width=SIZE_TABLE_WIDTH)
 
-    # add real table
-    real_table_title = Div(
-        text='<b>Real Memory Usage Statistics ' + str(duration) + 's</b>',
-        width=SIZE_TABLE_WIDTH,
-        height=SIZE_TABLE_ROW
-    )
-    real_table = [
-        real_table_title,
-        DataTable(
+    # create real memory table
+    real_table = DataTable(
             columns=columns,
             source=ColumnDataSource(df[real]),
             margin=(0, 10, 10, 10),
             height=(len(df[real].exe.values.tolist()) * SIZE_TABLE_ROW),
-            width=SIZE_TABLE_WIDTH)]
+            width=SIZE_TABLE_WIDTH)
 
-    # add virtual table
-    virtual_table_title = Div(
-        text='<b>Virtual Memory Usage Statistics ' + str(duration) + 's</b>',
-        width=SIZE_TABLE_WIDTH,
-        height=SIZE_TABLE_ROW
-    )
-    virtual_table = [
-        virtual_table_title,
-        DataTable(
+    # create virtual memory table
+    virtual_table = DataTable(
             columns=columns,
             source=ColumnDataSource(df[virtual]),
             margin=(0, 10, 10, 10),
             height=(len(df[virtual].exe.values.tolist()) * SIZE_TABLE_ROW),
-            width=SIZE_TABLE_WIDTH)]
+            width=SIZE_TABLE_WIDTH)
     # add figures and tables to output
-    memory_figs = [
-        [cpu_table], [cpu_fig],
-        [real_table], [real_fig],
-        [virtual_table], [virtual_fig]
-    ]
+    memory_figs = {
+        'cpu_table': cpu_table,
+        'cpu_fig': cpu_fig,
+        'real_mem_table': real_table,
+        'real_mem_fig': real_fig,
+        'virtual_mem_table': virtual_table,
+        'virtual_mem_fig': virtual_fig
+    }
     return memory_figs
 
 

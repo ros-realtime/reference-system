@@ -23,19 +23,9 @@ import subprocess
 import time
 
 from ament_index_python import get_package_prefix
-
-from bokeh.io import output_file as bokeh_output_file
-from bokeh.layouts import layout as bokeh_layout
-from bokeh.plotting import save as bokeh_save
+from ament_index_python.packages import get_package_share_directory
 
 import psutil
-
-from . import callback_duration
-from . import dropped_messages
-from . import memory_usage
-from . import std_latency
-from .constants import SIZE_SUBPLOT, SIZE_SUMMARY
-
 
 try:
     from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS
@@ -46,6 +36,7 @@ except ModuleNotFoundError:
 
 
 ROS_HOME = Path(os.environ.get('ROS_HOME', os.environ['HOME']+'/.ros'))
+REFERENCE_SYSTEM_SHARE_DIR = Path(get_package_share_directory('reference_system'))
 
 
 def available_executables(pkg, pattern='*'):
@@ -241,93 +232,6 @@ def generate_trace(trace_type, *args, **kwargs):
         return generate_std_trace(*args, **kwargs)
     else:
         raise ValueError(f'Invalid trace_type: {trace_type}')
-
-
-def generate_callback_report(executable, pkg, directory, runtime_sec, rmw):
-    """Generate a per-executable report from the 'callback' trace file."""
-    if not tracetools_available:
-        raise RuntimeError('Unable to import tracetools_trace. Are the tracetools installed?')
-
-    log_directory = get_benchmark_directory(directory, executable, runtime_sec, rmw)
-    duration_output = log_directory/'callback_duration_report.html'
-    dropped_msgs_output = log_directory/'tracing_latency_and_dropped_messages_report.html'
-    data_model = initDataModel(log_directory/'callback_trace')
-
-    bokeh_output_file(filename=duration_output,
-                      title='Callback Duration Report')
-    print('Output report to', duration_output)
-    duration_summary = callback_duration.summary(
-        data_model=data_model,
-        size=SIZE_SUMMARY)
-    duration_individual = callback_duration.individual(
-        data_model=data_model,
-        size=SIZE_SUBPLOT)
-    report = bokeh_layout([[duration_summary], *duration_individual])
-    bokeh_save(report)
-
-    bokeh_output_file(filename=dropped_msgs_output,
-                      title='ROS 2 Tracing Latency and Dropped Messages Report')
-    print('Output report to', dropped_msgs_output)
-    dropped_msgs = dropped_messages.individual(
-        data_model=data_model,
-        size=SIZE_SUMMARY)
-    report = bokeh_layout([[dropped_msgs]])
-    bokeh_save(report)
-
-
-def generate_memory_report(executable, pkg, directory, runtime_sec, rmw):
-    """Generate a per-executable report from the 'memory' trace file."""
-    log_directory = get_benchmark_directory(directory, executable, runtime_sec, rmw)
-    output = log_directory/'memory_and_cpu_usage_report.html'
-    input_path = log_directory/'memory_log.txt'
-
-    bokeh_output_file(filename=output,
-                      title='Memory and CPU Usage Report')
-    print('Output report to', output)
-    mem_individual = memory_usage.individual(input_path,
-                                             size=SIZE_SUMMARY)
-    report = bokeh_layout([*mem_individual])
-    bokeh_save(report)
-
-
-def generate_report(trace_type, *args, **kwargs):
-    if trace_type == 'memory':
-        return generate_memory_report(*args, **kwargs)
-    elif trace_type == 'callback':
-        return generate_callback_report(*args, **kwargs)
-    elif trace_type == 'std':
-        return None  # No postprocessing needed for std trace
-    else:
-        raise ValueError(f'Invalid trace_type: {trace_type}')
-
-
-def generate_summary_report(trace_type, pkg, directory, runtime_sec):
-    """Generate a summary report for the given `trace_type`, using all traces under `directory`."""
-    trace_dirs = get_benchmark_directories_below(directory, runtime_sec=runtime_sec)
-    if trace_type == 'memory':
-        output_file = f'{directory}/memory_and_cpu_usage_summary_report_{runtime_sec}s.html'
-        bokeh_output_file(filename=output_file,
-                          title='Memory Usage Report')
-
-        mem_summary = memory_usage.summary_from_directories(trace_dirs,
-                                                            duration=runtime_sec,
-                                                            size=SIZE_SUMMARY)
-        report = bokeh_layout([*mem_summary])
-
-    elif trace_type == 'std':
-        output_file = f'{directory}/executor_kpi_summary_report_{runtime_sec}s.html'
-        bokeh_output_file(filename=output_file,
-                          title='Executor Key Performance Indicator (KPI) Report')
-
-        std_summary = std_latency.summary_from_directories(trace_dirs,
-                                                           duration=runtime_sec,
-                                                           size=SIZE_SUMMARY)
-        report = bokeh_layout([*std_summary])
-    else:
-        raise NotImplementedError(f'Unsupported trace type {trace_type}')
-
-    print('Output report to', output_file)
-    bokeh_save(report)
 
 
 def setup_benchmark_directory(pkg, create=False):

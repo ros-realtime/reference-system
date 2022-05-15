@@ -17,8 +17,8 @@ import argparse
 import itertools
 
 # Generates traces for specified executables and RMWs
-from reference_system_py.benchmark import available_executables
-from reference_system_py.benchmark import generate_report, generate_summary_report, generate_trace
+from reference_system_py.benchmark import available_executables, generate_trace
+from reference_system_py.report import generate_report, generate_summary_report
 from reference_system_py.benchmark import ROS_HOME, setup_benchmark_directory
 
 
@@ -42,6 +42,9 @@ if __name__ == '__main__':
                         default=False,
                         help='Only plot existing data, do not run new experiments.',
                         action='store_true')
+    parser.add_argument('--template_file',
+                        default='cfg/report_template.md',
+                        help='Path to template report file to fill in')
 
     cmdline_args = parser.parse_args()
     common_args = {'pkg': 'autoware_reference_system',
@@ -66,4 +69,8 @@ if __name__ == '__main__':
         generate_report(trace_type, exe, rmw=rmw, runtime_sec=runtime, **common_args)
 
     for trace_type, runtime in itertools.product(trace_types, runtimes):
-        generate_summary_report(trace_type=trace_type, runtime_sec=runtime, **common_args)
+        generate_summary_report(
+            trace_type=trace_type,
+            runtime_sec=runtime,
+            template_file=cmdline_args.template_file,
+            **common_args)
