@@ -95,11 +95,15 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'  # Only run benchmarks on `main`
     steps:
-      - uses: ./ros_ws/src/reference_system/.github/workflows/run_benchmarks.yml
+      - uses: ./ros_ws/src/reference_system/.github/actions/run-benchmarks
+        with:
+          working-directory: ros_ws/src/reference_system
   deploy_docs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'  # Only deploy on `main`
     needs: [build-mkdocs, run_benchmarks]
     steps:
-      - uses: ./ros_ws/src/reference_system/.github/workflows/deploy_docs.yml
- 
+      - uses: ./ros_ws/src/reference_system/.github/actions/deploy-docs
+        with:
+          working-directory: ros_ws/src/reference_system
+          workflow-id: ${{ github.event.workflow_run.workflow_id }}
