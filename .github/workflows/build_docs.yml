@@ -99,6 +99,7 @@ jobs:
   deploy_docs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'  # Only deploy on `main`
+    needs: [build-mkdocs, run_benchmarks]
     steps:
       - uses: ./ros_ws/src/reference_system/.github/workflows/deploy_docs.yml
  
