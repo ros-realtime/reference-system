@@ -101,5 +101,8 @@ jobs:
     if: github.ref == 'refs/heads/main'  # Only deploy on `main`
     needs: [build-mkdocs, run_benchmarks]
     steps:
-      - uses: ./ros_ws/src/reference_system/.github/workflows/deploy_docs.yml
- 
+      - name: Deploy Docs
+        uses: ./ros_ws/src/reference_system/.github/actions/deploy-docs
+        with:
+          workspace-directory: ${{ env.WORKSPACE_PATH }}
+          workflow-id: ${{ github.event.workflow_run.workflow_id }}
