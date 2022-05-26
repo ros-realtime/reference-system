@@ -1,0 +1,2302 @@
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  25.1567ms [min=25.1567ms, max=25.1567ms, average=25.1567ms, deviation=-nanms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  148.82ms [min=148.82ms, max=148.82ms, average=148.82ms, deviation=-nanms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         50.7024ms [min=50.7024ms, max=50.7024ms, average=50.7024ms, deviation=-nanms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=-nan]
+  behavior planner period:  0ms [min=1.84467e+13ms, max=0ms, average=0ms, deviation=0ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  17.0949ms [min=17.0949ms, max=25.1567ms, average=21.1258ms, deviation=5.70052ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.51667ms [min=9.51667ms, max=25.1567ms, average=17.2561ms, deviation=7.82125ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  18.9637ms [min=9.51667ms, max=25.1567ms, average=17.683ms, deviation=6.44285ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  28.5193ms [min=9.51667ms, max=28.5193ms, average=19.8503ms, deviation=7.39039ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  148.974ms [min=148.82ms, max=148.974ms, average=148.897ms, deviation=0.109107ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         42.1264ms [min=42.1264ms, max=50.7024ms, average=46.4144ms, deviation=6.06412ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.426ms [min=100.426ms, max=100.426ms, average=100.426ms, deviation=-nanms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.202ms [min=9.51667ms, max=28.5193ms, average=19.7422ms, deviation=6.61546ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  10.7979ms [min=9.51667ms, max=28.5193ms, average=18.4645ms, deviation=6.92091ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  11.3967ms [min=9.51667ms, max=28.5193ms, average=17.581ms, deviation=6.87753ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  38.9591ms [min=9.51667ms, max=38.9591ms, average=19.9563ms, deviation=9.60043ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  243.918ms [min=148.82ms, max=243.918ms, average=180.571ms, deviation=54.8601ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         49.9293ms [min=42.1264ms, max=50.7024ms, average=47.586ms, deviation=4.74393ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  101.886ms [min=100.426ms, max=101.886ms, average=101.156ms, deviation=1.03217ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  12.5473ms [min=9.51667ms, max=38.9591ms, average=19.2154ms, deviation=9.34969ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.57726ms [min=8.57726ms, max=38.9591ms, average=18.2483ms, deviation=9.43203ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  227.732ms [min=148.82ms, max=243.918ms, average=192.361ms, deviation=50.6208ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         66.6655ms [min=42.1264ms, max=66.6655ms, average=52.3559ms, deviation=10.2961ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  98.3175ms [min=98.3175ms, max=101.886ms, average=100.21ms, deviation=1.79381ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  33.1046ms [min=8.57726ms, max=38.9591ms, average=19.4863ms, deviation=9.96334ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  38.0746ms [min=8.57726ms, max=38.9591ms, average=20.9162ms, deviation=10.8432ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  17.4189ms [min=8.57726ms, max=38.9591ms, average=20.6664ms, deviation=10.4596ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.46176ms [min=8.46176ms, max=38.9591ms, average=19.8528ms, deviation=10.5603ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  223.527ms [min=148.82ms, max=243.918ms, average=198.594ms, deviation=46.0013ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         58.4208ms [min=42.1264ms, max=66.6655ms, average=53.5689ms, deviation=9.32009ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.409ms [min=98.3175ms, max=101.886ms, average=100.259ms, deviation=1.46802ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  40.9968ms [min=8.46176ms, max=40.9968ms, average=21.1743ms, deviation=11.4903ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  52.2256ms [min=8.46176ms, max=52.2256ms, average=23.0008ms, deviation=13.4347ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  58.4835ms [min=8.46176ms, max=58.4835ms, average=24.9721ms, deviation=15.4861ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  56.8699ms [min=8.46176ms, max=58.4835ms, average=26.6509ms, deviation=16.7346ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  281.186ms [min=148.82ms, max=281.186ms, average=212.36ms, deviation=53.1957ms]
+  behavior planner period:  107.787ms [min=98.3175ms, max=107.787ms, average=101.765ms, deviation=3.59859ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  29.9766ms [min=8.46176ms, max=58.4835ms, average=26.8172ms, deviation=16.3053ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  18.7868ms [min=8.46176ms, max=58.4835ms, average=26.4348ms, deviation=15.9887ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  235.45ms [min=148.82ms, max=281.186ms, average=215.658ms, deviation=49.3388ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         76.0803ms [min=42.1264ms, max=76.0803ms, average=57.3208ms, deviation=12.4078ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  94.9863ms [min=94.9863ms, max=107.787ms, average=100.635ms, deviation=4.24479ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  25.1463ms [min=8.46176ms, max=58.4835ms, average=26.3762ms, deviation=15.6058ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.8035ms [min=8.46176ms, max=58.4835ms, average=25.96ms, deviation=15.3771ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.6493ms [min=8.46176ms, max=58.4835ms, average=25.5721ms, deviation=15.1587ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.59946ms [min=8.46176ms, max=58.4835ms, average=24.8932ms, deviation=15.2229ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  145.627ms [min=145.627ms, max=281.186ms, average=206.904ms, deviation=51.9577ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         67.6527ms [min=42.1264ms, max=76.0803ms, average=58.7968ms, deviation=11.981ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  98.8504ms [min=94.9863ms, max=107.787ms, average=100.38ms, deviation=3.93322ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  27.8525ms [min=8.46176ms, max=58.4835ms, average=25.007ms, deviation=14.9266ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.66556ms [min=8.46176ms, max=58.4835ms, average=24.4018ms, deviation=14.9708ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.11036ms [min=8.46176ms, max=58.4835ms, average=23.8556ms, deviation=14.9724ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.60697ms [min=8.46176ms, max=58.4835ms, average=23.3643ms, deviation=14.9388ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  244.694ms [min=145.627ms, max=281.186ms, average=211.103ms, deviation=50.2078ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         63.6621ms [min=42.1264ms, max=76.0803ms, average=59.4049ms, deviation=11.2248ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  97.89ms [min=94.9863ms, max=107.787ms, average=100.069ms, deviation=3.74638ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  38.8744ms [min=8.46176ms, max=58.4835ms, average=23.8813ms, deviation=14.9496ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.7413ms [min=8.46176ms, max=58.4835ms, average=23.7478ms, deviation=14.7172ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  21.1181ms [min=8.46176ms, max=58.4835ms, average=23.6656ms, deviation=14.4853ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.49226ms [min=8.46176ms, max=58.4835ms, average=23.2058ms, deviation=14.4998ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  233.933ms [min=145.627ms, max=281.186ms, average=213.386ms, deviation=47.8838ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         75.6511ms [min=42.1264ms, max=76.0803ms, average=61.2101ms, deviation=11.8141ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.028ms [min=94.9863ms, max=107.787ms, average=100.064ms, deviation=3.50444ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  33.2366ms [min=8.46176ms, max=58.4835ms, average=23.5008ms, deviation=14.3817ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  30.8759ms [min=8.46176ms, max=58.4835ms, average=23.7115ms, deviation=14.2233ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.7246ms [min=8.46176ms, max=58.4835ms, average=23.5174ms, deviation=14.0669ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.60267ms [min=8.46176ms, max=58.4835ms, average=23.1414ms, deviation=14.0576ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  24.9931ms [min=8.46176ms, max=58.4835ms, average=23.1901ms, deviation=13.8696ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  200.804ms [min=145.627ms, max=281.186ms, average=212.242ms, deviation=45.5847ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         58.469ms [min=42.1264ms, max=76.0803ms, average=60.936ms, deviation=11.1721ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  98.3956ms [min=94.9863ms, max=107.787ms, average=99.8975ms, deviation=3.3459ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  18.9417ms [min=8.46176ms, max=58.4835ms, average=23.0812ms, deviation=13.7027ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.7328ms [min=8.46176ms, max=58.4835ms, average=22.9225ms, deviation=13.5631ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.43666ms [min=8.43666ms, max=58.4835ms, average=22.5691ms, deviation=13.5822ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.0455ms [min=8.43666ms, max=58.4835ms, average=22.4852ms, deviation=13.4266ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  144.894ms [min=144.894ms, max=281.186ms, average=206.63ms, deviation=47.6134ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         48.5893ms [min=42.1264ms, max=76.0803ms, average=59.8135ms, deviation=11.2336ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.001ms [min=94.9863ms, max=107.787ms, average=99.9069ms, deviation=3.17435ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  18.269ms [min=8.43666ms, max=58.4835ms, average=22.3872ms, deviation=13.2814ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.51077ms [min=8.43666ms, max=58.4835ms, average=22.0945ms, deviation=13.2688ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.41116ms [min=8.41116ms, max=58.4835ms, average=21.7905ms, deviation=13.2748ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  18.9936ms [min=8.41116ms, max=58.4835ms, average=21.7297ms, deviation=13.1329ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  144.99ms [min=144.894ms, max=281.186ms, average=201.888ms, deviation=48.6866ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         44.9205ms [min=42.1264ms, max=76.0803ms, average=58.5724ms, deviation=11.5414ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.9518ms [min=94.9863ms, max=107.787ms, average=99.9106ms, deviation=3.02665ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  12.3019ms [min=8.41116ms, max=58.4835ms, average=21.5291ms, deviation=13.062ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.51507ms [min=8.41116ms, max=58.4835ms, average=21.2788ms, deviation=13.0381ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.55616ms [min=8.41116ms, max=58.4835ms, average=21.0191ms, deviation=13.029ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  32.289ms [min=8.41116ms, max=58.4835ms, average=21.2445ms, deviation=12.9935ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  150.142ms [min=144.894ms, max=281.186ms, average=198.192ms, deviation=48.7782ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         44.616ms [min=42.1264ms, max=76.0803ms, average=57.4989ms, deviation=11.7084ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  101.912ms [min=94.9863ms, max=107.787ms, average=100.065ms, deviation=2.95049ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.67817ms [min=8.41116ms, max=58.4835ms, average=21.0178ms, deviation=12.9644ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  11.205ms [min=8.41116ms, max=58.4835ms, average=20.829ms, deviation=12.9086ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.59917ms [min=8.41116ms, max=58.4835ms, average=20.6172ms, deviation=12.8766ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  38.6813ms [min=8.41116ms, max=58.4835ms, average=20.9517ms, deviation=12.9893ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  242.097ms [min=144.894ms, max=281.186ms, average=201.119ms, deviation=48.3516ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         57.4321ms [min=42.1264ms, max=76.0803ms, average=57.4941ms, deviation=11.2491ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.6378ms [min=94.9863ms, max=107.787ms, average=100.034ms, deviation=2.83704ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  10.2343ms [min=8.41116ms, max=58.4835ms, average=20.7568ms, deviation=12.9494ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.63207ms [min=8.41116ms, max=58.4835ms, average=20.5582ms, deviation=12.9169ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  229.872ms [min=144.894ms, max=281.186ms, average=202.916ms, deviation=47.2619ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         64.7285ms [min=42.1264ms, max=76.0803ms, average=57.9764ms, deviation=10.9997ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.088ms [min=94.9863ms, max=107.787ms, average=100.038ms, deviation=2.73387ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  33.1375ms [min=8.41116ms, max=58.4835ms, average=20.7789ms, deviation=12.9091ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  30.858ms [min=8.41116ms, max=58.4835ms, average=20.9526ms, deviation=12.8636ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.7748ms [min=8.41116ms, max=58.4835ms, average=20.8818ms, deviation=12.7638ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.61047ms [min=8.41116ms, max=58.4835ms, average=20.694ms, deviation=12.7386ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  24.9051ms [min=8.41116ms, max=58.4835ms, average=20.763ms, deviation=12.6435ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  222.435ms [min=144.894ms, max=281.186ms, average=204.064ms, deviation=46.0054ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         58.3482ms [min=42.1264ms, max=76.0803ms, average=57.9996ms, deviation=10.6271ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  98.4209ms [min=94.9863ms, max=107.787ms, average=99.9367ms, deviation=2.67192ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  17.8229ms [min=8.41116ms, max=58.4835ms, average=20.7156ms, deviation=12.545ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.59106ms [min=8.41116ms, max=58.4835ms, average=20.5231ms, deviation=12.5368ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.48946ms [min=8.41116ms, max=58.4835ms, average=20.3351ms, deviation=12.5275ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.1242ms [min=8.41116ms, max=58.4835ms, average=20.3165ms, deviation=12.4302ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  145.132ms [min=144.894ms, max=281.186ms, average=200.79ms, deviation=46.7433ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         48.5718ms [min=42.1264ms, max=76.0803ms, average=57.4451ms, deviation=10.5406ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.9936ms [min=94.9863ms, max=107.787ms, average=99.94ms, deviation=2.58711ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  18.1777ms [min=8.41116ms, max=58.4835ms, average=20.2841ms, deviation=12.337ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.54007ms [min=8.41116ms, max=58.4835ms, average=20.1237ms, deviation=12.3133ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.47536ms [min=8.41116ms, max=58.4835ms, average=19.9524ms, deviation=12.3025ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.0633ms [min=8.41116ms, max=58.4835ms, average=19.9395ms, deviation=12.2121ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  144.829ms [min=144.829ms, max=281.186ms, average=197.845ms, deviation=47.2057ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         45.1029ms [min=42.1264ms, max=76.0803ms, average=56.7594ms, deviation=10.6317ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.9575ms [min=94.9863ms, max=107.787ms, average=99.941ms, deviation=2.50987ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  13.0186ms [min=8.41116ms, max=58.4835ms, average=19.8407ms, deviation=12.1515ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.65417ms [min=8.41116ms, max=58.4835ms, average=19.6972ms, deviation=12.1248ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.70296ms [min=8.41116ms, max=58.4835ms, average=19.5445ms, deviation=12.1087ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  32.5211ms [min=8.41116ms, max=58.4835ms, average=19.7222ms, deviation=12.1198ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  150.575ms [min=144.829ms, max=281.186ms, average=195.482ms, deviation=47.1468ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         44.7246ms [min=42.1264ms, max=76.0803ms, average=56.126ms, deviation=10.6946ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  102.183ms [min=94.9863ms, max=107.787ms, average=100.059ms, deviation=2.49278ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.61797ms [min=8.41116ms, max=58.4835ms, average=19.5857ms, deviation=12.0937ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  11.7902ms [min=8.41116ms, max=58.4835ms, average=19.4818ms, deviation=12.0454ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.60827ms [min=8.41116ms, max=58.4835ms, average=19.3518ms, deviation=12.0183ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  38.6305ms [min=8.41116ms, max=58.4835ms, average=19.6022ms, deviation=12.1394ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  242.336ms [min=144.829ms, max=281.186ms, average=197.713ms, deviation=47.0767ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         57.5235ms [min=42.1264ms, max=76.0803ms, average=56.1959ms, deviation=10.4141ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.4009ms [min=94.9863ms, max=107.787ms, average=100.026ms, deviation=2.43075ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  10.2899ms [min=8.41116ms, max=58.4835ms, average=19.4828ms, deviation=12.1064ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  11.0407ms [min=8.41116ms, max=58.4835ms, average=19.376ms, deviation=12.0659ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  229.938ms [min=144.829ms, max=281.186ms, average=199.178ms, deviation=46.4531ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         64.721ms [min=42.1264ms, max=76.0803ms, average=56.6018ms, deviation=10.3195ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.258ms [min=94.9863ms, max=107.787ms, average=100.037ms, deviation=2.36974ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  33.0631ms [min=8.41116ms, max=58.4835ms, average=19.5471ms, deviation=12.0866ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  30.6679ms [min=8.41116ms, max=58.4835ms, average=19.6844ms, deviation=12.0742ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.7001ms [min=8.41116ms, max=58.4835ms, average=19.648ms, deviation=12.004ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.60107ms [min=8.41116ms, max=58.4835ms, average=19.5269ms, deviation=11.9814ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  24.8561ms [min=8.41116ms, max=58.4835ms, average=19.5904ms, deviation=11.9232ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  221.948ms [min=144.829ms, max=281.186ms, average=200.168ms, deviation=45.6327ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         58.3637ms [min=42.1264ms, max=76.0803ms, average=56.6819ms, deviation=10.0778ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  98.204ms [min=94.9863ms, max=107.787ms, average=99.9538ms, deviation=2.34542ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  17.7135ms [min=8.41116ms, max=58.4835ms, average=19.5683ms, deviation=11.8538ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.69456ms [min=8.41116ms, max=58.4835ms, average=19.4418ms, deviation=11.842ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.45656ms [min=8.41116ms, max=58.4835ms, average=19.3156ms, deviation=11.8317ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.0743ms [min=8.41116ms, max=58.4835ms, average=19.3128ms, deviation=11.7636ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  145.06ms [min=144.829ms, max=281.186ms, average=197.871ms, deviation=46.0255ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         48.4266ms [min=42.1264ms, max=76.0803ms, average=56.323ms, deviation=9.99541ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.007ms [min=94.9863ms, max=107.787ms, average=99.9561ms, deviation=2.29153ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  18.2515ms [min=8.41116ms, max=58.4835ms, average=19.3009ms, deviation=11.6971ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.59237ms [min=8.41116ms, max=58.4835ms, average=19.193ms, deviation=11.6761ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.39436ms [min=8.39436ms, max=58.4835ms, average=19.0744ms, deviation=11.6661ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.0513ms [min=8.39436ms, max=58.4835ms, average=19.0741ms, deviation=11.6018ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  144.782ms [min=144.782ms, max=281.186ms, average=195.748ms, deviation=46.2906ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         44.9856ms [min=42.1264ms, max=76.0803ms, average=55.8506ms, deviation=10.0459ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.9448ms [min=94.9863ms, max=107.787ms, average=99.9556ms, deviation=2.24116ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  12.6118ms [min=8.39436ms, max=58.4835ms, average=19.0046ms, deviation=11.5581ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.58797ms [min=8.39436ms, max=58.4835ms, average=18.9044ms, deviation=11.5367ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.84626ms [min=8.39436ms, max=58.4835ms, average=18.7986ms, deviation=11.5215ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  31.8513ms [min=8.39436ms, max=58.4835ms, average=18.9345ms, deviation=11.5379ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  150.152ms [min=144.782ms, max=281.186ms, average=193.994ms, deviation=46.2284ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         44.7107ms [min=42.1264ms, max=76.0803ms, average=55.405ms, deviation=10.0836ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  101.951ms [min=94.9863ms, max=107.787ms, average=100.035ms, deviation=2.22998ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.71357ms [min=8.39436ms, max=58.4835ms, average=18.8395ms, deviation=11.5157ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  11.4496ms [min=8.39436ms, max=58.4835ms, average=18.7641ms, deviation=11.4805ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.59907ms [min=8.39436ms, max=58.4835ms, average=18.6715ms, deviation=11.4589ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  38.6092ms [min=8.39436ms, max=58.4835ms, average=18.8709ms, deviation=11.5739ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  242.18ms [min=144.782ms, max=281.186ms, average=195.779ms, deviation=46.2695ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         57.4302ms [min=42.1264ms, max=76.0803ms, average=55.4829ms, deviation=9.88784ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.6718ms [min=94.9863ms, max=107.787ms, average=100.021ms, deviation=2.18609ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  10.2759ms [min=8.39436ms, max=58.4835ms, average=18.7858ms, deviation=11.5476ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.56436ms [min=8.39436ms, max=58.4835ms, average=18.6856ms, deviation=11.5347ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  229.655ms [min=144.782ms, max=281.186ms, average=196.989ms, deviation=45.8537ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         64.6322ms [min=42.1264ms, max=76.0803ms, average=55.8217ms, deviation=9.85441ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.068ms [min=94.9863ms, max=107.787ms, average=100.023ms, deviation=2.14366ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  33.1686ms [min=8.39436ms, max=58.4835ms, average=18.8262ms, deviation=11.5664ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  30.8599ms [min=8.39436ms, max=58.4835ms, average=18.9419ms, deviation=11.5705ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.8827ms [min=8.39436ms, max=58.4835ms, average=18.9223ms, deviation=11.5165ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.63887ms [min=8.39436ms, max=58.4835ms, average=18.8347ms, deviation=11.4969ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  24.877ms [min=8.39436ms, max=58.4835ms, average=18.8912ms, deviation=11.4574ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  222.283ms [min=144.782ms, max=281.186ms, average=197.861ms, deviation=45.2718ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         58.4664ms [min=42.1264ms, max=76.0803ms, average=55.9162ms, deviation=9.68311ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  98.3625ms [min=94.9863ms, max=107.787ms, average=99.9639ms, deviation=2.12687ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  18.3028ms [min=8.39436ms, max=58.4835ms, average=18.8857ms, deviation=11.4039ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.54286ms [min=8.39436ms, max=58.4835ms, average=18.7908ms, deviation=11.3942ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.50486ms [min=8.39436ms, max=58.4835ms, average=18.6973ms, deviation=11.3841ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.1959ms [min=8.39436ms, max=58.4835ms, average=18.7018ms, deviation=11.3323ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  145.285ms [min=144.782ms, max=281.186ms, average=196.108ms, deviation=45.5082ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         48.7483ms [min=42.1264ms, max=76.0803ms, average=55.669ms, deviation=9.60133ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.003ms [min=94.9863ms, max=107.787ms, average=99.9653ms, deviation=2.08856ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  18.0414ms [min=8.39436ms, max=58.4835ms, average=18.6959ms, deviation=11.2813ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.55676ms [min=8.39436ms, max=58.4835ms, average=18.6062ms, deviation=11.2713ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.42976ms [min=8.39436ms, max=58.4835ms, average=18.5169ms, deviation=11.2617ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.1066ms [min=8.39436ms, max=58.4835ms, average=18.522ms, deviation=11.2123ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  145.32ms [min=144.782ms, max=281.186ms, average=194.47ms, deviation=45.6637ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         45.2332ms [min=42.1264ms, max=76.0803ms, average=55.3212ms, deviation=9.62481ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.9538ms [min=94.9863ms, max=107.787ms, average=99.9649ms, deviation=2.05223ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  12.2885ms [min=8.39436ms, max=58.4835ms, average=18.4683ms, deviation=11.1785ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.51677ms [min=8.39436ms, max=58.4835ms, average=18.3918ms, deviation=11.1609ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.54826ms [min=8.39436ms, max=58.4835ms, average=18.3084ms, deviation=11.15ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  31.1895ms [min=8.39436ms, max=58.4835ms, average=18.4166ms, deviation=11.1653ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  149.854ms [min=144.782ms, max=281.186ms, average=193.076ms, deviation=45.6083ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         44.938ms [min=42.1264ms, max=76.0803ms, average=54.9862ms, deviation=9.64504ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  101.789ms [min=94.9863ms, max=107.787ms, average=100.024ms, deviation=2.04417ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.63017ms [min=8.39436ms, max=58.4835ms, average=18.3434ms, deviation=11.1472ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  11.1035ms [min=8.39436ms, max=58.4835ms, average=18.2836ms, deviation=11.1201ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.55227ms [min=8.39436ms, max=58.4835ms, average=18.212ms, deviation=11.1022ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  38.4177ms [min=8.39436ms, max=58.4835ms, average=18.3763ms, deviation=11.2057ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  242.128ms [min=144.782ms, max=281.186ms, average=194.562ms, deviation=45.6949ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         57.1894ms [min=42.1264ms, max=76.0803ms, average=55.0551ms, deviation=9.49619ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.6601ms [min=94.9863ms, max=107.787ms, average=100.012ms, deviation=2.01196ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  10.0451ms [min=8.39436ms, max=58.4835ms, average=18.3091ms, deviation=11.1851ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.47856ms [min=8.39436ms, max=58.4835ms, average=18.2304ms, deviation=11.1746ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  229.036ms [min=144.782ms, max=281.186ms, average=195.576ms, deviation=45.384ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         64.4064ms [min=42.1264ms, max=76.0803ms, average=55.3384ms, deviation=9.48733ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.161ms [min=94.9863ms, max=107.787ms, average=100.017ms, deviation=1.98044ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  33.0363ms [min=8.39436ms, max=58.4835ms, average=18.348ms, deviation=11.2077ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  31.1115ms [min=8.39436ms, max=58.4835ms, average=18.4485ms, deviation=11.2204ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.7315ms [min=8.39436ms, max=58.4835ms, average=18.435ms, deviation=11.1772ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.57767ms [min=8.39436ms, max=58.4835ms, average=18.3664ms, deviation=11.1607ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  25.2054ms [min=8.39436ms, max=58.4835ms, average=18.419ms, deviation=11.1336ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  222.152ms [min=144.782ms, max=281.186ms, average=196.335ms, deviation=44.9367ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         58.2254ms [min=42.1264ms, max=76.0803ms, average=55.4234ms, deviation=9.35559ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  98.4362ms [min=94.9863ms, max=107.787ms, average=99.9704ms, deviation=1.96896ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.0172ms [min=8.39436ms, max=58.4835ms, average=18.4236ms, deviation=11.0908ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.7818ms [min=8.39436ms, max=58.4835ms, average=18.4111ms, deviation=11.0493ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.55386ms [min=8.39436ms, max=58.4835ms, average=18.337ms, deviation=11.0405ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.063ms [min=8.39436ms, max=58.4835ms, average=18.3424ms, deviation=10.9991ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  145.139ms [min=144.782ms, max=281.186ms, average=194.913ms, deviation=45.1045ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         48.893ms [min=42.1264ms, max=76.0803ms, average=55.2368ms, deviation=9.28284ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.001ms [min=94.9863ms, max=107.787ms, average=99.9713ms, deviation=1.93979ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  17.9771ms [min=8.39436ms, max=58.4835ms, average=18.3397ms, deviation=10.958ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.55217ms [min=8.39436ms, max=58.4835ms, average=18.2751ms, deviation=10.9433ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.41806ms [min=8.39436ms, max=58.4835ms, average=18.2031ms, deviation=10.9355ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.0945ms [min=8.39436ms, max=58.4835ms, average=18.2096ms, deviation=10.8958ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  144.927ms [min=144.782ms, max=281.186ms, average=193.562ms, deviation=45.2265ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         44.9475ms [min=42.1264ms, max=76.0803ms, average=54.951ms, deviation=9.30859ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.9605ms [min=94.9863ms, max=107.787ms, average=99.971ms, deviation=1.91188ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  12.6808ms [min=8.39436ms, max=58.4835ms, average=18.1698ms, deviation=10.8664ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.51517ms [min=8.39436ms, max=58.4835ms, average=18.108ms, deviation=10.8519ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.57616ms [min=8.39436ms, max=58.4835ms, average=18.0404ms, deviation=10.8428ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  32.1135ms [min=8.39436ms, max=58.4835ms, average=18.1395ms, deviation=10.8686ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  149.997ms [min=144.782ms, max=281.186ms, average=192.416ms, deviation=45.1675ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         44.9395ms [min=42.1264ms, max=76.0803ms, average=54.6804ms, deviation=9.3248ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  101.961ms [min=94.9863ms, max=107.787ms, average=100.025ms, deviation=1.91331ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.66617ms [min=8.39436ms, max=58.4835ms, average=18.0803ms, deviation=10.8535ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  11.1944ms [min=8.39436ms, max=58.4835ms, average=18.0324ms, deviation=10.8307ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.58357ms [min=8.39436ms, max=58.4835ms, average=17.9742ms, deviation=10.8158ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  39.3118ms [min=8.39436ms, max=58.4835ms, average=18.1203ms, deviation=10.9221ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  241.8ms [min=144.782ms, max=281.186ms, average=193.682ms, deviation=45.2653ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         57.1868ms [min=42.1264ms, max=76.0803ms, average=54.7463ms, deviation=9.20691ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.5537ms [min=94.9863ms, max=107.787ms, average=100.012ms, deviation=1.88882ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  11.1397ms [min=8.39436ms, max=58.4835ms, average=18.0728ms, deviation=10.8999ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.51756ms [min=8.39436ms, max=58.4835ms, average=18.0083ms, deviation=10.8911ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  231.89ms [min=144.782ms, max=281.186ms, average=194.637ms, deviation=45.0877ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         65.6288ms [min=42.1264ms, max=76.0803ms, average=55.0254ms, deviation=9.25057ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.6543ms [min=94.9863ms, max=107.787ms, average=100.003ms, deviation=1.86469ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  32.3051ms [min=8.39436ms, max=58.4835ms, average=18.1042ms, deviation=10.9172ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  29.026ms [min=8.39436ms, max=58.4835ms, average=18.177ms, deviation=10.917ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.9016ms [min=8.39436ms, max=58.4835ms, average=18.1686ms, deviation=10.8811ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.57506ms [min=8.39436ms, max=58.4835ms, average=18.1055ms, deviation=10.8729ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  25.7378ms [min=8.39436ms, max=58.4835ms, average=18.1554ms, deviation=10.8546ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  220.194ms [min=144.782ms, max=281.186ms, average=195.261ms, deviation=44.6991ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         58.481ms [min=42.1264ms, max=76.0803ms, average=55.1118ms, deviation=9.14753ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  98.876ms [min=94.9863ms, max=107.787ms, average=99.975ms, deviation=1.84923ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.0967ms [min=8.39436ms, max=58.4835ms, average=18.1615ms, deviation=10.8193ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.73367ms [min=8.39436ms, max=58.4835ms, average=18.1071ms, deviation=10.8054ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.48986ms [min=8.39436ms, max=58.4835ms, average=18.0455ms, deviation=10.7979ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.0773ms [min=8.39436ms, max=58.4835ms, average=18.052ms, deviation=10.7636ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  144.955ms [min=144.782ms, max=281.186ms, average=194.063ms, deviation=44.8278ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         50.6206ms [min=42.1264ms, max=76.0803ms, average=55.0022ms, deviation=9.05966ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.005ms [min=94.9863ms, max=107.787ms, average=99.9757ms, deviation=1.82598ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  18.4101ms [min=8.39436ms, max=58.4835ms, average=18.0543ms, deviation=10.7293ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.60657ms [min=8.39436ms, max=58.4835ms, average=18.0012ms, deviation=10.7162ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.45676ms [min=8.39436ms, max=58.4835ms, average=17.9415ms, deviation=10.7091ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  19.1228ms [min=8.39436ms, max=58.4835ms, average=17.9488ms, deviation=10.676ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  145.035ms [min=144.782ms, max=281.186ms, average=192.923ms, deviation=44.9176ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         45.1006ms [min=42.1264ms, max=76.0803ms, average=54.7665ms, deviation=9.07799ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.9103ms [min=94.9863ms, max=107.787ms, average=99.9742ms, deviation=1.8036ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  12.454ms [min=8.39436ms, max=58.4835ms, average=17.9149ms, deviation=10.6515ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.56427ms [min=8.39436ms, max=58.4835ms, average=17.8637ms, deviation=10.6387ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.59956ms [min=8.39436ms, max=58.4835ms, average=17.8072ms, deviation=10.6307ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  32.3537ms [min=8.39436ms, max=58.4835ms, average=17.8954ms, deviation=10.6586ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  150.216ms [min=144.782ms, max=281.186ms, average=191.952ms, deviation=44.8567ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         44.7874ms [min=42.1264ms, max=76.0803ms, average=54.5344ms, deviation=9.09745ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  101.994ms [min=94.9863ms, max=107.787ms, average=100.021ms, deviation=1.80841ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.69227ms [min=8.39436ms, max=58.4835ms, average=17.846ms, deviation=10.6453ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  11.7348ms [min=8.39436ms, max=58.4835ms, average=17.8094ms, deviation=10.6237ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.61157ms [min=8.39436ms, max=58.4835ms, average=17.7606ms, deviation=10.6107ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  38.7699ms [min=8.39436ms, max=58.4835ms, average=17.8849ms, deviation=10.7018ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  242.351ms [min=144.782ms, max=281.186ms, average=193.072ms, deviation=44.976ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         57.6911ms [min=42.1264ms, max=76.0803ms, average=54.6062ms, deviation=9.00363ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  99.6465ms [min=94.9863ms, max=107.787ms, average=100.013ms, deviation=1.78815ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  10.3173ms [min=8.39436ms, max=58.4835ms, average=17.8404ms, deviation=10.6859ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.56876ms [min=8.39436ms, max=58.4835ms, average=17.7861ms, deviation=10.678ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  229.986ms [min=144.782ms, max=281.186ms, average=193.875ms, deviation=44.8052ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         64.8261ms [min=42.1264ms, max=76.0803ms, average=54.8333ms, deviation=9.03017ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  100.035ms [min=94.9863ms, max=107.787ms, average=100.013ms, deviation=1.76772ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  33.0537ms [min=8.39436ms, max=58.4835ms, average=17.8749ms, deviation=10.7102ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  30.5758ms [min=8.39436ms, max=58.4835ms, average=17.9483ms, deviation=10.7225ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  16.7664ms [min=8.39436ms, max=58.4835ms, average=17.9415ms, deviation=10.6919ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  9.62497ms [min=8.39436ms, max=58.4835ms, average=17.894ms, deviation=10.6796ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  24.9242ms [min=8.39436ms, max=58.4835ms, average=17.934ms, deviation=10.6623ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (VehicleDBWSystem) 
+  order timepoint           sequence nr.                  node name     dropped samples
+bp period
+latency
+
+Statistics:
+  latency:                  222.399ms [min=144.782ms, max=281.186ms, average=194.481ms, deviation=44.5104ms]
+hotpath
+  hot path:                 FrontLidarDriver/RearLidarDriver -> ObjectCollisionEstimator
+  hot path latency:         58.1885ms [min=42.1264ms, max=76.0803ms, average=54.9062ms, deviation=8.94296ms]
+  hot path drops:           0 [min=0, max=0, average=0, deviation=0]
+  behavior planner period:  98.4147ms [min=94.9863ms, max=107.787ms, average=99.9784ms, deviation=1.76379ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  17.7014ms [min=8.39436ms, max=58.4835ms, average=17.9326ms, deviation=10.6319ms]
+----------------------------------------------------------
+
+----------------------------------------------------------
+sample path: (IntersectionOutput) 
+  order timepoint           sequence nr.                  node name     dropped samples
+latency
+
+Statistics:
+  latency:                  8.53036ms [min=8.39436ms, max=58.4835ms, average=17.8798ms, deviation=10.6253ms]
+----------------------------------------------------------
+
