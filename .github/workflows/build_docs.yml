@@ -172,9 +172,62 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: ${{ env.WORKSPACE_PATH }}
-      - name: Deploy Docs
-        uses: ./ros_ws/src/reference_system/.github/actions/deploy-docs
+      - name: Download API reference
+        uses: dawidd6/action-download-artifact@v2
         with:
-          workspace-directory: ${{ env.WORKSPACE_PATH }}
-          workflow-id: ${{ github.event.workflow_run.workflow_id }}
-          tag-name: ${{ github.event.release.tag_name }}
+          name: api_reference
+          path: '${{ env.WORKSPACE_PATH }}/docs/api-reference'
+          workflow: build_docs.yml
+          run_id: ${{ github.event.workflow_run.workflow_id }}
+      - name: Download Foxy reports
+        continue-on-error: true  # Still publish docs even if reports are not available
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: benchmark_reports_foxy
+          path: '${{ env.WORKSPACE_PATH }}/docs/reports/foxy'
+          workflow: build_docs.yml
+          run_id: ${{ github.event.workflow_run.workflow_id }}
+      - name: Download Galactic reports
+        continue-on-error: true  # Still publish docs even if reports are not available
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: benchmark_reports_galactic
+          path: '${{ env.WORKSPACE_PATH }}/docs/reports/galactic'
+          workflow: build_docs.yml
+          run_id: ${{ github.event.workflow_run.workflow_id }}
+      - name: Download Humble reports
+        continue-on-error: true  # Still publish docs even if reports are not available
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: benchmark_reports_humble
+          path: '${{ env.WORKSPACE_PATH }}/docs/reports/humble'
+          workflow: build_docs.yml
+          run_id: ${{ github.event.workflow_run.workflow_id }}
+      - name: Download Rolling reports
+        continue-on-error: true  # Still publish docs even if reports are not available
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: benchmark_reports_rolling
+          path: '${{ env.WORKSPACE_PATH }}/docs/reports/rolling'
+          workflow: build_docs.yml
+          run_id: ${{ github.event.workflow_run.workflow_id }}
+      - name: Deploy mkdocs site
+        shell: bash
+        run: |
+          cd ${{ env.WORKSPACE_PATH }}
+          # ensure gh-pages git history is fetched
+          git fetch origin gh-pages --depth=1
+          sudo apt-get update -y
+          # install docs dependencies
+          python3 -m pip install -r docs/requirements.txt
+          # TODO: mike rebuilds entire site, instead we should
+          # skip the build and download site artifact from previous workflow
+          if [ -z ${{ github.event.release.tag_name }}]; then
+            export NEW_VERSION=main
+          else
+            export NEW_VERSION=${{ github.event.release.tag_name }}
+          fi
+          git config user.name doc-bot
+          git config user.email doc-bot@ros-realtime.com
+          mike deploy --push --update-aliases $NEW_VERSION latest
+
