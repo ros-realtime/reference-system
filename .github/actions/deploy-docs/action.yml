@@ -7,10 +7,14 @@ inputs:
   workflow-id:
     required: true
     description: Workflow to download the artifacts from
+  tag-name:
+    required: false
+    description: Tag to set as alias for docs (if available)
 runs:
   using: composite
   steps:
     - name: Setup workspace
+      shell: bash
       run: mkdir -p ${{ inputs.workspace-directory }}
     - name: checkout
       uses: actions/checkout@v2
@@ -51,6 +55,7 @@ runs:
         path: '${{ inputs.workspace-directory }}/docs/reports/rolling'
         workflow: ${{ inputs.workflow-id }}
     - name: Deploy mkdocs site
+      shell: bash
       run: |
         cd ${{ inputs.workspace-directory }}
         # ensure gh-pages git history is fetched
@@ -60,10 +65,10 @@ runs:
         python3 -m pip install -r docs/requirements.txt
         # TODO: mike rebuilds entire site, instead we should
         # skip the build and download site artifact from previous workflow
-        if [ -z ${{ github.event.release.tag_name }}]; then
+        if [ -z ${{ inputs.tag-name }}]; then
           export NEW_VERSION=main
         else
-          export NEW_VERSION=${{ github.event.release.tag_name }}
+          export NEW_VERSION=${{ inputs.tag-name }}
         fi
         git config user.name doc-bot
         git config user.email doc-bot@ros-realtime.com
