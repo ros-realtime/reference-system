@@ -175,3 +175,4 @@ jobs:
         with:
           workspace-directory: ${{ env.WORKSPACE_PATH }}
           workflow-id: ${{ github.event.workflow_run.workflow_id }}
+          tag-name: ${{ github.event.release.tag_name }}
