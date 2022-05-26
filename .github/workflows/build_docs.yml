@@ -79,10 +79,9 @@ jobs:
       - name: Download API Reference
         uses: dawidd6/action-download-artifact@v2
         with:
-          name: api_reference
+          name: ${{ env.DOXYBOOK_ARTIFACT }}
           path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
           workflow: build_docs.yml
-          run_id: ${{ github.event.workflow_run.workflow_id }}
       - name: Build mkdocs site
         run: |
           cd ${{ env.WORKSPACE_PATH }}
@@ -175,42 +174,37 @@ jobs:
       - name: Download API reference
         uses: dawidd6/action-download-artifact@v2
         with:
-          name: api_reference
-          path: '${{ env.WORKSPACE_PATH }}/docs/api-reference'
+          name: ${{ env.DOXYBOOK_ARTIFACT }}
+          path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
           workflow: build_docs.yml
-          run_id: ${{ github.event.workflow_run.workflow_id }}
       - name: Download Foxy reports
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
           name: benchmark_reports_foxy
-          path: '${{ env.WORKSPACE_PATH }}/docs/reports/foxy'
+          path: ${{ env.WORKSPACE_PATH }}/docs/reports/foxy
           workflow: build_docs.yml
-          run_id: ${{ github.event.workflow_run.workflow_id }}
       - name: Download Galactic reports
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
           name: benchmark_reports_galactic
-          path: '${{ env.WORKSPACE_PATH }}/docs/reports/galactic'
+          path: ${{ env.WORKSPACE_PATH }}/docs/reports/galactic
           workflow: build_docs.yml
-          run_id: ${{ github.event.workflow_run.workflow_id }}
       - name: Download Humble reports
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
           name: benchmark_reports_humble
-          path: '${{ env.WORKSPACE_PATH }}/docs/reports/humble'
+          path: ${{ env.WORKSPACE_PATH }}/docs/reports/humble
           workflow: build_docs.yml
-          run_id: ${{ github.event.workflow_run.workflow_id }}
       - name: Download Rolling reports
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
           name: benchmark_reports_rolling
-          path: '${{ env.WORKSPACE_PATH }}/docs/reports/rolling'
+          path: ${{ env.WORKSPACE_PATH }}/docs/reports/rolling
           workflow: build_docs.yml
-          run_id: ${{ github.event.workflow_run.workflow_id }}
       - name: Deploy mkdocs site
         shell: bash
         run: |
