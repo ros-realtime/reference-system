@@ -51,7 +51,6 @@ jobs:
         with:
           path: ${{ env.CLONE_PATH }}
       - name: Build and test
-        continue-on-error: true  # still upload logs if build or test fails
         uses: ros-tooling/action-ros-ci@v0.2
         with:
           package-name: autoware_reference_system reference_system reference_interfaces
