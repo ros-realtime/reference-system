@@ -36,6 +36,13 @@ runs:
         name: benchmark_reports_galactic
         path: '${{ inputs.workspace-directory }}/docs/reports/galactic'
         workflow: ${{ inputs.workflow-id }}
+    - name: Download Humble reports
+      continue-on-error: true  # Still publish docs even if reports are not available
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        name: benchmark_reports_humble
+        path: '${{ inputs.workspace-directory }}/docs/reports/humble'
+        workflow: ${{ inputs.workflow-id }}
     - name: Download Rolling reports
       continue-on-error: true  # Still publish docs even if reports are not available
       uses: dawidd6/action-download-artifact@v2

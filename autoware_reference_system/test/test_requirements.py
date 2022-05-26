@@ -15,9 +15,9 @@ import os
 import time
 import unittest
 
-import launch
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess
+from launch_testing.actions import ReadyToTest
 
 import rclpy.context
 
@@ -61,7 +61,7 @@ reference_system = {
 }
 
 
-def generate_test_description(ready_fn):
+def generate_test_description():
     env = os.environ.copy()
     env['RCUTILS_CONSOLE_OUTPUT_FORMAT'] = '[{severity}] [{name}]: {message}'
 
@@ -69,8 +69,7 @@ def generate_test_description(ready_fn):
 
     context = rclpy.context.Context()
     rclpy.init(context=context)
-    launch_description.add_action(
-        launch.actions.OpaqueFunction(function=lambda context: ready_fn()))
+    launch_description.add_action(ReadyToTest())
 
     proc_under_test = ExecuteProcess(
         cmd=['@TEST_EXECUTABLE@'],

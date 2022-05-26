@@ -16,6 +16,11 @@ env:
   DOXYBOOK_ARTIFACT: api_reference
   DOXYBOOK_VERSION: v1.4.0
 
+# only run one build doc workflow at a time, cancel any running ones
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   generate-doxygen:
     runs-on: ubuntu-latest
@@ -155,7 +160,8 @@ jobs:
           retention-days: 60
   deploy_docs:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'  # Only deploy on `main`
+    # only run on main branch after jobs listed in `needs` have finished (successful or not)
+    if: github.ref == 'refs/heads/main' && always()
     needs: [build-mkdocs, run_benchmarks]
     steps:
       - name: Deploy Docs
