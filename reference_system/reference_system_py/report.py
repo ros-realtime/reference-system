@@ -1,13 +1,18 @@
+# Copyright 2022 Apex.AI, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 from pathlib import Path
-
-from . import callback_duration
-from . import dropped_messages
-from . import memory_usage
-from . import std_latency
-from .benchmark import get_benchmark_directory, get_benchmark_directories_below
-from .benchmark import REFERENCE_SYSTEM_SHARE_DIR
-from .constants import SIZE_SUBPLOT, SIZE_SUMMARY
 
 from bokeh.embed import components
 from bokeh.io import output_file as bokeh_output_file
@@ -17,8 +22,17 @@ import bokeh.util.version
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from . import callback_duration
+from . import dropped_messages
+from . import memory_usage
+from . import std_latency
+from .benchmark import get_benchmark_directories_below, get_benchmark_directory
+from .benchmark import REFERENCE_SYSTEM_SHARE_DIR
+from .constants import SIZE_SUBPLOT, SIZE_SUMMARY
+
+
 try:
-    from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS
+    from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS  # noqa: F401
     from trace_utils import initDataModel
     tracetools_available = True
 except ModuleNotFoundError:
@@ -83,9 +97,9 @@ def generate_report(trace_type, *args, **kwargs):
         raise ValueError(f'Invalid trace_type: {trace_type}')
 
 
-def fill_in_template(template_file: Path, report_title: str, figures: dict()):
+def fill_in_template(template_file: Path, report_title: str, figures: dict):
     """
-    Fills in the given tempalte file with the supplied figures
+    Fill in the given tempalte file with the supplied figures.
 
     template_file: Full path to template file, including template file name
     report_title: Title of report
@@ -121,8 +135,8 @@ def generate_summary_report(trace_type, pkg, directory, runtime_sec, template_fi
             f'{template_file_extension}'
         report_title = 'Memory and CPU Usage Summary Report'
         mem_summary_figs = memory_usage.summary_from_directories(trace_dirs,
-                                                            duration=runtime_sec,
-                                                            size=SIZE_SUMMARY)
+                                                                 duration=runtime_sec,
+                                                                 size=SIZE_SUMMARY)
 
         # confirm template_file exists
         if not Path(template_file).exists():
@@ -143,8 +157,8 @@ def generate_summary_report(trace_type, pkg, directory, runtime_sec, template_fi
         report_title = 'Executor Key Performance Indicator (KPI) Report'
 
         std_summary_figs = std_latency.summary_from_directories(trace_dirs,
-                                                           duration=runtime_sec,
-                                                           size=SIZE_SUMMARY)
+                                                                duration=runtime_sec,
+                                                                size=SIZE_SUMMARY)
         # confirm template_file exists
         if not Path(template_file).exists():
             print(f'Template file was not found: {template_file}')
