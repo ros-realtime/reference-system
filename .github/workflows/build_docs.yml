@@ -77,10 +77,12 @@ jobs:
         with:
           path: ${{ env.WORKSPACE_PATH }}
       - name: Download API Reference
-        uses: actions/download-artifact@v3
+        uses: dawidd6/action-download-artifact@v2
         with:
           name: api_reference
           path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
+          workflow: build_docs.yml
+          run_id: ${{ github.event.workflow_run.workflow_id }}
       - name: Build mkdocs site
         run: |
           cd ${{ env.WORKSPACE_PATH }}
