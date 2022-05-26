@@ -164,6 +164,12 @@ jobs:
     if: github.ref == 'refs/heads/main' && always()
     needs: [build-mkdocs, run_benchmarks]
     steps:
+      - name: Make sure output directory exists
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.WORKSPACE_PATH }}
       - name: Deploy Docs
         uses: ./ros_ws/src/reference_system/.github/actions/deploy-docs
         with:
