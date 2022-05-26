@@ -16,6 +16,11 @@ env:
   WORKSPACE_PATH: ros_ws
   CLONE_PATH: ros_ws/src/reference_system
 
+# only run one build doc workflow at a time, cancel any running ones
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest

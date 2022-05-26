@@ -16,6 +16,11 @@ env:
   DOXYBOOK_ARTIFACT: api_reference
   DOXYBOOK_VERSION: v1.4.0
 
+# only run one build doc workflow at a time, cancel any running ones
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   generate-doxygen:
     runs-on: ubuntu-latest
