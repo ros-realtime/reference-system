@@ -155,7 +155,8 @@ jobs:
           retention-days: 60
   deploy_docs:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'  # Only deploy on `main`
+    # only run on main branch after jobs listed in `needs` have finished (successful or not)
+    if: github.ref == 'refs/heads/main' && always()
     needs: [build-mkdocs, run_benchmarks]
     steps:
       - name: Deploy Docs
