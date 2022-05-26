@@ -100,7 +100,8 @@ def summary_from_directories(dirs, duration, size):
             x_range=FactorRange(*x),
             plot_width=int(size * 2.0),
             plot_height=size,
-            margin=(10, 10, 10, 10)
+            margin=(10, 10, 10, 10),
+            sizing_mode='scale_width'
         )
         plot_barplot(latency_fig, latency_source, fill_color=fill_color)
 
@@ -122,7 +123,8 @@ def summary_from_directories(dirs, duration, size):
             x_range=FactorRange(*x),
             plot_width=int(size * 2.0),
             plot_height=size,
-            margin=(10, 10, 10, 10)
+            margin=(10, 10, 10, 10),
+            sizing_mode='scale_width'
         )
         plot_barplot(dropped_fig, dropped_source, fill_color=fill_color)
 
@@ -144,7 +146,8 @@ def summary_from_directories(dirs, duration, size):
             x_range=FactorRange(*x),
             plot_width=int(size * 2.0),
             plot_height=size,
-            margin=(10, 10, 10, 10)
+            margin=(10, 10, 10, 10),
+            sizing_mode='scale_width'
         )
         plot_barplot(period_fig, period_source, fill_color=fill_color)
 

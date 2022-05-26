@@ -114,7 +114,8 @@ def summary_from_directories(dirs, duration, size):
         x_range=FactorRange(*x),
         plot_width=int(size * 2.0),
         plot_height=size,
-        margin=(10, 10, 10, 10)
+        margin=(10, 10, 10, 10),
+        sizing_mode='scale_width'
     )
     plot_barplot(cpu_fig, cpu_source, fill_color=fill_color)
 
@@ -126,7 +127,8 @@ def summary_from_directories(dirs, duration, size):
         x_range=FactorRange(*x),
         plot_width=int(size * 2.0),
         plot_height=size,
-        margin=(10, 10, 10, 10)
+        margin=(10, 10, 10, 10),
+        sizing_mode='scale_width'
     )
     plot_barplot(real_fig, real_source, fill_color=fill_color)
 
@@ -138,7 +140,8 @@ def summary_from_directories(dirs, duration, size):
         x_range=FactorRange(*x),
         plot_width=int(size * 2.0),
         plot_height=size,
-        margin=(10, 10, 10, 10)
+        margin=(10, 10, 10, 10),
+        sizing_mode='scale_width'
     )
     plot_barplot(virtual_fig, virtual_source, fill_color=fill_color)
 
@@ -211,7 +214,8 @@ def individual(path, size):
         y_axis_label='CPU (%)',
         plot_width=int(size * 2.0),
         plot_height=size,
-        margin=(10, 10, 10, 10)
+        margin=(10, 10, 10, 10),
+        sizing_mode='scale_width'
     )
     # add CPU usage to figure
     raw_data_fig.line(

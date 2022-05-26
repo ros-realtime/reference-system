@@ -56,7 +56,8 @@ def individual(data_model, size):
         x_range=(0, max_dropped),
         plot_width=int(size * 2.0),
         plot_height=size,
-        margin=(10, 10, 10, 10)
+        margin=(10, 10, 10, 10),
+        sizing_mode='scale_width'
     )
     # add horizontal bar to figure
     dropped_fig.hbar(
@@ -107,7 +108,8 @@ def individual(data_model, size):
         y_axis_label='Latency to Object Collision Estimator (ms)',
         plot_width=int(size * 2.0),
         plot_height=size,
-        margin=(10, 10, 10, 10)
+        margin=(10, 10, 10, 10),
+        sizing_mode='scale_width'
     )
     latency_fig.line(
         x='timestamp',
