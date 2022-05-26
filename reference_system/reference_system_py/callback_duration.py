@@ -43,7 +43,8 @@ def summary(data_model, size):
         y_axis_label='duration (ms)',
         plot_width=int(size * 2.0),
         plot_height=size,
-        margin=(10, 10, 10, 10)
+        margin=(10, 10, 10, 10),
+        sizing_mode='scale_width'
     )
 
     legend_it = []
@@ -153,7 +154,8 @@ def individual(data_model, size):
             y_axis_label='duration (ms)',
             plot_width=int(size * 1.2),
             plot_height=size,
-            margin=(10, 10, 10, 175)  # Top, R, Bottom, L
+            margin=(10, 10, 10, 175),  # Top, R, Bottom, L
+            sizing_mode='scale_width'
         )
         duration.title.align = 'center'
 
@@ -196,7 +198,8 @@ def individual(data_model, size):
             y_axis_label='frequency',
             plot_width=int(size * 1.2),
             plot_height=size,
-            margin=(10, 10, 10, 25)  # Top, R, Bottom, L
+            margin=(10, 10, 10, 25),  # Top, R, Bottom, L
+            sizing_mode='scale_width'
         )
         hist.title.align = 'center'
         hist.quad(
