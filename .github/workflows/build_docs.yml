@@ -181,28 +181,28 @@ jobs:
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
-          name: benchmark_reports_foxy
+          name: autoware_benchmark_reports_foxy
           path: ${{ env.WORKSPACE_PATH }}/docs/reports/foxy
           workflow: build_docs.yml
       - name: Download Galactic reports
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
-          name: benchmark_reports_galactic
+          name: autoware_benchmark_reports_galactic
           path: ${{ env.WORKSPACE_PATH }}/docs/reports/galactic
           workflow: build_docs.yml
       - name: Download Humble reports
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
-          name: benchmark_reports_humble
+          name: autoware_benchmark_reports_humble
           path: ${{ env.WORKSPACE_PATH }}/docs/reports/humble
           workflow: build_docs.yml
       - name: Download Rolling reports
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
         with:
-          name: benchmark_reports_rolling
+          name: autoware_benchmark_reports_rolling
           path: ${{ env.WORKSPACE_PATH }}/docs/reports/rolling
           workflow: build_docs.yml
       - name: Deploy mkdocs site
