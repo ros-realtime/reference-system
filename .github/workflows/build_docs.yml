@@ -94,8 +94,61 @@ jobs:
   run_benchmarks:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'  # Only run benchmarks on `main`
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        ros_distribution:
+          - foxy
+          - galactic
+          - rolling
+        include:
+          # Foxy Fitzroy (June 2020 - May 2023)
+          - ros_distribution: foxy
+            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-foxy-ros-base-latest
+          # Galactic Geochelone (May 2021 - November 2022)
+          - ros_distribution: galactic
+            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
+          # Rolling Ridley  (June 2020 - Present)
+          - ros_distribution: rolling
+            docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-rolling-ros-base-latest
+    container:
+      image: ${{ matrix.docker_image }}
+    # if: github.ref == 'refs/heads/main'  # Only run benchmarks on `main`
     steps:
-      - uses: ./ros_ws/src/reference_system/.github/workflows/run_benchmarks.yml
+      - name: Make sure output directory exists
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.WORKSPACE_PATH }}
+      - name: Install benchmark dependencies
+        shell: bash
+        run: |
+          sudo apt-get update -y
+          python3 -m pip install -r ${{ env.WORKSPACE_PATH }}/requirements.txt
+      - name: Build and run benchmarks
+        uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          package-name: autoware_reference_system reference_system reference_interfaces
+          target-ros2-distro: ${{ matrix.ros_distribution }}
+          vcs-repo-file-url: ""
+          colcon-defaults: |
+            {
+              "build": {
+                "cmake-args": [
+                  "-DRUN_BENCHMARK=ON",
+                  "-DALL_RMWS=ON"
+                ]
+              }
+            }
+      - name: Upload Autoware Benchmark Reports
+        continue-on-error: true  # continue even if report gen failsS 
+        uses: actions/upload-artifact@v3
+        with:
+          name: autoware_benchmark_reports_${{ matrix.ros_distribution }}
+          path: '~/.ros/benchmark_autoware_reference_system'
+          retention-days: 60
   deploy_docs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'  # Only deploy on `main`
