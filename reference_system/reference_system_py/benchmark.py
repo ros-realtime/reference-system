@@ -29,7 +29,7 @@ import psutil
 
 try:
     from tracetools_trace.tools.names import DEFAULT_EVENTS_ROS
-    from trace_utils import initDataModel
+    from trace_utils import initDataModel  # noqa: F401
     tracetools_available = True
 except ModuleNotFoundError:
     tracetools_available = False

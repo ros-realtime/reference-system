@@ -16,7 +16,6 @@ import re
 
 from bokeh.models import ColumnDataSource
 from bokeh.models.ranges import FactorRange
-from bokeh.models.widgets.markups import Div
 from bokeh.models.widgets.tables import DataTable, TableColumn
 from bokeh.palettes import cividis
 from bokeh.plotting import figure

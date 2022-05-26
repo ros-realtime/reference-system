@@ -18,8 +18,8 @@ import itertools
 
 # Generates traces for specified executables and RMWs
 from reference_system_py.benchmark import available_executables, generate_trace
-from reference_system_py.report import generate_report, generate_summary_report
 from reference_system_py.benchmark import ROS_HOME, setup_benchmark_directory
+from reference_system_py.report import generate_report, generate_summary_report
 
 
 if __name__ == '__main__':

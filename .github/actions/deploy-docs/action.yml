@@ -9,58 +9,55 @@ inputs:
     description: Workflow to download the artifacts from
 runs:
   using: composite
-  runs-on: ubuntu-latest
-    # Only run job if docs build workflow succeeds
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    steps:
-      - name: Setup workspace
-        run: mkdir -p ${{ inputs.workspace-directory }}
-      - name: checkout
-        uses: actions/checkout@v2
-        with:
-          path: ${{ inputs.workspace-directory }}
-      - name: Download API reference
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          name: api_reference
-          path: '${{ inputs.workspace-directory }}/docs/api-reference'
-          workflow: ${{ inputs.workflow-id }}
-      - name: Download Foxy reports
-        continue-on-error: true  # Still publish docs even if reports are not available
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          name: benchmark_reports_foxy
-          path: '${{ inputs.workspace-directory }}/docs/reports/foxy'
-          workflow: ${{ inputs.workflow-id }}
-      - name: Download Galactic reports
-        continue-on-error: true  # Still publish docs even if reports are not available
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          name: benchmark_reports_galactic
-          path: '${{ inputs.workspace-directory }}/docs/reports/galactic'
-          workflow: ${{ inputs.workflow-id }}
-      - name: Download Rolling reports
-        continue-on-error: true  # Still publish docs even if reports are not available
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          name: benchmark_reports_rolling
-          path: '${{ inputs.workspace-directory }}/docs/reports/rolling'
-          workflow: ${{ inputs.workflow-id }}
-      - name: Deploy mkdocs site
-        run: |
-          cd ${{ inputs.workspace-directory }}
-          # ensure gh-pages git history is fetched
-          git fetch origin gh-pages --depth=1
-          sudo apt-get update -y
-          # install docs dependencies
-          python3 -m pip install -r docs/requirements.txt
-          # TODO: mike rebuilds entire site, instead we should
-          # skip the build and download site artifact from previous workflow
-          if [ -z ${{ github.event.release.tag_name }}]; then
-            export NEW_VERSION=main
-          else
-            export NEW_VERSION=${{ github.event.release.tag_name }}
-          fi
-          git config user.name doc-bot
-          git config user.email doc-bot@ros-realtime.com
-          mike deploy --push --update-aliases $NEW_VERSION latest
+  steps:
+    - name: Setup workspace
+      run: mkdir -p ${{ inputs.workspace-directory }}
+    - name: checkout
+      uses: actions/checkout@v2
+      with:
+        path: ${{ inputs.workspace-directory }}
+    - name: Download API reference
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        name: api_reference
+        path: '${{ inputs.workspace-directory }}/docs/api-reference'
+        workflow: ${{ inputs.workflow-id }}
+    - name: Download Foxy reports
+      continue-on-error: true  # Still publish docs even if reports are not available
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        name: benchmark_reports_foxy
+        path: '${{ inputs.workspace-directory }}/docs/reports/foxy'
+        workflow: ${{ inputs.workflow-id }}
+    - name: Download Galactic reports
+      continue-on-error: true  # Still publish docs even if reports are not available
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        name: benchmark_reports_galactic
+        path: '${{ inputs.workspace-directory }}/docs/reports/galactic'
+        workflow: ${{ inputs.workflow-id }}
+    - name: Download Rolling reports
+      continue-on-error: true  # Still publish docs even if reports are not available
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        name: benchmark_reports_rolling
+        path: '${{ inputs.workspace-directory }}/docs/reports/rolling'
+        workflow: ${{ inputs.workflow-id }}
+    - name: Deploy mkdocs site
+      run: |
+        cd ${{ inputs.workspace-directory }}
+        # ensure gh-pages git history is fetched
+        git fetch origin gh-pages --depth=1
+        sudo apt-get update -y
+        # install docs dependencies
+        python3 -m pip install -r docs/requirements.txt
+        # TODO: mike rebuilds entire site, instead we should
+        # skip the build and download site artifact from previous workflow
+        if [ -z ${{ github.event.release.tag_name }}]; then
+          export NEW_VERSION=main
+        else
+          export NEW_VERSION=${{ github.event.release.tag_name }}
+        fi
+        git config user.name doc-bot
+        git config user.email doc-bot@ros-realtime.com
+        mike deploy --push --update-aliases $NEW_VERSION latest
