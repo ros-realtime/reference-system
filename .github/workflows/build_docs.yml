@@ -82,6 +82,7 @@ jobs:
           name: ${{ env.DOXYBOOK_ARTIFACT }}
           path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
           workflow: build_docs.yml
+          check_artifacts: true
       - name: Build mkdocs site
         run: |
           cd ${{ env.WORKSPACE_PATH }}
@@ -184,7 +185,7 @@ jobs:
           name: autoware_benchmark_reports_foxy
           path: ${{ env.WORKSPACE_PATH }}/docs/reports/foxy
           workflow: build_docs.yml
-          search_artifacts: true
+          check_artifacts: true
       - name: Download Galactic reports
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
@@ -192,7 +193,7 @@ jobs:
           name: autoware_benchmark_reports_galactic
           path: ${{ env.WORKSPACE_PATH }}/docs/reports/galactic
           workflow: build_docs.yml
-          search_artifacts: true
+          check_artifacts: true
       - name: Download Humble reports
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
@@ -200,7 +201,7 @@ jobs:
           name: autoware_benchmark_reports_humble
           path: ${{ env.WORKSPACE_PATH }}/docs/reports/humble
           workflow: build_docs.yml
-          search_artifacts: true
+          check_artifacts: true
       - name: Download Rolling reports
         continue-on-error: true  # Still publish docs even if reports are not available
         uses: dawidd6/action-download-artifact@v2
@@ -208,7 +209,7 @@ jobs:
           name: autoware_benchmark_reports_rolling
           path: ${{ env.WORKSPACE_PATH }}/docs/reports/rolling
           workflow: build_docs.yml
-          search_artifacts: true
+          check_artifacts: true
       - name: Deploy mkdocs site
         shell: bash
         run: |
