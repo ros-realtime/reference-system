@@ -22,18 +22,18 @@ Some tools are provided in order to automate and standardize the report generati
 First, install and build the dependencies
 
 ```console
-(ade) $ python3 -m pip install psrecord bokeh  # optional dependency: networkx
-(ade) $ cd workspace
-(ade) $ colcon build --packages-up-to autoware_reference_system
+python3 -m pip install psrecord bokeh  # optional dependency: networkx
+cd workspace
+colcon build --packages-up-to autoware_reference_system
 ```
 
 The easiest way to run the benchmarks is through the `ctest` interface. Rebuild the package
 with the `RUN_BENCHMARK` option and run `colcon test`:
 
 ```console
-(ade) $ colcon build --packages-select autoware_reference_system \
-        --cmake-force-configure --cmake-args -DRUN_BENCHMARK=ON
-(ade) $ colcon test --packages-select autoware_reference_system
+colcon build --packages-select autoware_reference_system \
+    --cmake-force-configure --cmake-args -DRUN_BENCHMARK=ON
+colcon test --packages-select autoware_reference_system
 ```
 
 After the tests have run, reports can be found as `.html` files  in
@@ -69,14 +69,14 @@ To get more fine-grained control over the benchmarking process invoke the benchm
 directly. To get a summary of the available options, call
 
 ```console
-(ade) $ $(ros2 pkg prefix --share autoware_reference_system)/scripts/benchmark.py --help
+python3 $(ros2 pkg prefix --share autoware_reference_system)/scripts/benchmark.py --help
 ```
 
 As an example, to run all benchmarks starting with `autoware_` and the
 `autoware_default_multithreaded` benchmark for 15 seconds run
 
 ```console
-(ade) $ $(ros2 pkg prefix --share autoware_reference_system)/scripts/benchmark.py \
+python3 $(ros2 pkg prefix --share autoware_reference_system)/scripts/benchmark.py \
         15 'autoware_*'
 ```
 
