@@ -108,7 +108,7 @@ def fill_in_template(template_file: Path, report_title: str, figures: dict):
     # get template directory
     template_directory = template_file.parents[0]
     env = Environment(
-        loader=FileSystemLoader(template_directory),
+        loader=FileSystemLoader(str(template_directory)),
         autoescape=select_autoescape()
     )
     template = env.get_template(str(template_file.name))
