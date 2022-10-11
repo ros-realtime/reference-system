@@ -44,6 +44,7 @@ endif()
 find_package(kpsr_ros2_executor REQUIRED)
 find_package(Klepsydra REQUIRED)
 find_package(KlepsydraAdmin REQUIRED)
+find_package(KlepsydraStreaming REQUIRED)
 
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "rclcpp/rclcpp.hpp"
-
+#include <klepsydra/mem_core/mem_env.h>
 #include "reference_system/system/systems.hpp"
 
 #include "autoware_reference_system/autoware_system_builder.hpp"
@@ -33,7 +33,33 @@ int main(int argc, char * argv[])
 
   auto nodes = create_autoware_nodes<RclcppSystem, TimeConfig>();
 
-  rclcpp::Executor::SharedPtr executor = kpsr::ros2::ExecutorFactory::createExecutor(kpsr::ros2::QueueSize::_256, false);
+  kpsr::mem::MemEnv environment;
+  environment.setPropertyString("container_name", "eventLoop_systemRef");
+  environment.setPropertyString("admin_log_filename", "");
+  environment.setPropertyString("stat_filename", "/home/kpsruser/development/ros2/ros2_ref_system/ros_ref.csv");
+  environment.setPropertyString("streaming_conf_file", "/home/kpsruser/development/ros2/ros2_ref_system/outputPolicy.json");
+  environment.setPropertyString("log_filename", "/home/kpsruser/development/ros2/ros2_ref_system/ros_ref.log");
+
+  environment.setPropertyInt("log_level", 2);
+  environment.setPropertyInt("pool_size", 100);
+  environment.setPropertyInt("number_of_cores", 11);
+  environment.setPropertyInt("critical_thread_pool_size", 16);
+  environment.setPropertyInt("non_critical_thread_pool_size", 1);
+  environment.setPropertyInt("number_of_parallel_threads", 0);
+  environment.setPropertyInt("stat_log_interval_ms", 1000);
+  environment.setPropertyInt("admin_log_interval", 1000);
+
+  environment.setPropertyBool("to_std_out", true);
+  environment.setPropertyBool("log_to_file", true);
+  environment.setPropertyBool("admin_log_to_file", false);
+  environment.setPropertyBool("stat_socket_container_enable", false);
+  environment.setPropertyBool("stat_file_container_enable", true);
+  environment.setPropertyBool("use_default_streaming_factory", true);
+  environment.setPropertyBool("test_dnn", false);
+  environment.setPropertyBool("export_streaming_configuration", true);
+
+  rclcpp::Executor::SharedPtr executor = kpsr::ros2::ExecutorFactory::createExecutor(&environment);
+  
   for (auto & node : nodes) {
     executor->add_node(node);
   }
