@@ -49,6 +49,7 @@ private:
     set_sample(this->get_name(), sequence_number_++, 0, timestamp, message.get());
 
     publisher_->publish(std::move(message));
+    //std::cout << "[KPSR] " << get_name() << " " << timestamp << " " << now_as_int() << std::endl;
   }
 
 private:

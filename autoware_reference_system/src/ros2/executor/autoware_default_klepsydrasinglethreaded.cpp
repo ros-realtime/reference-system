@@ -34,15 +34,16 @@ int main(int argc, char * argv[])
   auto nodes = create_autoware_nodes<RclcppSystem, TimeConfig>();
 
   kpsr::mem::MemEnv environment;
+  /*
   environment.setPropertyString("container_name", "eventLoop_systemRef");
   environment.setPropertyString("admin_log_filename", "");
-  environment.setPropertyString("stat_filename", "/home/kpsruser/development/ros2/ros2_ref_system/ros_ref.csv");
-  environment.setPropertyString("streaming_conf_file", "/home/kpsruser/development/ros2/ros2_ref_system/outputPolicy.json");
-  environment.setPropertyString("log_filename", "/home/kpsruser/development/ros2/ros2_ref_system/ros_ref.log");
+  environment.setPropertyString("stat_filename", "/home/ubuntu/development/ros2/ref_results/ros_ref.csv");
+  environment.setPropertyString("streaming_conf_file", "/home/ubuntu/development/ros2/ref_results/outputPolicy.json");
+  environment.setPropertyString("log_filename", "/home/ubuntu/development/ros2/ref_results/ros_ref.log");
 
   environment.setPropertyInt("log_level", 2);
   environment.setPropertyInt("pool_size", 100);
-  environment.setPropertyInt("number_of_cores", 11);
+  environment.setPropertyInt("number_of_cores", 3);
   environment.setPropertyInt("critical_thread_pool_size", 16);
   environment.setPropertyInt("non_critical_thread_pool_size", 1);
   environment.setPropertyInt("number_of_parallel_threads", 0);
@@ -57,9 +58,28 @@ int main(int argc, char * argv[])
   environment.setPropertyBool("use_default_streaming_factory", true);
   environment.setPropertyBool("test_dnn", false);
   environment.setPropertyBool("export_streaming_configuration", true);
+  */
+  environment.setPropertyString("log_filename", "");
+  environment.setPropertyInt("log_level", 2);
+  environment.setPropertyInt("pool_size", 1);
+  environment.setPropertyInt("number_of_cores", 4);//1,2,3,4
+  environment.setPropertyInt("number_of_trypost", 0);
+  environment.setPropertyInt("critical_thread_pool_size", 32);
+  environment.setPropertyInt("non_critical_thread_pool_size", 32);
+  environment.setPropertyInt("number_of_parallel_threads", 0);
+
+  //
+  environment.setPropertyInt("stat_log_interval_ms", 1000);
+  environment.setPropertyBool("stat_file_container_enable", false);
+  environment.setPropertyString("stat_filename", "/home/ubuntu/development/ros2/ros2_core_ws/stats/benchmarks_internal_sub.csv");
+  //
+  environment.setPropertyString("streaming_conf_file", "/home/ubuntu/development/ros2/ros2_core_ws/stats/policy.json");
+  environment.setPropertyBool("use_default_streaming_factory", false);
+  environment.setPropertyBool("test_dnn", false);
+  environment.setPropertyBool("export_streaming_configuration", false);
 
   rclcpp::Executor::SharedPtr executor = kpsr::ros2::ExecutorFactory::createExecutor(&environment);
-  
+
   for (auto & node : nodes) {
     executor->add_node(node);
   }

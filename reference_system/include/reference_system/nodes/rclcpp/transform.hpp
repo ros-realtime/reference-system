@@ -62,6 +62,7 @@ private:
     // use result so that it is not optimizied away by some clever compiler
     output_message.get().data[0] = number_cruncher_result;
     publisher_->publish(std::move(output_message));
+    //std::cout << "[KPSR] " << get_name() << " " << timestamp << " " << now_as_int() << std::endl;
   }
 
 private:
