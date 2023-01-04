@@ -67,7 +67,18 @@ add_benchmark_executable(autoware_default_custom
   src/ros2/executor/autoware_default_klepsydrasinglethreaded.cpp
 )
 
+set(CONF_DATA ${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/data)
+#Configure modules header with variables configured
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/common/config.h.in"
+               "${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/common/config.h")
 
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/data/streaming_conf.json.in"
+               "${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/data/streaming_conf.json")
+
+target_include_directories(
+  autoware_default_custom PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/common)
+
+ament_export_include_directories(autoware_default_custom PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/common)
 ament_target_dependencies(autoware_default_custom ${dependencies})
 
 if(${BUILD_TESTING})

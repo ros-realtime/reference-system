@@ -8,3 +8,5 @@ doxybook2**
 bin
 include
 lib
+**/**/**/**/config.h
+**/**/**/**/streaming_conf.json
