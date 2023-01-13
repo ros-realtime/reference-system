@@ -14,13 +14,13 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include <klepsydra/mem_core/mem_env.h>
-#include "reference_system/system/systems.hpp"
+#include "reference_system/system/type/rclcpp_system.hpp"
 
 #include "autoware_reference_system/autoware_system_builder.hpp"
 #include "autoware_reference_system/system/timing/benchmark.hpp"
 #include "autoware_reference_system/system/timing/default.hpp"
 
-#include <kpsr_ros2_executor/executor_factory.hpp>
+#include <kpsr_ros2_executor/streaming_executor_factory.hpp>
 
 int main(int argc, char * argv[])
 {
@@ -71,14 +71,14 @@ int main(int argc, char * argv[])
   //
   environment.setPropertyInt("stat_log_interval_ms", 1000);
   environment.setPropertyBool("stat_file_container_enable", false);
-  environment.setPropertyString("stat_filename", "/home/ubuntu/development/ros2/ros2_core_ws/stats/benchmarks_internal_sub.csv");
+  environment.setPropertyString("stat_filename", "/home/ubuntu/development/klepsydra/reference_system/stats/benchmarks_internal_sub.csv");
   //
-  environment.setPropertyString("streaming_conf_file", "/home/ubuntu/development/ros2/ros2_core_ws/stats/policy.json");
+  environment.setPropertyString("streaming_conf_file", "/home/ubuntu/development/klepsydra/reference_system/policy.json");
   environment.setPropertyBool("use_default_streaming_factory", false);
   environment.setPropertyBool("test_dnn", false);
   environment.setPropertyBool("export_streaming_configuration", false);
 
-  rclcpp::Executor::SharedPtr executor = kpsr::ros2::ExecutorFactory::createExecutor(&environment);
+  rclcpp::Executor::SharedPtr executor = kpsr::ros2::StreamingExecutorFactory::createExecutor(&environment);
 
   for (auto & node : nodes) {
     executor->add_node(node);
