@@ -1,164 +1,249 @@
-# autoware_reference_system
+# Profiling executors using the Autoware reference system
 
-This file is meant to define the Autoware Reference System and all of its nodes, topics and message types.
+## Introduction
 
-![Node graph of reference-system-autoware](../content/img/autoware_reference_system.svg)
+This tutorial incorporates [the open-sourced `autoware_reference_system`](
+https://github.com/ros-realtime/reference-system) and can be used to fairly and repeatably test
+the performance of the various executors available within the greater ROS 2 community.
 
-To get started and test this system yourself, head down to [the _Quick Start section_](#quick-start) and follow the instructions there.
+The example simulates a real world scenario, [Autoware.Auto](
+https://www.autoware.org/autoware-auto) and its LiDAR data pipeline, that can be used to evaluate
+the performance of the executor. To this end, the example comes with built-in performance
+measurements that make it easy to compare the performance between executor implementations
+in a repeatable way.
 
-_See the [generating a node graph](#generate-node-graph) using graphviz section on how to generate the above image_
+![The Autoware reference system](../content/img/autoware_reference_system.svg)
 
-## Evaluation Criteria
+## Quick Start
 
-The _autoware reference system_ was made with a few goals in mind. See the list below to get the complete picture of why certian tests are run and why this system was chosen as a good system to benchmark different executors.
+Some tools are provided in order to automate and standardize the report generation process for this
+`autoware_reference_system`.
 
-Each item below should have a corresponding test report with it or be able to be extracted from an existing test report. See the [testing](#running-the-tests) section for more details on how to generate your own test reports.
+First, install and build the dependencies
 
-If you believe we are missing another metric to measure executors by, please create an issue and let us know!
+```console
+python3 -m pip install psrecord bokeh  # optional dependency: networkx
+cd workspace
+colcon build --packages-up-to autoware_reference_system
+```
 
-### **Key Performance Indicators (KPIs)**
+The easiest way to run the benchmarks is through the `ctest` interface. Rebuild the package
+with the `RUN_BENCHMARK` option and run `colcon test`:
+
+```console
+colcon build --packages-select autoware_reference_system \
+    --cmake-force-configure --cmake-args -DRUN_BENCHMARK=ON
+colcon test --packages-select autoware_reference_system
+```
+
+After the tests have run, reports can be found as `.html` files  in
+`$ROS_HOME/benchmark_autoware_reference_system/<timestamp>` (`$ROS_HOME` defaults to `~/.ros`).
+The symlink `$ROS_HOME/benchmark_autoware_reference_system/latest` always points to the latest
+results. Detailed reports to individual test runs can be found in subdirectories of the form
+`<duration>/<middleware>/<executable>`.
+
+More details on all the supported CMake arguments can be found in
+[the supported CMake argument section](#supported-cmake-arguments) below.
+
+By default the tests uses the default ROS 2 middleware set for the system.
+To run the tests for all available RMWs, add the
+`-DALL_RMWS=ON` CMake argument to the `colcon build` step.
+
+The test duration can be configured through the `RUN_TIMES` variable in `CMakelists.txt`.
+A separate set of tests is created for each chosen runtime.
+
+## Test Results and Reports
+
+Reports are automatically generated depending on which tests are run. The main test directory
+(`$ROS_HOME/benchmark_autoware_reference_system/latest` by default) contains the *summary
+reports*,
+which aggregate metrics across all tested configurations.
+
+Below this main test directory, each tested configuration has a subdirectory of the form
+`<duration>/<middleware>/<executable name>`. This directory contains the raw trace data and
+additional per-test reports in `.html` format.
+
+## Tweaking the benchmark setup
+
+To get more fine-grained control over the benchmarking process invoke the benchmark script
+directly. To get a summary of the available options, call
+
+```console
+python3 $(ros2 pkg prefix --share autoware_reference_system)/scripts/benchmark.py --help
+```
+
+As an example, to run all benchmarks starting with `autoware_` and the
+`autoware_default_multithreaded` benchmark for 15 seconds run
+
+```console
+python3 $(ros2 pkg prefix --share autoware_reference_system)/scripts/benchmark.py \
+        15 'autoware_*'
+```
+
+The `--logdir` option can be used to store the measurement results and reports in a custom
+directory, without adding a timestamp. Note that this may overwrite existing measurement
+results in the same directory.
+
+## **Key Performance Indicators (KPIs)**
+
+The performance measurement evaluates the executor using the following metrics. In general, the
+lowest value within each KPI is considered to be the better performance.
 
 - **CPU utilization**
-    - In general a lower CPU utilization is better since it enables you to choose a smaller CPU or have more functionality on a larger CPU for other things.
-    - **The lower CPU utilization the better**
+    - In general a lower CPU utilization is better since it enables you to choose a smaller CPU or
+    have more functionality on a larger CPU for other things.
 - **Memory utilization**
-    - In general a lower memory utilization is better since it enables you to choose a smaller memory or have more space for other things
-    - **The lower memory utilization the better**
-- **Use latest samples, count dropped samples**
-    - This is representative of the real-world where old sensor data is much less valuable than new sensor data
-        - For example an image from 30 seconds ago wont help you to drive down the road as much as an image from 0.1 seconds ago)
-    - If there is more than one new sample, the old ones will be dropped in favor of the newest sample
-    - As a result, dropped messages may mean that information was lost
-        - Fusion Nodes may drop messages by design if their inputs have different frequencies, do not count dropped messages for these nodes
-        - Transform nodes should not drop messages though, and these should be counted
-    - **The lower number of dropped samples the better**
-- **Every Front Lidar sample should cause update in Object Collision Estimator**
-    - The Front and Rear Lidars have the same publishing frequency
-    - This means Object Collision Estimator should run for every lidar sample
-    - Count number of executions of Object Collision Estimator and Front Lidar and report any difference
-    - **The smaller the difference in executions, the better**
-- **Lowest possible latency from Front Lidar to Object Collision Estimator**
-    - As in the real world, we want to know as soon as possible if the reference system will collide with something
-    - Measure the mean and max latency for this chain of nodes
-    - **The lower latency of the signal chain the better**
-- **The Behavior Planner should be as cyclical as possible**
-    - The desired behavior of the Behavior Planner is to be as cyclical as possible, meaning it should be executed as close to its set frequency of _100ms_ as possible
-    - Measure the jitter and drift over time of the timer callback
-    - **The lower the jitter and drift of the Behavior Node timer callback the better**
+    - In general a lower memory utilization is better since it enables you to choose a smaller
+    memory or have more space for other things
+- **Number of dropped sensor samples in transform nodes**
+    - The nodes in the reference system always use the most recent sensor data
+    (i.e., use a history depth of 1)
+        - This is a common strategy in real-world settings, as old sensor data
+        is much less valuable than new sensor data
+        - For example an image from 30 seconds ago is much less helpful while driving down
+        the road than an image from 0.1 second ago
+    - Fusion nodes drop messages during normal operation if the inputs publish with different
+    frequencies
+    - In transform nodes, however, dropped messages indicate that the transform node cannot
+    keep up with its input
 
+- **Number of front LiDAR samples that did not trigger an update in the Object Collision Estimator**
+    - The Front and Rear LiDARs have the same publishing frequency
+    - This means Object Collision Estimator should run for every LiDAR sample
+    - Count number of executions of Object Collision Estimator and Front LiDAR and report any difference
+- **Worst-case Latency between Front LiDAR and the Object Collision Estimator**
+    - For worst-case latency we want to identify obstacles in time
+    (i.e. early enough that we can still emergency-brake).
+- **Average Latency between Front LiDAR and Object Collision Estimator**
+    - For average latency we want to identify obstacles as soon as possible so we can account for
+    the obstacle in our planning.
+- **The Behavior Planner should be as cyclical as possible**
+    - The desired behavior of the Behavior Planner is to be as cyclical as possible, meaning it
+    should be executed as close to its set frequency of _100ms_ as possible
+    - Measure the jitter and drift over time of the timer callback
 
 ## Message Types
 
-A **single message type** is used for the entire _reference system_ when generating results in order to simplify the setup as well as make it more repeatible and extensible.
+A **single message type** is used for the entire reference system when generating results in
+order to simplify the setup as well as make it more repeatable and extensible.
 
-This means **only one _message type_** from the list below is used during any given experimental run for every node in the reference system.
+This means **only one message type** from the list below is used during any given experimental
+run for every node in the reference system.
 
-1. [**Message4kB**](../reference_interfaces/msg/Message4kb.idl)
+1. **Message4kB**
     - reference message with a fixed size of 4 kilobytes (kB)
 
 Other messages with different fixed sizes could be added here in the future.
 
-When reporting results it will be important to include the _message type_ used duing the experiement so that comparisons can be done "apples to apples" and not "apples to pears".
+When reporting results it is important to specify the message type used during the experiment, as
+the message size impacts the metrics.
 
 ## Autoware Reference System
 
-Built from [a handful of building-block node types](../README.md#concept-overview), each one of these nodes are meant to simulate a real-world node from the Autoware.Auto project lidar data pipeline.
+Built from [a handful of building-block node types](the-reference-system-design.md#base-node-types)
+, each one of these nodes are meant to simulate a
+real-world node from the Autoware.Auto project
+LiDAR data pipeline.
 
-Under each node type are the requirements used for _this specific reference system_, `autoware_reference_system`. Future reference systems could have slightly different requirements and still use the same building-block node types.
+Under each node type are the requirements used for this specific reference system,
+`autoware_reference_system`. Future reference systems could have slightly different requirements
+and still use the same building-block node types.
 
-For simplicity's sake, every node except for the _command nodes_ only ever publishes one topic and this topic has the same name as the node that publishes it. However, each topic can be subscribed to by multiple different nodes.
+For simplicity, every node except for the command nodes only publishes one topic, and this topic
+has the same name as the node that publishes it. However, each topic can be subscribed to by
+multiple different nodes.
+
+Also for simplicity, every node that does processing (aka number crunching) by default is
+configured to do that processing for the same amount of time: roughly 10 milliseconds.
+This processing time varies
+drastically depending on what platform you are on since each node does a fixed amount of
+actual work, not a fixed amount of time.  See [the Configuring Processing Time section
+](#configure-processing-time) for more details.
 
 1. [**Message Type**](#message-types)
     - all nodes use the same message type during any single test run
-    - default _message type_:
-        - [Message4kB](../reference_system/include/reference_system/msg_types.hpp#L21)
+    - default message type:
+        - Message4kB
     - to be implemented:
         - Message64kB
         - Message256kB
         - Message512kB
         - Message1024kB
         - Message5120kB
-2. [**Sensor Nodes**](../reference_system/include/reference_system/nodes/rclcpp/sensor.hpp)
-    - all _sensor nodes_ have a publishing rate (cycle time) of [**100 milliseconds**](include/reference_system/system/timing/default.hpp#L26)
-    - all _sensor_nodes_ publish the same _message type_
-    - total of **5 _sensor nodes_**:
-        - [Front Lidar Driver](include/autoware_reference_system/autoware_system_builder.hpp#L38)
-        - [Rear Lidar Driver](include/autoware_reference_system/autoware_system_builder.hpp#L44)
-        - [Point Cloud Map](include/autoware_reference_system/autoware_system_builder.hpp#L50)
-        - [Visualizer](include/autoware_reference_system/autoware_system_builder.hpp#L56)
-        - [Lanelet2Map](include/autoware_reference_system/autoware_system_builder.hpp#62)
-3. [**Transform Nodes**](../reference_system/include/reference_system/nodes/rclcpp/transform.hpp)
-    - all _transform nodes_ have one subscriber and one publisher
-    - all _transform nodes_ start processing for [**50 milliseconds**](include/autoware_reference_system/system/timing/default.hpp#L28) after a message is received
+2. **Sensor Nodes**
+    - all sensor node have a publishing rate (cycle time) of **100 milliseconds**
+    - all sensor nodes publish the same message type
+    - total of **5 sensor nodes**:
+
+        - Front LiDAR Driver
+        - Rear LiDAR Driver
+        - Point Cloud Map
+        - Visualizer
+        - Lanelet2Map
+
+3. **Transform Nodes**
+    - all transform nodes have one subscriber and one publisher
+    - all transform nodes start processing after a message is received
     - publishes message after processing is complete
-    - total of **10 _transform nodes_:**
-        - [Front Points Transformer](include/autoware_reference_system/autoware_system_builder.hpp#L69)
-        - [Rear Points Transformer](include/autoware_reference_system/autoware_system_builder.hpp#L78)
-        - [Voxel Grid Downsampler](include/autoware_reference_system/autoware_system_builder.hpp#L87)
-        - [Point Cloud Map Loader](include/autoware_reference_system/autoware_system_builder.hpp#L96)
-        - [Ray Ground Filter](include/autoware_reference_system/autoware_system_builder.hpp#L105)
-        - [Object Collision Estimator](include/autoware_reference_system/autoware_system_builder.hpp#L123)
-        - [MPC Controller](include/autoware_reference_system/autoware_system_builder.hpp#L132)
-        - [Parking Planner](include/autoware_reference_system/autoware_system_builder.hpp#L141)
-        - [Lane Planner](include/autoware_reference_system/autoware_system_builder.hpp#L150)
-4. [**Fusion Nodes**](../reference_system/include/reference_system/nodes/rclcpp/fusion.hpp)
-    - all _fusion nodes_ have **two subscribers** and one publisher for this _reference system_
-    - all _fusion nodes_ start processing for [**25 milliseconds**](include/autoware_reference_system/system/timing/default.hpp#L30) after a message is received **from all** subscriptions
-    - all _fusion nodes_ have a max input time difference between the first input received and last input received before publishing of [**9999** seconds](include/autoware_reference_system/system/timing/benchmark.hpp)
+    - total of **10 transform nodes:**
+        - Front Points Transformer
+        - Rear Points Transformer
+        - Voxel Grid Downsampler
+        - Point Cloud Map Loader
+        - Ray Ground Filter
+        - Object Collision Estimator
+        - MPC Controller
+        - Parking Planner
+        - Lane Planner
+4. **Fusion Nodes**
+    - all fusion nodes have **two subscribers** and one publisher for this reference system
+    - all fusion nodes start processing after a message is received **from all** subscriptions
+    - all fusion nodes have a max input time difference between the first input received and last
+    input received before publishing of **9999** seconds
     - publishes message after processing is complete
-    - total of **5 _fusion nodes_:**
-        - [Point Cloud Fusion](include/autoware_reference_system/autoware_system_builder.hpp#L160)
-        - [NDT Localizer](include/autoware_reference_system/autoware_system_builder.hpp#L169)
-        - [Vehicle Interface](include/autoware_reference_system/autoware_system_builder.hpp#L178)
-        - [Lanelet2 Global Planner](include/autoware_reference_system/autoware_system_builder.hpp#L187)
-        - [Lanelet 2 Map Loader](include/autoware_reference_system/autoware_system_builder.hpp#L196)
-5. [**Cyclic Nodes**](../reference_system/include/reference_system/nodes/rclcpp/cyclic.hpp)
-    - for this _reference system_ there is only [**1 _cyclic node_**](include/autoware_reference_system/autoware_system_builder.hpp#L206)
-    - this _cyclic node_ has **6 subscribers**and one publisher
-    - this _cyclic node_ starts processing for [**1 millisecond**](include/autoware_reference_system/system/timing/default.hpp#L32) after a message is received **from any** single subscription
+    - total of **5 fusion nodes:**
+        - Point Cloud Fusion
+        - NDT Localizer
+        - Vehicle Interface
+        - Lanelet2 Global Planner
+        - Lanelet 2 Map Loader
+5. **Cyclic Nodes**
+    - for this reference system there is only **1 cyclic node**
+    - this cyclic node has **6 subscribers**and one publisher
+    - this cyclic node starts processing after a message is received **from any** single subscription
     - publishes message after processing is complete
-6. [**Command Nodes**](../reference_system/include/reference_system/nodes/rclcpp/command.hpp)
-    - all _command nodes_ have **1 subscriber** and zero publishers
-    - all _command nodes_ prints out the final latency statistics after a message is received on the specified topic
-    - total of **2 _command nodes_:**
-        - [VehicleDBWSystem](include/autoware_reference_system/autoware_system_builder.hpp#L222)
-        - [IntersectionOutput](include/autoware_reference_system/autoware_system_builder.hpp#L227)
-7. [**Intersection Nodes**](../reference_system/include/reference_system/nodes/rclcpp/intersection.hpp)
-    - for this _reference system_ there is only [EuclideanClusterDetector](include/autoware_reference_system/autoware_system_builder.hpp#L206)
-    - this _intersection node_ has **2 subscribers** and **2 publishers**
+6. **Command Nodes**
+    - all command nodes have **1 subscriber** and zero publishers
+    - all command nodes prints out the final latency statistics after a message is received on
+    the specified topic
+    - total of **2 command nodes:**
+        - VehicleDBWSystem
+        - IntersectionOutput
+7. **Intersection Nodes**
+    - for this reference system there is only EuclideanClusterDetector
+    - this intersection node has **2 subscribers** and **2 publishers**
     - publishes message after processing is complete on the correspoding publisher
-
-
-## Quick Start
-
-This section will go over how to clone, build and run the `autoware_reference_system` in order to generate your own test reports.
-
-### Dependencies
-
-Before running the tests there are a few prerequisites to complete:
-
-- Install python depedencies used during test runs and report generation
-    - `python3 -m pip install psrecord bokeh networkx numpy pandas`
-- Install dependencies using the following command from the `colcon_ws` directory:
-    - `rosdep install --from-paths src --ignore-src -y`
-- Install LTTng and `ros2_tracing` [following the instructions in `ros2_tracing`](https://gitlab.com/ros-tracing/ros2_tracing#building)
-   - _Note:_ if you are setting up [ a realtime linux kernel for a raspberry pi using this docker file](https://github.com/ros-realtime/rt-kernel-docker-builder#raspberry-pi-4-rt-linux-kernel), it should [already include LTTng](https://github.com/ros-realtime/rt-kernel-docker-builder/pull/18)
-   - _Note:_ make sure to clone `ros2_tracing` into **the same workspace as where you put the `reference-system`**, the tests will not properly run if they are not in the same directory.
-
-**Tests will fail** if any of the above dependencies are missing on the machine.
-
-Once the above steps are complete you sould be ready to configure the setup for your platform and run the tests to generate some results.
 
 ## Configure Processing Time
 
-Many nodes in the reference system are actually performing some _psuedo work_ by finding prime numbers up until some _maximum value_.  Depending on the platform, this _maximum value_ will need to be changed so that these nodes do not take an absurd amount of time.  This _maximum value_ should be chosen on a platform-by-platform basis so that the total _run time_ of this work takes some desired length of time.
+Many nodes in the reference system are actually performing some pseudo-work by finding prime
+numbers up until some maximum value.  Depending on the platform, this maximum value will
+need to be changed so that these nodes do not take an absurd amount of time.  This maximum value
+should be chosen on a platform-by-platform basis so that the total run time of this work takes
+some desired length of time.
 
-In order to make finding this _maximum value_ a bit easier across many different platforms a simple [**number_cruncher_benchmark**](src/ros2/number_cruncher_benchmark.cpp) is provided that will loop over various _maximum values_ and spit out how long each one takes to run.  After running this executable on your platform you should have a good idea what _maximum value_ you should use in your [timing configuration](include/autoware_reference_system/system/timing/default.hpp) so that each node does some measurable work for some desired amount of time.
+In order to make finding this maximum value a bit easier across many different platforms a simple
+**number_cruncher_benchmark** is provided that will loop
+over various maximum values and spit out how long each one takes to run.  After running this
+executable on your platform you should have a good idea what maximum value you should use in your
+timing configuration so that each
+node does some measurable work for some desired amount of time.
 
-Here is an example output of the `number_cruncher_benchmark` run on a typical development platform (Intel 9i7):
+Here is an example output of the `number_cruncher_benchmark` run on a typical development
+platform (Intel 9i7):
 
-```
-ros2 run autoware_reference_system number_cruncher_benchmark 
+```console
+ros2 run autoware_reference_system number_cruncher_benchmark
 maximum_number     run time
           64       0.001609ms
          128       0.002896ms
@@ -178,80 +263,71 @@ maximum_number     run time
      2097152       1149.79ms
 ```
 
-Run the above command on your system, select your desired `run_time` and place the corresponding `maximum_number` in the [timing configuration file](include/autoware_reference_system/system/timing/default.hpp) for the desired nodes.
+Run the above command on your system, select your desired `run_time` and place the corresponding
+`maximum_number` in the timing configuration file for the desired nodes.
 
-## Running the Tests
-
-Source your ROS distribution as well as your `ros2_tracing` overlay, compile this repository using the proper CMake arguments and generate some test results:
-
-**Make sure you've installed the required dependencies** as [outlined above](#dependencies) before trying to run these tests.
-
-### Supported CMake Arguments
+## Supported CMake Arguments
 
 - `RUN_BENCHMARK`
-    - Tell CMake to build the benchmark tests that will check the reference system against its requirements before running a sweep of tests to generate trace files and reports
-    - Without the `RUN_BENCHMARK` variable set to `True` only the standard linter tests will be run
+    - Tell CMake to build the benchmark tests that will check the reference system against its
+    requirements before running a sweep of tests to generate trace files and reports
+    - Without the `RUN_BENCHMARK` variable set to `ON` only the standard linter tests will be run
 - `TEST_PLATFORM`
-    - Test CMake to build the tests to check if the tests are being run from a [supported platform](../README.md#supported-platforms) or not
-    - This flag can be ommited if you would like to run the tests on a development system before running them on a supported platform.
+    - Test CMake to build the tests to check if the tests are being run from a
+    supported platform or not
+    - This flag can be omitted if you would like to run the tests on a development system before
+    running them on a supported platform
+    - The platform tests themselves can and should be improved going forward and are only some
+    simple checks today (architecture, number of CPUs, PREEMPT_RT flag, etc.)
+    - Set this to `ON` to check if the current platform is supported
+- `SKIP_TRACING`
+    - Set to `ON` to skip the `ros2_tracing` tests, aka the `callback` tests
+    - This can greatly reduce the length of time the `colcon test` command takes to run
 - `ALL_RMWS`
-    - Set this to `ON` if you'd like to run tests on all available RMWS as well
-    - Otherwise use only default RMW (first one listed by CMake function `get_available_rmw_implementations`)
+    - Set this to `ON` if you'd like to run tests on all available RMWs as well
+    - Otherwise use only default RMW (first one listed by CMake function
+    `get_available_rmw_implementations`)
     - Defaults to `OFF`
-
-**Make sure you've installed the required dependencies** as [outlined above](#dependencies) before trying to run these tests.
-
-```
-# source your ROS distribution
-source /opt/ros/galactic/setup.bash
-
-# cd to your colcon_ws with this repo and `ros2_tracing` inside
-cd /path/to/colcon_ws
-# build packages with benchmark tests enabled
-colcon build --cmake-args -DRUN_BENCHMARK=TRUE -DTEST_PLATFORM=TRUE
-
-# IMPORTANT
-# source the newly built workspace to make sure to use the updated tracetools package
-source install/local_setup.bash
-# run tests, generate traces and reports
-colcon test
-```
-
-**Note:** during the testing _trace data_ generated from `LTTng` will be placed in `$ROS_HOME/tracing`.
-
-If the `$ROS_HOME/tracing` directory is missing the tests will automatically generate it for you.
-
-This directory should now hold tracing data and reports for all `ros2_tracing` tests performed.
-
-Additionally, CPU and Memory Usage tests generate data and reports and saves them to `$ROS_HOME/memory`.
-
-### Test Results and Reports
-
-Reports are automatically generated depending on which tests are run.  Below are the locations where each report is stored after successfully running the tests as described above.
-
-- CPU and Memory Tests
-    - results are stored in your `${ROS_HOME}/memory` directory
-    - if `${ROS_HOME}` is not set, it defaults to `${HOME}/.ros/memory`
-- Executor KPI tests (Latency, Dropped Messages and Jitter)
-    - results are generated directly to the tests `streams.log` file using `std::cout` prints
-    - reports are generated and stored in the `log/latest_test/autoware_reference_system` directory
-- `ros2_tracing` Tests
-    - results and reports are stored in your `${ROS_HOME}/tracing` directory
-    - if `${ROS_HOME}` is not set, it defaults to `${HOME}/.ros/tracing`
-
-More reports can be added going forward.
 
 ## Generating Node Graph Image
 
-To generate the image shown above you can take advantage of [a program called `graphviz`](https://graphviz.org/doc/info/command.html) that has a command line interface (CLI) command `dot`.
+To generate the image shown above you can take advantage of [a program called `graphviz`
+](https://graphviz.org/doc/info/command.html) that has a command line interface (CLI) command `dot`.
 
-First, check out the provided `.dot` file [within this directory](autoware_reference_system.dot) to get an idea of how the `dot` syntax works (feel free to modify it for your use case or future _reference systems_).
+First, check out the provided `.dot` file
+to get an idea of how the `dot` syntax works (feel free to modify it for your use case or
+future _reference systems_).
 
 To generate the `.dot` file into an `.svg` image, run the following command:
 
-```
+```console
 dot -Tsvg autoware_reference_system.dot
 ```
 
-_Note:_ you can change the generated image type to any of [the supported type parameters](https://graphviz.org/docs/outputs/) if you would like a different filetype.
+_Note:_ you can change the generated image type to any of [the supported type parameters
+](https://graphviz.org/docs/outputs/) if you would like a different filetype.
 
+## Available benchmarks
+
+The package comes with a set of benchmark executables. Many of these benchmarks distinguish
+**hotpath nodes** from other nodes; these are the nodes involved in the latency KPI, starting with
+the front/rear LiDAR  and ending in the ObjectCollisionEstimator. Within the hotpath nodes, the
+benchmarks further distinguish between  *front/rear LiDAR nodes* (the LidarDriver and
+PointsTransformer in front/rear, respectively) and  the *fusion chain nodes* (everything from
+PointCloudFusion to ObjectCollisionEstimator).
+
+Some benchmarks use real-time priorities and affinities. In this case, hotpath nodes run at
+priority 1 on cores 1-3; the planner nodes runs at priority 30 on core 0; and all other nodes run
+without real-time priority on all cores.
+
+### ROS 2 benchmarks
+
+- *autoware_default_singlethreaded*: All nodes are assigned to the same single-threaded ROS executor
+- *autoware_default_multithreaded*: All nodes are assigned to the same multi-threaded ROS executor
+- *autoware_default_staticsinglethreaded*: Like *autoware_default_singlethreaded*, but
+   using the `StaticSingleThreadedExecutor`.
+- *autoware_default_prioritized*: Separate executors for front LiDAR nodes, rear LiDAR nodes
+fusion chain nodes, behavior planner, and everything else. Uses real-time priorities.
+- *autoware_default_cbg*: Like *autoware_default_prioritized*, but uses the callback-group executor
+  to remove the non-hotpath subscription in EuclideanClusterDetector from the executor for
+  fusion chain  nodes.

@@ -1,0 +1,221 @@
+name: Build Documentation
+
+on:
+  workflow_run:
+    workflows: [Build and test]
+    types: [completed]
+    branches: [main]
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  WORKSPACE_PATH: ros_ws/src/reference_system
+  DOXYGEN_ARTIFACT: doxygen_xml
+  DOXYBOOK_ARTIFACT: api_reference
+  DOXYBOOK_VERSION: v1.4.0
+
+# only run one build doc workflow at a time, cancel any running ones
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate-doxygen:
+    runs-on: ubuntu-latest
+    container:
+      image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
+    steps:
+      - name: Make sure output directory exists
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.WORKSPACE_PATH }}
+      - name: Generate doxygen and upload as artifact
+        # TODO: figure out way to use WORKSPACE_PATH var here
+        uses: ./ros_ws/src/reference_system/.github/actions/generate-doxygen
+        with:
+          working-directory: ${{ env.WORKSPACE_PATH }}
+          doxyfile-path: '.doxygen/Doxyfile'
+          artifact-path: ${{ env.WORKSPACE_PATH }}/docs/xml
+          artifact-name: ${{ env.DOXYGEN_ARTIFACT }}
+          artifact-retention-days: 30
+  generate-doxybook2:
+    runs-on: ubuntu-latest
+    needs: generate-doxygen
+    steps:
+      - name: Make sure output directory exists
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.WORKSPACE_PATH }}
+      - name: Generate API reference and upload as artifact
+        # TODO: figure out way to use WORKSPACE_PATH var here
+        uses: ./ros_ws/src/reference_system/.github/actions/generate-doxybook
+        with:
+          input-doxygen-artifact: ${{ env.DOXYGEN_ARTIFACT }}
+          doxygen-artifact-extraction-path: ${{ env.WORKSPACE_PATH }}/docs/xml
+          doxybook2-version: ${{ env.DOXYBOOK_VERSION }}
+          doxybook2-config-path: ${{ env.WORKSPACE_PATH }}/docs/doxybook2_config.json
+          output-path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
+          base-url: /reference-system/latest/api-reference/
+          artifact-path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
+          artifact-name: ${{ env.DOXYBOOK_ARTIFACT }}
+          artifact-retention-days: 30
+  build-mkdocs:
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+    needs: generate-doxybook2
+    steps:
+      - name: Make sure output directory exists
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.WORKSPACE_PATH }}
+      - name: Download API Reference
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.DOXYBOOK_ARTIFACT }}
+          path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
+      - name: Build mkdocs site
+        run: |
+          cd ${{ env.WORKSPACE_PATH }}
+          # ensure gh-pages git history is fetched
+          git fetch origin gh-pages --depth=1
+          sudo apt-get update -y
+          # install mkdocs dependencies
+          python3 -m pip install -r docs/requirements.txt
+          # build site
+          mkdocs build
+      - name: Upload docs site
+        uses: actions/upload-artifact@v3
+        with:
+          name: reference_system_site
+          path: ${{ env.WORKSPACE_PATH }}/site
+  run_benchmarks:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # Only run benchmarks on `main`
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        ros_distribution:
+          - foxy
+          - galactic
+          - humble
+          - rolling
+        include:
+          # Foxy Fitzroy (June 2020 - May 2023)
+          - ros_distribution: foxy
+            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-foxy-ros-base-latest
+          # Galactic Geochelone (May 2021 - November 2022)
+          - ros_distribution: galactic
+            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
+          # Humble Hawksbill (May 2022 - May 2027)
+          - ros_distribution: humble
+            docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-humble-ros-base-latest
+          # Rolling Ridley  (June 2020 - Present)
+          - ros_distribution: rolling
+            docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-rolling-ros-base-latest
+    container:
+      image: ${{ matrix.docker_image }}
+    # if: github.ref == 'refs/heads/main'  # Only run benchmarks on `main`
+    steps:
+      - name: Make sure output directory exists
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.WORKSPACE_PATH }}
+      - name: Install benchmark dependencies
+        shell: bash
+        run: |
+          sudo apt-get update -y
+          python3 -m pip install -r ${{ env.WORKSPACE_PATH }}/requirements.txt
+      - name: Build and run benchmarks
+        uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          package-name: autoware_reference_system reference_system reference_interfaces
+          target-ros2-distro: ${{ matrix.ros_distribution }}
+          vcs-repo-file-url: ""
+          colcon-defaults: |
+            {
+              "build": {
+                "cmake-args": [
+                  "-DRUN_BENCHMARK=ON",
+                  "-DALL_RMWS=ON"
+                ]
+              }
+            }
+      - name: Upload Autoware Benchmark Reports
+        continue-on-error: true  # continue even if report gen failsS 
+        uses: actions/upload-artifact@v3
+        with:
+          name: autoware_benchmark_reports_${{ matrix.ros_distribution }}
+          path: '~/.ros/benchmark_autoware_reference_system'
+          retention-days: 60
+  deploy_docs:
+    runs-on: ubuntu-latest
+    # only run on main branch after jobs listed in `needs` have finished (successful or not)
+    if: github.ref == 'refs/heads/main' && always()
+    needs: [build-mkdocs, run_benchmarks]
+    steps:
+      - name: Make sure output directory exists
+        run: mkdir -p ${{ env.WORKSPACE_PATH }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.WORKSPACE_PATH }}
+      - name: Download API reference
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.DOXYBOOK_ARTIFACT }}
+          path: ${{ env.WORKSPACE_PATH }}/docs/api-reference
+      - name: Download Foxy reports
+        continue-on-error: true  # Still publish docs even if reports are not available
+        uses: actions/download-artifact@v3
+        with:
+          name: autoware_benchmark_reports_foxy
+          path: ${{ env.WORKSPACE_PATH }}/docs/reports/foxy
+      - name: Download Galactic reports
+        continue-on-error: true  # Still publish docs even if reports are not available
+        uses: actions/download-artifact@v3
+        with:
+          name: autoware_benchmark_reports_galactic
+          path: ${{ env.WORKSPACE_PATH }}/docs/reports/galactic
+      - name: Download Humble reports
+        continue-on-error: true  # Still publish docs even if reports are not available
+        uses: actions/download-artifact@v3
+        with:
+          name: autoware_benchmark_reports_humble
+          path: ${{ env.WORKSPACE_PATH }}/docs/reports/humble
+      - name: Download Rolling reports
+        continue-on-error: true  # Still publish docs even if reports are not available
+        uses: actions/download-artifact@v3
+        with:
+          name: autoware_benchmark_reports_rolling
+          path: ${{ env.WORKSPACE_PATH }}/docs/reports/rolling
+      - name: Deploy mkdocs site
+        shell: bash
+        run: |
+          cd ${{ env.WORKSPACE_PATH }}
+          # ensure gh-pages git history is fetched
+          git fetch origin gh-pages --depth=1
+          sudo apt-get update -y
+          # install docs dependencies
+          python3 -m pip install -r docs/requirements.txt
+          # TODO: mike rebuilds entire site, instead we should
+          # skip the build and download site artifact from previous workflow
+          if [ -z ${{ github.event.release.tag_name }}]; then
+            export NEW_VERSION=main
+          else
+            export NEW_VERSION=${{ github.event.release.tag_name }}
+          fi
+          git config user.name doc-bot
+          git config user.email doc-bot@ros-realtime.com
+          mike deploy --push --update-aliases $NEW_VERSION latest
+

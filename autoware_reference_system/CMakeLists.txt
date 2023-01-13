@@ -1,36 +1,15 @@
 cmake_minimum_required(VERSION 3.5)
 project(autoware_reference_system)
 
-# pass in via command line or set to True to test if platform is supported
-message(STATUS "TEST_PLATFORM=${TEST_PLATFORM}")
-if(${TEST_PLATFORM})
-  message(STATUS "Building platform test")
-else()
-  message(STATUS "Not building platform tests")
-endif()
+option(RUN_BENCHMARK "Run the full benchmark tests" OFF)  # default to off for CI purposes
+option(SKIP_TRACING "Skip the ros2_tracing (LTTng) tests" ON)  # default to off until ros-realtime/reference_system#35 is closed
+option(TEST_PLATFORM "Test if running on a supported platform" OFF)  # default to off for development purposes
+option(ALL_RMWS "Run tests for all available RMWs" OFF)  # default to off so only one RMW is tested by default
+set(FRAMEWORK ros CACHE STRING "The framework to build for. Currently supported is ROS 2 (\"ros\").")
+set(AVAILABLE_FRAMEWORKS ros)
 
-# pass in via command line or set to True to run full benchmark tests
-message(STATUS "RUN_BENCHMARK=${RUN_BENCHMARK}")
-if(${RUN_BENCHMARK})
-  # pass in via command line or set to True to skip ros2_tracing tests
-  message(STATUS "SKIP_TRACING=${SKIP_TRACING}")
-  if(${SKIP_TRACING})
-    message(STATUS "Only building memory and CPU usage benchmark tests")
-    message(STATUS "Skipping ros2_tracing (LTTng) tests")
-  else()
-    message(STATUS "Building full benchmark tests")
-  endif()
-else()
-  message(STATUS "Not building benchmark tests")
-endif()
-
-# pass in via command line or set to True to run for all available RMWs
-message(STATUS "ALL_RMWS=${ALL_RMWS}")
-if(${ALL_RMWS})
-  message(STATUS "Run tests on all available RMW's")
-else()
-  set(ALL_RMWS OFF)
-  message(STATUS "Using default RMW for tests")
+if(NOT ${FRAMEWORK} IN_LIST AVAILABLE_FRAMEWORKS)
+  message(FATAL_ERROR "Unsupported framework: ${FRAMEWORK}")
 endif()
 
 if(NOT CMAKE_CXX_STANDARD)
@@ -49,30 +28,45 @@ find_package(KlepsydraStreaming REQUIRED)
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
-# Single Threaded Executor
-ament_auto_add_executable(autoware_default_singlethreaded
-  src/ros2/executor/autoware_default_singlethreaded.cpp
-)
-
-# Static Single Threaded Executor
-ament_auto_add_executable(autoware_default_staticsinglethreaded
-  src/ros2/executor/autoware_default_staticsinglethreaded.cpp
-)
-
-# Multi Threaded Executor
-ament_auto_add_executable(autoware_default_multithreaded
-  src/ros2/executor/autoware_default_multithreaded.cpp
-)
-
 # Number Cruncher Benchmark
 ament_auto_add_executable(number_cruncher_benchmark
-  src/ros2/number_cruncher_benchmark.cpp
-)
+  src/number_cruncher_benchmark.cpp)
+
+set(BENCHMARK_EXECUTABLES "")
+macro(add_benchmark_executable target src)
+  ament_auto_add_executable(${target} ${src} src/priorities.cpp)
+  list(APPEND BENCHMARK_EXECUTABLES ${target})
+endmacro()
+
+if(${FRAMEWORK} STREQUAL ros)
+  # Single Threaded Executor
+  add_benchmark_executable(autoware_default_singlethreaded
+    src/ros2/executor/autoware_default_singlethreaded.cpp)
+  # Multi Threaded Executor
+  add_benchmark_executable(autoware_default_multithreaded
+    src/ros2/executor/autoware_default_multithreaded.cpp)
+
+  # Static Single Threaded Executor
+  add_benchmark_executable(autoware_default_staticsinglethreaded
+    src/ros2/executor/autoware_default_staticsinglethreaded.cpp)
+
+  # Prioritized Executor
+  add_benchmark_executable(autoware_default_prioritized
+    src/ros2/executor/autoware_default_prioritized.cpp)
+
+  # API `add_callback_group` not available in Foxy
+  if(NOT $ENV{ROS_DISTRO} MATCHES "foxy")
+    # Multiple executors on callback-group-level with suitable prioritization of critical path.
+    add_benchmark_executable(autoware_default_cbg
+      src/ros2/executor/autoware_default_cbg.cpp)
+  endif()
+endif()
 
 # Add new executors to test here
-ament_auto_add_executable(autoware_default_custom
+add_benchmark_executable(autoware_default_custom
   src/ros2/executor/autoware_default_klepsydrasinglethreaded.cpp
 )
+
 
 ament_target_dependencies(autoware_default_custom ${dependencies})
 
@@ -80,25 +74,9 @@ if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
-  # tracetools uses ROS_HOME to place tracing data
-  if(NOT DEFINED $ENV{ROS_HOME})
-    set(ROS_HOME $ENV{HOME}/.ros)
-  else()
-    set(ROS_HOME $ENV{ROS_HOME})
-  endif()
-
-  # std trace type uses LOG directory
-  if(NOT DEFINED $ENV{ROS_LOG_DIR})
-    set(ROS_LOG_DIR ${CMAKE_INSTALL_PREFIX}/../../log/latest_test/${PROJECT_NAME})
-  else()
-    set(ROS_LOG_DIR $ENV{ROS_LOG_DIR})
-  endif()
-
-  set(DEFAULT_TIMEOUT 300)  # seconds, 300 = roughly 5min
-
   if(${TEST_PLATFORM})
     # check current platform
-    ament_add_pytest_test(${PROJECT_NAME}
+    ament_add_pytest_test(platform_test
       test/test_platform.py
       TIMEOUT 5
     )
@@ -110,7 +88,7 @@ if(${BUILD_TESTING})
       autoware_default_singlethreaded
       autoware_default_staticsinglethreaded
       autoware_default_multithreaded
-      autoware_default_custom
+      #autoware_default_custom
     )
 
     # Add more run times here (time to run traces for)
@@ -119,10 +97,11 @@ if(${BUILD_TESTING})
       # 10
       # 30
       # 60
+      # 120
     )
 
     # Add more trace types here
-    # had to seperate out traces due to dropped events
+    # The CPU trace type is disabled since it produces too many events
     # see https://github.com/ros-realtime/reference-system/pull/33#issuecomment-928264240
     set(TRACE_TYPES
       callback  # uses ros2_tracing, LTTng
@@ -131,9 +110,9 @@ if(${BUILD_TESTING})
       # cpu     # built into memory tests using psrecord
     )
 
-    # remove ros2_tracing trace_types if SKIP_TRACING is TRUE
+    # remove ros2_tracing trace_types if SKIP_TRACING is ON
     if(${SKIP_TRACING})
-      message(STATUS "SKIP_TRACING is TRUE")
+      message(STATUS "SKIP_TRACING is ON")
       message(STATUS "Removing callback trace tests")
       list(REMOVE_ITEM TRACE_TYPES "callback")
     endif()
@@ -158,34 +137,27 @@ if(${BUILD_TESTING})
 
     # include cmake functions to use later on
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/test_requirements.cmake)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_traces.cmake)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_report.cmake)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/generate_summary_report.cmake)
 
     # check each executable matches the system requirements
     foreach(exe ${TEST_TARGETS})
       test_requirements(${exe} 3)
     endforeach()
 
-    # generate traces for each executable
-    foreach(exe ${TEST_TARGETS})
-      # loop over each rmw implmentation
-      foreach(rmw_implementation ${rmws_available})
-        find_package("${rmw_implementation}" REQUIRED)
-        foreach(time ${RUN_TIMES})
-          foreach(type ${TRACE_TYPES})
-              generate_traces(${exe} ${type} ${time})
-              generate_report(${exe} ${type} ${time})
-          endforeach()
-        endforeach()
-      endforeach()
-    endforeach()
+    list(JOIN rmws_available "," RMWS_COMMA_LIST)
+    list(JOIN TEST_TARGETS "," EXES_COMMA_LIST)
+    list(JOIN TRACE_TYPES "," TRACE_TYPES_COMMA_LIST)
+    list(JOIN RUN_TIMES "," RUN_TIMES_COMMA_LIST)
 
-    foreach(trace_type ${TRACE_TYPES})
-      foreach(time ${RUN_TIMES})
-        generate_summary_report(${trace_type} ${time})
-      endforeach()
-    endforeach()
+    # generate traces for each executable
+    set(TEST_NAME benchmark)
+    include(FindPython3)
+    find_package(Python3 REQUIRED COMPONENTS Interpreter)
+    add_test(
+        NAME ${TEST_NAME}
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/scripts/benchmark.py
+        --trace_types ${TRACE_TYPES_COMMA_LIST}
+        --rmws ${RMWS_COMMA_LIST}
+        ${RUN_TIMES_COMMA_LIST} ${EXES_COMMA_LIST})
   endif()
 endif()
 

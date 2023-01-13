@@ -18,10 +18,10 @@
 #include <utility>
 
 #include "rclcpp/rclcpp.hpp"
+#include "reference_system/msg_types.hpp"
 #include "reference_system/nodes/settings.hpp"
 #include "reference_system/number_cruncher.hpp"
 #include "reference_system/sample_management.hpp"
-#include "reference_system/msg_types.hpp"
 
 namespace nodes
 {
@@ -63,10 +63,9 @@ private:
 
     auto output_message = publisher_->borrow_loaned_message();
 
-    uint32_t missed_samples = get_missed_samples_and_update_seq_nr(
-      subscriptions_[0].cache,
-      subscriptions_[0].sequence_number)
-      +
+    uint32_t missed_samples =
+      get_missed_samples_and_update_seq_nr(
+      subscriptions_[0].cache, subscriptions_[0].sequence_number) +
       get_missed_samples_and_update_seq_nr(
       subscriptions_[1].cache,
       subscriptions_[1].sequence_number);

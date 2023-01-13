@@ -71,7 +71,8 @@ constexpr BenchmarkThroughput::time_t BenchmarkThroughput::REAR_LIDAR_DRIVER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::POINT_CLOUD_MAP;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::VISUALIZER;
 constexpr BenchmarkThroughput::time_t BenchmarkThroughput::LANELET2MAP;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::EUCLIDEAN_CLUSTER_SETTINGS;
+constexpr BenchmarkThroughput::time_t
+BenchmarkThroughput::EUCLIDEAN_CLUSTER_SETTINGS;
 constexpr uint64_t BenchmarkThroughput::POINTS_TRANSFORMER_FRONT;
 constexpr uint64_t BenchmarkThroughput::POINTS_TRANSFORMER_REAR;
 constexpr uint64_t BenchmarkThroughput::VOXEL_GRID_DOWNSAMPLER;
@@ -89,7 +90,8 @@ constexpr uint64_t BenchmarkThroughput::VEHICLE_INTERFACE;
 constexpr uint64_t BenchmarkThroughput::LANELET_2_GLOBAL_PLANNER;
 constexpr uint64_t BenchmarkThroughput::LANELET_2_MAP_LOADER;
 constexpr uint64_t BenchmarkThroughput::BEHAVIOR_PLANNER;
-constexpr BenchmarkThroughput::time_t BenchmarkThroughput::BEHAVIOR_PLANNER_CYCLE;
+constexpr BenchmarkThroughput::time_t
+BenchmarkThroughput::BEHAVIOR_PLANNER_CYCLE;
 
 struct BenchmarkCPUUsage
 {
@@ -103,7 +105,8 @@ struct BenchmarkCPUUsage
   static constexpr time_t POINT_CLOUD_MAP = Default::POINT_CLOUD_MAP;
   static constexpr time_t VISUALIZER = Default::VISUALIZER;
   static constexpr time_t LANELET2MAP = Default::LANELET2MAP;
-  static constexpr time_t EUCLIDEAN_CLUSTER_SETTINGS = Default::EUCLIDEAN_CLUSTER_SETTINGS;
+  static constexpr time_t EUCLIDEAN_CLUSTER_SETTINGS =
+    Default::EUCLIDEAN_CLUSTER_SETTINGS;
 
   // the following values are used as the number_cruncher_limit
   // to search for primes up to starting at 3
@@ -132,7 +135,8 @@ struct BenchmarkCPUUsage
 
   // cyclic
   static constexpr uint64_t BEHAVIOR_PLANNER = 0;
-  static constexpr time_t BEHAVIOR_PLANNER_CYCLE = Default::BEHAVIOR_PLANNER_CYCLE;
+  static constexpr time_t BEHAVIOR_PLANNER_CYCLE =
+    Default::BEHAVIOR_PLANNER_CYCLE;
 };
 
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::FRONT_LIDAR_DRIVER;
@@ -140,7 +144,8 @@ constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::REAR_LIDAR_DRIVER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::POINT_CLOUD_MAP;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::VISUALIZER;
 constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::LANELET2MAP;
-constexpr BenchmarkCPUUsage::time_t BenchmarkCPUUsage::EUCLIDEAN_CLUSTER_SETTINGS;
+constexpr BenchmarkCPUUsage::time_t
+BenchmarkCPUUsage::EUCLIDEAN_CLUSTER_SETTINGS;
 constexpr uint64_t BenchmarkCPUUsage::POINTS_TRANSFORMER_FRONT;
 constexpr uint64_t BenchmarkCPUUsage::POINTS_TRANSFORMER_REAR;
 constexpr uint64_t BenchmarkCPUUsage::VOXEL_GRID_DOWNSAMPLER;

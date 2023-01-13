@@ -18,10 +18,10 @@
 #include <utility>
 
 #include "rclcpp/rclcpp.hpp"
+#include "reference_system/msg_types.hpp"
 #include "reference_system/nodes/settings.hpp"
 #include "reference_system/number_cruncher.hpp"
 #include "reference_system/sample_management.hpp"
-#include "reference_system/msg_types.hpp"
 
 namespace nodes
 {
@@ -52,8 +52,7 @@ private:
     merge_history_into_sample(output_message.get(), input_message);
 
     uint32_t missed_samples = get_missed_samples_and_update_seq_nr(
-      input_message,
-      input_sequence_number_);
+      input_message, input_sequence_number_);
 
     set_sample(
       this->get_name(), sequence_number_++, missed_samples, timestamp,

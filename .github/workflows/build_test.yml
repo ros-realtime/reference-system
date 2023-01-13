@@ -1,0 +1,68 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '**'
+  pull_request:
+    branches:
+      - main
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  WORKSPACE_PATH: ros_ws
+  CLONE_PATH: ros_ws/src/reference_system
+
+# only run one build doc workflow at a time, cancel any running ones
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ros_distribution:
+          - foxy
+          - galactic
+          - humble
+          - rolling
+        include:
+          # Foxy Fitzroy (June 2020 - May 2023)
+          - ros_distribution: foxy
+            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-foxy-ros-base-latest
+          # Galactic Geochelone (May 2021 - November 2022)
+          - ros_distribution: galactic
+            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
+          # Humble Hawksbill (May 2022 - May 2027)
+          - ros_distribution: humble
+            docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-humble-ros-base-latest
+          # Rolling Ridley  (June 2020 - Present)
+          - ros_distribution: rolling
+            docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-rolling-ros-base-latest
+    container:
+      image: ${{ matrix.docker_image }}
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Setup workspace
+        run: mkdir -p ${{ env.CLONE_PATH }}
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.CLONE_PATH }}
+      - name: Build and test
+        uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          package-name: autoware_reference_system reference_system reference_interfaces
+          target-ros2-distro: ${{ matrix.ros_distribution }}
+          vcs-repo-file-url: ""
+      - name: Upload logs as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build_and_test_logs_${{ matrix.ros_distribution }}
+          path: ${{ env.WORKSPACE_PATH }}/log
