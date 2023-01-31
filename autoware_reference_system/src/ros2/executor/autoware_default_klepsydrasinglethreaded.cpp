@@ -60,7 +60,7 @@ int main(int argc, char * argv[])
   environment.setPropertyBool("export_streaming_configuration", true);
   */
   environment.setPropertyString("log_filename", "");
-  environment.setPropertyInt("log_level", 2);
+  environment.setPropertyInt("log_level", 6);
   environment.setPropertyInt("pool_size", 1);
   environment.setPropertyInt("number_of_cores", 4);//1,2,3,4
   environment.setPropertyInt("number_of_trypost", 0);
