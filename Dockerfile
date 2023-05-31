@@ -2,7 +2,7 @@
 # Build with 
 # TODO: Not use root! 
 # Add cache for apt update.xº
-ARG image_base=337955887028.dkr.ecr.eu-central-1.amazonaws.com/amd64:galactic-1.4.4
+ARG image_base=registry.klepsydra.io/amd64/galactic:20.04.0
 
 ARG registry=registry.klepsydra.io/repository
 ARG board=amd64
@@ -99,6 +99,17 @@ cd /home/kpsruser/colcon_reference-system/
 colcon build --cmake-args -DCMAKE_PREFIX_PATH="/home/kpsruser/kpe-ros2-core-install/install" -DCMAKE_BUILD_TYPE=${BUILD_MODE} -DRUN_BENCHMARK=ON
 EOF
 
+# ToDO: This is not ideal. 
 # Necessary.
 ENV LD_LIBRARY_PATH=/home/kpsruser/kpe-ros2-core-install/install/kpsr_ros2_executor/lib:/usr/local/lib:/home/kpsruser/colcon_reference-system/install/reference_interfaces/lib:/opt/ros/galactic/lib/x86_64-linux-gnu:/opt/ros/galactic/lib
+ENV PYTHONPATH=/opt/ros/galactic/lib/python3.8/site-packages:/home/kpsruser/colcon_reference-system/install/reference_system/lib/python3.8/site-packages/
 
+# Modify entrypoint
+RUN sed -i '/^exec */i source /home/kpsruser/colcon_reference-system/install/setup.sh --' /opt/ros_entrypoint.sh 
+
+# Install dependencies.
+RUN pip3 install pandas==2.0.1 bokeh==2.4.1 psrecord==1.2 numpy==1.24.3 
+
+RUN chmod +x /home/kpsruser/reference-system/autoware_reference_system/scripts/benchmark.py
+WORKDIR /home/kpsruser/reference-system/
+CMD autoware_reference_system/scripts/benchmark.py 30 autoware_default_custom

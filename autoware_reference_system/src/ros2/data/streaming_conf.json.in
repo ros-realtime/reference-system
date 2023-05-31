@@ -16,9 +16,9 @@
         "pool_size": 1,
         "stat_admin_port": 9595,
         "stat_system_port": 9696,
-        "log_level": 0,
-        "number_of_event_loops": 4,
-        "number_of_cores": 4,
+        "log_level": 6,
+        "number_of_event_loops": 8,
+        "number_of_cores": 8,
         "critical_thread_pool_size": 32,
         "non_critical_thread_pool_size": 32,
         "number_of_parallel_threads": 1
