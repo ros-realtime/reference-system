@@ -70,7 +70,8 @@ EOF
 
 # Install colcon, rosdep and dependencies
 FROM kpe-streaming as kpe-ros2-core
-RUN --mount=type=ssh git clone --recurse-submodules git@github.com:klepsydra-technologies/kpe-ros2-core.git
+ENV KPE_ROS2_CORE_VER=v1.0.0
+RUN --mount=type=ssh git clone --branch ${KPE_ROS2_CORE_VER} --recurse-submodules git@github.com:klepsydra-technologies/kpe-ros2-core.git
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt 
 
 RUN --mount=type=cache,target=/home/kpsruser/.ccache <<EOF
