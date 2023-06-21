@@ -1,5 +1,4 @@
-ARG image_base=osrf/ros:humble-desktop
-
+ARG image_base=arm64v8/ros:humble
 ARG registry=registry.klepsydra.io/repository
 ARG board=amd64
 ARG osrelease=jammy
@@ -16,6 +15,10 @@ RUN groupadd --gid 10000 kpsruser && \
     usermod -aG sudo kpsruser && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
+RUN apt update && apt-get -y install openssh-client
+RUN mkdir -p -m 0700 ~/.ssh
+RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
+
 ENV BUILD_MODE=Release
 
 ARG OPENSSLVERSION="OpenSSL_1_1_1i"
@@ -26,49 +29,9 @@ RUN git clone https://github.com/openssl/openssl.git && \
     make install && \
     cd ../ && rm -rf openssl
 
-ARG YAMLCPPVERSION="yaml-cpp-0.7.0"
-RUN git clone https://github.com/jbeder/yaml-cpp && \
-    cd yaml-cpp && git checkout ${YAMLCPPVERSION} && \
-    mkdir build && \
-    cd build && \
-    cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DYAML_CPP_BUILD_TESTS=Off ../ && \
-    make -j$(nproc) && \
-    make install && \
-    cd ../../ && rm -rf yaml-cpp
 
-ARG ZMQVERSION="v4.3.4"
-RUN git clone https://github.com/zeromq/libzmq.git && \
-    cd libzmq && \
-    git checkout ${ZMQVERSION} && \
-    mkdir build && \
-    cd build && \
-    cmake ../ && \
-    make -j$(nproc) && \
-    make install && \
-    cd ../../ && rm -rf libzmq
 
-ARG ZMQCPPVERSION="v4.8.0"
-RUN git clone https://github.com/zeromq/cppzmq.git && \
-    cd cppzmq && \
-    git checkout ${ZMQCPPVERSION} && \
-    mkdir build && cd build && \
-    cmake ../ && \
-    make -j$(nproc) && \
-    make install && \
-    cd ../../ && rm -rf cppzmq
-
-ARG BENCHMARKVERSION="3b3de69400164013199ea448f051d94d7fc7d81f"
-RUN git clone https://github.com/google/benchmark.git && \
-    cd benchmark && \
-    git checkout ${BENCHMARKVERSION} && \
-    mkdir build && cd build && \
-    cmake -DBENCHMARK_DOWNLOAD_DEPENDENCIES=on -DCMAKE_BUILD_TYPE=Release ../ && \
-    make -j$(nproc) && \
-    make install && \
-    cd ../../ && \
-    rm -rf benchmark
-
-RUN apt-get -y update && apt-get -y install libtool
+RUN apt-get -y install libtool
 
 ARG PROTOBUFVERSION="v3.19.0"
 RUN git clone https://github.com/protocolbuffers/protobuf.git && \
@@ -103,6 +66,46 @@ RUN git clone https://github.com/opencv/opencv.git && \
     cd ../../ && \
     rm -rf opencv
 
+ARG BENCHMARKVERSION="3b3de69400164013199ea448f051d94d7fc7d81f"
+RUN git clone https://github.com/google/benchmark.git && \
+    cd benchmark && \
+    git checkout ${BENCHMARKVERSION} && \
+    mkdir build && cd build && \
+    cmake -DBENCHMARK_DOWNLOAD_DEPENDENCIES=on -DCMAKE_BUILD_TYPE=Release ../ && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../../ && \
+    rm -rf benchmark
+
+ARG ZMQVERSION="v4.3.4"
+RUN git clone https://github.com/zeromq/libzmq.git && \
+    cd libzmq && \
+    git checkout ${ZMQVERSION} && \
+    mkdir build && \
+    cd build && \
+    cmake ../ && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../../ && rm -rf libzmq
+
+ARG ZMQCPPVERSION="v4.8.0"
+RUN git clone https://github.com/zeromq/cppzmq.git && \
+    cd cppzmq && \
+    git checkout ${ZMQCPPVERSION} && \
+    mkdir build && cd build && \
+    cmake ../ && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../../ && rm -rf cppzmq
+ARG YAMLCPPVERSION="yaml-cpp-0.7.0"
+RUN git clone https://github.com/jbeder/yaml-cpp && \
+    cd yaml-cpp && git checkout ${YAMLCPPVERSION} && \
+    mkdir build && \
+    cd build && \
+    cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DYAML_CPP_BUILD_TESTS=Off ../ && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../../ && rm -rf yaml-cpp
 
 USER root
 WORKDIR /home/kpsruser
@@ -196,8 +199,7 @@ colcon build --cmake-args -DCMAKE_PREFIX_PATH="/home/kpsruser/kpe-ros2-core-inst
 EOF
 
 RUN apt-get -y install ros-humble-rmw-cyclonedds-cpp
-RUN pip install pandas==2.0.1 bokeh==2.4.1 psrecord==1.2 numpy==1.23.5 pygad==2.18.1 
-RUN chmod +x /home/kpsruser/reference-system/autoware_reference_system/scripts/benchmark.py
+
 # Necessary.
 ENV LD_LIBRARY_PATH=/home/kpsruser/kpe-ros2-core-install/install/kpsr_ros2_executor/lib:/usr/local/lib:/home/kpsruser/colcon_reference-system/install/reference_interfaces/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib
 
@@ -206,6 +208,6 @@ RUN sed -i 's/parallised/parallelised/g' /home/kpsruser/colcon_reference-system/
 
 USER kpsruser
 
-RUN echo 'source /opt/ros/humble/setup.sh' >> /home/kpsruser/.bashrc && \
-    echo 'source /home/kpsruser/colcon_reference-system/install/setup.sh' >> /home/kpsruser/.bashrc && \
+RUN echo 'source /opt/ros/humble/setup.sh' >> /home/kpsruser/.bashrc &&
+    echo 'source /home/kpsruser/colcon_reference-system/install/setup.sh' >> /home/kpsruser/.bashrc &&
     echo 'source /home/kpsruser/kpe-ros2-core-install/install/setup.sh' >> /home/kpsruser/.bashrc
