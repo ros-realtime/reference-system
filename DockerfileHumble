@@ -196,7 +196,7 @@ colcon build --cmake-args -DCMAKE_PREFIX_PATH="/home/kpsruser/kpe-ros2-core-inst
 EOF
 
 RUN apt-get -y install ros-humble-rmw-cyclonedds-cpp
-RUN pip install pandas==2.0.1 bokeh==2.4.1 psrecord==1.2 numpy==1.24.3
+RUN pip install pandas==2.0.1 bokeh==2.4.1 psrecord==1.2 numpy==1.23.5
 RUN chmod +x /home/kpsruser/reference-system/autoware_reference_system/scripts/benchmark.py
 # Necessary.
 ENV LD_LIBRARY_PATH=/home/kpsruser/kpe-ros2-core-install/install/kpsr_ros2_executor/lib:/usr/local/lib:/home/kpsruser/colcon_reference-system/install/reference_interfaces/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib

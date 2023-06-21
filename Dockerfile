@@ -109,7 +109,7 @@ ENV PYTHONPATH=/opt/ros/galactic/lib/python3.8/site-packages:/home/kpsruser/colc
 RUN sed -i '/^exec */i source /home/kpsruser/colcon_reference-system/install/setup.sh --' /opt/ros_entrypoint.sh 
 
 # Install dependencies.
-RUN pip3 install pandas==2.0.1 bokeh==2.4.1 psrecord==1.2 numpy==1.24.3 
+RUN pip3 install pandas==2.0.1 bokeh==2.4.1 psrecord==1.2 numpy==1.23.5 pygad==2.18.1 
 
 RUN chmod +x /home/kpsruser/reference-system/autoware_reference_system/scripts/benchmark.py
 WORKDIR /home/kpsruser/reference-system/

@@ -8,8 +8,10 @@ import numpy as np
 from reference_system_py.benchmark import get_benchmark_directories_below, generate_trace
 from reference_system_py.std_latency import parseLogSummaryFromFiles
 
-n_number_cruncher = 4096
-with open('policy_ref_def.json') as f:
+n_number_cruncher = 4096 # from:
+# /home/kpsruser/colcon_reference-system/src/reference-system/autoware_reference_system/include/autoware_reference_system/system/timing/default.hpp
+with open('/home/kpsruser/colcon_reference-system/src/reference-system/autoware_reference_system/src/ros2/data/streaming_policy_ref.json') as f:
+    # 
     policy_template = json.load(f)
 
 edges = [('FrontLidarDriver', 'PointsTransformerFront'),
@@ -70,8 +72,8 @@ other_nodes = ["PointCloudMap",
 
 def fitness_func(solution, idx_sol):
     print(idx_sol)
+    print(solution)
     update_policy(solution)
-
     latency_hot_path = calculate_latency_policy()
 
     return -latency_hot_path
@@ -85,7 +87,7 @@ def update_policy(solution):
         if node in node_dicts:
             base_policy['layer_event_loop_map'][composite_node]['coreId'] = int(node_dicts[node])
     # Execute.
-    with open('/home/ubuntu/development/klepsydra/reference_system/policy.json', 'w', encoding='utf-8') as f:
+    with open('/home/kpsruser/colcon_reference-system/src/reference-system/autoware_reference_system/src/ros2/data/streaming_policy.json', 'w', encoding='utf-8') as f:
         json.dump(base_policy, f, ensure_ascii=False, indent=4)
 
 
@@ -121,7 +123,7 @@ sol_per_pop = 8
 num_genes = len(hot_path_nodes) + len(other_nodes)
 
 init_range_low = 0
-init_range_high = 3
+init_range_high = 4 # not included
 
 parent_selection_type = "sss"
 keep_parents = 1
@@ -153,8 +155,9 @@ ga_instance.save(filename=filename)
 solution, solution_fitness, solution_idx = ga_instance.best_solution()
 update_policy(solution)
 
-src = '/home/ubuntu/development/klepsydra/reference_system/policy.json'
-dst =  f'/home/ubuntu/development/klepsydra/reference_system/policy_{n_number_cruncher}.json'
+src = '/home/kpsruser/colcon_reference-system/src/reference-system/autoware_reference_system/src/ros2/data/streaming_policy.json'
+dst =  f'/home/kpsruser/colcon_reference-system/src/reference-system/autoware_reference_system/src/ros2/data/policy_{n_number_cruncher}.json'
+
 shutil.copyfile(src, dst)
 
 
