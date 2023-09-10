@@ -2,6 +2,12 @@
 Changelog for package autoware_reference_system
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+v1.1.0
+------
+* Add Iron ROS 2 distribution
+* Remove EoL distributions Foxy and Galactic
+* Remove legacy hack for rosidl_geneartor_py
+
 v1.0.0
 -----------
 * Add first changelog
