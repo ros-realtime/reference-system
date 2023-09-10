@@ -32,32 +32,3 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 )
 
 ament_auto_package()
-
-# remove the below lines if fix to #143 is backported to older ROS distros
-# fix rosidl_generator_py bug #143
-# https://github.com/ros2/rosidl_python/issues/143
-set(GENERATED_FILE "${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_py/${PROJECT_NAME}/msg/_transmission_stats.py")
-
-set(DISTROS_WITH_FIX
-  "humble")
-list(FIND DISTROS_WITH_FIX $ENV{ROS_DISTRO} DISTRO_ALREADY_FIXED)
-
-if (${DISTRO_ALREADY_FIXED} MATCHES -1)
-  message(STATUS "checking generated file: ${GENERATED_FILE}")
-
-  set(DISTROS_WITH_RENAMED_TARGET "rolling")
-  list(FIND DISTROS_WITH_RENAMED_TARGET $ENV{ROS_DISTRO} TARGET_RENAMED)
-
-  if (${TARGET_RENAMED} MATCHES -1)
-    set(TARGET_NAME ${PROJECT_NAME}__python)
-  else()
-    set(TARGET_NAME ${PROJECT_NAME}__rosidl_generator_py)
-  endif()
-
-  add_custom_command(
-    TARGET ${TARGET_NAME}
-    POST_BUILD
-    COMMAND sed -i "s/all(val >= 0 and val) < 256/all(ord(val) >= 0 and ord(val) < 256/" ${GENERATED_FILE}
-    COMMENT "Check generated IDL files for extra parenthesis..."
-    VERBATIM)
-endif()
