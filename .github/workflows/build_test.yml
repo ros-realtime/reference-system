@@ -28,20 +28,16 @@ jobs:
       fail-fast: false
       matrix:
         ros_distribution:
-          - foxy
-          - galactic
           - humble
+          - iron
           - rolling
         include:
-          # Foxy Fitzroy (June 2020 - May 2023)
-          - ros_distribution: foxy
-            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-foxy-ros-base-latest
-          # Galactic Geochelone (May 2021 - November 2022)
-          - ros_distribution: galactic
-            docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
           # Humble Hawksbill (May 2022 - May 2027)
           - ros_distribution: humble
             docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-humble-ros-base-latest
+          # Iron Irwini (May 2023 - November 2024)
+          - ros_distribution: iron
+            docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-iron-ros-base-latest
           # Rolling Ridley  (June 2020 - Present)
           - ros_distribution: rolling
             docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-rolling-ros-base-latest
@@ -56,7 +52,7 @@ jobs:
         with:
           path: ${{ env.CLONE_PATH }}
       - name: Build and test
-        uses: ros-tooling/action-ros-ci@v0.2
+        uses: ros-tooling/action-ros-ci@v0.3
         with:
           package-name: autoware_reference_system reference_system reference_interfaces
           target-ros2-distro: ${{ matrix.ros_distribution }}
