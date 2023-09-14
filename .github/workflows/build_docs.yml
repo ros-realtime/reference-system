@@ -133,7 +133,7 @@ jobs:
           sudo apt-get update -y
           python3 -m pip install -r ${{ env.WORKSPACE_PATH }}/requirements.txt
       - name: Build and run benchmarks
-        uses: ros-tooling/action-ros-ci@v0.2
+        uses: ros-tooling/action-ros-ci@v0.3
         with:
           package-name: autoware_reference_system reference_system reference_interfaces
           target-ros2-distro: ${{ matrix.ros_distribution }}
