@@ -96,7 +96,11 @@ def terminatingRos2Run(pkg, executable, rmw, env=os.environ, args=[], **kwargs):
         # The process returned by subprocess.Popen is the shell process, not the
         # ROS process. Terminating the former will not necessarily terminate the latter.
         # Terminate all the *children* of the shell process instead.
-        children = shellproc.children()
+        try:
+            children = shellproc.children()
+        except psutil.NoSuchProcess:
+            children = []
+
         assert len(children) <= 1
         if children:
             rosproc = children[0]
