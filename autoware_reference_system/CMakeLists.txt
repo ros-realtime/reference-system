@@ -20,6 +20,11 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+find_package(kpsr_ros2_executor REQUIRED)
+find_package(Klepsydra REQUIRED)
+find_package(KlepsydraAdmin REQUIRED)
+find_package(KlepsydraStreaming REQUIRED)
+
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
@@ -58,9 +63,23 @@ if(${FRAMEWORK} STREQUAL ros)
 endif()
 
 # Add new executors to test here
-#add_benchmark_executable(autoware_default_custom
-#  src/ros2/executor/autoware_default_custom.cpp
-#)
+add_benchmark_executable(autoware_default_custom
+  src/ros2/executor/autoware_default_klepsydrasinglethreaded.cpp
+)
+
+set(CONF_DATA ${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/data)
+#Configure modules header with variables configured
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/common/config.h.in"
+               "${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/common/config.h")
+
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/data/streaming_conf.json.in"
+               "${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/data/streaming_conf.json")
+
+target_include_directories(
+  autoware_default_custom PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/common)
+
+ament_export_include_directories(autoware_default_custom PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/ros2/common)
+ament_target_dependencies(autoware_default_custom ${dependencies})
 
 if(${BUILD_TESTING})
   find_package(ament_lint_auto REQUIRED)
@@ -75,9 +94,13 @@ if(${BUILD_TESTING})
   endif()
 
   if(${RUN_BENCHMARK})
-    # Test all executables by default.
-    # Modify this variable to test only a subset of executables
-    set(TEST_TARGETS ${BENCHMARK_EXECUTABLES})
+    # Add executables here to test
+    set(TEST_TARGETS
+      autoware_default_singlethreaded
+      autoware_default_staticsinglethreaded
+      autoware_default_multithreaded
+      #autoware_default_custom
+    )
 
     # Add more run times here (time to run traces for)
     set(RUN_TIMES

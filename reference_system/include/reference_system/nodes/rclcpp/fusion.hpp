@@ -82,6 +82,8 @@ private:
 
     subscriptions_[0].cache.reset();
     subscriptions_[1].cache.reset();
+    
+    //std::cout << "[KPSR] " << get_name() << " " << timestamp << " " << now_as_int() << std::endl;
   }
 
 private:

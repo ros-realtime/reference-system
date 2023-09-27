@@ -1,4 +1,3 @@
 bokeh==2.4.1
 psrecord==1.2
 pygad
-numpy==1.24.3

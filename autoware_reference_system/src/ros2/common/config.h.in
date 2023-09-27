@@ -1,0 +1,1 @@
+#cmakedefine CONF_DATA "@CONF_DATA@"

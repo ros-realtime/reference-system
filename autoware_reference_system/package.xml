@@ -17,6 +17,7 @@
   <depend>rclcpp</depend>
   <depend>reference_interfaces</depend>
   <depend>rcl_interfaces</depend>
+  <depend>kpsr_ros2_executor</depend>
 
   <test_depend>ament_cmake_pytest</test_depend>
   <test_depend>ament_cmake_gtest</test_depend>

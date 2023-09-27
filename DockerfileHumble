@@ -1,0 +1,211 @@
+ARG image_base=osrf/ros:humble-desktop
+
+ARG registry=registry.klepsydra.io/repository
+ARG board=amd64
+ARG osrelease=jammy
+
+FROM $image_base as system_dep
+
+ENV TZ 'Europe/Madrid'
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
+RUN groupadd --gid 10000 kpsruser && \
+    useradd --uid 10000 --gid kpsruser --shell /bin/bash --create-home kpsruser && \
+    usermod -aG sudo kpsruser && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+ENV BUILD_MODE=Release
+
+ARG OPENSSLVERSION="OpenSSL_1_1_1i"
+RUN git clone https://github.com/openssl/openssl.git && \
+    cd openssl && git checkout ${OPENSSLVERSION} && \
+    ./config -fPIC shared && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../ && rm -rf openssl
+
+ARG YAMLCPPVERSION="yaml-cpp-0.7.0"
+RUN git clone https://github.com/jbeder/yaml-cpp && \
+    cd yaml-cpp && git checkout ${YAMLCPPVERSION} && \
+    mkdir build && \
+    cd build && \
+    cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DYAML_CPP_BUILD_TESTS=Off ../ && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../../ && rm -rf yaml-cpp
+
+ARG ZMQVERSION="v4.3.4"
+RUN git clone https://github.com/zeromq/libzmq.git && \
+    cd libzmq && \
+    git checkout ${ZMQVERSION} && \
+    mkdir build && \
+    cd build && \
+    cmake ../ && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../../ && rm -rf libzmq
+
+ARG ZMQCPPVERSION="v4.8.0"
+RUN git clone https://github.com/zeromq/cppzmq.git && \
+    cd cppzmq && \
+    git checkout ${ZMQCPPVERSION} && \
+    mkdir build && cd build && \
+    cmake ../ && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../../ && rm -rf cppzmq
+
+ARG BENCHMARKVERSION="3b3de69400164013199ea448f051d94d7fc7d81f"
+RUN git clone https://github.com/google/benchmark.git && \
+    cd benchmark && \
+    git checkout ${BENCHMARKVERSION} && \
+    mkdir build && cd build && \
+    cmake -DBENCHMARK_DOWNLOAD_DEPENDENCIES=on -DCMAKE_BUILD_TYPE=Release ../ && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../../ && \
+    rm -rf benchmark
+
+RUN apt-get -y update && apt-get -y install libtool
+
+ARG PROTOBUFVERSION="v3.19.0"
+RUN git clone https://github.com/protocolbuffers/protobuf.git && \
+    cd protobuf && \
+    git checkout ${PROTOBUFVERSION} && \
+    git submodule update --init --recursive && \
+    ./autogen.sh && ./configure && \
+    make -j$(nproc) && \
+    sudo make install && ldconfig && \
+    cd ../../ && \
+    rm -rf protobuf
+
+ARG EIGENVERSION="3.4.0"
+RUN git clone https://gitlab.com/libeigen/eigen.git && \
+    cd eigen && \
+    git checkout ${EIGENVERSION} && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_BUILD_TYPE=Release ../ && \
+    make -j$(nproc) && \
+    sudo make install && \
+    cd ../../ && \
+    rm -rf eigen
+
+ARG OPENCVVERSION="3.4.17"
+RUN git clone https://github.com/opencv/opencv.git && \
+    cd opencv && \
+    git checkout ${OPENCVVERSION} && \
+    mkdir build && cd build && \
+    cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DINSTALL_TESTS=OFF -DINSTALL_PYTHON_EXAMPLES=OFF -DINSTALL_C_EXAMPLES=OFF -DBUILD_opencv_apps=OFF ../ && \
+    make -j$(nproc) && \
+    sudo make install && \
+    cd ../../ && \
+    rm -rf opencv
+
+
+USER root
+WORKDIR /home/kpsruser
+RUN <<EOF
+# echo "deb https://${registry}/${board}/ ${osrelease} main" >> /etc/apt/sources.list.d/klepsydra.list 
+# apt-key add /tmp/public.gpg.key 
+# rm /tmp/public.gpg.key 
+# apt update
+apt-get -y install python3-pip
+pip config set global.extra-index-url https://registry.klepsydra.io/repository/kpe-pypi/simple
+pip install kpsr-codegen
+EOF
+
+RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+FROM system_dep as kpe-core
+
+
+
+ENV KPE_CORE_TAG=v8.0.0
+RUN --mount=type=ssh git clone --branch ${KPE_CORE_TAG} --recurse-submodules git@github.com:klepsydra-technologies/kpe-core
+RUN --mount=type=cache,target=/home/kpsruser/.ccache <<EOF
+cd /home/kpsruser/kpe-core
+# Patch to make it work. 
+sed -i 's/set(_SPDLOG_VERSION "1.5")/set(_SPDLOG_VERSION "1.9.2")/g' CMakeLists.txt
+mkdir build 
+cd build 
+cmake -DKPSR_WITH_YAML=false -DKPSR_WITH_SOCKET=true -DCMAKE_BUILD_TYPE=${BUILD_MODE} -DKPSR_WITH_ROS_HUMBLE_OR_ABOVE=true \
+-DKPSR_TEST_PERFORMANCE=false ../ 
+make -j
+sudo make install
+EOF
+
+FROM kpe-core as kpe-admin
+ENV KPE_ADMIN_TAG=v7.0.0
+RUN --mount=type=ssh git clone --branch ${KPE_ADMIN_TAG} --recurse-submodules git@github.com:klepsydra-technologies/kpe-admin
+RUN --mount=type=cache,target=/home/kpsruser/.ccache <<EOF
+#apt-get -y install libbsd-dev
+cd /home/kpsruser/kpe-admin
+sed -i '26d' modules/system/src/cpu_reader_linux.cpp
+apt-get -y install glibc
+mkdir build && cd build &&
+cmake -DKPSR_WITH_SOCKET=true -DKPSR_NO_LICENSE=true -DCMAKE_BUILD_TYPE=${BUILD_MODE} ../ &&
+make -j$(nproc) &&
+sudo make install
+EOF
+
+
+FROM kpe-admin as kpe-streaming
+ENV KPE_STREAMING_VER=v11.1.0
+RUN --mount=type=ssh git clone --branch ${KPE_STREAMING_VER} --recurse-submodules git@github.com:klepsydra-technologies/kpe-streaming
+RUN --mount=type=cache,target=/home/kpsruser/.ccache <<EOF
+cd  /home/kpsruser/kpe-streaming
+mkdir build && cd build &&
+cmake -DCMAKE_BUILD_TYPE=${BUILD_MODE} ../ &&
+make -j$(nproc) &&
+sudo make install
+EOF
+
+# Install colcon, rosdep and dependencies
+FROM kpe-streaming as kpe-ros2-core
+ENV KPE_ROS2_CORE_BRANCH=humble
+RUN --mount=type=ssh git clone --branch ${KPE_ROS2_CORE_BRANCH} --recurse-submodules git@github.com:klepsydra-technologies/kpe-ros2-core.git
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt 
+
+RUN --mount=type=cache,target=/home/kpsruser/.ccache <<EOF
+pip install -U rosdep
+rosdep init && rosdep update --include-eol-distros
+
+. /opt/ros/humble/local_setup.sh
+mkdir -p /home/kpsruser/kpe-ros2-core-install/src 
+ln -s /home/kpsruser/kpe-ros2-core/ /home/kpsruser/kpe-ros2-core-install/src/kpe-ros2-core
+cd /home/kpsruser/kpe-ros2-core-install/ 
+rosdep install --from-paths src --ignore-src -r -y  && 
+colcon build --cmake-args -DCMAKE_BUILD_TYPE=${BUILD_MODE}
+EOF
+
+FROM kpe-ros2-core as reference_sytem
+ENV KPE_REF_SYSTEM=update_klepsydra_executor
+RUN --mount=type=ssh git clone --branch ${KPE_REF_SYSTEM} --recurse-submodules git@github.com:klepsydra-technologies/reference-system.git
+
+RUN --mount=type=cache,target=/home/kpsruser/.ccache <<EOF
+apt-get -y install ros-humble-ros-testing
+mkdir -p /home/kpsruser/colcon_reference-system/src
+ 
+ln -s /home/kpsruser/reference-system /home/kpsruser/colcon_reference-system/src/reference-system
+cd /home/kpsruser/colcon_reference-system/
+
+. /opt/ros/humble/local_setup.sh
+colcon build --cmake-args -DCMAKE_PREFIX_PATH="/home/kpsruser/kpe-ros2-core-install/install" -DCMAKE_BUILD_TYPE=${BUILD_MODE} -DRUN_BENCHMARK=ON
+EOF
+
+RUN apt-get -y install ros-humble-rmw-cyclonedds-cpp
+RUN pip install pandas==2.0.1 bokeh==2.4.1 psrecord==1.2 numpy==1.23.5 pygad==2.18.1 
+RUN chmod +x /home/kpsruser/reference-system/autoware_reference_system/scripts/benchmark.py
+# Necessary.
+ENV LD_LIBRARY_PATH=/home/kpsruser/kpe-ros2-core-install/install/kpsr_ros2_executor/lib:/usr/local/lib:/home/kpsruser/colcon_reference-system/install/reference_interfaces/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib
+
+RUN sed -i 's/parallised/parallelised/g' /home/kpsruser/colcon_reference-system/src/reference-system/autoware_reference_system/src/ros2/data/streaming_policy.json
+# if this doesn't work  YOU NEED TO MODIFY THE POLICY. parallised BECOMES parallelised.
+
+USER kpsruser
+
+RUN echo 'source /opt/ros/humble/setup.sh' >> /home/kpsruser/.bashrc && \
+    echo 'source /home/kpsruser/colcon_reference-system/install/setup.sh' >> /home/kpsruser/.bashrc && \
+    echo 'source /home/kpsruser/kpe-ros2-core-install/install/setup.sh' >> /home/kpsruser/.bashrc

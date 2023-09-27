@@ -1,0 +1,26 @@
+{
+    "StringProperties": {
+        "container_name": "test",
+        "log_filename": "",
+        "streaming_conf_file":"@CONF_DATA@/streaming_policy.json",
+        "processor_intensive_layers": "max"
+    },
+    "BoolProperties": {
+        "test_dnn": false,
+        "stat_socket_container_enable": false,
+        "stat_file_container_enable": false,
+        "use_default_streaming_factory": false
+    },
+    "IntProperties": {
+        "stat_log_interval_ms": 1000,
+        "pool_size": 1,
+        "stat_admin_port": 9595,
+        "stat_system_port": 9696,
+        "log_level": 6,
+        "number_of_event_loops": 8,
+        "number_of_cores": 8,
+        "critical_thread_pool_size": 32,
+        "non_critical_thread_pool_size": 32,
+        "number_of_parallel_threads": 1
+    }
+}

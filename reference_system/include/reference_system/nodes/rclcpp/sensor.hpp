@@ -51,6 +51,7 @@ private:
       message.get());
 
     publisher_->publish(std::move(message));
+    //std::cout << "[KPSR] " << get_name() << " " << timestamp << " " << now_as_int() << std::endl;
   }
 
 private:
